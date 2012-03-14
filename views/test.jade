@@ -1,0 +1,115 @@
+#container.container-fluid
+    .navbar
+        .navbar-inner
+          .container(style='width: auto;')
+            a.brand(href='#') Project name
+            .nav-collapse
+              ul.nav
+                li.active
+                  a(href='#') Home
+                li
+                  a(href='#') Link
+                li.dropdown
+                  a.dropdown-toggle(href='#', data-toggle='dropdown')
+                    | Dropdown
+                    b.caret
+                  ul.dropdown-menu
+                    li
+                      a(href='#') Action
+                    li
+                      a(href='#') Another action
+                    li
+                      a(href='#') Something else here
+                    li.divider
+                    li.nav-header
+                      | Nav header
+                    li
+                      a(href='#') Separated link
+                    li
+                      a(href='#') One more separated link
+              ul.nav.pull-right
+                li.divider-vertical
+                li
+                  a(href='#') Log out
+      ul.breadcrumb
+        li.active
+          a(href='#step1') Step 1
+          span.divider |
+        li
+          a(href='#step2') Step 2
+          span.divider |
+        li
+          a.breaddisabled(href='#') Overview
+      .row
+        #properties.span4
+          #step1Info
+            h2 Step 1
+            p
+              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec orci erat, dapibus at ullamcorper eget, convallis ut odio. Maecenas eu nibh ut neque sodales sodales a id diam. Curabitur et gravida ante. Aenean facilisis dictum gravida. Donec quis odio nisl, sodales ultrices neque. Maecenas eu venenatis ipsum. Aenean congue augue quis velit faucibus consectetur. In hac habitasse platea dictumst. Sed sodales iaculis purus, non ullamcorper eros egestas et. Proin eget consectetur ipsum. Sed aliquam blandit convallis. Donec pharetra lorem id nisl viverra ac feugiat elit ornare. Nulla facilisi. Praesent euismod volutpat tortor suscipit aliquet. Donec ut urna id ante viverra posuere. Cras at eros dolor, at molestie lacus.
+          #step2Info
+            h2 Properties
+            #accordion2.accordion
+              .accordion-group
+                .accordion-heading
+                  a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseOne')  Title info 
+                #collapseOne.accordion-body.collapse
+                  .accordion-inner
+                    button#titleBtn.btn.btn-small
+                      | Title
+                    button#subtitleBtn.btn.btn-small
+                      | Subtitle
+              .accordion-group
+                .accordion-heading
+                  a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseTwo')  Collapsible Group Item #2 
+                #collapseTwo.accordion-body.collapse
+                  .accordion-inner
+                    button.btn.btn-small
+                      | Title
+                    button.btn.btn-small
+                      | Title
+                    button.btn.btn-small
+                      | Title
+                    button.btn.btn-small
+                      | Title
+              .accordion-group
+                .accordion-heading
+                  a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseThree')  Collapsible Group Item #3 
+                #collapseThree.accordion-body.collapse
+                  .accordion-inner
+                    button.btn.btn-small
+                      | Title
+                    button.btn.btn-small
+                      | Title
+              .accordion-group
+                .accordion-heading
+                  a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseFour')  Collapsible Group Item #4 
+                #collapseFour.accordion-body.collapse
+                  .accordion-inner
+                    button.btn.btn-small
+                      | Title
+                    button.btn.btn-small
+                      | Title
+        #step1
+          .span7
+            h1 Step 1
+            p
+              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur semper ornare malesuada. Etiam blandit auctor velit sit amet volutpat. Proin volutpat ornare quam, a molestie turpis porttitor vestibulum. Quisque volutpat nisl turpis. Etiam tempus eros congue lorem vulputate a vehicula neque volutpat. Nullam luctus, enim id pharetra elementum, velit massa adipiscing velit, ut fermentum leo lectus a mauris. Sed luctus, nisi vel molestie fermentum, ante libero placerat magna, id scelerisque leo eros convallis mi. Sed mi odio, congue sagittis tempor a, molestie eu ligula. Suspendisse at quam nibh. Donec non lorem eget velit tincidunt fermentum eget sit amet odio. Vestibulum in nisl elit. Integer id leo magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+            ul.pager
+              li
+                a.next(href='#step2') Next
+        #step2
+          .span7
+            #title
+              form.form-horizontal(enctype="multipart/form-data",action="post",method="post")
+                fieldset
+                  legend
+                    | File
+                  input(type="file", name="image")
+                  .form-actions
+                    input(type="submit",value="Send")
+                    ul.pager
+                      li
+                        a(href='#step1') Previous
+                      li
+                        a(href='#') Next
+                    .dummy  

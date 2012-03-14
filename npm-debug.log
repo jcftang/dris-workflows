@@ -1,0 +1,52 @@
+info it worked if it ends with ok
+verbose cli [ 'C:\\Program Files (x86)\\nodejs\\\\node.exe',
+verbose cli   'C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+verbose cli   'install',
+verbose cli   'mongojs' ]
+info using npm@1.1.4
+info using node@v0.6.12
+verbose C:\Program Files (x86)\nodejs\\node.exe node symlink
+verbose config file C:\Users\mvanwamb\.npmrc
+verbose config file C:\Program Files (x86)\nodejs\etc\npmrc
+verbose config file C:\Program Files (x86)\nodejs\node_modules\npm\npmrc
+verbose mkdir done: C:\Users\mvanwamb\AppData\Roaming\npm 755
+verbose mkdir done: C:\Users\mvanwamb\express\project1 755
+verbose caching C:\Users\mvanwamb\express\project1\package.json
+verbose loadDefaults application-name@0.0.1
+verbose caching C:\Users\mvanwamb\express\project1\node_modules\express\package.json
+verbose caching C:\Users\mvanwamb\express\project1\node_modules\jade\package.json
+verbose from cache C:\Users\mvanwamb\express\project1\package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'mongojs', null ]
+silly cache add: name, spec, args [ undefined, 'mongojs', [ 'mongojs', null ] ]
+verbose parsed url { pathname: 'mongojs', path: 'mongojs', href: 'mongojs' }
+verbose addNamed [ 'mongojs', '' ]
+verbose addNamed [ null, '' ]
+silly name, range, hasData [ 'mongojs', '', false ]
+verbose raw, before any munging mongojs
+verbose url resolving [ 'http://registry.npmjs.org/', './mongojs' ]
+verbose url resolved http://registry.npmjs.org/mongojs
+http GET http://registry.npmjs.org/mongojs
+ERR! Error: failed to fetch from registry: mongojs
+ERR!     at C:\Program Files (x86)\nodejs\node_modules\npm\lib\utils\npm-registry-client\get.js:139:12
+ERR!     at cb (C:\Program Files (x86)\nodejs\node_modules\npm\lib\utils\npm-registry-client\request.js:31:9)
+ERR!     at Request._callback (C:\Program Files (x86)\nodejs\node_modules\npm\lib\utils\npm-registry-client\request.js:136:18)
+ERR!     at Request.callback (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\request\main.js:119:22)
+ERR!     at Request.<anonymous> (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\request\main.js:212:58)
+ERR!     at Request.emit (events.js:88:20)
+ERR!     at ClientRequest.<anonymous> (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\request\main.js:209:10)
+ERR!     at ClientRequest.emit (events.js:67:17)
+ERR!     at Socket.<anonymous> (http.js:1137:11)
+ERR!     at Socket.emit (events.js:67:17)
+ERR! You may report this log at:
+ERR!     <http://github.com/isaacs/npm/issues>
+ERR! or email it to:
+ERR!     <npm-@googlegroups.com>
+ERR! 
+ERR! System Windows_NT 6.1.7601
+ERR! command "C:\\Program Files (x86)\\nodejs\\\\node.exe" "C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "mongojs"
+ERR! cwd C:\Users\mvanwamb\express\project1
+ERR! node -v v0.6.12
+ERR! npm -v 1.1.4
+ERR! message failed to fetch from registry: mongojs
+verbose exit [ 1, true ]
