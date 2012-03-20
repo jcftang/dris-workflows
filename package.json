@@ -1,9 +1,10 @@
 {
-    "name": "application-name"
+    "name": "dri_review"
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
       "express": "2.5.8"
     , "jade": ">= 0.0.1"
+    , "mongolian": ">= 0.1.17"
   }
 }
