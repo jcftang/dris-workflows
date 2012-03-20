@@ -27,18 +27,38 @@ $(document).ready(function() {
 function showItems(items){
 	var root = "";
 	for(i in items){
-		console.log(items[i]._id);
 	  root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].title+"</a></li>";
 	}
 	
-	console.log(root);
 	$("#items ul").empty();
 	$("#items ul").append(root);
+	
+	$("#items ul li a").click(function(event) {
+		event.preventDefault();
+		$.ajax({
+			url : this.pathname,
+			success : function(data) {
+				fillUpForm(data);
+			},
+			error : function(d, r) {
+				console.log(d);
+				console.log(r);
+			}
+		});
+	});
+}
+function fillUpForm(data){
+	$("form fieldset").empty();
+	for (var prop in data) {
+    if (data.hasOwnProperty(prop)) {
+        $("#step2 fieldset").append('<div class="control-group"><label class="control-label">'+prop+'</label><div class="controls"><input type="text" class="input-xlarge" id="input01" name="'+prop+'" value="'+data[prop]+'"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
+    }
+}
 }
 function loadBtnActions(){
 
 		$("#properties button").click(function(){
-			$("#step2 .form-actions").before('<div class="control-group"><label class="control-label">'+$(this).text()+'</label><div class="controls"><input type="'+$(this).next().text()+'" class="input-xlarge" id="input01" name="'+$(this).text()+'"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
+			$("#step2 fieldset").append('<div class="control-group"><label class="control-label">'+$(this).text()+'</label><div class="controls"><input type="'+$(this).next().text()+'" class="input-xlarge" id="input01" name="'+$(this).text()+'"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
 		});
 		$(".accordion-heading").click(function(){
 			$(".accordion-heading").removeClass("accordion-heading-focus");
@@ -100,20 +120,7 @@ function loadBtnActions(){
 		});
 		$("#options2 div").not($("#options2 div").eq(0)).hide();
 		
-		$("#items li a").click(function(event) {
-		event.preventDefault();
-	    alert("fdsqfsd");
-		$.ajax({
-			url : this.attr("url"),
-			success : function(data) {
-				console.log(data);
-			},
-			error : function(d, r) {
-				console.log(d);
-				console.log(r);
-			}
-		});		
-	});
+
 }
 	
 function backbone(){
