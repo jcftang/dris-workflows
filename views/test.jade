@@ -6,32 +6,20 @@
             .nav-collapse
               ul.nav
                 li.active
-                  a(href='#') Home
+                  a(href='template') Template
                 li
-                  a(href='#') Link
-                li.dropdown
-                  a.dropdown-toggle(href='#', data-toggle='dropdown')
-                    | Dropdown
-                    b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#') Action
-                    li
-                      a(href='#') Another action
-                    li
-                      a(href='#') Something else here
-                    li.divider
-                    li.nav-header
-                      | Nav header
-                    li
-                      a(href='#') Separated link
-                    li
-                      a(href='#') One more separated link
+                  a(href='#') Edit
               ul.nav.pull-right
                 li.divider-vertical
                 li
                   a(href='#') Log out
-      ul.breadcrumb
+            //
+               /.nav-collapse 
+        //
+           /navbar-inner 
+      //
+         /navbar 
+      ul.breadcrumb.span7
         li.active
           a(href='#step1') Step 1
           span.divider |
@@ -39,77 +27,101 @@
           a(href='#step2') Step 2
           span.divider |
         li
-          a.breaddisabled(href='#') Overview
+          a(href='#step3') Step 3
+          span.divider |
+        li
+          a.breaddisabled(href='#step4') Overview
+      .dummy
       .row
         #properties.span4
           #step1Info
             h2 Step 1
-            p
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec orci erat, dapibus at ullamcorper eget, convallis ut odio. Maecenas eu nibh ut neque sodales sodales a id diam. Curabitur et gravida ante. Aenean facilisis dictum gravida. Donec quis odio nisl, sodales ultrices neque. Maecenas eu venenatis ipsum. Aenean congue augue quis velit faucibus consectetur. In hac habitasse platea dictumst. Sed sodales iaculis purus, non ullamcorper eros egestas et. Proin eget consectetur ipsum. Sed aliquam blandit convallis. Donec pharetra lorem id nisl viverra ac feugiat elit ornare. Nulla facilisi. Praesent euismod volutpat tortor suscipit aliquet. Donec ut urna id ante viverra posuere. Cras at eros dolor, at molestie lacus.
+            p Select the serie you want to edit
           #step2Info
             h2 Properties
-            #accordion2.accordion
-              .accordion-group
-                .accordion-heading
-                  a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseOne')  Title info 
-                #collapseOne.accordion-body.collapse
-                  .accordion-inner
-                    button#titleBtn.btn.btn-small
-                      | Title
-                    button#subtitleBtn.btn.btn-small
-                      | Subtitle
-              .accordion-group
-                .accordion-heading
-                  a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseTwo')  Collapsible Group Item #2 
-                #collapseTwo.accordion-body.collapse
-                  .accordion-inner
-                    button.btn.btn-small
-                      | Title
-                    button.btn.btn-small
-                      | Title
-                    button.btn.btn-small
-                      | Title
-                    button.btn.btn-small
-                      | Title
-              .accordion-group
-                .accordion-heading
-                  a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseThree')  Collapsible Group Item #3 
-                #collapseThree.accordion-body.collapse
-                  .accordion-inner
-                    button.btn.btn-small
-                      | Title
-                    button.btn.btn-small
-                      | Title
-              .accordion-group
-                .accordion-heading
-                  a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseFour')  Collapsible Group Item #4 
-                #collapseFour.accordion-body.collapse
-                  .accordion-inner
-                    button.btn.btn-small
-                      | Title
-                    button.btn.btn-small
-                      | Title
+            script
+              $("#step2Info").append(createPropertyButtons());
+          #step3Info
+            h2 Media
+            p
+            | Add some media if you have it.
+          #step4Info
+            h2 Overview
+            p
+              | This is an overview of the data that will be stored. Please check this data so that you are sue everything is correct.
         #step1
           .span7
-            h1 Step 1
-            p
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur semper ornare malesuada. Etiam blandit auctor velit sit amet volutpat. Proin volutpat ornare quam, a molestie turpis porttitor vestibulum. Quisque volutpat nisl turpis. Etiam tempus eros congue lorem vulputate a vehicula neque volutpat. Nullam luctus, enim id pharetra elementum, velit massa adipiscing velit, ut fermentum leo lectus a mauris. Sed luctus, nisi vel molestie fermentum, ante libero placerat magna, id scelerisque leo eros convallis mi. Sed mi odio, congue sagittis tempor a, molestie eu ligula. Suspendisse at quam nibh. Donec non lorem eget velit tincidunt fermentum eget sit amet odio. Vestibulum in nisl elit. Integer id leo magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-            ul.pager
-              li
-                a.next(href='#step2') Next
-        #step2
-          .span7
-            #title
-              form.form-horizontal(enctype="multipart/form-data",action="post",method="post")
-                fieldset
-                  legend
-                    | File
-                  input(type="file", name="image")
+            form.form-horizontal
+              legend Make a choice
+              select
+                option --Series--
+                - series.forEach(function(item){
+                     option(value="#{item._id}") #{item.title} 
+                - })
+              .form-actions
+                ul.pager
+                  li
+                    a#step2Btn(href='#step2') Next
+                .dummy
+        div
+          form.form-horizontal(enctype='multipart/form-data', method='post', action='post')
+            #step2
+              .span7
+                #title
+                  h2  Metadata 
+                  .control-group
+                    label.control-label Project name
+                    .controls
+                      input#projectname.input-xlarge(type='text', name='projectname')
+                  .control-group
+                    label.control-label DOI
+                    .controls
+                      input#doi.input-xlarge(type='text', name='doi')
+                  .control-group
+                    label.control-label Title
+                    .controls
+                      input#title.input-xlarge(type='text', name='title')
+                  .control-group
+                    label.control-label Location
+                    .controls
+                      input#location.input-xlarge(type='text', name='location')
                   .form-actions
-                    input(type="submit",value="Send")
                     ul.pager
                       li
-                        a(href='#step1') Previous
-                      li
-                        a(href='#') Next
-                    .dummy  
+                        a(href='#') Save
+                    .dummy
+            #step3
+              .span7
+                h2 Digital media
+                .control-group
+                  label.control-label(for='surcheck') Media:
+                  .controls
+                    label.checkbox
+                      input#surcheck.checkbox(type='checkbox', name='surcheck')
+                      | I have media (images,video,...).
+                #fileBox.control-group
+                  label.control-label(for='media') Upload your file:
+                  .controls
+                    input#media(type='file', name='media')
+                    p.help-inline Surrogates will be generated automatically
+                    #fileContainer
+                .form-actions
+                  input(type='submit', value='submit')
+                  ul.pager
+                    li
+                      a(href='#step2') Previous
+                    li
+                      a(href='#step4') Next
+                  .dummy  
+        #step4
+          .span7
+            h2 Overview
+            .form-actions
+              ul.pager
+                li
+                  a(href='#step3') Previous
+              .dummy
+        #items.span4
+          h2 Items
+          ul
+              
