@@ -20,7 +20,7 @@ exports.show = function(data,vw){
 	// Get collections
 	items = db.collection("series")
 	console.log(items);
-	//save(meta,files);
+	save(meta,files);
 	//gridfs();
 }
 
@@ -84,7 +84,7 @@ var server = new Mongolian
 		console.log(arr);
 	}, function() {
 		res.render('all', {
-				items:arr
+				items:arr, id:"all",title:"overview"
 			})
 	})
 	console.log("dfqsdqsd");
@@ -106,9 +106,9 @@ function findId(id,name){
 			
 			name = 'image/'+id+'/'+name;
 			console.log(name);
-			res.render('overview', {
-				title : "show",layout:"layoutOverview",
-				url:name
+			res.render('summary', {
+				title : "summary",layout:"layoutOverview",
+				url:name, id:"summary"
 			})
 		}
 
