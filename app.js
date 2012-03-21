@@ -42,12 +42,7 @@ app.get('/', function(req, res){
 });
 
 
-app.get('/home', function(req, res){
-  res.render('index', {
-    title: 'DRIS Workflows',
-    id: 'home'
-  });
-});
+app.get('/home', routes.home);
 
 
 app.get('/overview', function(req, res){

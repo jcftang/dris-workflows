@@ -4,9 +4,9 @@
  */
 
 var data = require("../data.js");
-exports.index = function(req, res){
+exports.home = function(req, res){
   res.render('index', {
-    title: 'Express',
+    title: 'DRIS Workflows',
     id: 'home'
   });
 }
@@ -41,4 +41,9 @@ exports.item = function(req,res){
 	data.item(req.params.id,res);
 }
 
-
+exports.create = function(req,res){
+	res.render('create', {
+    title: 'Express',
+    id: 'create'
+  });
+}
