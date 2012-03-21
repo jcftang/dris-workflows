@@ -15,22 +15,7 @@ div.container
           a.breaddisabled(href='#step4') Overview
       .dummy
       .row
-        #properties.span4
-          #step1Info
-            h2 Step 1
-            p Select the serie you want to edit
-          #step2Info
-            h2 Properties
-            script
-              $("#step2Info").append(createPropertyButtons());
-          #step3Info
-            h2 Media
-            p
-            | Add some media if you have it.
-          #step4Info
-            h2 Overview
-            p
-              | This is an overview of the data that will be stored. Please check this data so that you are sue everything is correct.
+        include properties
         #step1
           .span7
             form.form-horizontal
