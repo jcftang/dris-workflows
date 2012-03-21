@@ -35,10 +35,12 @@ function showItems(items){
 	
 	$("#items ul li a").click(function(event) {
 		event.preventDefault();
+		$("#items ul").removeClass("in");
 		$.ajax({
 			url : this.pathname,
 			success : function(data) {
 				fillUpForm(data);
+				$("#items ul").addClass("in");
 			},
 			error : function(d, r) {
 				console.log(d);
@@ -48,17 +50,17 @@ function showItems(items){
 	});
 }
 function fillUpForm(data){
-	$("form fieldset").empty();
+	$(".dataform").empty();
 	for (var prop in data) {
     if (data.hasOwnProperty(prop)) {
-        $("#step2 fieldset").append('<div class="control-group"><label class="control-label">'+prop+'</label><div class="controls"><input type="text" class="input-xlarge" id="input01" name="'+prop+'" value="'+data[prop]+'"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
+        $(".dataform").append('<div class="control-group"><label class="control-label">'+prop+'</label><div class="controls"><input type="text" class="input-xlarge" id="input01" name="'+prop+'" value="'+data[prop]+'"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
     }
 }
 }
 function loadBtnActions(){
 
 		$("#properties button").click(function(){
-			$("#step2 fieldset").append('<div class="control-group"><label class="control-label">'+$(this).text()+'</label><div class="controls"><input type="'+$(this).next().text()+'" class="input-xlarge" id="input01" name="'+$(this).text()+'"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
+			$(".dataform").append('<div class="control-group"><label class="control-label">'+$(this).text()+'</label><div class="controls"><input type="'+$(this).next().text()+'" class="input-xlarge" id="input01" name="'+$(this).text()+'"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
 		});
 		$(".accordion-heading").click(function(){
 			$(".accordion-heading").removeClass("accordion-heading-focus");
@@ -119,6 +121,10 @@ function loadBtnActions(){
 		  
 		});
 		$("#options2 div").not($("#options2 div").eq(0)).hide();
+		
+		$("#subItem").click(function(){
+			$("#itemCreation").submit();
+		})
 		
 
 }

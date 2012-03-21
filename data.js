@@ -19,8 +19,10 @@ exports.show = function(data,vw){
 	db = server.db("mydb");
 	// Get collections
 	items = db.collection("series")
-	console.log(items);
-	save(meta,files);
+	console.log("meta");
+	console.log(meta);
+	//console.log(items);
+	//save(meta,files);
 	//gridfs();
 }
 

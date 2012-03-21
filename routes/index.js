@@ -47,7 +47,7 @@ exports.item = function(req,res){
 
 exports.create = function(req,res){
 	res.render('create', {
-    title: 'Express',
+    title: 'Create',
     id: 'create'
   });
 }

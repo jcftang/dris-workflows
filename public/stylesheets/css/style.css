@@ -15,7 +15,7 @@ p{
 #container{
 	margin-top:20px;
 }
-#step2 input, #step2 form a{
+#step2 input, #step2 form a,#step3 input, #step3 form a{
 	float:left;
 	margin-right: 5px;
 }

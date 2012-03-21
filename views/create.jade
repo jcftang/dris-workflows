@@ -3,13 +3,13 @@ include header
 div.container
       ul.breadcrumb
         li.active
-          a(href='#step1') Step 1
+          a(href='#step1') Select
           span.divider |
         li
-          a(href='#step2') Step 2
+          a(href='#step2') Serie
           span.divider |
         li
-          a(href='#step3') Step 3
+          a(href='#step3') Item
           span.divider |
         li
           a.breaddisabled(href='#step4') Overview
@@ -19,51 +19,54 @@ div.container
         #step1
           .span7
             form.form-horizontal
-              legend Make a choice
+              legend What do you want to create?
               .control-group
-                label.control-label Project name
+                 label.control-label(for='series') Series
                  .controls
-                    input#series(type='checkbox', name='series')
-              
+                   label.control-label
+                     input#series(type='checkbox', value='series')
+              .control-group
+                 label.control-label(for='item') Item
+                 .controls
+                   label.control-label
+                     input#item(type='checkbox', value='item')
               .form-actions
                 ul.pager
                   li
                     a#step2Btn(href='#step2') Next
                 .dummy
         div
-          form.form-horizontal(enctype='multipart/form-data', method='post', action='post')
+          form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='post')
             #step2
               .span7
                 #title
-                  h2  Metadata 
+                  h2  Series 
                   fieldset
+                    .control-group
+                       label.control-label(for='name') Name
+                       .controls
+                         label.checkbox
+                           input#name(type='text', name='name')
+                    .control-group
+                       label.control-label(for='author') Author
+                       .controls
+                         label.checkbox
+                           input#author(type='text', name='author')
                   .form-actions
                     ul.pager
                       li
-                        a(href='#') Save
+                        a(href='#step3') Next
                     .dummy
             #step3
               .span7
-                h2 Digital media
-                .control-group
-                  label.control-label(for='surcheck') Media:
-                  .controls
-                    label.checkbox
-                      input#surcheck.checkbox(type='checkbox', name='surcheck')
-                      | I have media (images,video,...).
-                #fileBox.control-group
-                  label.control-label(for='media') Upload your file:
-                  .controls
-                    input#media(type='file', name='media')
-                    p.help-inline Surrogates will be generated automatically
-                    #fileContainer
+                h2 Item
+                .dataform
                 .form-actions
-                  input(type='submit', value='submit')
                   ul.pager
                     li
                       a(href='#step2') Previous
                     li
-                      a(href='#step4') Next
+                      a#subItem(href='#step4') Save
                   .dummy  
         #step4
           .span7
