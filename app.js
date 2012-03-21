@@ -29,28 +29,22 @@ app.configure('production', function(){
 
 
 // Routes
-app.get('/test', routes.test);
-app.get('/image/:name/:id', routes.image);
 app.get('/all',routes.all);
-app.get('/template',routes.template);
-app.post('/post', routes.data);
-app.get('/items/:id',routes.items);
-app.get('/item/:id',routes.item);
 app.get('/create',routes.create);
+app.get('/home', routes.home);
+app.get('/image/:name/:id', routes.image);
+app.get('/item/:id',routes.item);
+app.get('/items/:id',routes.items);
+app.get('/template',routes.template);
+app.get('/test', routes.test);
+app.post('/post', routes.data);
+
+// Redirects
 app.get('/', function(req, res){
  res.redirect('/home');
 });
 
 
-app.get('/home', routes.home);
-
-
-app.get('/overview', function(req, res){
-  res.render('overview', {
-    title: 'Overview',
-    id: 'overview'
-  });
-});
 
 
 app.listen(3000);
