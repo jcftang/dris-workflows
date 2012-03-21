@@ -49,14 +49,12 @@ app.get('/home', function(req, res){
   });
 });
 
-app.get('/example1', function(req, res){
-  res.render('example1', {
-    title: 'Express',
-    id: 'example1'
+app.get('/overview', function(req, res){
+  res.render('overview', {
+    title: 'Overview',
+    id: 'overview'
   });
 });
-
-
 
 
 app.listen(3000);
