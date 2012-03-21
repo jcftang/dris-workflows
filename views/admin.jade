@@ -1,0 +1,77 @@
+include header
+
+div.container
+      ul.breadcrumb
+        li.active
+          a(href='#step1') Step 1
+          span.divider |
+        li
+          a(href='#step2') Step 2
+          span.divider |
+        li
+          a(href='#step3') Step 3
+          span.divider |
+        li
+          a.breaddisabled(href='#step4') Overview
+      .dummy
+      .row
+        include properties
+        #step1
+          .span7
+            form.form-horizontal
+              legend Make a choice
+              .control-group
+                label.control-label Project name
+                 .controls
+                    input#series(type='checkbox', name='series')
+              
+              .form-actions
+                ul.pager
+                  li
+                    a#step2Btn(href='#step2') Next
+                .dummy
+        div
+          form.form-horizontal(enctype='multipart/form-data', method='post', action='post')
+            #step2
+              .span7
+                #title
+                  h2  Metadata 
+                  fieldset
+                  .form-actions
+                    ul.pager
+                      li
+                        a(href='#') Save
+                    .dummy
+            #step3
+              .span7
+                h2 Digital media
+                .control-group
+                  label.control-label(for='surcheck') Media:
+                  .controls
+                    label.checkbox
+                      input#surcheck.checkbox(type='checkbox', name='surcheck')
+                      | I have media (images,video,...).
+                #fileBox.control-group
+                  label.control-label(for='media') Upload your file:
+                  .controls
+                    input#media(type='file', name='media')
+                    p.help-inline Surrogates will be generated automatically
+                    #fileContainer
+                .form-actions
+                  input(type='submit', value='submit')
+                  ul.pager
+                    li
+                      a(href='#step2') Previous
+                    li
+                      a(href='#step4') Next
+                  .dummy  
+        #step4
+          .span7
+            h2 Overview
+            .form-actions
+              ul.pager
+                li
+                  a(href='#step3') Previous
+              .dummy
+
+      include footer
