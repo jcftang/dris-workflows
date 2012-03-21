@@ -29,7 +29,7 @@ app.configure('production', function(){
 
 // Routes
 
-//app.get('/', routes.index);
+app.get('/home', routes.index);
 app.get('/test', routes.test);
 app.get('/image/:name/:id', routes.image);
 app.get('/all',routes.all);
@@ -37,17 +37,12 @@ app.get('/template',routes.template);
 app.post('/post', routes.data);
 app.get('/items/:id',routes.items);
 app.get('/item/:id',routes.item);
-
+app.get('/create',routes.create);
 app.get('/', function(req, res){
  res.redirect('/home');
 });
 
-app.get('/home', function(req, res){
-  res.render('index', {
-    title: 'Express',
-    id: 'home'
-  });
-});
+
 
 app.get('/example1', function(req, res){
   res.render('example1', {

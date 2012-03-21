@@ -5,14 +5,17 @@
 
 var data = require("../data.js");
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' })
-};
+  res.render('index', {
+    title: 'Express',
+    id: 'home'
+  });
+}
 
 
 exports.test = function(req, res){
 	console.log("route")
     data.edit(req,res);
-};
+}
 
 exports.data = function(req, res){
   data.show(req,res);
@@ -37,4 +40,5 @@ exports.items = function(req,res){
 exports.item = function(req,res){
 	data.item(req.params.id,res);
 }
+
 
