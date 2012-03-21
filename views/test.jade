@@ -1,27 +1,7 @@
 include header
 
-#container.container-fluid
-    .navbar
-        .navbar-inner
-          .container(style='width: auto;')
-            a.brand(href='#') Project name
-            .nav-collapse
-              ul.nav
-                li.active
-                  a(href='template') Template
-                li
-                  a(href='#') Edit
-              ul.nav.pull-right
-                li.divider-vertical
-                li
-                  a(href='#') Log out
-            //
-               /.nav-collapse 
-        //
-           /navbar-inner 
-      //
-         /navbar 
-      ul.breadcrumb.span7
+div.container
+      ul.breadcrumb
         li.active
           a(href='#step1') Step 1
           span.divider |
@@ -112,4 +92,4 @@ include header
           h2 Items
           ul
 
-    include footer
+      include footer

@@ -30,7 +30,7 @@ app.configure('production', function(){
 // Routes
 
 //app.get('/', routes.index);
-//app.get('/test', routes.test);
+app.get('/test', routes.test);
 app.get('/image/:name/:id', routes.image);
 app.get('/all',routes.all);
 app.get('/template',routes.template);
@@ -56,12 +56,7 @@ app.get('/example1', function(req, res){
   });
 });
 
-app.get('/test', function(req, res){
-  res.render('test', {
-    title: 'test',
-    id: 'test'
-  });
-});
+
 
 
 app.listen(3000);

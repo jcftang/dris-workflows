@@ -140,7 +140,7 @@ exports.edit = function edit(req,res){
 		}
 			
 		res.render('test', {
-		title : "Edit",series:array
+		title : "Edit",id:"test",series:array
 		})
 
 	})

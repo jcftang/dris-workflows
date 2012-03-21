@@ -10,16 +10,18 @@ p{
 	border-radius:4px;
 	padding:10px;
 	float:left;
-	margin-top:-50px;
 }
+
 #items{
-	margin-top: -70px;
 	margin-left: 30px;
+	width:20%;
 }
 #container{
 	margin-top:20px;
 }
-
+.container{
+	width:80%;;
+}
 #step2 input, #step2 form a{
 	float:left;
 	margin-right: 5px;
@@ -40,10 +42,6 @@ p{
 
 .accordion-heading-focus a{
 	color: #FFFFFF;
-}
-
-.breadcrumb{
-	margin-left:330px;
 }
 
 .breaddisabled,.breaddisabled:hover{
