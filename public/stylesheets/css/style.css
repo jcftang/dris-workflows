@@ -5,17 +5,13 @@
 p{
 	font-size: 1em;
 }
-#properties,#items{
+#properties{
 	background-color: #F9F9F9;
 	border-radius:4px;
 	padding:10px;
 	float:left;
 }
 
-#items{
-	margin-left: 30px;
-	width:20%;
-}
 #container{
 	margin-top:20px;
 }
