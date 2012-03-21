@@ -39,12 +39,11 @@ app.get('/template',routes.template);
 app.get('/test', routes.test);
 app.post('/post', routes.data);
 
+
 // Redirects
 app.get('/', function(req, res){
- res.redirect('/home');
+	res.redirect('/home');
 });
-
-
 
 
 app.listen(3000);

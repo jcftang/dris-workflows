@@ -1,7 +1,16 @@
-table(class="table table-bordered")
-                 tbody
-                   each val, key in items
-                      tr
-                        td #{key}:
-                        td #{val.filename}
-                        
+include header
+div.container
+	ul.breadcrumb
+		li.active
+			a(href='#step4') Overview
+	.row
+
+	div.span12
+	table(class="table table-bordered")
+		tbody
+			each val, key in items
+				tr
+					td #{key}:
+					td #{val.filename}
+
+	include footer

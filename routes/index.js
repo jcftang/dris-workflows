@@ -27,6 +27,10 @@ exports.image=function(req,res){
 
 exports.all=function(req,res){
 	data.getAll(res);
+	res.render('all', {
+		title: 'All',
+		id: 'all'
+	});
 }
 
 exports.template=function(req,res){
