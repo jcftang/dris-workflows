@@ -162,6 +162,7 @@ exports.items = function(id,res){
 	for(item in array){
 			array[item]._id = array[item]._id.toString();
 		}
+		console.log(array);
 		res.send(array);
 	})
 }
@@ -185,14 +186,48 @@ exports.createitem = function(req,res){
 	// Get database
 	db = server.db("mydb");
 	// Get collections
-	var rootItem = '';
-	items = db.collection("series")
+	var rootItem = {}
+	var rootset = false;
+	var item = {};
+	console.log(req.body);
+	var items = db.collection("series")
 		var files = req.body;
 		for(var i in files){
-			console.log(i + " " + files[i] );
+			if(rootset == false){
+				if(i == 'name'){
+					rootItem[i] = files[i];
+				}
+				if(i = 'author'){
+					//rootItem += i +':"'+files[i]+'"';
+					rootItem[i] = files[i];
+					rootItem.series = true;
+					rootset = true;
+					console.log(rootItem);
+				}
+			}
+			
+			if(i != 'name' && i != 'author' && i != 'amount'){
+				item[i] = files[i];
+			}
+			
 		}
+		console.log(req.body.amount)
+		console.log(rootItem);
+		console.log(item);
+		items.insert(rootItem, function(err, value) {
+			console.log(value);
+		     var id = value._id.toString();
+			 item.masterId = id;
+			
+			 for(var i = 0;i<req.body.amount;i++){
+			 	item._id = new ObjectId();
+			 	items.insert(item,function(err, value) {
+			 		if(err){
+			 			console.log(err);
+			 		}
+			 		console.log("created");
+			 	});
+			 }
+		});
+		
 }
-
-
-	
-

@@ -27,7 +27,7 @@ $(document).ready(function() {
 function showItems(items){
 	var root = "";
 	for(i in items){
-	  root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].title+"</a></li>";
+	  root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+"</a></li>";
 	}
 	
 	$("#items ul").empty();
