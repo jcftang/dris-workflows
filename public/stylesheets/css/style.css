@@ -54,27 +54,6 @@ p{
 	display: none;
 }
 
-#step1 input{
-	float: left;
-	margin-right: 5px;
-}
-
-#options2 div{
-	float:left;
-}
-
-#step1 ul{
-	list-style: none;
-	width: 210px;
-}
-
-#step1 #options2 li{
-	background-color: #EEE;
-	border: #DDD 1px solid;
-	padding:0.2em;
-	height: 18px;
-	cursor: pointer;
-}
 
 li.selected{
 	background-color: #3B773B!important;
