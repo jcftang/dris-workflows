@@ -8,7 +8,7 @@ div.navbar
             a(href='#').brand #{title}
             div.nav-collapse
                 ul.nav
-                    - var obj = { 'home': 'Home', 'all': 'Overview', 'test': 'Test' }
+                    - var obj = { 'home': 'Home', 'all': 'Overview', 'create': 'Create', 'test': 'Test'}
                         - each val, key in obj
                           - if (id == key) 
                             li.active
