@@ -84,7 +84,7 @@ var server = new Mongolian
 		console.log(arr);
 	}, function() {
 		res.render('all', {
-				items:arr, id:"all",title:"overview"
+				items:arr, id:"all", title:"All"
 			})
 	})
 	console.log("dfqsdqsd");
