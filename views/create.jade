@@ -23,12 +23,12 @@ div.container
               .control-group
                  label.control-label(for='series') Series
                  .controls
-                   label.control-label
+                   label.checkbox
                      input#series(type='checkbox', value='series')
               .control-group
                  label.control-label(for='item') Item
                  .controls
-                   label.control-label
+                   label.checkbox
                      input#item(type='checkbox', value='item')
               .form-actions
                 ul.pager
@@ -36,7 +36,7 @@ div.container
                     a#step2Btn(href='#step2') Next
                 .dummy
         div
-          form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='post')
+          form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='createitem')
             #step2
               .span7
                 #title
@@ -45,12 +45,12 @@ div.container
                     .control-group
                        label.control-label(for='name') Name
                        .controls
-                         label.checkbox
+                         label.control-label
                            input#name(type='text', name='name')
                     .control-group
                        label.control-label(for='author') Author
                        .controls
-                         label.checkbox
+                         label.control-label
                            input#author(type='text', name='author')
                   .form-actions
                     ul.pager
@@ -61,6 +61,11 @@ div.container
               .span7
                 h2 Item
                 .dataform
+                    .control-group
+                       label.control-label(for='amount') Amount of items
+                       .controls
+                         label.control-label
+                           input#amount(type='text', name='amount')
                 .form-actions
                   ul.pager
                     li

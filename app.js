@@ -38,7 +38,7 @@ app.get('/items/:id',routes.items);
 app.get('/template',routes.template);
 app.get('/test', routes.test);
 app.post('/post', routes.data);
-
+app.post('/createitem',routes.createitem)
 // Redirects
 app.get('/', function(req, res){
 	res.redirect('/home');

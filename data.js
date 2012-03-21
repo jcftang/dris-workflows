@@ -180,5 +180,19 @@ exports.item = function(id,res){
 	})
 }
 
+exports.createitem = function(req,res){
+		var server = new Mongolian
+	// Get database
+	db = server.db("mydb");
+	// Get collections
+	var rootItem = '';
+	items = db.collection("series")
+		var files = req.body;
+		for(var i in files){
+			console.log(i + " " + files[i] );
+		}
+}
+
+
 	
 

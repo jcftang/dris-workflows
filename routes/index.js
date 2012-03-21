@@ -33,6 +33,9 @@ exports.post = function(req,res){
 	data.show(req,res);
 }
 
+exports.createitem = function(req,res){
+	data.createitem(req,res);
+}
 exports.template=function(req,res){
 	res.render('template', { title: 'Template' })
 }
