@@ -92,39 +92,10 @@ function loadBtnActions(){
 				$("#fileBox").toggle();
 		})
 		
-		$("#step1 input[type=radio]").click(function(){
-
-			$("#step1 input[type=radio]").next().next().hide();
-			if($(this).is(":checked")){
-			 $("#step1 input[type=radio]:checked").next().next().show();	
-			}
-		});
-
-		$("#options1 div").not("#options1 div:first-child").hide();
-		$("#options1 .icon-plus").parent().click(function(){
-			$(this).parent().find("a").hide();
-			$(this).parent().next().show();
-		});
-		$("#options1 .icon-minus").parent().click(function(){
-			$(this).parent().hide();
-			$(this).parent().prev().find("a").show();
-		});
-		
-		$("#options2 ul li").not("#options2 ul li:first-child").click(function() {
-			if($(this).hasClass("selected")){
-				$(this).removeClass("selected");
-				$(this).parent().parent().next().hide();
-			}else{
-					  $(this).addClass("selected").siblings().removeClass("selected");
-					  $(this).parent().parent().next().show();
-			}
-		  
-		});
-		$("#options2 div").not($("#options2 div").eq(0)).hide();
-		
 		$("#subItem").click(function(){
 			$("#itemCreation").submit();
 		})
+		
 		
 
 }
