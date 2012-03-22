@@ -99,17 +99,18 @@ function loadBtnActions(){
 		})
 		
 		$("#step3Info .items ul li a").live("click",function(event){
-	    	event.preventDefault();
-	    	$.ajax({
-			url : this.pathname,
-			success : function(data) {
-				fillUpForm(data);
-			},
-			error : function(d, r) {
-				console.log(d);
-				console.log(r);
-			}
-		});
+		    
+			event.preventDefault();
+			$.ajax({
+				url : this.pathname,
+				success : function(data) {
+					fillUpForm(data);
+				},
+				error : function(d, r) {
+					console.log(d);
+					console.log(r);
+				}
+			});
 	    	loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/")+1));
 	    });
 		
