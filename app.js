@@ -43,11 +43,10 @@ app.get('/home', routes.home);
 app.get('/image/:name/:id', routes.image);
 app.get('/item/:id',routes.item);
 app.get('/items/:id',routes.items);
-app.get('/template',routes.template);
-app.get('/test', routes.test);
+app.get('/edit', routes.edit);
 app.post('/post', routes.data);
-app.post('/createitem',routes.createitem);
-app.get('/itemimages/:id',routes.getItemImages);
+app.post('/create/item',routes.createitem);
+app.get('/list/images/:id',routes.getItemImages);
 // Redirects
 app.get('/', function(req, res){
 	res.redirect('/home');

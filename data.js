@@ -211,8 +211,8 @@ exports.edit = function edit(req,res){
 			console.log(array[item]._id); 
 		}
 			
-		res.render('test', {
-		title : "Edit",id:"test",series:array
+		res.render('edit', {
+		title : "Edit",id:"edit",series:array
 		})
 	})
 }

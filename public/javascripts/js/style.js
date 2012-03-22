@@ -7,6 +7,7 @@ $(document).ready(function() {
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	$("#fileBox").hide();
 	loadBtnActions();
+	 
 	backbone();
 	$("#step1 input[type=radio]").next().next().hide();
 	$("#step2Btn").click(function() {
@@ -112,7 +113,7 @@ function loadBtnActions(){
 
 function loadAllImages(id){
 	$.ajax({
-		url : "/itemimages/" + id,
+		url : "/list/images/" + id,
 		success : function(data) {
 			$("#imageContainer").empty();
 			for(var file in data) {

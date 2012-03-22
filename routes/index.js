@@ -13,7 +13,7 @@ exports.home = function(req, res){
 }
 
 
-exports.test = function(req, res){
+exports.edit = function(req, res){
 	console.log("route")
     data.edit(req,res);
 }
