@@ -21,7 +21,7 @@ exports.getSeries = function getSeries(req,res){
 			array[serie]._id = array[serie]._id.toString();
 		}
 		res.render('admin', 
-			{title : "Admin series",id:"getSeries",series:array}
+			{title : "Admin series",id:"getSeries",series:array, layout:"layoutAdmin"}
 		)
 	})
 }
