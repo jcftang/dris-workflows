@@ -124,20 +124,16 @@ exports.loadImg = function loadImg(id,name,res){
 /*
    Function: findImages
 
-   Searches for all images linked to a metadata object
+   Searches for all files linked to a metadata object
 
    Parameters:
 
       req - request object
-      res - The second integer.
+      res - result object
 
    Returns:
 
-      The two integers multiplied together.
-
-   See Also:
-
-      <Divide>
+      array of the corresponding files.
 */exports.findImages = function findImages(req,res){
 	//setting up connection with the server
 	var server = new Mongolian;
