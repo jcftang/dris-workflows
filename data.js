@@ -25,21 +25,45 @@ exports.show = function(data,vw){
 	save(meta,files);
 	//gridfs();
 }
+/*
+   Function: Save
 
+   Saves the metadata object
+
+   Parameters:
+
+      data - the metadata object
+      files - the files that are uploaded
+*/
 function save(data,files){
 	
-	console.log("data");
+	//convert String id to bytes
 	data._id = new ObjectId(data._id);
+	//remove the surcheck value (checks if there is an image)
+	var image = false;
+	if(data["surcheck"]){
+		image = true;
+	}
     delete data["surcheck"]
+    //saves the metadata in the items collection
 	items.save(data, function(err, value) {
-		if(data["surcheck"]) {
-			
+		if(image) {
+			//if there is an image it needs to be stored
 			gridfs(value._id.toString(), files)
 		}
 	});
 }
 
+/*
+   Function: gridfs
 
+   Stores the file into mongodb gridfs
+
+   Parameters:
+
+      id - id of the metadata object
+      file - file that needs to be stored
+*/
 function gridfs(infoId,files) {
 	var gridfs = db.gridfs()// name defaults to 'fs'
 
@@ -52,28 +76,43 @@ function gridfs(infoId,files) {
 		
 	}).writeStream()
 
-	// Pipe license file to gridfile
+	// Pipe file to gridfile
 	fs.createReadStream(files.media.path).pipe(stream)
 	//findId(infoId,files.media.name)
 }
+/*
+   Function: loadImg
 
+   Searches for an images and displays it.
+
+   Parameters:
+
+      id - the id of the file
+      name - the filename
+      res - the view object (res)
+
+*/
 exports.loadImg = function loadImg(id,name,res){
-
+	//setup connection with mongodb
 	var server = new Mongolian
 	db = server.db("mydb");
 	items = db.collection("items")
-	console.log(id +" "+ name +" ");
+	//get gridfs object
 	var gridfs = db.gridfs()// name defaults to 'fs'
+	//search for a file with a certain name and an id
+	//new ObjectId coverts the String version of the id into a byte one
 	gridfs.findOne({filename:name,_id:new ObjectId(id)}, function(err, file) {
-				console.log(file);
+			//sends back the image to the view
 			if (!err && file) {
 				res.writeHead(200, {'Content-Type': 'image/jpeg'});
                 var stream = file.readStream();
+                //incase the file couldn't be loaded it logs an error
                 stream.on("error", function(err){
                     console.log(err); 
                     
                 }).pipe(res);
             }
+            //runs if there is an error with finding the file
             else
             {
                 res.writeHead(404, {'Content-Type': 'text/plain'});
@@ -81,23 +120,46 @@ exports.loadImg = function loadImg(id,name,res){
                 res.end();
             }
 		})
-}exports.findImages = function findImages(req,res){
+}
+/*
+   Function: findImages
+
+   Searches for all images linked to a metadata object
+
+   Parameters:
+
+      req - request object
+      res - The second integer.
+
+   Returns:
+
+      The two integers multiplied together.
+
+   See Also:
+
+      <Divide>
+*/exports.findImages = function findImages(req,res){
+	//setting up connection with the server
 	var server = new Mongolian;
 	db = server.db("mydb");
 	items = db.collection("items");
-	var gridfs = db.gridfs()// 
+	var gridfs = db.gridfs()
 	var files = new Array();
+	//search for a file with the id that is provided in the request (in url)
 	gridfs.find({metadata:{id:req.params.id}}).forEach(function(file) {
+		//converting the id from bytes to a string id
 		file._id = file._id.toString();
 		files.push(file);
 	}, function() {
+		//send back the files to the client
 		res.send(files);
 	});
 
 }
-
+//gets all the files related to an item
 exports.getAll = function getAlItems(res){
-var server = new Mongolian
+	//setup a connection
+	var server = new Mongolian
 	db = server.db("mydb");
 	items = db.collection("items")
 	
