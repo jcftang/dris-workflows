@@ -8,6 +8,7 @@ var ObjectId =  require('mongolian').ObjectId   // new ObjectId(byteBuffer or he
 var fs = require('fs');
 var image;
 
+
 exports.show = function(data,vw){
 	res = vw;
 	meta = data.body;
@@ -19,7 +20,7 @@ exports.show = function(data,vw){
 	db = server.db("mydb");
 	// Get collections
 	items = db.collection("series")
-	console.log(meta);
+console.logg(meta);
 	//console.log(items);
 	save(meta,files);
 	//gridfs();
@@ -27,17 +28,22 @@ exports.show = function(data,vw){
 
 function save(data,files){
 	
-	console.log(data)
-	console.log(files)
+	console.log(data);
+	console.log(files);
 
-	console.log(data)
+	console.log(data);
+
 	items.save(data, function(err, value) {
-	  if(data["surcheck"] == "on"){
-	  	console.log("images included")
-	    delete data["surcheck"]
-		gridfs(value._id.toString(), files);
+		if(data["surcheck"] == "on") {
+			console.log("images included")
+			delete data["surcheck"]
+			gridfs(value._id.toString(), files)
+
 		}
 	});
+
+
+
 
 
 }
@@ -87,22 +93,22 @@ exports.loadImg = function loadImg(id,name,res){
                 res.end();
             }
 		})
-}
-exports.findImages = function(){
+}exports.findImages = function(req,res){
 	var server = new Mongolian
 	db = server.db("mydb");
 	items = db.collection("items")
 	
-	gridfs.find().forEach(function(file) {
+	gridfs.find({metadata:{id:req.params.id}}).forEach(function(file) {
 		// do something with a single post
 		arr.push(file);
 		console.log(arr);
 	}, function() {
 		res.send(array);
-	})
+	});
 
 }
-exports.getAll = function getAllItems(res){
+
+exports.getAll = function getAlItems(res){
 var server = new Mongolian
 	db = server.db("mydb");
 	items = db.collection("items")
@@ -112,7 +118,7 @@ var server = new Mongolian
 	gridfs.find().forEach(function(file) {
 		// do something with a single post
 		arr.push(file);
-		console.log(arr);
+	console.logg(arr);
 	}, function() {
 		res.render('all', {
 				items:arr, id:"all", title:"All"
@@ -233,11 +239,11 @@ exports.createitem = function(req,res){
 			}
 			
 		}
-		console.log(req.body.amount)
-		console.log(rootItem);
-		console.log(item);
+	console.logo(req.body.amount)
+	console.logo(rootItem);
+	console.logo(item);
 		items.insert(rootItem, function(err, value) {
-			console.log(value);
+		console.logg(value);
 		     var id = value._id.toString();
 			 item.masterId = id;
 			
@@ -245,9 +251,9 @@ exports.createitem = function(req,res){
 			 	item._id = new ObjectId();
 			 	items.insert(item,function(err, value) {
 			 		if(err){
-			 			console.log(err);
+			 		console.logr(err);
 			 		}
-			 		console.log("created");
+			 	console.logg("created");
 			 	});
 			 }
 		});

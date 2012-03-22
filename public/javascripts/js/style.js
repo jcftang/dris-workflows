@@ -96,6 +96,19 @@ function loadBtnActions(){
 			$("#itemCreation").submit();
 		})
 		
+		$('#step3EditBtn').click(function(){
+			$.ajax({
+			url : this.pathname,
+			success : function(data) {
+				fillUpForm(data);
+				$("#items ul").addClass("in");
+			},
+			error : function(d, r) {
+				console.log(d);
+				console.log(r);
+			}
+		});
+		})
 		
 
 }
