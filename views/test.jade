@@ -32,7 +32,7 @@ div.container
                     a#step2Btn(href='#step2') Next
                 .dummy
         div
-          form.form-horizontal(enctype='multipart/form-data', method='post', action='post')
+          form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='post')
             #step2
               .span7
                 #title
@@ -41,6 +41,8 @@ div.container
                    .dataform
                   .form-actions
                     ul.pager
+                      li
+                        a(href='#step3') Next Step
                       li
                         a(href='#') Save
                     .dummy
@@ -60,12 +62,12 @@ div.container
                     p.help-inline Surrogates will be generated automatically
                     #fileContainer
                 .form-actions
-                  input(type='submit', value='submit')
+                  
                   ul.pager
                     li
-                      a(href='#step2') Previous
+                      a(href='#step2') Previous Step
                     li
-                      a(href='#step4') Next
+                      a#subItem(href='#') Save
                   .dummy  
         #step4
           .span7

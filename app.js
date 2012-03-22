@@ -46,7 +46,8 @@ app.get('/items/:id',routes.items);
 app.get('/template',routes.template);
 app.get('/test', routes.test);
 app.post('/post', routes.data);
-app.post('/createitem',routes.createitem)
+app.post('/createitem',routes.createitem);
+app.get('/itemimages/:id',routes.getItemImages);
 // Redirects
 app.get('/', function(req, res){
 	res.redirect('/home');

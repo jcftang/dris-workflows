@@ -28,9 +28,16 @@ exports.show = function(data,vw){
 function save(data,files){
 	
 	console.log(data)
-	/*items.save(data, function(err, value) {
+	console.log(files)
+
+	console.log(data)
+	items.save(data, function(err, value) {
+	  if(data["surcheck"] == "on"){
+	  	console.log("images included")
+	    delete data["surcheck"]
 		gridfs(value._id.toString(), files);
-	});*/
+		}
+	});
 
 
 }
@@ -81,17 +88,30 @@ exports.loadImg = function loadImg(id,name,res){
             }
 		})
 }
+exports.findImages = function(){
+	var server = new Mongolian
+	db = server.db("mydb");
+	items = db.collection("items")
+	
+	gridfs.find().forEach(function(file) {
+		// do something with a single post
+		arr.push(file);
+		console.log(arr);
+	}, function() {
+		res.send(array);
+	})
 
-exports.getAll = function getAll(res){
+}
+exports.getAll = function getAllItems(res){
 var server = new Mongolian
 	db = server.db("mydb");
 	items = db.collection("items")
 	
 	var gridfs = db.gridfs()// 
 	var arr = new Array();
-	gridfs.find().forEach(function(post) {
+	gridfs.find().forEach(function(file) {
 		// do something with a single post
-		arr.push(post);
+		arr.push(file);
 		console.log(arr);
 	}, function() {
 		res.render('all', {

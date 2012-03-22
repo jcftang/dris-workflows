@@ -29,10 +29,6 @@ exports.all=function(req,res){
 	data.getAll(res);
 }
 
-exports.post = function(req,res){
-	data.show(req,res);
-}
-
 exports.createitem = function(req,res){
 	data.createitem(req,res);
 }
@@ -46,6 +42,10 @@ exports.items = function(req,res){
 
 exports.item = function(req,res){
 	data.item(req.params.id,res);
+}
+
+exports.getItemImages = function(req,res){
+	data.findImages(req,res);
 }
 
 exports.create = function(req,res){
