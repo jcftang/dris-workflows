@@ -9,6 +9,7 @@ $(document).ready(function() {
 	loadBtnActions();
 	backbone();
 	
+	$('#tree1').checkboxTree();
 	$('#tree2 li').each(function(){
 		id =$(this).attr("id");
 		console.log(id);		

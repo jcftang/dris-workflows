@@ -15,55 +15,19 @@ div.container
             form.form-horizontal
               legend All the items
               .control-group
-                ul#tree1
-                  li
-                    label.checkbox Label
-                      input#series(type='checkbox', name='series')
-                    ul
-                      li
-                        label.checkbox Label
-                          input#series(type='checkbox', name='series')
-                      li
-                        label.checkbox Label
-                          input#series(type='checkbox', name='series')
-                      li
-                        label.checkbox Label
-                          input#series(type='checkbox', name='series')
-                        ul
-                          li
-                            label.checkbox Label
-                              input#series(type='checkbox', name='series')
-                          li
-                            label.checkbox Label
-                              input#series(type='checkbox', name='series')
-                      li
-                        label.checkbox Label
-                          input#series(type='checkbox', name='series')
-                      li
-                        label.checkbox Label
-                          input#series(type='checkbox', name='series')
-                      li
-                        label.checkbox Label
-                          input#series(type='checkbox', name='series')
-                  li
-                    label.checkbox Label
-                      input#series(type='checkbox', name='series')
-                  li
-                    label.checkbox Label
-                      input#series(type='checkbox', name='series')
-                  li
-                    label.checkbox Label
-                      input#series(type='checkbox', name='series')
-                  li
-                    label.checkbox Label
-                      input#series(type='checkbox', name='series')
-                br
-                br
-                ul#tree2
-                  - series.forEach(function(serie){
-                    li(id='#{serie._id}').tree_top_level
-                      label.checkbox #{serie.name}
+                table.table.table-striped.table-bordered
+                  thead
+                    tr
+                      th
                         input#series(type='checkbox', name='series')
+                      th Name
+                      th Author
+                  - series.forEach(function(serie){
+                    tr(id='#{serie._id}').tree_top_level
+                      td
+                        input#series(type='checkbox', name='series')
+                      td #{serie.name}
+                      td #{serie.author}
                         
                   - })
               
