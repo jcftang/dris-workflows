@@ -8,6 +8,8 @@ $(document).ready(function() {
 	$("#fileBox").hide();
 	loadBtnActions();
 	backbone();
+	
+	$('#tree1').checkboxTree();
 	$("#step1 input[type=radio]").next().next().hide();
 	$("#step2Btn").click(function() {
 
@@ -30,15 +32,17 @@ function showItems(items){
 	  root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+"</a></li>";
 	}
 	
-	$(".items ul").empty();
-	$(".items ul").append(root);
+	$("#items ul").empty();
+	$("#items ul").append(root);
 	
-	$("#step2Info .items ul li a").click(function(event) {
+	$("#items ul li a").click(function(event) {
 		event.preventDefault();
+		$("#items ul").removeClass("in");
 		$.ajax({
 			url : this.pathname,
 			success : function(data) {
 				fillUpForm(data);
+				$("#items ul").addClass("in");
 			},
 			error : function(d, r) {
 				console.log(d);
@@ -95,38 +99,28 @@ function loadBtnActions(){
 		})
 		
 		$('#step3EditBtn').click(function(){
-			loadAllImages();
+			$.ajax({
+			url : this.pathname,
+			success : function(data) {
+				fillUpForm(data);
+				$("#items ul").addClass("in");
+			},
+			error : function(d, r) {
+				console.log(d);
+				console.log(r);
+			}
+		});
 		})
 		
-		$("#step3Info .items ul li a").live("click",function(event){
-	    	event.preventDefault();
-	    	alert($(this).attr("href"));
-	    	loadAllImages();
-	    });
-		
-}
 
-function loadAllImages(){
-	$.ajax({
-		url : "/itemimages/" + $("input[name='_id']").val(),
-		success : function(data) {
-			$("#imageContainer").empty();
-			for(var file in data) {
-				console.log(data[file]._id);
-				$("#imageContainer").append("<img src='/image/" + data[file]._id + "/" + data[file].filename + "'>")
-			}
-		},
-		error : function(d, r) {
-			console.log(d);
-			console.log(r);
-		}
-	});
-	
 }
 	
 function backbone(){
 
 	var Workspace = Backbone.Router.extend({
+	initialize: function(){
+			$("#items").hide();
+	},
 	  routes: {
 	    "step1":        "step1",    // #help
 	    "step2":        "step2",  // #search/kiwis
@@ -136,22 +130,21 @@ function backbone(){
 	  },
 	
 	  step1: function() {
-	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#items").hide();
 	    $("#step1,#step1Info").show();
 	  },
 	
 	  step2: function() {
 	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-	    $("#step2,#step2Info").show();
+	    $("#step2,#step2Info,#items").show();
 	    
 	  },
 	  step3: function(){
 	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-	    $("#step3,#step3Info").show();
-
+	    $("#step3,#step3Info,#items").show();
 	  },
 	  step4: function() {
-	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#items").hide();
 	    $("#step4,#step4Info").show();
 	    
 	  },
