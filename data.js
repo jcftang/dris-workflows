@@ -28,11 +28,12 @@ exports.show = function(data,vw){
 
 function save(data,files){
 	
-	console.log(data);
+	console.log("data");
 	data._id = new ObjectId(data._id);
+    delete data["surcheck"]
 	items.save(data, function(err, value) {
 		if(data["surcheck"]) {
-			delete data["surcheck"]
+			
 			gridfs(value._id.toString(), files)
 		}
 	});
