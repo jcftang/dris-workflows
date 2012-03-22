@@ -56,8 +56,5 @@ exports.create = function(req,res){
 }
   
 exports.admin = function(req,res){
-	res.render('admin', {
-	title: 'Admin panel',
-	id: 'admin'
-	});
+	data.admin(req,res);
 }
