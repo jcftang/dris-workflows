@@ -7,9 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , log4js = require('log4js');
 
-// setup log4js
-log4js.addAppender(log4js.consoleAppender());
-log4js.addAppender(log4js.fileAppender('dris_workflows.log'), 'dris_workflows');
+
 
 var logger = log4js.getLogger('dris_workflows');
 logger.setLevel('INFO');

@@ -8,12 +8,6 @@ var ObjectId =  require('mongolian').ObjectId   // new ObjectId(byteBuffer or he
 var fs = require('fs');
 var image;
 
-// log4js
-var log4js = require('log4js');
-var logger = log4js.getLogger();
-log4js.addAppender(log4js.fileAppender('dris_workflows.log'), 'dris_workflows', 'console');
-logger.setLevel('INFO');
-
 exports.show = function(data,vw){
 	res = vw;
 	meta = data.body;
@@ -25,11 +19,20 @@ exports.show = function(data,vw){
 	db = server.db("mydb");
 	// Get collections
 	items = db.collection("series")
-	logger.debug("meta");
-	logger.debug(meta);
+	console.log(meta);
 	//console.log(items);
-	//save(meta,files);
+	save(meta,files);
 	//gridfs();
+}
+
+function save(data,files){
+	
+	console.log(data)
+	/*items.save(data, function(err, value) {
+		gridfs(value._id.toString(), files);
+	});*/
+
+
 }
 
 
@@ -89,7 +92,7 @@ var server = new Mongolian
 	gridfs.find().forEach(function(post) {
 		// do something with a single post
 		arr.push(post);
-		logger.debug(arr);
+		console.log(arr);
 	}, function() {
 		res.render('all', {
 				items:arr, id:"all", title:"All"
@@ -123,14 +126,7 @@ function findId(id,name){
 	})
 
 }
-function save(data,files){
 
-	items.save(data, function(err, value) {
-		gridfs(value._id.toString(), files);
-	});
-
-
-}
 
 exports.edit = function edit(req,res){
 	var server = new Mongolian
@@ -217,11 +213,11 @@ exports.createitem = function(req,res){
 			}
 			
 		}
-		logger.info(req.body.amount)
-		logger.info(rootItem);
-		logger.info(item);
+		console.log(req.body.amount)
+		console.log(rootItem);
+		console.log(item);
 		items.insert(rootItem, function(err, value) {
-			logger.debug(value);
+			console.log(value);
 		     var id = value._id.toString();
 			 item.masterId = id;
 			
@@ -229,9 +225,9 @@ exports.createitem = function(req,res){
 			 	item._id = new ObjectId();
 			 	items.insert(item,function(err, value) {
 			 		if(err){
-			 			logger.error(err);
+			 			console.log(err);
 			 		}
-			 		logger.debug("created");
+			 		console.log("created");
 			 	});
 			 }
 		});
