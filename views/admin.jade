@@ -16,9 +16,10 @@ div.container
               legend All the items
               .control-group
                 ul
-                  - series.forEach(function(item){
-                    label.checkbox #{item.name} 
-                      input#series(type='checkbox', name='series')
+                  - series.forEach(function(serie){
+                    li(id='#{serie._id}').top_level
+                      label.checkbox #{serie.name}
+                        input#series(type='checkbox', name='series')
                   - })
               
               .form-actions
