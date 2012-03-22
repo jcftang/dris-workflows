@@ -35,17 +35,20 @@ function showItems(items){
 	
 	$("#step2Info .items ul li a").click(function(event) {
 		event.preventDefault();
-		$.ajax({
-			url : this.pathname,
-			success : function(data) {
-				fillUpForm(data);
-			},
-			error : function(d, r) {
-				console.log(d);
-				console.log(r);
-			}
-		});
+		loadSeriesData(this);
 	});
+}
+function loadSeriesData(link){
+	$.ajax({
+				url : link.pathname,
+				success : function(data) {
+					fillUpForm(data);
+				},
+				error : function(d, r) {
+					console.log(d);
+					console.log(r);
+				}
+			});
 }
 function fillUpForm(data){
 	$(".dataform").empty();
@@ -101,16 +104,7 @@ function loadBtnActions(){
 		$("#step3Info .items ul li a").live("click",function(event){
 		    
 			event.preventDefault();
-			$.ajax({
-				url : this.pathname,
-				success : function(data) {
-					fillUpForm(data);
-				},
-				error : function(d, r) {
-					console.log(d);
-					console.log(r);
-				}
-			});
+			loadSeriesData(this);
 	    	loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/")+1));
 	    });
 		
