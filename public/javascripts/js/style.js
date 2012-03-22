@@ -8,8 +8,6 @@ $(document).ready(function() {
 	$("#fileBox").hide();
 	loadBtnActions();
 	backbone();
-	
-	$('#tree1').checkboxTree();
 	$("#step1 input[type=radio]").next().next().hide();
 	$("#step2Btn").click(function() {
 
@@ -35,14 +33,12 @@ function showItems(items){
 	$(".items ul").empty();
 	$(".items ul").append(root);
 	
-	$(".items ul li a").click(function(event) {
+	$("#step2Info .items ul li a").click(function(event) {
 		event.preventDefault();
-		$(".items ul").removeClass("in");
 		$.ajax({
 			url : this.pathname,
 			success : function(data) {
 				fillUpForm(data);
-				$(".items ul").addClass("in");
 			},
 			error : function(d, r) {
 				console.log(d);
@@ -99,27 +95,22 @@ function loadBtnActions(){
 		})
 		
 		$('#step3EditBtn').click(function(){
-			$.ajax({
+			loadAllImages($("input[name='_id']").val());
+		})
+		
+		$("#step3Info .items ul li a").live("click",function(event){
+	    	event.preventDefault();
+	    	$.ajax({
 			url : this.pathname,
 			success : function(data) {
 				fillUpForm(data);
-				$(".items ul").addClass("in");
 			},
 			error : function(d, r) {
 				console.log(d);
 				console.log(r);
 			}
 		});
-		})
-		
-		$('#step3EditBtn').click(function(){
-			loadAllImages($("input[name='_id']").val());
-		})
-		
-		$("#step3Info .items ul li a").live("click",function(event){
-	    	event.preventDefault();
-	    	alert($(this).attr("href").substring($(this).attr("href").indexOf("/")+1));
-	    	loadAllImages();
+	    	loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/")+1));
 	    });
 		
 }
@@ -166,6 +157,7 @@ function backbone(){
 	  step3: function(){
 	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	    $("#step3,#step3Info").show();
+
 	  },
 	  step4: function() {
 	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
@@ -180,4 +172,3 @@ function backbone(){
 
 	
 }
-

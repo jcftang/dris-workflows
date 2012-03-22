@@ -148,6 +148,7 @@ exports.loadImg = function loadImg(id,name,res){
 		files.push(file);
 	}, function() {
 		//send back the files to the client
+		console.log("sendback");
 		res.send(files);
 	});
 
