@@ -23,6 +23,7 @@ exports.data = function(req, res){
 }
 
 exports.image=function(req,res){
+	console.log("-- Image request --");
 	data.loadImg(req.params.name,req.params.id,res);
 }
 

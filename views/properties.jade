@@ -12,10 +12,10 @@
               #proper.accordion.collapse
                 script
                   $("#proper").append(createPropertyButtons());
-              #items
-                  a(href='#', data-toggle='collapse', data-target='#list')
+              .items
+                  
                     h2 Items            
-                    ul#list.accordion.in
+                    ul#list
             - else
               h2 Series properties
               p Fill in the required info.
@@ -24,6 +24,10 @@
               h2 Media
               p
               | Add some media if you have it.
+              .items
+                  
+                    h2 Items            
+                    ul#list
             -else
               h2 Item properties
               script
