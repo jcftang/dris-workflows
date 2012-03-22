@@ -150,11 +150,28 @@ exports.edit = function edit(req,res){
 		res.render('test', {
 		title : "Edit",id:"test",series:array
 		})
-
 	})
+}
 
-	
+exports.admin = function admin(req,res){
+	var server = new Mongolian
+	// Get database
+	db = server.db("mydb");
+	// Get collections
+	items = db.collection("series")
+	console.log(items);
 
+			
+	items.find({series:true}).sort({ created: 1 }).toArray(function (err, array) {
+		for(item in array){
+			array[item]._id = array[item]._id.toString();
+			console.log(array[item]._id); 
+		}
+			
+		res.render('admin', {
+		title : "Edit",id:"adminSeries",series:array
+		})
+	})
 }
 
 exports.items = function(id,res){
