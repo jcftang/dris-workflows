@@ -4,6 +4,7 @@
  */
 
 var data = require("../data.js");
+var admin = require("../admin.js");
 exports.home = function(req, res){
   res.render('index', {
     title: 'DRIS Workflows',
@@ -56,5 +57,5 @@ exports.create = function(req,res){
 }
   
 exports.admin = function(req,res){
-	data.admin(req,res);
+	admin.getSeries(req,res);
 }

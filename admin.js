@@ -170,6 +170,27 @@ exports.edit = function edit(req,res){
 	})
 }
 
+exports.getSeries = function getSeries(req,res){
+	var server = new Mongolian
+	// Get database
+	db = server.db("mydb");
+	// Get collections
+	items = db.collection("series")
+	console.log(items);
+
+			
+	items.find({series:true}).sort({ created: 1 }).toArray(function (err, array) {
+		for(item in array){
+			array[item]._id = array[item]._id.toString();
+			console.log(array[item]._id); 
+		}
+			
+		res.render('getSeries', {
+		title : "Admin series",id:"admin_series",series:array
+		})
+	})
+}
+
 
 exports.items = function(id,res){
 	var server = new Mongolian
