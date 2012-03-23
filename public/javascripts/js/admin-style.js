@@ -6,7 +6,6 @@ $(document).ready(function() {
 
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	$("#fileBox").hide();
-	loadAllSeries();
 	loadBtnActions();
 	backbone();
 	
@@ -33,7 +32,7 @@ function loadAllSeries(){
 				$name.text(data[i].name);
 				$name.attr("class", "view-children");
 				$name.attr("data-id", data[i]._id);
-				$name.attr("href", "item/"+data[i]._id);
+				$name.attr("href", "admin/"+data[i]._id);
 				$nameCell.append($name);
 
 				$authorCell.text(data[i].author);
@@ -51,15 +50,14 @@ function loadAllSeries(){
 		complete:function(d,r){
 			console.log("Series loaded");
 			$(".view-children").click(function(){
-  				event.preventDefault();
-				console.log($(this).attr("href"));
-  				//history.pushState({ path: this.path}, '',$(this).attr("href"))
+  				//event.preventDefault();
 				console.log("Clicked series");
+  				//history.pushState({ path: this.path}, '',$(this).attr("href"))
 				$id = $(this).attr("data-id");
 				
-				$('#series-table').fadeOut(function() {
+				/*$('#series-table').fadeOut(function() {
 					loadAllItemsOfSeries($id);
-				});
+				});*/
 
 
 			});
@@ -97,7 +95,7 @@ function createSeriesTableHead(){
 function loadAllItemsOfSeries(id){
 	createItemsTableHead();
 	$.ajax({
-		url : "items/" + id,
+		url : "/items/" + id,
 		success : function(data) {
 			for(i in data){
 				$row = $("<tr>");
@@ -105,7 +103,6 @@ function loadAllItemsOfSeries(id){
 				$checkboxCell = $("<td>");
 				$nameCell = $("<td>");
 				$authorCell = $("<td>");
-				$viewCell = $("<td>");
 
 				$checkbox = $("<input>");
 				$checkbox.attr("name", "item");
@@ -118,20 +115,9 @@ function loadAllItemsOfSeries(id){
 
 				$authorCell.text(data[i].Subtitle);
 
-				$button = $("<input>");
-				$button.attr("name", "series");
-				$button.attr("class", "view-item btn btn-mini");
-				$button.attr("type", "button");
-				$button.attr("value","View");
-				$button.attr("data-id",data[i]._id);
-				$button.attr("data-type","series");
-				$viewCell.append($button);
-
-
 				$row.append($checkboxCell);
 				$row.append($nameCell);
 				$row.append($authorCell);
-				$row.append($viewCell);
 				$('#series-table').append($row);
 			}
 		},
@@ -153,7 +139,6 @@ function createItemsTableHead(){
 	$checkboxCell = $("<th>");
 	$nameCell = $("<th>");
 	$authorCell = $("<th>");
-	$viewCell = $("<th>");
 	
 	$checkboxCell.attr("class", "span1");	
 	$checkbox = $("<input>");
@@ -164,13 +149,10 @@ function createItemsTableHead(){
 	$nameCell.text("Title");
 
 	$authorCell.text("Subtitle");
-	$viewCell.text("View");
-	$viewCell.attr("class", "span1");	
 	
 	$row.append($checkboxCell);
 	$row.append($nameCell);
 	$row.append($authorCell);
-	$row.append($viewCell);
 	
 	$head.append($row);
 	
