@@ -67,3 +67,6 @@ exports.adminMain = function(req,res){
 exports.adminSerie = function(req,res){
 	admin.getItems(req,res);
 }
+exports.remove = function(req,res){
+	data.remove(req,res)
+}

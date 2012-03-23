@@ -50,6 +50,7 @@ app.post('/post', routes.data);
 app.post('/create/item',routes.createItem);
 app.post('/create/serie',routes.createSerie)
 app.get('/list/images/:id',routes.getItemImages);
+app.get('/remove',routes.remove);
 // Redirects
 app.get('/', function(req, res){
 	res.redirect('/home');

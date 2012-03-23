@@ -353,3 +353,23 @@ exports.createitem = function(req,res){
 		});
 	}	
 }
+
+exports.remove = function(req,res){
+	var server = new Mongolian
+	// Get database
+	db = server.db("mydb");
+	// Get collections
+	items = db.collection("series")
+	items.find().sort({ created: 1 }).toArray(function (err, array) {
+	for(item in array){
+			array[item]._id = array[item]._id.toString();
+		}
+		res.render('remove', {
+		title : "remove",
+		id : "remove",
+		items:array
+	})
+	})
+	
+
+}

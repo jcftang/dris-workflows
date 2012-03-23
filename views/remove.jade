@@ -1,0 +1,18 @@
+include header
+.container
+  table.table
+   tr
+     td id
+     td name
+     td type
+                - items.forEach(function(item){
+                     tr
+                       td id #{item._id} 
+                       td name #{item.name} 
+                       - if(!item.masterId)
+                           td Serie
+                       - else
+                           td Item
+                           td SerieId #{item.masterId} 
+                         
+                - })
