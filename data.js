@@ -134,7 +134,8 @@ exports.loadImg = function loadImg(id,name,res){
    Returns:
 
       array of the corresponding files.
-*/exports.findImages = function findImages(req,res){
+*/
+exports.findImages = function findImages(req,res){
 	//setting up connection with the server
 	var server = new Mongolian;
 	db = server.db("mydb");
@@ -198,40 +199,46 @@ exports.getAll = function getAlItems(res){
 
 
 exports.edit = function edit(req,res){
-	var server = new Mongolian
-	// Get database
-	db = server.db("mydb");
-	// Get collections
-	items = db.collection("series")
 
-			
-	items.find({series:true}).sort({ created: 1 }).toArray(function (err, array) {
-		for(item in array){
-			array[item]._id = array[item]._id.toString();
-			console.log(array[item]._id); 
-		}
-			
-		res.render('edit', {
-		title : "Edit",id:"edit",series:array
-		})
-	})
+		var array = new Array();
+		
+		getSeries(function(data){
+			console.log(data)
+			var array = new Array();
+			array = data;
+			res.render('edit', {
+				title : "Edit",id:"edit",series:array
+			})
+			console.log("send");
+			console.log(data)
+		});	
+
 }
-exports.getAllSeries = function getAllSeries(req,res){
+
+exports.getAllSeries = function getAllSeries(req, res) {
+
+		var array = new Array();
+		getSeries(function(data){
+		res.send(data);
+		});
+}
+
+
+function getSeries(callback){
 	var server = new Mongolian
 	// Get database
 	db = server.db("mydb");
 	// Get collections
 	items = db.collection("series")
 
-			
+		
 	items.find({series:true}).sort({ created: 1 }).toArray(function (err, array) {
 		for(item in array){
 			array[item]._id = array[item]._id.toString();
 			console.log(array[item]._id); 
 		}
-			
-		res.send(array);
-	})
+	   callback(array)
+	});
 }
 
 
