@@ -43,7 +43,6 @@ function loadSeriesData(link,callback){
 	$.ajax({
 				url : link,
 				success : function(data) {
-					console.log(data);
 					callback(data);
 				},
 				error : function(d, r) {
@@ -120,12 +119,11 @@ function loadBtnActions(){
 	$("#step2Info .items ul li a").live("click",function(event) {
 		event.preventDefault();
 		loadSeriesData(this.pathname,function(data){
-			console.log(data);
 			fillUpForm(data)
 		});
 	});
 
-	$("#createItems").live("click", function(event) {
+	$("#createItems,#createSerieBtn").live("click", function(event) {
 		loadSeriesData("/series", function(series) {
 			var root = "";
 			if(series.length == 0) {
@@ -151,7 +149,6 @@ function loadAllImages(id){
 		success : function(data) {
 			$("#imageContainer").empty();
 			for(var file in data) {
-				console.log(data[file]._id);
 				$("#imageContainer").append("<img src='/image/" + data[file]._id + "/" + data[file].filename + "'>")
 			}
 		},

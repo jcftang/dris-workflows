@@ -315,12 +315,6 @@ exports.createSerie = function(req,res){
 			console.log(err);
 		} else {
 			console.log("--Serie created--")
-			res.render('complete', {
-				title : "Complete",
-				id : "complete",
-				item : "Serie"
-			})
-
 		}
 
 	});
@@ -328,48 +322,34 @@ exports.createSerie = function(req,res){
 
 }
 exports.createitem = function(req,res){
-		var server = new Mongolian
+	var server = new Mongolian
 	// Get database
 	db = server.db("mydb");
 	// Get collections
-	var rootItem = {}
-	var rootset = false;
+
 	var item = {};
 	var items = db.collection("series")
-		var files = req.body;
-		for(var i in files){
-			if(rootset == false){
-				if(i == 'name'){
-					rootItem[i] = files[i];
-				}
-				if(i = 'author'){
-					//rootItem += i +':"'+files[i]+'"';
-					rootItem[i] = files[i];
-					rootItem.series = true;
-					rootset = true;
-				}
-			}
-			
-			if(i != 'name' && i != 'author' && i != 'amount'){
-				item[i] = files[i];
-			}
-			
+	var files = req.body;
+	console.log(files);
+	for(var i in files) {
+		if(i != 'amount' && i!= "series") {
+			item[i] = files[i];
 		}
-	console.log(req.body.amount)
-	console.log(rootItem);
-	console.log(item);
-		items.insert(rootItem, function(err, value) {
-		     var id = value._id.toString();
-			 item.masterId = id;
-			
-			 for(var i = 0;i<req.body.amount;i++){
-			 	item._id = new ObjectId();
-			 	items.insert(item,function(err, value) {
-			 		if(err){
-			 		console.log(err);
-			 		}
-			 	});
-			 }
+
+	}
+	item.masterId = files.series;
+	for(var i = 0; i < req.body.amount; i++) {
+		item._id = new ObjectId();
+		items.insert(item, function(err, value) {
+			if(err) {
+				console.log(err);
+			}else{
+				res.render('complete', {
+				title : "Complete",
+				id : "complete",
+				item : "Everything"
+			})
+			}
 		});
-		
+	}	
 }
