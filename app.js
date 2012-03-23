@@ -37,7 +37,8 @@ app.configure('production', function(){
 
 // Routes
 app.get('/all',routes.all);
-app.get('/admin',routes.admin);
+app.get('/admin',routes.adminMain);
+app.get('/admin/:id',routes.adminSerie);
 app.get('/create',routes.create);
 app.get('/home', routes.home);
 app.get('/image/:name/:id', routes.image);

@@ -58,6 +58,9 @@ exports.create = function(req,res){
   });
 }
   
-exports.admin = function(req,res){
+exports.adminMain = function(req,res){
 	admin.getSeries(req,res);
+}
+exports.adminSerie = function(req,res){
+	admin.getItems(req,res);
 }

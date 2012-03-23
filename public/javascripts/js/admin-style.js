@@ -23,7 +23,6 @@ function loadAllSeries(){
 				$checkboxCell = $("<td>");
 				$nameCell = $("<td>");
 				$authorCell = $("<td>");
-				$viewCell = $("<td>");
 
 				$checkbox = $("<input>");
 				$checkbox.attr("name", "series");
@@ -32,16 +31,100 @@ function loadAllSeries(){
 
 				$name = $("<a>");
 				$name.text(data[i].name);
+				$name.attr("class", "view-children");
+				$name.attr("data-id", data[i]._id);
+				$name.attr("href", "item/"+data[i]._id);
 				$nameCell.append($name);
 
 				$authorCell.text(data[i].author);
 
+				$row.append($checkboxCell);
+				$row.append($nameCell);
+				$row.append($authorCell);
+				$('#series-table').append($row);
+			}
+		},
+		error:function(d,r){
+			console.log(d);
+			console.log(r);
+		},
+		complete:function(d,r){
+			console.log("Series loaded");
+			$(".view-children").click(function(){
+  				event.preventDefault();
+				console.log($(this).attr("href"));
+  				//history.pushState({ path: this.path}, '',$(this).attr("href"))
+				console.log("Clicked series");
+				$id = $(this).attr("data-id");
+				
+				$('#series-table').fadeOut(function() {
+					loadAllItemsOfSeries($id);
+				});
+
+
+			});
+		}
+	});
+}
+function createSeriesTableHead(){	
+	$('#series-table').empty();
+	$head = $("<thead>");
+	$row = $("<tr>");
+	
+	$checkboxCell = $("<th>");
+	$nameCell = $("<th>");
+	$authorCell = $("<th>");
+	
+	$checkboxCell.attr("class", "span1");	
+	$checkbox = $("<input>");
+	$checkbox.attr("name", "series");
+	$checkbox.attr("type", "checkbox");
+	$checkboxCell.append($checkbox);
+				
+	$nameCell.text("Name");
+
+	$authorCell.text("Author");
+	
+	$row.append($checkboxCell);
+	$row.append($nameCell);
+	$row.append($authorCell);
+	
+	$head.append($row);
+	
+	$('#series-table').append($head);
+	
+}
+function loadAllItemsOfSeries(id){
+	createItemsTableHead();
+	$.ajax({
+		url : "items/" + id,
+		success : function(data) {
+			for(i in data){
+				$row = $("<tr>");
+
+				$checkboxCell = $("<td>");
+				$nameCell = $("<td>");
+				$authorCell = $("<td>");
+				$viewCell = $("<td>");
+
+				$checkbox = $("<input>");
+				$checkbox.attr("name", "item");
+				$checkbox.attr("type", "checkbox");
+				$checkboxCell.append($checkbox);
+
+				$name = $("<a>");
+				$name.text(data[i].Title);
+				$nameCell.append($name);
+
+				$authorCell.text(data[i].Subtitle);
+
 				$button = $("<input>");
 				$button.attr("name", "series");
-				$button.attr("class", "btn btn-mini");
+				$button.attr("class", "view-item btn btn-mini");
 				$button.attr("type", "button");
 				$button.attr("value","View");
 				$button.attr("data-id",data[i]._id);
+				$button.attr("data-type","series");
 				$viewCell.append($button);
 
 
@@ -57,13 +140,12 @@ function loadAllSeries(){
 			console.log(r);
 		},
 		complete:function(d,r){
-			console.log("Series loaded");
+			console.log("Items loaded");
+			$('#series-table').fadeIn();
 		}
 	});
-
-	
 }
-function createSeriesTableHead(){	
+function createItemsTableHead(){	
 	$('#series-table').empty();
 	$head = $("<thead>");
 	$row = $("<tr>");
@@ -79,9 +161,9 @@ function createSeriesTableHead(){
 	$checkbox.attr("type", "checkbox");
 	$checkboxCell.append($checkbox);
 				
-	$nameCell.text("Name");
+	$nameCell.text("Title");
 
-	$authorCell.text("Author");
+	$authorCell.text("Subtitle");
 	$viewCell.text("View");
 	$viewCell.attr("class", "span1");	
 	
@@ -95,7 +177,6 @@ function createSeriesTableHead(){
 	$('#series-table').append($head);
 	
 }
-
 function makeList(id, callback){
 	$.ajax({
 		url : "items/" + id,
@@ -217,7 +298,6 @@ function loadBtnActions(){
 			}
 		});
 		})
-		
 
 }
 	
