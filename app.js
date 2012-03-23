@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -6,8 +5,6 @@
 var express = require('express')
   , routes = require('./routes')
   , log4js = require('log4js');
-
-
 
 var logger = log4js.getLogger('dris_workflows');
 logger.setLevel('INFO');
