@@ -3,10 +3,7 @@ include header
 div.container
       ul.breadcrumb
         li.active
-          a(href='#step1') Step 1
-          span.divider |
-        li
-          a(href='#step2') Step 2
+          a(href='#step1') Series
       .dummy
       .row
         #step1
@@ -15,24 +12,4 @@ div.container
               legend All the items
               .control-group
                 table#series-table.table.table-striped.table-bordered
-                  thead
-                    tr
-                      th.span1.centre
-                        input#series(type='checkbox', name='series')
-                      th Name
-                      th Author
-                      th.span1 View
-        div
-          form.form-horizontal(enctype='multipart/form-data', method='post', action='post')
-            #step2
-              .span7
-                #title
-                  h2  Metadata 
-                  fieldset
-                  .form-actions
-                    ul.pager
-                      li
-                        a(href='#') Save
-                    .dummy
-
       include footer
