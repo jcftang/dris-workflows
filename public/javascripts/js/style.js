@@ -9,7 +9,6 @@ $(document).ready(function() {
 	loadBtnActions();
 	 
 	backbone();
-	$("#step1 input[type=radio]").next().next().hide();
 	$("#step2Btn").click(function() {
 
 		$.ajax({
@@ -27,6 +26,9 @@ $(document).ready(function() {
 
 function showItems(items){
 	var root = "";
+	if(items.length ==0){
+		root = "<li>No items</li>";
+	}
 	for(i in items){
 	  root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+"</a></li>";
 	}
@@ -61,53 +63,59 @@ function fillUpForm(data){
 }
 function loadBtnActions(){
 
-		$("#properties button").click(function(){
-			$(".dataform").append('<div class="control-group"><label class="control-label">'+$(this).text()+'</label><div class="controls"><input type="'+$(this).next().text()+'" class="input-xlarge" id="input01" name="'+$(this).text()+'"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
-		});
-		$(".accordion-heading").click(function(){
-			$(".accordion-heading").removeClass("accordion-heading-focus");
-			$(this).addClass("accordion-heading-focus");
-		})
-		$(".breaddisabled").click(function(){ return false});
+	$("#properties button").click(function() {
+		$(".dataform").append('<div class="control-group"><label class="control-label">' + $(this).text() + '</label><div class="controls"><input type="' + $(this).next().text() + '" class="input-xlarge" id="input01" name="' + $(this).text() + '"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
+	});
+	$(".accordion-heading").click(function() {
+		$(".accordion-heading").removeClass("accordion-heading-focus");
+		$(this).addClass("accordion-heading-focus");
+	})
+	$(".breaddisabled").click(function() {
+		return false
+	});
 
-		$(".breadcrumb a").click(function(){
-			
-			if(!$(this).hasClass("breaddisabled")){
+	$(".breadcrumb a").click(function() {
+
+		if(!$(this).hasClass("breaddisabled")) {
 			$(".breadcrumb a").parent().removeClass("active");
 			$(this).parent().addClass("active");
+		}
+	});
+	$(".pager a").click(function() {
+
+		$(".breadcrumb a").parent().removeClass("active");
+		link = $(this).attr("href");
+		$(".breadcrumb").find("a").each(function(index) {
+			if($(this).attr("href") == link) {
+				$(this).removeClass("breaddisabled")
+				$(this).parent().addClass("active");
 			}
 		});
-		$(".pager a").click(function(){
-			
-			
-			$(".breadcrumb a").parent().removeClass("active");
-			link = $(this).attr("href");
-			$(".breadcrumb").find("a").each(function(index){
-				if($(this).attr("href") == link){
-					$(this).removeClass("breaddisabled")
-					$(this).parent().addClass("active");
-				}
-			});
-			
-		});
-		$("#surcheck").click(function(){
-				$("#fileBox").toggle();
-		})
-		
-		$("#subItem").click(function(){
-			$("#itemCreation").submit();
-		})
-		
-		$('#step3EditBtn').click(function(){
-			loadAllImages($("input[name='_id']").val());
-		})
-		
-		$("#step3Info .items ul li a").live("click",function(event){
-		    
-			event.preventDefault();
-			loadSeriesData(this);
-	    	loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/")+1));
-	    });
+	});
+	$("#surcheck").click(function() {
+		$("#fileBox").toggle();
+	})
+
+	$("#subItem").click(function() {
+		$("#itemCreation").submit();
+	})
+
+	$("#createSerieBtn").click(function() {
+		$("#serieCreation").submit();
+	})
+
+	$('#step3EditBtn').click(function() {
+		loadAllImages($("input[name='_id']").val());
+	})
+
+	$("#step3Info .items ul li a").live("click", function(event) {
+
+		event.preventDefault();
+		loadSeriesData(this);
+		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
+	});
+
+
 		
 }
 

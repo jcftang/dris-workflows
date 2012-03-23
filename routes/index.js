@@ -31,20 +31,23 @@ exports.all=function(req,res){
 	data.getAll(res);
 }
 
-exports.createitem = function(req,res){
+exports.createItem = function(req,res){
 	data.createitem(req,res);
+}
+exports.createSerie = function(req,res){
+	data.createSerie(req,res);
 }
 
 exports.getAllSeries = function(req,res){
 	data.getAllSeries(req,res);
 }
 
-exports.items = function(req,res){
-	data.items(req.params.id,res);
+exports.getItems = function(req,res){
+	data.getItems(req.params.id,res);
 }
 
-exports.item = function(req,res){
-	data.item(req.params.id,res);
+exports.getItem = function(req,res){
+	data.getItem(req.params.id,res);
 }
 
 exports.getItemImages = function(req,res){

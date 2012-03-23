@@ -42,11 +42,12 @@ app.get('/create',routes.create);
 app.get('/home', routes.home);
 app.get('/image/:name/:id', routes.image);
 app.get('/series',routes.getAllSeries); //Returns all the series
-app.get('/item/:id',routes.item);
-app.get('/items/:id',routes.items);
+app.get('/item/:id',routes.getItem);
+app.get('/items/:id',routes.getItems);
 app.get('/edit', routes.edit);
 app.post('/post', routes.data);
-app.post('/create/item',routes.createitem);
+app.post('/create/item',routes.createItem);
+app.post('/create/serie',routes.createSerie)
 app.get('/list/images/:id',routes.getItemImages);
 // Redirects
 app.get('/', function(req, res){

@@ -203,18 +203,24 @@ exports.edit = function edit(req,res){
 		var array = new Array();
 		
 		getSeries(function(data){
-			console.log(data)
 			var array = new Array();
 			array = data;
 			res.render('edit', {
 				title : "Edit",id:"edit",series:array
 			})
-			console.log("send");
-			console.log(data)
 		});	
 
 }
+/*
+   Function: getAllSeries
 
+   Sends back all series to the request
+
+   Parameters:
+
+      req - request object
+      res - result object
+*/
 exports.getAllSeries = function getAllSeries(req, res) {
 
 		var array = new Array();
@@ -223,7 +229,16 @@ exports.getAllSeries = function getAllSeries(req, res) {
 		});
 }
 
+/*
+   Function: getSeries
 
+   Callbackfunction that returns all seris
+
+   Parameters:
+
+      callback - function to callback
+      res - result object
+*/
 function getSeries(callback){
 	var server = new Mongolian
 	// Get database
@@ -235,14 +250,26 @@ function getSeries(callback){
 	items.find({series:true}).sort({ created: 1 }).toArray(function (err, array) {
 		for(item in array){
 			array[item]._id = array[item]._id.toString();
-			console.log(array[item]._id); 
 		}
 	   callback(array)
 	});
 }
 
+/*
+   Function: items
 
-exports.items = function(id,res){
+   Searches for all files linked to a metadata object
+
+   Parameters:
+
+      req - request object
+      res - result object
+
+   Returns:
+
+      array of the corresponding files.
+*/
+exports.getItems = function getItems(id,res){
 	var server = new Mongolian
 	// Get database
 	db = server.db("mydb");
@@ -257,7 +284,7 @@ exports.items = function(id,res){
 	})
 }
 
-exports.item = function(id,res){
+exports.getItem = function(id,res){
 	var server = new Mongolian
 	// Get database
 	db = server.db("mydb");
@@ -269,7 +296,37 @@ exports.item = function(id,res){
 		res.send(array);
 	})
 }
+exports.createSerie = function(req,res){
 
+	var server = new Mongolian
+	// Get database
+	var db = server.db("mydb");
+	var items = db.collection("series")
+	var rootItem = {}
+	var files = req.body;
+	
+	rootItem.name = files.name;
+	
+	rootItem.author = files.author;
+	rootItem.series = true;
+
+	items.insert(rootItem, function(err, value) {
+		if(err) {
+			console.log(err);
+		} else {
+			console.log("--Serie created--")
+			res.render('complete', {
+				title : "Complete",
+				id : "complete",
+				item : "Serie"
+			})
+
+		}
+
+	});
+
+
+}
 exports.createitem = function(req,res){
 		var server = new Mongolian
 	// Get database
@@ -309,7 +366,7 @@ exports.createitem = function(req,res){
 			 	item._id = new ObjectId();
 			 	items.insert(item,function(err, value) {
 			 		if(err){
-			 		console.logr(err);
+			 		console.log(err);
 			 		}
 			 	});
 			 }
