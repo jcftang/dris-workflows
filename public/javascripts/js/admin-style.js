@@ -9,15 +9,6 @@ $(document).ready(function() {
 	loadBtnActions();
 	backbone();
 	
-	$('#tree1').checkboxTree();
-	$('#tree2 li').each(function(){
-		id =$(this).attr("id");
-		console.log(id);		
-		makeList(id, function(){
-			$('#tree2').checkboxTree();
-		});
-
-	});
 });
 
 function makeList(id, callback){

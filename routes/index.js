@@ -34,8 +34,9 @@ exports.all=function(req,res){
 exports.createitem = function(req,res){
 	data.createitem(req,res);
 }
-exports.template=function(req,res){
-	res.render('template', { title: 'Template' })
+
+exports.getAllSeries = function(req,res){
+	data.getAllSeries(req,res);
 }
 
 exports.items = function(req,res){

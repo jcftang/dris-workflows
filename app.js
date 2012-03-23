@@ -41,6 +41,7 @@ app.get('/admin',routes.admin);
 app.get('/create',routes.create);
 app.get('/home', routes.home);
 app.get('/image/:name/:id', routes.image);
+app.get('/series',routes.getAllSeries); //Returns all the series
 app.get('/item/:id',routes.item);
 app.get('/items/:id',routes.items);
 app.get('/edit', routes.edit);

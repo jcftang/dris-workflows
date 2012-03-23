@@ -9,33 +9,30 @@ div.container
           a(href='#step2') Step 2
       .dummy
       .row
-        include properties
         #step1
-          .span7
+          .span12
             form.form-horizontal
               legend All the items
               .control-group
                 table.table.table-striped.table-bordered
                   thead
                     tr
-                      th
+                      th.span1.centre
                         input#series(type='checkbox', name='series')
                       th Name
                       th Author
+                      th.span1 View
                   - series.forEach(function(serie){
                     tr(id='#{serie._id}').tree_top_level
                       td
                         input#series(type='checkbox', name='series')
-                      td #{serie.name}
+                      td 
+                        a #{serie.name}
                       td #{serie.author}
+                      td
+                        input(type="button",class="btn btn-mini", value="View")
                         
                   - })
-              
-              .form-actions
-                ul.pager
-                  li
-                    a#step2Btn(href='#step2') Next
-                .dummy
         div
           form.form-horizontal(enctype='multipart/form-data', method='post', action='post')
             #step2

@@ -216,6 +216,23 @@ exports.edit = function edit(req,res){
 		})
 	})
 }
+exports.getAllSeries = function getAllSeries(req,res){
+	var server = new Mongolian
+	// Get database
+	db = server.db("mydb");
+	// Get collections
+	items = db.collection("series")
+
+			
+	items.find({series:true}).sort({ created: 1 }).toArray(function (err, array) {
+		for(item in array){
+			array[item]._id = array[item]._id.toString();
+			console.log(array[item]._id); 
+		}
+			
+		res.send(array);
+	})
+}
 
 
 exports.items = function(id,res){
