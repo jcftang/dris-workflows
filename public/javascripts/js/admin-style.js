@@ -6,10 +6,95 @@ $(document).ready(function() {
 
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	$("#fileBox").hide();
+	loadAllSeries();
 	loadBtnActions();
 	backbone();
 	
 });
+
+function loadAllSeries(){
+	createSeriesTableHead();
+	$.ajax({
+		url : "series",
+		success : function(data) {
+			for(i in data){
+				$row = $("<tr>");
+
+				$checkboxCell = $("<td>");
+				$nameCell = $("<td>");
+				$authorCell = $("<td>");
+				$viewCell = $("<td>");
+
+				$checkbox = $("<input>");
+				$checkbox.attr("name", "series");
+				$checkbox.attr("type", "checkbox");
+				$checkboxCell.append($checkbox);
+
+				$name = $("<a>");
+				$name.text(data[i].name);
+				$nameCell.append($name);
+
+				$authorCell.text(data[i].author);
+
+				$button = $("<input>");
+				$button.attr("name", "series");
+				$button.attr("class", "btn btn-mini");
+				$button.attr("type", "button");
+				$button.attr("value","View");
+				$button.attr("data-id",data[i]._id);
+				$viewCell.append($button);
+
+
+				$row.append($checkboxCell);
+				$row.append($nameCell);
+				$row.append($authorCell);
+				$row.append($viewCell);
+				$('#series-table').append($row);
+			}
+		},
+		error:function(d,r){
+			console.log(d);
+			console.log(r);
+		},
+		complete:function(d,r){
+			console.log("Series loaded");
+		}
+	});
+
+	
+}
+function createSeriesTableHead(){	
+	$('#series-table').empty();
+	$head = $("<thead>");
+	$row = $("<tr>");
+	
+	$checkboxCell = $("<th>");
+	$nameCell = $("<th>");
+	$authorCell = $("<th>");
+	$viewCell = $("<th>");
+	
+	$checkboxCell.attr("class", "span1");	
+	$checkbox = $("<input>");
+	$checkbox.attr("name", "series");
+	$checkbox.attr("type", "checkbox");
+	$checkboxCell.append($checkbox);
+				
+	$nameCell.text("Name");
+
+	$authorCell.text("Author");
+	$viewCell.text("View");
+	$viewCell.attr("class", "span1");	
+	
+	$row.append($checkboxCell);
+	$row.append($nameCell);
+	$row.append($authorCell);
+	$row.append($viewCell);
+	
+	$head.append($row);
+	
+	$('#series-table').append($head);
+	
+}
 
 function makeList(id, callback){
 	$.ajax({

@@ -14,7 +14,7 @@ div.container
             form.form-horizontal
               legend All the items
               .control-group
-                table.table.table-striped.table-bordered
+                table#series-table.table.table-striped.table-bordered
                   thead
                     tr
                       th.span1.centre
@@ -22,17 +22,6 @@ div.container
                       th Name
                       th Author
                       th.span1 View
-                  - series.forEach(function(serie){
-                    tr(id='#{serie._id}').tree_top_level
-                      td
-                        input#series(type='checkbox', name='series')
-                      td 
-                        a #{serie.name}
-                      td #{serie.author}
-                      td
-                        input(type="button",class="btn btn-mini", value="View")
-                        
-                  - })
         div
           form.form-horizontal(enctype='multipart/form-data', method='post', action='post')
             #step2
