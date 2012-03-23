@@ -112,8 +112,7 @@ function loadBtnActions(){
 	})
 
 	$("#createSerieBtn").click(function() {
-		$("#serieCreation").submit();
-		loadAllSeries();
+		$("#serieCreation").submit(loadAllSeries());
 	})
 
 	$('#step3EditBtn').click(function() {
@@ -135,7 +134,7 @@ function loadBtnActions(){
 		});
 	});
 
-	$("#createItems,#seriesItemCreation").live("click", function(event) {
+	$("#createItems").live("click", function(event) {
 		loadAllSeries();
 	});
 
