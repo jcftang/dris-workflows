@@ -88,7 +88,7 @@ function gridfs(infoId,files) {
    Parameters:
 
       id - the id of the file
-      name - the filename
+      name - the filenameshutdownServer
       res - the view object (res)
 
 */
@@ -128,7 +128,7 @@ exports.loadImg = function loadImg(id,name,res){
 
    Parameters:
 
-      req - request object
+      req - request objectshutdownServer
       res - result object
 
    Returns:
@@ -251,10 +251,9 @@ function getSeries(callback){
 		for(item in array){
 			array[item]._id = array[item]._id.toString();
 		}
-	   callback(array)
+		callback(array)
 	});
 }
-
 /*
    Function: items
 
@@ -297,6 +296,7 @@ exports.getItem = function(id,res){
 	})
 }
 exports.createSerie = function(req,res){
+	console.log(req)
 
 	var server = new Mongolian
 	// Get database
@@ -313,8 +313,10 @@ exports.createSerie = function(req,res){
 	items.insert(rootItem, function(err, value) {
 		if(err) {
 			console.log(err);
+			return -1
 		} else {
 			console.log("--Serie created--")
+			return 0
 		}
 
 	});
