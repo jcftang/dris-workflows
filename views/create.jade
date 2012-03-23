@@ -3,16 +3,7 @@ include header
 div.container
       ul.breadcrumb
         li.active
-          a(href='#step1') Select
-          span.divider |
-        li
-          a(href='#step2') Series
-          span.divider |
-        li
-          a(href='#step3') Item
-          span.divider |
-        li
-          a.breaddisabled(href='#step4') Overview
+          a(href='#step1') Create
       .dummy
       .row
         include properties
@@ -22,7 +13,7 @@ div.container
               .control-group
                  a.btn(href='#step2') Series
               .control-group
-                 a.btn(href='#step3') Items
+                 a.btn#createItems(href='#step3') Items
         div
           form.form-horizontal#serieCreation(enctype='multipart/form-data', method='post', action='create/serie')
             #step2
@@ -44,8 +35,6 @@ div.container
                     ul.pager
                       li
                         a#createSerieBtn(href='#') Save
-                      li
-                        p#SeriesStatus Status
                     .dummy
           form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='create/item')
             #step3
@@ -57,12 +46,15 @@ div.container
                        .controls
                          label.control-label
                            input#amount(type='text', name='amount')
+                    .control-group
+                       label.control-label(for='series') Choose the serie
+                       .controls
+                         label.control-label
+                           select#seriesItemCreation(name="series")
                 .form-actions
                   ul.pager
                     li
-                      a(href='#step2') Previous
-                    li
-                      a#subItem(href='#step4') Save
+                      a#creatItem(href='#') Save
                   .dummy  
         #step4
           .span7

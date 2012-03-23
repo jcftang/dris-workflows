@@ -24,6 +24,7 @@ $(document).ready(function() {
 	})
 });
 
+
 function showItems(items){
 	var root = "";
 	if(items.length ==0){
@@ -36,16 +37,14 @@ function showItems(items){
 	$(".items ul").empty();
 	$(".items ul").append(root);
 	
-	$("#step2Info .items ul li a").click(function(event) {
-		event.preventDefault();
-		loadSeriesData(this);
-	});
+
 }
-function loadSeriesData(link){
+function loadSeriesData(link,callback){
 	$.ajax({
-				url : link.pathname,
+				url : link,
 				success : function(data) {
-					fillUpForm(data);
+					console.log(data);
+					callback(data);
 				},
 				error : function(d, r) {
 					console.log(d);
@@ -53,14 +52,16 @@ function loadSeriesData(link){
 				}
 			});
 }
-function fillUpForm(data){
+
+function fillUpForm(data) {
 	$(".dataform").empty();
-	for (var prop in data) {
-    if (data.hasOwnProperty(prop)) {
-        $(".dataform").append('<div class="control-group"><label class="control-label">'+prop+'</label><div class="controls"><input type="text" class="input-xlarge" id="input01" name="'+prop+'" value="'+data[prop]+'"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
-    }
+	for(var prop in data) {
+		if(data.hasOwnProperty(prop)) {
+			$(".dataform").append('<div class="control-group"><label class="control-label">' + prop + '</label><div class="controls"><input type="text" class="input-xlarge" id="input01" name="' + prop + '" value="' + data[prop] + '"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
+		}
+	}
 }
-}
+
 function loadBtnActions(){
 
 	$("#properties button").click(function() {
@@ -96,7 +97,7 @@ function loadBtnActions(){
 		$("#fileBox").toggle();
 	})
 
-	$("#subItem").click(function() {
+	$("#creatItem").click(function() {
 		$("#itemCreation").submit();
 	})
 
@@ -111,9 +112,34 @@ function loadBtnActions(){
 	$("#step3Info .items ul li a").live("click", function(event) {
 
 		event.preventDefault();
-		loadSeriesData(this);
+		loadSeriesData(this.pathname,function(data){
+			fillUpForm(data)
+		});
 		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
 	});
+	$("#step2Info .items ul li a").live("click",function(event) {
+		event.preventDefault();
+		loadSeriesData(this.pathname,function(data){
+			console.log(data);
+			fillUpForm(data)
+		});
+	});
+
+	$("#createItems").live("click", function(event) {
+		loadSeriesData("/series", function(series) {
+			var root = "";
+			if(series.length == 0) {
+				root = "<option>No series</option>";
+			}
+			for(i in series) {
+				root += "<option value='" + series[i]._id + "'>" + series[i].name + " (" + series[i].author + ")</option>";
+			}
+			$("#seriesItemCreation").empty();
+			$("#seriesItemCreation").append(root);
+		});
+	});
+
+
 
 
 		
