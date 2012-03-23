@@ -7,7 +7,6 @@ $(document).ready(function() {
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	$("#fileBox").hide();
 	loadBtnActions();
-	 
 	backbone();
 	$("#step2Btn").click(function() {
 
@@ -24,7 +23,19 @@ $(document).ready(function() {
 	})
 });
 
-
+function loadAllSeries(){
+	loadSeriesData("/series", function(series) {
+			var root = "";
+			if(series.length == 0) {
+				root = "<option>No series</option>";
+			}
+			for(i in series) {
+				root += "<option value='" + series[i]._id + "'>" + series[i].name + " (" + series[i].author + ")</option>";
+			}
+			$("#seriesItemCreation").empty();
+			$("#seriesItemCreation").append(root);
+		});
+}
 function showItems(items){
 	var root = "";
 	if(items.length ==0){
@@ -102,6 +113,7 @@ function loadBtnActions(){
 
 	$("#createSerieBtn").click(function() {
 		$("#serieCreation").submit();
+		loadAllSeries();
 	})
 
 	$('#step3EditBtn').click(function() {
@@ -123,18 +135,8 @@ function loadBtnActions(){
 		});
 	});
 
-	$("#createItems,#createSerieBtn").live("click", function(event) {
-		loadSeriesData("/series", function(series) {
-			var root = "";
-			if(series.length == 0) {
-				root = "<option>No series</option>";
-			}
-			for(i in series) {
-				root += "<option value='" + series[i]._id + "'>" + series[i].name + " (" + series[i].author + ")</option>";
-			}
-			$("#seriesItemCreation").empty();
-			$("#seriesItemCreation").append(root);
-		});
+	$("#createItems,#seriesItemCreation").live("click", function(event) {
+		loadAllSeries();
 	});
 
 

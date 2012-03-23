@@ -7,8 +7,9 @@ include header
      td type
                 - items.forEach(function(item){
                      tr
-                       td id #{item._id} 
-                       td name #{item.name} 
+                       td 
+                         a(href="/remove/item/#{item._id}") remove #{item._id}
+                       td #{item.name} 
                        - if(!item.masterId)
                            td Serie
                        - else
