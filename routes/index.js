@@ -70,3 +70,7 @@ exports.adminSerie = function(req,res){
 exports.remove = function(req,res){
 	data.remove(req,res)
 }
+
+exports.removeItem = function(req,res){
+	data.removeItem(req,res);
+}

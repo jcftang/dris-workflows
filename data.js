@@ -251,7 +251,9 @@ function getSeries(callback){
 		for(item in array){
 			array[item]._id = array[item]._id.toString();
 		}
-		callback(array)
+
+		console.log("series loaded")
+	   callback(array)
 	});
 }
 /*
@@ -356,22 +358,54 @@ exports.createitem = function(req,res){
 	}	
 }
 
-exports.remove = function(req,res){
+exports.remove = function remove(req,res){
+
+	getAllItems(function(array){
+		res.render('remove', {
+			title : "remove",
+			id : "remove",
+			items : array
+		})
+	})
+
+}
+function getAllItems(callback){
+
 	var server = new Mongolian
 	// Get database
 	db = server.db("mydb");
 	// Get collections
 	items = db.collection("series")
-	items.find().sort({ created: 1 }).toArray(function (err, array) {
-	for(item in array){
+	items.find().sort({created : 1}).toArray(function(err, array) {
+		for(item in array) {
 			array[item]._id = array[item]._id.toString();
 		}
+		console.log(array);
+		callback(array);
+		console.log("array")
+	});
+
+}
+exports.removeItem = function(req,res){
+	var server = new Mongolian
+	// Get database
+	db = server.db("mydb");
+	// Get collections
+	items = db.collection("series");
+	console.log(req.params.id)
+	items.remove({_id:new ObjectId(req.params.id)},function(err,value){
+		if(err){
+			console.log(err);
+		}
+		console.log(value);
+		console.log("item is removed");
+			getAllItems(function(array){
 		res.render('remove', {
-		title : "remove",
-		id : "remove",
-		items:array
+			title : "remove",
+			id : "remove",
+			items : array
+		})
 	})
 	})
 	
-
 }
