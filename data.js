@@ -399,13 +399,24 @@ exports.removeItem = function(req,res){
 		}
 		console.log(value);
 		console.log("item is removed");
-			getAllItems(function(array){
+	
+	})
+		items.remove({masterId:req.params.id},function(err,value){
+		if(err){
+			console.log(err);
+		}
+		console.log(value);
+		console.log("item is removed");
+
+	})
+
+	getAllItems(function(array) {
 		res.render('remove', {
 			title : "remove",
 			id : "remove",
 			items : array
 		})
 	})
-	})
+
 	
 }

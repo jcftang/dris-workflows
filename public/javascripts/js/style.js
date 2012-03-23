@@ -112,7 +112,8 @@ function loadBtnActions(){
 	})
 
 	$("#createSerieBtn").click(function() {
-		$("#serieCreation").submit(loadAllSeries());
+		$("#serieCreation").submit();
+		loadAllSeries()
 	})
 
 	$('#step3EditBtn').click(function() {
