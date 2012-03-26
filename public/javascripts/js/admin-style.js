@@ -1,5 +1,5 @@
 /**
- * @author mvanwamb
+ * @author Quirijn Groot Bluemink
  */
 
 $(document).ready(function() {
@@ -18,11 +18,13 @@ $(document).ready(function() {
 		case "approve":
 			console.log("Approve");
 			$(this).prev().val("-1");
+			('#checkAll').removeAttr("checked");
 		  break;
 		case "remove":
 			console.log("Remove All");
 			removeAllSelected();
 			$(this).prev().val("-1");
+			('#checkAll').removeAttr("checked");
 			
 		  break;
 		default:

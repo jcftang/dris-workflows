@@ -58,6 +58,7 @@ app.post('/create/serie',routes.createSerie)
 app.get('/list/images/:id',routes.getItemImages);
 app.get('/remove',routes.remove);
 app.get('/remove/item/:id',routes.removeItem);
+app.get('/fedora',routes.fedora);
 
 // Redirects
 app.get('/', function(req, res){
