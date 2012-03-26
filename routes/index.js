@@ -76,3 +76,6 @@ exports.removeItem = function(req,res){
 exports.fedora = function(req,res){
 	fedora.getFedoraObjects(req,res);
 }
+exports.fedoraList = function(req,res){
+	fedora.getFedoraList(req,res);
+}
