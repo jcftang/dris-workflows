@@ -1,6 +1,6 @@
 
 var assert = require('assert');
-var data = require('../admin');
+var data = require('../lib/admin');
 
 module.exports = {
 	'test String#length': function(beforeExit, assert) {

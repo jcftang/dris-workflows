@@ -1,6 +1,6 @@
 
 var assert = require('assert');
-var data = require('../data');
+var data = require('../lib/dri');
 
 module.exports = {
 	'getSeries': function(done) {
