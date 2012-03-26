@@ -149,7 +149,6 @@ exports.findImages = function findImages(req,res){
 		files.push(file);
 	}, function() {
 		//send back the files to the client
-		console.log("sendback");
 		res.send(files);
 	});
 
@@ -251,8 +250,6 @@ function getSeries(callback){
 		for(item in array){
 			array[item]._id = array[item]._id.toString();
 		}
-
-		console.log("series loaded")
 	   callback(array)
 	});
 }
@@ -298,8 +295,6 @@ exports.getItem = function(id,res){
 	})
 }
 exports.createSerie = function(req,res){
-	console.log(req)
-
 	var server = new Mongolian
 	// Get database
 	var db = server.db("mydb");
@@ -315,9 +310,10 @@ exports.createSerie = function(req,res){
 	items.insert(rootItem, function(err, value) {
 		if(err) {
 			console.log(err);
+			
 			return -1
 		} else {
-			console.log("--Serie created--")
+				res.redirect('/create');
 			return 0
 		}
 
@@ -334,7 +330,6 @@ exports.createitem = function(req,res){
 	var item = {};
 	var items = db.collection("series")
 	var files = req.body;
-	console.log(files);
 	for(var i in files) {
 		if(i != 'amount' && i!= "series") {
 			item[i] = files[i];
@@ -380,9 +375,7 @@ function getAllItems(callback){
 		for(item in array) {
 			array[item]._id = array[item]._id.toString();
 		}
-		console.log(array);
 		callback(array);
-		console.log("array")
 	});
 
 }
@@ -392,31 +385,20 @@ exports.removeItem = function(req,res){
 	db = server.db("mydb");
 	// Get collections
 	items = db.collection("series");
-	console.log(req.params.id)
 	items.remove({_id:new ObjectId(req.params.id)},function(err,value){
 		if(err){
 			console.log(err);
 		}
-		console.log(value);
-		console.log("item is removed");
 	
 	})
 		items.remove({masterId:req.params.id},function(err,value){
 		if(err){
 			console.log(err);
 		}
-		console.log(value);
-		console.log("item is removed");
 
 	})
 
-	getAllItems(function(array) {
-		res.render('remove', {
-			title : "remove",
-			id : "remove",
-			items : array
-		})
-	})
+	res.send("0");
 
 	
 }
