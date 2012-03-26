@@ -21,6 +21,7 @@ $(document).ready(function() {
 			}
 		});
 	})
+	$("#amount").spinner();
 });
 
 function loadAllSeries(){

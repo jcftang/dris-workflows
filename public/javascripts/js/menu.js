@@ -10,14 +10,8 @@ var btn = '<button class="btn btn-small">'+property+'</button><span class="type"
 var close ='</div></div></div>';
 var end = '</div>';*/
 
-//categorieGroup,groupName,property,type
-//No spaces in categorieGroup
-var buttons = [
-	["collapseOne","Title Info","Title","text"],
-	["collapseOne","Title Info","Subtitle","text"],
-	["collapseTwo","People","Title","text"],
-	["collapseTwo","People","Title","text"]
- ]
+
+
 
 
 function createPropertyButtons(){
