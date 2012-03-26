@@ -71,16 +71,16 @@ app.get('/', function(req, res){
 
 
 function NotFound(msg){
-  this.name = 'NotFound';
-  Error.call(this, msg);
-  Error.captureStackTrace(this, arguments.callee);
+	this.name = 'NotFound';
+	Error.call(this, msg);
+	Error.captureStackTrace(this, arguments.callee);
 }
 
 
 NotFound.prototype.__proto__ = Error.prototype;
 app.get('/*', function(req, res){
 	console.log(req.url)
-  throw new NotFound;
+	throw new NotFound;
 });
 
 
