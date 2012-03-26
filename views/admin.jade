@@ -1,7 +1,6 @@
 include header
 script(type='text/javascript')
   console.log("Admin.jade");
-  loadAllSeries();
 div.container
       ul.breadcrumb
         li.active
@@ -14,4 +13,19 @@ div.container
               legend All the items
               .control-group
                 table#series-table.table.table-striped.table-bordered
+                  thead
+                    tr
+                      th.span1
+                        input(type="checkbox")
+                      th Title
+                      th Author
+                  tbody
+                    - series.forEach(function(item){
+                    tr
+                      td
+                        input(type="checkbox")
+                      td 
+                        a(href="/admin/#{item._id}") #{item.name}
+                      td #{item.author}
+                    - })
       include footer

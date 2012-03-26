@@ -1,5 +1,5 @@
 /**
- * @author mvanwamb
+ * @author Quirijn Groot Bluemink
  */
 var res;
 var meta;
@@ -37,7 +37,7 @@ exports.getItems = function getItems(req,res){
 	console.log(req.params);
 
 			
-	series.find({series:true}).sort({ created: 1 }).toArray(function (err, array) {
+	series.find({masterId:id}).sort({ created: 1 }).toArray(function (err, array) {
 		for(serie in array){
 			array[serie]._id = array[serie]._id.toString();
 		}

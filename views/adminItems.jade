@@ -1,7 +1,4 @@
 include header
-script(type='text/javascript')
-  console.log("Adminitems.jade");
-  loadAllItemsOfSeries('4f6af7cb0000005c0f000004');
 div.container
       ul.breadcrumb
         li.active
@@ -14,4 +11,19 @@ div.container
               legend All the items
               .control-group
                 table#series-table.table.table-striped.table-bordered
+                  thead
+                    tr
+                      th.span1
+                        input(type="checkbox")
+                      th Title
+                      th Subtitle
+                  tbody
+                    - series.forEach(function(item){
+                    tr
+                      td
+                        input(type="checkbox")
+                      td 
+                        a(href="#") #{item.Title}
+                      td #{item.Subtitle}
+                    - })
       include footer

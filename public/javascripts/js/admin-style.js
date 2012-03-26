@@ -94,6 +94,7 @@ function createSeriesTableHead(){
 }
 function loadAllItemsOfSeries(id){
 	createItemsTableHead();
+	console.log(id);
 	$.ajax({
 		url : "/items/" + id,
 		success : function(data) {
