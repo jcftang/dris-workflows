@@ -20,6 +20,7 @@ exports.getSeries = function getSeries(req,res){
 		for(serie in array){
 			array[serie]._id = array[serie]._id.toString();
 		}
+		server.close();
 		res.render('admin', 
 			{title : "Admin series",id:"getSeries",series:array, layout:"layoutAdmin"}
 		)
@@ -63,6 +64,7 @@ function getSeriesItemsByID(serie, callback){
 			array[item]._id = array[item]._id.toString();
 		} 
 		serie.items = array;
+		server.close();
 		callback(serie);
 	});
 }

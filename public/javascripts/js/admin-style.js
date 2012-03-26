@@ -17,10 +17,13 @@ $(document).ready(function() {
 		{
 		case "approve":
 			console.log("Approve");
+			$(this).prev().val("-1");
 		  break;
 		case "remove":
 			console.log("Remove All");
 			removeAllSelected();
+			$(this).prev().val("-1");
+			
 		  break;
 		default:
 			console.log("Select an action");
@@ -29,20 +32,31 @@ $(document).ready(function() {
 	$('.removeItem').click(function () {
 		$this = $(this)
 		id = $(this).attr("data-id");
-		removeItem(id, function(id){
-			$("#"+id).remove();
-		})
+		
+		var confirmDialog= confirm("Are you sure you want to continue?\nThis cannot be undone!");
+		if (confirmDialog == true)
+		{
+			removeItem(id, function(id){
+				$("#"+id).remove();
+			})
+		}
+
 	});
 		
 });
 
 function removeAllSelected(){
-	$('#series-table tbody input:checked').each(function() {
-		console.log($(this).attr("data-id"));
-		removeItem($(this).attr("data-id"), function(id){
-			$("#"+id).remove();
-		})
-	});
+	var confirmDialog= confirm("Are you sure you want to continue?\nThis cannot be undone!");
+	if (confirmDialog == true)
+	{
+		$('#series-table tbody input:checked').each(function() {
+			console.log($(this).attr("data-id"));
+			removeItem($(this).attr("data-id"), function(id){
+				$("#"+id).remove();
+			})
+		});
+	}
+
 }
 function removeItem(id, callback){
 	$.ajax({
