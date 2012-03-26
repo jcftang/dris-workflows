@@ -8,8 +8,54 @@ $(document).ready(function() {
 	$("#fileBox").hide();
 	loadBtnActions();
 	backbone();
-	
+	$('#checkAll').click(function () {
+		$('#series-table').find(':checkbox').attr('checked', this.checked);
+	});
+	$('#bulk-execute').click(function () {
+		var action = $(this).prev().val();
+		switch(action)
+		{
+		case "approve":
+			console.log("Approve");
+		  break;
+		case "remove":
+			console.log("Remove All");
+			removeAllSelected();
+		  break;
+		default:
+			console.log("Select an action");
+		}
+	});
+	$('.removeItem').click(function () {
+		$this = $(this)
+		id = $(this).attr("data-id");
+		removeItem(id, function(id){
+			$("#"+id).remove();
+		})
+	});
+		
 });
+
+function removeAllSelected(){
+	$('#series-table tbody input:checked').each(function() {
+		console.log($(this).attr("data-id"));
+		removeItem($(this).attr("data-id"), function(id){
+			$("#"+id).remove();
+		})
+	});
+}
+function removeItem(id, callback){
+	$.ajax({
+		url : "/remove/item/"+id,
+		success : function(data) {
+			callback(id);
+		},
+		error:function(d,r){
+			console.log(d);
+			console.log(r);
+		}
+	});
+}
 
 function loadAllSeries(){
 	createSeriesTableHead();

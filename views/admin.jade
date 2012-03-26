@@ -1,6 +1,4 @@
 include header
-script(type='text/javascript')
-  console.log("Admin.jade");
 div.container
       ul.breadcrumb
         li.active
@@ -12,20 +10,31 @@ div.container
             form.form-horizontal
               legend All the items
               .control-group
+                select.span2.bulk-action
+                  option(value="-1") --Bulk action--
+                  option(value="approve") Approve
+                  option(value="remove") Remove
+                input#bulk-execute.btn(type="button",value="Do eet!")
                 table#series-table.table.table-striped.table-bordered
                   thead
                     tr
                       th.span1
-                        input(type="checkbox")
+                        input#checkAll(type="checkbox")
                       th Title
                       th Author
+                      th.span1 Approve
+                      th.span1 Remove
                   tbody
                     - series.forEach(function(item){
-                    tr
+                    tr(id="#{item._id}")
                       td
-                        input(type="checkbox")
+                        input(type="checkbox",data-id="#{item._id}")
                       td 
                         a(href="/admin/#{item._id}") #{item.name}
                       td #{item.author}
+                      td
+                        input.btn.btn-success.btn-mini.approveItem(type="button",value="Approve",data-id="#{item._id}")
+                      td
+                        input.btn.btn-danger.btn-mini.removeItem(type="button",value="Remove",data-id="#{item._id}")
                     - })
       include footer
