@@ -15,7 +15,7 @@ div.container
               .control-group
                  a.btn#createItems(href='#step3') Items
         div
-          form.form-horizontal#serieCreation(enctype='multipart/form-data', method='post', action='create/serie')
+          form.form-horizontal#serieCreation(enctype='multipart/form-data', method='post', action='series/create')
             #step2
               .span7
                 #title
@@ -36,7 +36,7 @@ div.container
                       li
                         a#createSerieBtn(href='#') Save
                     .dummy
-          form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='create/item')
+          form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='item/create')
             #step3
               .span7
                 h2 Item

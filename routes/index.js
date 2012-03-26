@@ -32,8 +32,8 @@ exports.all=function(req,res){
 exports.createItem = function(req,res){
 	data.createitem(req,res);
 }
-exports.createSerie = function(req,res){
-	data.createSerie(req,res);
+exports.createSeries = function(req,res){
+	data.createSeries(req,res);
 }
 
 exports.getAllSeries = function(req,res){
