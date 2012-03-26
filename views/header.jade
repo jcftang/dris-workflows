@@ -1,12 +1,12 @@
-div.navbar
-    div.navbar-inner
-        div.container
+.navbar
+    .navbar-inner
+        .container
             a(data-toggle='collapse',data-target='.nav-collapse').btn.btn-navbar
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
             a.brand(href='home') DRIS
-            div.nav-collapse
+            .nav-collapse
                 ul.nav
                     - var obj = { '/home': 'Home', '/all': 'All', '/create': 'Create', '/edit': 'Edit', '/admin': 'Admin', '/remove':'Remove'}
                         - each val, key in obj
