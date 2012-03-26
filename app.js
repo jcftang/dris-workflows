@@ -56,6 +56,8 @@ app.get('/item/:id',routes.getItem);
 app.get('/item/:id/remove',routes.removeItem);
 app.get('/items/:id',routes.getItems);
 app.get('/series',routes.getAllSeries); //Returns all the series
+app.get('/fedora',routes.fedora);
+app.get('/fedora/list',routes.fedoraList);
 
 app.post('/item/create',routes.createItem);
 app.post('/series/create',routes.createSeries)

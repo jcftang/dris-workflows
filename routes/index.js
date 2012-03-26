@@ -5,6 +5,7 @@
 
 var data = require("../data.js");
 var admin = require("../admin.js");
+var fedora = require("../fedora.js");
 exports.home = function(req, res){
   res.render('index', {
     title: 'DRIS Workflows',
@@ -71,4 +72,10 @@ exports.remove = function(req,res){
 
 exports.removeItem = function(req,res){
 	data.removeItem(req,res);
+}
+exports.fedora = function(req,res){
+	fedora.getFedoraObjects(req,res);
+}
+exports.fedoraList = function(req,res){
+	fedora.getFedoraList(req,res);
 }
