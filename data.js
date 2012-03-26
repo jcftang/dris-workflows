@@ -294,7 +294,7 @@ exports.getItem = function(id,res){
 		res.send(array);
 	})
 }
-exports.createSerie = function(req,res){
+exports.createSeries = function(req,res){
 	var server = new Mongolian
 	// Get database
 	var db = server.db("mydb");

@@ -62,7 +62,7 @@ function removeAllSelected(){
 }
 function removeItem(id, callback){
 	$.ajax({
-		url : "/remove/item/"+id,
+		url : "/item/"+id+"/remove",
 		success : function(data) {
 			callback(id);
 		},
