@@ -197,7 +197,7 @@ function backbone(){
 	});
 	var w = new Workspace();
 	
-	Backbone.history.start({root: "/Upload2/"})
+	Backbone.history.start();
 
 	
 }
