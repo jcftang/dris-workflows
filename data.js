@@ -295,8 +295,6 @@ exports.getItem = function(id,res){
 	})
 }
 exports.createSerie = function(req,res){
-
-	console.log("creating serie");
 	var server = new Mongolian
 	// Get database
 	var db = server.db("mydb");
@@ -324,7 +322,6 @@ exports.createSerie = function(req,res){
 
 }
 exports.createitem = function(req,res){
-	console.log("creating item");
 	var server = new Mongolian
 	// Get database
 	db = server.db("mydb");

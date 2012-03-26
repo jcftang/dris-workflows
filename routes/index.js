@@ -14,7 +14,6 @@ exports.home = function(req, res){
 
 
 exports.edit = function(req, res){
-	console.log("route")
     data.edit(req,res);
 }
 
@@ -23,7 +22,6 @@ exports.data = function(req, res){
 }
 
 exports.image=function(req,res){
-	console.log("-- Image request --");
 	data.loadImg(req.params.name,req.params.id,res);
 }
 
