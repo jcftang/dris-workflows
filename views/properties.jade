@@ -29,9 +29,11 @@
                     h2 Items            
                     ul#list
             -else
-              h2 Item properties
-              script
-                $("#step3Info").append(createPropertyButtons());
+              a.btn(href='#', data-toggle='collapse', data-target='#proper')
+                h2 Properties
+              #proper.accordion.collapse
+                script
+                  $("#proper").append(createPropertyButtons());
           #step4Info
             h2 Overview
             p

@@ -75,7 +75,8 @@ function fillUpForm(data) {
 function loadBtnActions(){
 
 	$("#properties button").click(function() {
-		$(".dataform").append('<div class="control-group"><label class="control-label">' + $(this).text() + '</label><div class="controls"><input type="' + $(this).next().text() + '" class="input-xlarge" id="input01" name="' + $(this).text() + '"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
+		addInputFieldToFrom(this);
+		
 	});
 	$(".accordion-heading").click(function() {
 		$(".accordion-heading").removeClass("accordion-heading-focus");
@@ -143,6 +144,18 @@ function loadBtnActions(){
 
 
 		
+}
+
+function addInputFieldToFrom(btn){
+	var input = '<div class="control-group"><label class="control-label">' + $(btn).text() + '</label><div class="controls">';
+	console.log($(btn).next().next().html());
+	if($(btn).next().text() == "select"){
+		input +=  $(btn).next().next().html();
+	}else{
+	input += '<input type="' + $(btn).next().text()+ '" class="input-xlarge" id="input01" name="'+ $(btn).text() + '">';
+	}
+	input += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
+	$(".dataform").append(input);
 }
 
 function loadAllImages(id){
