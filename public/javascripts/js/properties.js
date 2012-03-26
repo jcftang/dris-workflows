@@ -55,14 +55,3 @@ var buttons = [
  
 
 
-text 
-cartographic 
-notated music
-sound recording
-sound recording-musical
-sound recording-nonmusical
-still image 
-moving image
-three dimensional object
-software, multimedia
-mixed material

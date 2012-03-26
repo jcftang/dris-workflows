@@ -21,7 +21,6 @@ $(document).ready(function() {
 			}
 		});
 	})
-	$("#amount").spinner();
 });
 
 function loadAllSeries(){
@@ -108,7 +107,7 @@ function loadBtnActions(){
 		$("#fileBox").toggle();
 	})
 
-	$("#creatItem").click(function() {
+	$("#creatItem,#editItem1,#editItem2").click(function() {
 		$("#itemCreation").submit();
 	})
 
@@ -148,7 +147,7 @@ function loadBtnActions(){
 
 function loadAllImages(id){
 	$.ajax({
-		url : "/list/images/" + id,
+		url : "images/" + id+"/list/",
 		success : function(data) {
 			$("#imageContainer").empty();
 			for(var file in data) {
