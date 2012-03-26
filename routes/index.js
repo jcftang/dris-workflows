@@ -19,7 +19,7 @@ exports.edit = function(req, res){
 }
 
 exports.data = function(req, res){
-  data.show(req,res);
+  data.update(req,res);
 }
 
 exports.image=function(req,res){
