@@ -3,8 +3,10 @@ var assert = require('assert');
 var data = require('../data');
 
 module.exports = {
-	'getSeries': function() {
-		var series = data.getAllSeries2();
+	'getSeries': function(done) {
+		var series = data.getAllSeries();
 		assert.isNotNull(series);
+
+		done();
 	}
 };
