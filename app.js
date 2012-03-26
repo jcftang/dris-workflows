@@ -14,6 +14,7 @@ var app = module.exports = express.createServer();
 // Configuration
 app.configure(function(){
   app.set('views', __dirname + '/views');
+  app.set('view options', { layout:"_layouts/layout"}),
   app.set('view engine', 'jade');
   app.use(express.bodyParser({keepExtensions: true}));
   app.use(express.methodOverride());
