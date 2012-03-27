@@ -71,7 +71,7 @@ app.get('/', function(req, res){
 	res.redirect('/home');
 });
 
-/*
+
 function NotFound(msg){
 	this.name = 'NotFound';
 	Error.call(this, msg);
@@ -84,7 +84,7 @@ app.get('/*', function(req, res){
 	console.log(req.url)
 	throw new NotFound;
 });
-*/
+
 module.exports = app;
 
 app.listen(3000);
