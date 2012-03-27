@@ -15,7 +15,8 @@ var end = '</div>';*/
 
 
 function createPropertyButtons(){
-	var heading ='<div class="accordion" id="accordion2">';
+	parentId = Math.floor(Math.random()*Math.random()*1000-1);
+	var heading ='<div class="accordion" id="accordion'+parentId+'">';
 	var previousGroup = "";
 	var steps = buttons.length;
 	for(var i =0;i<steps;i++){
@@ -24,8 +25,9 @@ function createPropertyButtons(){
 				heading += close;
 			}
 			if(buttons[i][0] != previousGroup){
-				var group = '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#'+buttons[i][0]+'"> '+buttons[i][1] +'</a></div>';
-				var inner = '<div id="'+buttons[i][0]+'" class="accordion-body collapse "><div class="accordion-inner">';
+				var random = Math.floor(Math.random()*Math.random()*1000-1);
+				var group = '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion'+parentId+'" href="#'+buttons[i][0]+random+'"> '+buttons[i][1] +'</a></div>';
+				var inner = '<div id="'+buttons[i][0]+random+'" class="accordion-body collapse "><div class="accordion-inner">';
 				var btn = '<button class="btn btn-small">'+buttons[i][2]+'</button><span class="type">'+buttons[i][3]+'</span>';
 				console.log(buttons[i][3]);
 				if(buttons[i][3] == "select"){

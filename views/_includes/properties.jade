@@ -17,8 +17,11 @@
                     h2 Items            
                     ul#list
             - else
-              h2 Series properties
-              p Fill in the required info.
+              a.btn(href='#', data-toggle='collapse', data-target='#proper')
+                h2 Properties
+              #proper.accordion.collapse
+                script
+                  $("#proper").append(createPropertyButtons());
           #step3Info
             -if (title =="Edit")
               h2 Media
@@ -29,13 +32,19 @@
                     h2 Items            
                     ul#list
             -else
-              a.btn(href='#', data-toggle='collapse', data-target='#proper')
+              a.btn(href='#', data-toggle='collapse', data-target='#proper2')
                 h2 Properties
-              #proper.accordion.collapse
+              #proper2.accordion.collapse
                 script
-                  $("#proper").append(createPropertyButtons());
+                  $("#proper2").append(createPropertyButtons());
           #step4Info
-            h2 Overview
-            p
-              | This is an overview of the data that will be stored. Please check this data so that you are sue everything is correct.
+            - if (title == "Edit")
+              h2 Overview
+              p This is an overview of the data that will be stored. Please check this data so that you are sue everything is correct.
+            -else
+              a.btn(href='#', data-toggle='collapse', data-target='#proper3')
+                h2 Properties
+              #proper3.accordion.collapse
+                script
+                  $("#proper3").append(createPropertyButtons());
           
