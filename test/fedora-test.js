@@ -10,10 +10,11 @@ module.exports = {
 		xml = fedora.getFedoraObject();
 		assert.isNotNull(xml);
 	},
-	'test3 CreateFedoraItem': function(beforeExit, assert) {
-		result = fedora.createFedoraObject();
-		console.log(result);
-		assert.isNotNull(result);
+	'test3 GetNextPID': function(beforeExit, assert) {
+		
+		fedora.createFedoraObject("node", function(result){
+			assert.includes(result,"node:");
+		});
 	}
 };
 // uuid
