@@ -27,7 +27,7 @@ p{
 #properties .btn{
 	text-align: left;
 }
-div#step2Info a.btn{
+div#step2Info a.btn,div#step3Info a.btn{
 	width: 93%;
 	margin-bottom: 5px;
 }

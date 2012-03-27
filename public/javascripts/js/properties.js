@@ -1,3 +1,9 @@
+
+var resourceTypes = ["text","cartographic","notated music",
+"sound recording ","sound recording-musical",
+"sound recording-nonmusical","still image",
+"moving image","three dimensional object",
+"software, multimedia","mixed material"];
 //categorieGroup,groupName,property,type
 //No spaces in categorieGroup
 var buttons = [
@@ -13,7 +19,7 @@ var buttons = [
 	["collapseTwo","Name ","roleTerm","text"],
 	["collapseTwo","Name ","description","text"],
 	//----------------------------------------------//
-	["collapseThree","typeOfResource","typeOfResource","select"],
+	["collapseThree","typeOfResource","typeOfResource","select",createSelect(resourceTypes)],
 	//----------------------------------------------//
 	["collapseFour","genre","nonSort","text"],
 	//----------------------------------------------//
@@ -27,7 +33,7 @@ var buttons = [
 	//----------------------------------------------//
 	["collapseNine","tableOfContents","description","text"],
 	//----------------------------------------------//
-	["collapseTen","Type of resource","type","select"],
+	["collapseTen","Type of resource","type","text"],
 	//----------------------------------------------//
 	["collapseEleven","targetAudience","genre","text"],
 	//----------------------------------------------//
@@ -53,5 +59,15 @@ var buttons = [
 	//----------------------------------------------//
  ]
  
+ 
 
+function createSelect(items){
+	var select = "<select>";
+	for(var i in items){
+		select += "<option>"+items[i]+"</option>";
+	}
+	select += "</select>"
+	return select;
+	
+}
 
