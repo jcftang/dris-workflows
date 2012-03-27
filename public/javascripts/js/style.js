@@ -82,9 +82,11 @@ function loadBtnActions(){
 		$(".accordion-heading").siblings().removeClass("accordion-heading-focus");
 		$(this).addClass("accordion-heading-focus");
 	})
-	$(".items #list li").live("click",function() {
-		$(".items #list li").siblings().removeClass("accordion-heading-focus");
+	$(".items li").live("click",function() {
+		$(".items li").removeClass("accordion-heading-focus");
 		$(this).addClass("accordion-heading-focus");
+		$(".items li").eq($(this).index()).addClass("accordion-heading-focus");
+		$("#list2 li").eq($(this).index()).addClass("accordion-heading-focus");
 	})
 	
 	$(".breaddisabled").click(function() {
@@ -156,8 +158,8 @@ function loadBtnActions(){
 	
 
 	$(".nextItemBtn").click(function() {
-		urlNextItem = $(".items #list li.accordion-heading-focus").next().find("a").attr("href");
-		nextItem = $(".items #list li.accordion-heading-focus").next();
+		urlNextItem = $(".items li.accordion-heading-focus").next().find("a").attr("href");
+		nextItem = $(".items li.accordion-heading-focus").next();
 		if(nextItem.is("li")) {
 			nextItem.siblings().removeClass("accordion-heading-focus");
 			nextItem.addClass("accordion-heading-focus");
@@ -169,8 +171,8 @@ function loadBtnActions(){
 
 
 	$(".previousItemBtn").click(function() {
-		urlNextItem = $(".items #list li.accordion-heading-focus").prev().find("a").attr("href");
-		prevItem = $(".items #list li.accordion-heading-focus").prev();
+		urlNextItem = $(".items li.accordion-heading-focus").prev().find("a").attr("href");
+		prevItem = $(".items li.accordion-heading-focus").prev();
 		if(prevItem.is("li")) {
 			prevItem.siblings().removeClass("accordion-heading-focus");
 			prevItem.addClass("accordion-heading-focus");
