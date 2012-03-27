@@ -42,7 +42,7 @@ function showItems(items){
 		root = "<li>No items</li>";
 	}
 	for(i in items){
-	  root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+"</a></li>";
+	  root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+" "+items[i].objectId+"</a></li>";
 	}
 	
 	$(".items ul").empty();
@@ -79,9 +79,14 @@ function loadBtnActions(){
 		
 	});
 	$(".accordion-heading").click(function() {
-		$(".accordion-heading").removeClass("accordion-heading-focus");
+		$(".accordion-heading").siblings().removeClass("accordion-heading-focus");
 		$(this).addClass("accordion-heading-focus");
 	})
+	$(".items #list li").live("click",function() {
+		$(".items #list li").siblings().removeClass("accordion-heading-focus");
+		$(this).addClass("accordion-heading-focus");
+	})
+	
 	$(".breaddisabled").click(function() {
 		return false
 	});
@@ -117,6 +122,10 @@ function loadBtnActions(){
 		loadAllSeries()
 	})
 
+	$("#createCollectionBtn").click(function() {
+		$("#collectionCreation").submit();
+	})
+
 	$('#step3EditBtn').click(function() {
 		loadAllImages($("input[name='_id']").val());
 	})
@@ -138,14 +147,43 @@ function loadBtnActions(){
 
 	$("#createItems").live("click", function(event) {
 		loadAllSeries();
+		emptyForm();
 	});
+	
+	$("#createCollection,#createSerie").live("click", function(event) {
+		emptyForm();
+	});	
+	
+
+	$(".nextItemBtn").click(function() {
+		urlNextItem = $(".items #list li.accordion-heading-focus").next().find("a").attr("href");
+		nextItem = $(".items #list li.accordion-heading-focus").next();
+		if(nextItem.is("li")) {
+			nextItem.siblings().removeClass("accordion-heading-focus");
+			nextItem.addClass("accordion-heading-focus");
+			loadSeriesData(urlNextItem, function(data) {
+				fillUpForm(data)
+			});
+		}
+	})
 
 
+	$(".previousItemBtn").click(function() {
+		urlNextItem = $(".items #list li.accordion-heading-focus").prev().find("a").attr("href");
+		prevItem = $(".items #list li.accordion-heading-focus").prev();
+		if(prevItem.is("li")) {
+			prevItem.siblings().removeClass("accordion-heading-focus");
+			prevItem.addClass("accordion-heading-focus");
+			loadSeriesData(urlNextItem, function(data) {
+				fillUpForm(data)
+			});
+		}
+	})
 
-
-		
 }
-
+function emptyForm(){
+	$(".dataform").empty();
+}
 function addInputFieldToFrom(btn){
 	var input = '<div class="control-group"><label class="control-label">' + $(btn).text() + '</label><div class="controls">';
 	console.log($(btn).next().next().html());

@@ -37,6 +37,9 @@ exports.createSeries = function(req,res){
 	data.createSeries(req,res);
 }
 
+exports.createCollection = function(req,res){
+	data.createCollection(req,res);
+}
 exports.getAllSeries = function(req,res){
 	data.getAllSeries(req,res);
 }

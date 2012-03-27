@@ -23,13 +23,13 @@ app.configure(function(){
   app.use(log4js.connectLogger(logger, { level: log4js.levels.INFO }));
 });
 
-/*app.configure('development', function(){
+app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('production', function(){
   app.use(express.errorHandler());
-});*/
+});
 
 
 app.error(function(err, req, res, next){
@@ -61,6 +61,7 @@ app.get('/fedora',routes.fedora);
 app.get('/fedora/list',routes.fedoraList);
 
 app.post('/item/create',routes.createItem);
+app.post('/collection/post',routes.createCollection)
 app.post('/series/create',routes.createSeries)
 app.post('/post', routes.data);
 
@@ -70,7 +71,7 @@ app.get('/', function(req, res){
 	res.redirect('/home');
 });
 
-
+/*
 function NotFound(msg){
 	this.name = 'NotFound';
 	Error.call(this, msg);
@@ -83,7 +84,7 @@ app.get('/*', function(req, res){
 	console.log(req.url)
 	throw new NotFound;
 });
-
+*/
 module.exports = app;
 
 app.listen(3000);

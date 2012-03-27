@@ -11,11 +11,14 @@ p{
 	padding:10px;
 	float:left;
 }
+#properties .selectData{
+	display:none;
+}
 
 #container{
 	margin-top:20px;
 }
-#step2 input, #step2 form a,#step3 input, #step3 form a{
+#step2 input, #step2 form a,#step3 input, #step3 form a,#step4 input, #step4 form a{
 	float:left;
 	margin-right: 5px;
 }
@@ -27,7 +30,7 @@ p{
 #properties .btn{
 	text-align: left;
 }
-div#step2Info a.btn,div#step3Info a.btn{
+div#step2Info a.btn,div#step3Info a.btn,div#step4Info a.btn{
 	width: 93%;
 	margin-bottom: 5px;
 }
@@ -62,4 +65,7 @@ li.selected{
 	background-color: #3B773B!important;
 	color:#FFF;
 }
-.row{}
+.form-actions{
+	padding-left:5px !important;
+}
+}

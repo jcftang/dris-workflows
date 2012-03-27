@@ -11,12 +11,31 @@ div.container
           .span7
               h2 What do you want to create?
               .control-group
-                 a.btn(href='#step2') Series
+                 a.btn#createCollection(href='#step2') Collection
               .control-group
-                 a.btn#createItems(href='#step3') Items
+                 a.btn#createSerie(href='#step3') Serie
+              .control-group
+                 a.btn#createItems(href='#step4') Item
         div
-          form.form-horizontal#serieCreation(enctype='multipart/form-data', method='post', action='series/create')
+          form.form-horizontal#collectionCreation(enctype='multipart/form-data', method='post', action='collection/post')
             #step2
+              .span7
+                #title
+                  h2  Collection 
+                  fieldset
+                    .control-group
+                       label.control-label(for='name') Name
+                       .controls
+                         label.control-label
+                           input#name(type='text', name='name')
+                    .dataform
+                  .form-actions
+                    ul.pager
+                      li
+                        a#createCollectionBtn(href='#') Save
+                    .dummy
+          form.form-horizontal#serieCreation(enctype='multipart/form-data', method='post', action='series/create')
+            #step3
               .span7
                 #title
                   h2  Series 
@@ -31,17 +50,17 @@ div.container
                        .controls
                          label.control-label
                            input#author(type='text', name='author')
+                   .dataform
                   .form-actions
                     ul.pager
                       li
                         a#createSerieBtn(href='#') Save
                     .dummy
           form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='item/create')
-            #step3
+            #step4
               .span7
                 h2 Item
                 p Add items to a series.
-                .dataform
                     .control-group
                        label.control-label(for='amount') Amount of items
                        .controls
@@ -52,18 +71,11 @@ div.container
                        .controls
                          label.control-label
                            select#seriesItemCreation(name="series")
+                .dataform
                 .form-actions
                   ul.pager
                     li
                       a#creatItem(href='#') Save
                   .dummy  
-        #step4
-          .span7
-            h2 Overview
-            .form-actions
-              ul.pager
-                li
-                  a(href='#step3') Previous
-              .dummy
 
       include _includes/footer
