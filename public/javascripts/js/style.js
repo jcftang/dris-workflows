@@ -42,7 +42,7 @@ function showItems(items){
 		root = "<li>No items</li>";
 	}
 	for(i in items){
-	  root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+"</a></li>";
+	  root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+" "+items[i].objectId+"</a></li>";
 	}
 	
 	$(".items ul").empty();
