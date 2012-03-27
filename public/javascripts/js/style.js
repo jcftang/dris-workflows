@@ -79,7 +79,7 @@ function loadBtnActions(){
 		
 	});
 	$(".accordion-heading").click(function() {
-		$(".accordion-heading").siblings().removeClass("accordion-heading-focus");
+		$(".accordion-heading").removeClass("accordion-heading-focus");
 		$(this).addClass("accordion-heading-focus");
 	})
 	$(".items li").live("click",function() {
