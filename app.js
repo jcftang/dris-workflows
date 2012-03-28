@@ -3,11 +3,8 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
-  , log4js = require('log4js');
+  , routes = require('./routes');
 
-var logger = log4js.getLogger('dris_workflows');
-logger.setLevel('INFO');
 
 var app = module.exports = express.createServer();
 
@@ -20,7 +17,6 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.static(__dirname + '/public'));
   app.use(app.router);
-  app.use(log4js.connectLogger(logger, { level: log4js.levels.INFO }));
 });
 
 app.configure('development', function(){
