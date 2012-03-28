@@ -23,18 +23,33 @@ $(document).ready(function() {
 	})
 });
 
-function loadAllSeries(){
-	loadSeriesData("/series", function(series) {
-			var root = "";
-			if(series.length == 0) {
-				root = "<option>No series</option>";
+function loadAllItemsByType(type,callback){
+
+	loadData("/" + type, function(items) {
+		var root = "";
+		if(items.length == 0) {
+			root = "<option>No series</option>";
+		}
+
+		for(i in items) {
+			console.log(items);
+			root += "<option value='"
+			if(type == "series") {
+				root += items[i]._id + "'>" + items[i].name + " (" + items[i].author+")";
 			}
-			for(i in series) {
-				root += "<option value='" + series[i]._id + "'>" + series[i].name + " (" + series[i].author + ")</option>";
+			if(type == "collections") {
+				root += items[i]._id + "'>" + items[i].name;
 			}
-			$("#seriesItemCreation").empty();
-			$("#seriesItemCreation").append(root);
-		});
+				if(type == "items") {
+				root += items[i]._id + "'>" + items[i].Title + " ("+items[i].objectId+")";
+			}
+			root += "</option>";
+		}
+
+		callback(root);
+	});
+
+
 }
 function showItems(items){
 	var root = "";
@@ -50,7 +65,7 @@ function showItems(items){
 	
 
 }
-function loadSeriesData(link,callback){
+function loadData(link,callback){
 	$.ajax({
 				url : link,
 				success : function(data) {
@@ -121,7 +136,10 @@ function loadBtnActions(){
 
 	$("#createSerieBtn").click(function() {
 		$("#serieCreation").submit();
-		loadAllSeries()
+		loadAllItemsByType("series",function(root){
+			$("#seriesItemCreation").empty();
+			$("#seriesItemCreation").append(root);
+		})
 	})
 
 	$("#createCollectionBtn").click(function() {
@@ -135,20 +153,36 @@ function loadBtnActions(){
 	$("#step3Info .items ul li a").live("click", function(event) {
 
 		event.preventDefault();
-		loadSeriesData(this.pathname,function(data){
+		loadData(this.pathname,function(data){
 			fillUpForm(data)
 		});
 		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
 	});
 	$("#step2Info .items ul li a").live("click",function(event) {
 		event.preventDefault();
-		loadSeriesData(this.pathname,function(data){
+		loadData(this.pathname,function(data){
 			fillUpForm(data)
 		});
 	});
 
 	$("#createItems").live("click", function(event) {
-		loadAllSeries();
+		loadAllItemsByType("series",function(root){
+			$("#seriesItemCreation").empty();
+			$("#seriesItemCreation").append(root);
+		})
+
+		loadAllItemsByType("items", function(root) {
+			$(".itemItems").empty();
+			$(".itemItems").append(root);
+		})
+
+		emptyForm();
+	});
+	$("#createSerie,#createItems").live("click", function(event) {
+		loadAllItemsByType("collections",function(root){
+			$(".seriesCollection").empty();
+			$(".seriesCollection").append(root);
+		})
 		emptyForm();
 	});
 	
@@ -163,7 +197,7 @@ function loadBtnActions(){
 		if(nextItem.is("li")) {
 			nextItem.siblings().removeClass("accordion-heading-focus");
 			nextItem.addClass("accordion-heading-focus");
-			loadSeriesData(urlNextItem, function(data) {
+			loadData(urlNextItem, function(data) {
 				fillUpForm(data)
 			});
 		}
@@ -176,7 +210,7 @@ function loadBtnActions(){
 		if(prevItem.is("li")) {
 			prevItem.siblings().removeClass("accordion-heading-focus");
 			prevItem.addClass("accordion-heading-focus");
-			loadSeriesData(urlNextItem, function(data) {
+			loadData(urlNextItem, function(data) {
 				fillUpForm(data)
 			});
 		}
@@ -198,22 +232,11 @@ function addInputFieldToFrom(btn){
 }
 
 function loadAllImages(id){
-	$.ajax({
-		url : "images/" + id+"/list",
-		success : function(data) {
-			console.log(data);
-			$("#imageContainer").empty();
-			for(var file in data) {
-				$("#imageContainer").append("<img src='/image/" + data[file]._id + "/" + data[file].filename + "'>")
-			}
-		},
-		error : function(d, r,e) {
-			console.log(d);
-			console.log(r);
-			console.log(e);
+	loadData("images/" + id + "/list", function(data) {
+		for(var file in data) {
+			$("#imageContainer").append("<img src='/image/" + data[file]._id + "/" + data[file].filename + "'>")
 		}
 	});
-	
 }
 	
 function backbone(){

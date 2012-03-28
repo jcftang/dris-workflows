@@ -41,6 +41,11 @@ div.container
                   h2  Series 
                   fieldset
                     .control-group
+                       label.control-label(for='series') Choose the collection
+                       .controls
+                         label.control-label
+                           select.seriesCollection(name="collection")
+                    .control-group
                        label.control-label(for='name') Name
                        .controls
                          label.control-label
@@ -67,10 +72,20 @@ div.container
                          label.control-label
                            input#amount(type='number', name='amount')
                     .control-group
-                       label.control-label(for='series') Choose the serie
+                       label.control-label(for='series') What is the parent?
                        .controls
-                         label.control-label
-                           select#seriesItemCreation(name="series")
+                         
+
+                         label(for='series') Series
+                           input(type="radio",name="collection",value="series") 
+                         select#seriesItemCreation(name="serieSelect")
+                         label(for='collection') Collection
+                           input(type="radio",name="collection",value="collections") 
+                         select.seriesCollection(name="collectionSelect")
+                         label(for='collection') Items
+                           input(type="radio",name="collection",value="items")
+                         select.itemItems(name="itemSelect")
+
                 .dataform
                 .form-actions
                   ul.pager

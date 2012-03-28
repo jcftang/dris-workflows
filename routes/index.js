@@ -68,6 +68,19 @@ exports.getAllSeries = function(req,res){
 	});
 
 }
+exports.getAllCollections = function(req,res){
+	data.getAllCollections(function(arr){
+		res.send(arr);
+	});
+
+}
+
+exports.getAllItems= function(req,res){
+	data.getAllItems(function(arr){
+		res.send(arr);
+	});
+
+}
 
 exports.getItems = function(req,res){
 	data.getItems(req.params.id,function(array){
