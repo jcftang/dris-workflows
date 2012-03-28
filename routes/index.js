@@ -78,8 +78,40 @@ exports.removeItem = function(req,res){
 	data.removeItem(req,res);
 }
 exports.fedora = function(req,res){
-	fedora.getFedoraObjects(req,res);
+	//fedora.getFedoraObjects(req,res);
 }
 exports.fedoraList = function(req,res){
-	fedora.getFedoraList(req,res);
+	//fedora.getFedoraList(req,res);
 }
+
+exports.fedoraCreateObject = function(req,res){
+	admin.approveItem(req,res);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -55,6 +55,7 @@ app.get('/items/:id',routes.getItems);
 app.get('/series',routes.getAllSeries); //Returns all the series
 app.get('/fedora',routes.fedora);
 app.get('/fedora/list',routes.fedoraList);
+app.get('/fedora/:id/approve',routes.fedoraCreateObject);
 
 app.post('/item/create',routes.createItem);
 app.post('/collection/post',routes.createCollection)

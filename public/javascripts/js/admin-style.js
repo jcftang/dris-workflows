@@ -44,6 +44,15 @@ $(document).ready(function() {
 		}
 
 	});
+	$('.approveItem').click(function () {
+		$this = $(this)
+		id = $(this).attr("data-id");
+		console.log("Approve: " +id);
+		approveItem(id, function(data){
+			console.log(data);
+		});
+
+	});
 		
 });
 
@@ -65,6 +74,18 @@ function removeItem(id, callback){
 		url : "/item/"+id+"/remove",
 		success : function(data) {
 			callback(id);
+		},
+		error:function(d,r){
+			console.log(d);
+			console.log(r);
+		}
+	});
+}
+function approveItem(id, callback){
+	$.ajax({
+		url : "/fedora/"+id+"/approve",
+		success : function(data) {
+			callback(data);
 		},
 		error:function(d,r){
 			console.log(d);
