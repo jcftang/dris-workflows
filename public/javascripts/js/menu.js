@@ -29,11 +29,11 @@ function createPropertyButtons(){
 				var group = '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion'+parentId+'" href="#'+buttons[i][0]+random+'"> '+buttons[i][1] +'</a></div>';
 				var inner = '<div id="'+buttons[i][0]+random+'" class="accordion-body collapse "><div class="accordion-inner">';
 				var btn = '<button class="btn btn-small">'+buttons[i][2]+'</button><span class="type">'+buttons[i][3]+'</span>';
-				console.log(buttons[i][3]);
+				
 				if(buttons[i][3] == "select"){
-					console.log("buttons[i][3]");
+					
 					 btn +='<span class="selectData">'+buttons[i][4]+'</span>';
-					 console.log(buttons[i][4]);
+					
 				}
 				heading += group;
 				heading += inner;
