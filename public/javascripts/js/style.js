@@ -188,7 +188,6 @@ function emptyForm(){
 }
 function addInputFieldToFrom(btn){
 	var input = '<div class="control-group"><label class="control-label">' + $(btn).text() + '</label><div class="controls">';
-	console.log($(btn).next().next().html());
 	if($(btn).next().text() == "select"){
 		input +=  $(btn).next().next().html();
 	}else{
@@ -200,16 +199,18 @@ function addInputFieldToFrom(btn){
 
 function loadAllImages(id){
 	$.ajax({
-		url : "images/" + id+"/list/",
+		url : "images/" + id+"/list",
 		success : function(data) {
+			console.log(data);
 			$("#imageContainer").empty();
 			for(var file in data) {
 				$("#imageContainer").append("<img src='/image/" + data[file]._id + "/" + data[file].filename + "'>")
 			}
 		},
-		error : function(d, r) {
+		error : function(d, r,e) {
 			console.log(d);
 			console.log(r);
+			console.log(e);
 		}
 	});
 	
