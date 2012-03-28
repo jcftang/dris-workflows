@@ -4,7 +4,7 @@
  */
 var data = require("../lib/dri.js");
 var admin = require("../lib/admin.js");
-var fedora = require("../lib/fedora.js");
+var fedora = require("fedora");
 
 exports.home = function(req, res){
   res.render('index', {
