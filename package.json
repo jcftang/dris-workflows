@@ -8,5 +8,6 @@
     , "mongolian": ">= 0.1.17"
     , "log4js": ">= 0.3.8"
     , "passport": ">= 0.1.7"
+    , "fedora": "http://howest-server.tchpc.tcd.ie/cgi-bin/cgit.cgi/howest/node/node-fedora.git/snapshot/node-fedora-master.tar.gz"
   }
 }
