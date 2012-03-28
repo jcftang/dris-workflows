@@ -41,8 +41,8 @@ exports.createCollection = function(req,res){
 	data.createCollection(req,res);
 }
 exports.getAllSeries = function(){
-	data  = data.getAllSeries(req,res);
-	res.send(data);
+	data.getAllSeries(req,res);
+
 }
 
 exports.getItems = function(req,res){

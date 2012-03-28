@@ -77,7 +77,6 @@ function NotFound(msg){
 
 NotFound.prototype.__proto__ = Error.prototype;
 app.get('/*', function(req, res){
-	console.log(req.url)
 	throw new NotFound;
 });
 
