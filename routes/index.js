@@ -40,8 +40,9 @@ exports.createSeries = function(req,res){
 exports.createCollection = function(req,res){
 	data.createCollection(req,res);
 }
-exports.getAllSeries = function(req,res){
-	data.getAllSeries(req,res);
+exports.getAllSeries = function(){
+	data  = data.getAllSeries(req,res);
+	res.send(data);
 }
 
 exports.getItems = function(req,res){
