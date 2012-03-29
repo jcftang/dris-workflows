@@ -82,7 +82,11 @@ function showItems(items){
 		root = "<li>No items</li>";
 	}
 	for(i in items){
-	  root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+" "+items[i].objectId+"</a></li>";
+		if(items[i].Title){
+			root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+" "+items[i].objectId+"</a></li>";
+		}else{
+			root+= "<li><a href='item/"+items[i]._id+"'>"+items[i]._id+"</a></li>";
+		}
 	}
 	
 	$(".items ul").empty();
@@ -116,20 +120,13 @@ function fillUpForm(data) {
 function loadBtnActions(){
 
 	$("#step2Btn").click(function() {
-
-		$.ajax({
-			url : "items/" + $("#step1 select").val(),
-			cache:false,
-			success : function(data) {
-				showItems(data);
-			},
-			error:function(d,r){
-				console.log(d);
-				console.log(r);
-			}
+		item =$("#step1 option:selected").parent().attr("label");
+		loadData("items/" + $("#step1 select").val(), function(data) {
+			showItems(data)
+			emptyForm();
 		});
 	})
-	
+
 	$("#properties button").click(function() {
 		addInputFieldToFrom(this);
 		
