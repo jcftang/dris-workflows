@@ -1,35 +1,70 @@
 /**
  * @author Matthias Van Wambeke
  */
-
+//starts when the main html file is loaded
 $(document).ready(function() {
 	
-
+	//Hides all steps on the creation and edit page
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-	$("#fileBox").hide();
+	
 	loadBtnActions();
 	backbone();
+	//only executes if the current page is edit; it checks the url for that
 	if(window.location.pathname == "/edit"){
-		loadAllItems();
+		editActions();
 	}
 });
 
+/*
+   Function: editActions
+
+   Loads actions for the edit page
+*/
+function editActions(){
+
+	loadAllItems();
+	//hides the box which allows users to upload files
+	$("#fileBox").hide();
+	$("#step2Btn").click(function() {
+		item = $("#step1 option:selected").parent().attr("label");
+		loadData("items/" + $("#step1 select").val(), function(data) {
+			showItems(data)
+			emptyForm();
+		});
+	})
+	//Highlights the selected item in the list
+	$(".items li").live("click", function() {
+		$(".items li").removeClass("accordion-heading-focus");
+		$(this).addClass("accordion-heading-focus");
+		//highlights the same item in the other steps (when switching between step 2 and 3)
+		$(".items li").eq($(this).index()).addClass("accordion-heading-focus");
+		$("#list2 li").eq($(this).index()).addClass("accordion-heading-focus");
+	})
+
+}
+/*
+   Function: loadAllItems
+
+   loads all items,series and collections and put them into a selectbox with id itemEditSelection
+*/
 function loadAllItems(){
 
-
 	loadAllItemsByType("collections", function(root) {
+		console.log("collections");
 		var list = "<optgroup label='collections'>";
 		list += root;
 		list += "</optgroup>";
 		$("#itemEditSelection").append(list);
 	})
 	loadAllItemsByType("series", function(root) {
+		console.log("series");
 		var list = "<optgroup label='series'>";
 		list += root;
 		list += "</optgroup>";
 		$("#itemEditSelection").append(list);
 	})
 	loadAllItemsByType("items", function(root) {
+		console.log("items");
 		var list = "<optgroup label='items'>";
 		list += root;
 		list += "</optgroup>";
@@ -38,15 +73,30 @@ function loadAllItems(){
 	})
 	
 }
+/*
+   Function: loadAllItemsByType
 
+   loads all the items of a cetain type(series,collections,items)
+
+   Parameters:
+
+      type - type of the item (series,collections or items)
+      callback - the function to return it to
+
+   Returns:
+
+      A list of options for a select control.
+*/
 function loadAllItemsByType(type,callback){
 
 	loadData("/" + type, function(items) {
 		var root = "";
+		//if no items are found it a creates a default option
 		if(items.length == 0) {
 				root = "<option>No "+type+"</option>";
 		}
-
+		
+		//creates several options depending on the type of the data. Example <option>title (author)</option> for series.
 		for(i in items) {
 			root += "<option value='"
 			if(type == "series") {
@@ -66,6 +116,15 @@ function loadAllItemsByType(type,callback){
 
 
 }
+/*
+   Function: showItems
+
+   loads the items that are connected to a certain parentId
+
+   Parameters:
+
+      items - an array which contains all the items to dispay. These items are the parent's object children.
+*/
 function showItems(items){
 	var root = "";
 	if(items.length ==0){
@@ -81,6 +140,20 @@ function showItems(items){
 	
 
 }
+/*
+   Function: loadData
+
+   Gets any data from the server and gives it back
+
+   Parameters:
+
+      link - url where the data should come frome
+      callback - the function to return it to
+
+   Returns:
+
+      The requested data
+*/
 function loadData(link,callback){
 	$.ajax({
 				url : link,
@@ -94,7 +167,16 @@ function loadData(link,callback){
 				}
 			});
 }
+/*
+   Function: loadData
 
+   Adds a input field to the form (gets triggered by option list).
+
+   Parameters:
+
+      array - data from the propertie to display
+
+*/
 function fillUpForm(data) {
 	$(".dataform").empty();
 	for(var prop in data) {
@@ -106,28 +188,17 @@ function fillUpForm(data) {
 
 function loadBtnActions(){
 
-	$("#step2Btn").click(function() {
-		item =$("#step1 option:selected").parent().attr("label");
-		loadData("items/" + $("#step1 select").val(), function(data) {
-			showItems(data)
-			emptyForm();
-		});
-	})
-
+	//Triggers when there is an option/input that needs to be added to the form
 	$("#properties button").click(function() {
 		addInputFieldToFrom(this);
 		
 	});
+	//when clicking a dropdown section it makes it "highlighted"
 	$(".accordion-heading").click(function() {
 		$(".accordion-heading").removeClass("accordion-heading-focus");
 		$(this).addClass("accordion-heading-focus");
 	})
-	$(".items li").live("click",function() {
-		$(".items li").removeClass("accordion-heading-focus");
-		$(this).addClass("accordion-heading-focus");
-		$(".items li").eq($(this).index()).addClass("accordion-heading-focus");
-		$("#list2 li").eq($(this).index()).addClass("accordion-heading-focus");
-	})
+
 	
 	$(".breaddisabled").click(function() {
 		return false
@@ -207,7 +278,6 @@ function loadBtnActions(){
 	$("#createCollection,#createSerie").live("click", function(event) {
 		emptyForm();
 	});	
-	
 
 	$(".nextItemBtn").click(function() {
 		urlNextItem = $(".items li.accordion-heading-focus").next().find("a").attr("href");
@@ -216,29 +286,29 @@ function loadBtnActions(){
 			nextItem = $(".items li:first");
 			urlNextItem = $(".items li:first").find("a").attr("href");
 		}
-			nextItem.siblings().removeClass("accordion-heading-focus");
-			nextItem.addClass("accordion-heading-focus");
-			loadData(urlNextItem, function(data) {
-				fillUpForm(data)
-			});
-		
+		$("#list2 li").eq(nextItem.index()).addClass("accordion-heading-focus");
+		nextItem.siblings().removeClass("accordion-heading-focus");
+		nextItem.addClass("accordion-heading-focus");
+		loadData(urlNextItem, function(data) {
+			fillUpForm(data)
+		});
 	})
-
-
 
 	$(".previousItemBtn").click(function() {
 		urlPrevItem = $(".items li.accordion-heading-focus").prev().find("a").attr("href");
 		prevItem = $(".items li.accordion-heading-focus").prev();
 		if(!prevItem.is("li")) {
 			prevItem = $("#step2Info  .items li:last");
-			urlPrevItem = $("#step2Info .items li:last").find("a").attr("href");	
+			urlPrevItem = $("#step2Info .items li:last").find("a").attr("href");
 		}
+		$("#list2 li").eq(prevItem.index()).addClass("accordion-heading-focus");
 		prevItem.siblings().removeClass("accordion-heading-focus");
 		prevItem.addClass("accordion-heading-focus");
-			loadData(urlPrevItem, function(data) {
-				fillUpForm(data)
-			});
+		loadData(urlPrevItem, function(data) {
+			fillUpForm(data)
+		});
 	})
+
 
 }
 function emptyForm(){
@@ -256,6 +326,7 @@ function addInputFieldToFrom(btn){
 }
 
 function loadAllImages(id){
+	$("#imageContainer").empty();
 	loadData("images/" + id + "/list", function(data) {
 		for(var file in data) {
 			$("#imageContainer").append("<img src='/image/" + data[file]._id + "/" + data[file].filename + "'>")
@@ -276,30 +347,51 @@ function backbone(){
 	  },
 	
 	  step1: function() {
+	  	firstLoad = false;
 	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	    $("#step1,#step1Info").show();
 	  },
 	
 	  step2: function() {
-	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-	    $("#step2,#step2Info").show();
+	  
+	  	if(w.firstLoad == false){
+	  		$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+	        $("#step2,#step2Info").show();
+	  	}else{
+	  		backFirstStep();
+	  	}
+	  	
 	    
 	  },
 	  step3: function(){
+	  	if(w.firstLoad == false){
 	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	    $("#step3,#step3Info").show();
+	    }else{
+	  		backFirstStep();
+	  	}
 
 	  },
 	  step4: function() {
+	  	if(w.firstLoad == false){
 	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	    $("#step4,#step4Info").show();
+	    }else{
+	  		backFirstStep();
+	  	}
 	    
-	  }
+	  },
+	  firstLoad:true
 	
 	});
 	var w = new Workspace();
 	
 	Backbone.history.start();
-
+	
+	function backFirstStep(){
+	  		w.route("step1","step1")
+	  		w.navigate("#step1")
+	  		w.firstLoad = false;
+	}
 	
 }
