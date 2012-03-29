@@ -24,10 +24,10 @@ div.container
                   h2  Collection 
                   fieldset
                     .control-group
-                       label.control-label(for='name') Name
+                       label.control-label(for='collectionname') Title
                        .controls
                          label.control-label
-                           input#name(type='text', name='name')
+                           input#collectionname(type='text', name='Title')
                     .dataform
                   .form-actions
                     ul.pager
@@ -46,10 +46,10 @@ div.container
                          label.control-label
                            select.seriesCollection.chzn-select(name="collection", data-placeholder="Choose an collection...")
                     .control-group
-                       label.control-label(for='name') Name
+                       label.control-label(for='seriename') Name
                        .controls
                          label.control-label
-                           input#name(type='text', name='name')
+                           input#seriename(type='text', name='Title')
                     .control-group
                        label.control-label(for='author') Author
                        .controls
@@ -74,18 +74,7 @@ div.container
                     .control-group
                        label.control-label(for='series') What is the parent?
                        .controls
-                         
-
-                         label(for='series') Series
-                           input(type="radio",name="collection",value="series") 
-                         select#seriesItemCreation(name="serieSelect")
-                         label(for='collection') Collection
-                           input(type="radio",name="collection",value="collections") 
-                         select.seriesCollection(name="collectionSelect")
-                         label(for='collection') Items
-                           input(type="radio",name="collection",value="items")
-                         select.itemItems(name="itemSelect")
-
+                         select#itemEditSelection.chzn-select(data-placeholder="Choose an option...", name="collection")
                 .dataform
                 .form-actions
                   ul.pager

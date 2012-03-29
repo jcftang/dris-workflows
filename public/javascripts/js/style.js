@@ -1,5 +1,5 @@
 /**
- * @author mvanwamb
+ * @author Matthias Van Wambeke
  */
 
 $(document).ready(function() {
@@ -16,7 +16,6 @@ $(document).ready(function() {
 
 function loadAllItems(){
 
-	
 
 	loadAllItemsByType("collections", function(root) {
 		var list = "<optgroup label='collections'>";
@@ -60,10 +59,10 @@ function loadAllItemsByType(type,callback){
 		for(i in items) {
 			root += "<option value='"
 			if(type == "series") {
-				root += items[i]._id + "'>" + items[i].name + " (" + items[i].author+")";
+				root += items[i]._id + "'>" + items[i].Title + " (" + items[i].author+")";
 			}
 			if(type == "collections") {
-				root += items[i]._id + "'>" + items[i].name;
+				root += items[i]._id + "'>" + items[i].Title;
 			}
 				if(type == "items") {
 				root += items[i]._id + "'>" + items[i].Title + " ("+items[i].objectId+")";
@@ -82,11 +81,8 @@ function showItems(items){
 		root = "<li>No items</li>";
 	}
 	for(i in items){
-		if(items[i].Title){
-			root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+" "+items[i].objectId+"</a></li>";
-		}else{
-			root+= "<li><a href='item/"+items[i]._id+"'>"+items[i]._id+"</a></li>";
-		}
+		root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+" "+items[i]._id+"</a></li>";
+
 	}
 	
 	$(".items ul").empty();
@@ -205,21 +201,10 @@ function loadBtnActions(){
 	});
 
 	$("#createItems").live("click", function(event) {
-		loadAllItemsByType("series",function(root){
-			$("#seriesItemCreation").empty();
-			$("#seriesItemCreation").append(root);
-			$("#seriesItemCreation").chosen();
-		})
-
-		loadAllItemsByType("items", function(root) {
-			$(".itemItems").empty();
-			$(".itemItems").append(root);
-			$(".itemItems").chosen();
-		})
-
+		loadAllItems();
 		emptyForm();
 	});
-	$("#createSerie,#createItems").live("click", function(event) {
+	$("#createSerie").live("click", function(event) {
 		loadAllItemsByType("collections",function(root){
 			$(".seriesCollection").empty();
 			$(".seriesCollection").append(root);
