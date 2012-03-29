@@ -58,7 +58,6 @@ function loadAllItemsByType(type,callback){
 		}
 
 		for(i in items) {
-			console.log(items);
 			root += "<option value='"
 			if(type == "series") {
 				root += items[i]._id + "'>" + items[i].name + " (" + items[i].author+")";
@@ -94,6 +93,7 @@ function showItems(items){
 function loadData(link,callback){
 	$.ajax({
 				url : link,
+				cache:false,
 				success : function(data) {
 					callback(data);
 				},
@@ -119,6 +119,7 @@ function loadBtnActions(){
 
 		$.ajax({
 			url : "items/" + $("#step1 select").val(),
+			cache:false,
 			success : function(data) {
 				showItems(data);
 			},
@@ -258,7 +259,6 @@ function loadBtnActions(){
 		if(!prevItem.is("li")) {
 			prevItem = $("#step2Info  .items li:last");
 			urlPrevItem = $("#step2Info .items li:last").find("a").attr("href");	
-			console.log(prevItem);		
 		}
 		prevItem.siblings().removeClass("accordion-heading-focus");
 		prevItem.addClass("accordion-heading-focus");
