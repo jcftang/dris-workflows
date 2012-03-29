@@ -3,32 +3,58 @@
  */
 
 $(document).ready(function() {
+	
 
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	$("#fileBox").hide();
 	loadBtnActions();
 	backbone();
-	$("#step2Btn").click(function() {
-
-		$.ajax({
-			url : "items/" + $("#step1 select").val(),
-			success : function(data) {
-				showItems(data);
-			},
-			error:function(d,r){
-				console.log(d);
-				console.log(r);
-			}
-		});
-	})
+	if(window.location.pathname == "/edit"){
+		loadAllItems();
+	}
 });
+
+function loadAllItems(){
+
+	
+
+	loadAllItemsByType("collections", function(root) {
+		var list = "<optgroup label='collections'>";
+		list += root;
+		list += "</optgroup>";
+		$("#itemEditSelection").append(list);
+	})
+	loadAllItemsByType("series", function(root) {
+		var list = "<optgroup label='series'>";
+		list += root;
+		list += "</optgroup>";
+		$("#itemEditSelection").append(list);
+	})
+	loadAllItemsByType("items", function(root) {
+		var list = "<optgroup label='items'>";
+		list += root;
+		list += "</optgroup>";
+		$("#itemEditSelection").append(list);
+		$("#itemEditSelection").chosen();
+	})
+	
+}
 
 function loadAllItemsByType(type,callback){
 
 	loadData("/" + type, function(items) {
 		var root = "";
 		if(items.length == 0) {
-			root = "<option>No series</option>";
+			if(type == "series") {
+				root = "<option>No series</option>";
+			}
+			if(type == "collections") {
+				root = "<option>No collections</option>";
+			}
+				if(type == "items") {
+				root = "<option>No items</option>";
+			}
+			
 		}
 
 		for(i in items) {
@@ -89,6 +115,20 @@ function fillUpForm(data) {
 
 function loadBtnActions(){
 
+	$("#step2Btn").click(function() {
+
+		$.ajax({
+			url : "items/" + $("#step1 select").val(),
+			success : function(data) {
+				showItems(data);
+			},
+			error:function(d,r){
+				console.log(d);
+				console.log(r);
+			}
+		});
+	})
+	
 	$("#properties button").click(function() {
 		addInputFieldToFrom(this);
 		
@@ -139,6 +179,7 @@ function loadBtnActions(){
 		loadAllItemsByType("series",function(root){
 			$("#seriesItemCreation").empty();
 			$("#seriesItemCreation").append(root);
+			$("#seriesItemCreation").chosen();
 		})
 	})
 
@@ -169,11 +210,13 @@ function loadBtnActions(){
 		loadAllItemsByType("series",function(root){
 			$("#seriesItemCreation").empty();
 			$("#seriesItemCreation").append(root);
+			$("#seriesItemCreation").chosen();
 		})
 
 		loadAllItemsByType("items", function(root) {
 			$(".itemItems").empty();
 			$(".itemItems").append(root);
+			$(".itemItems").chosen();
 		})
 
 		emptyForm();
@@ -182,6 +225,7 @@ function loadBtnActions(){
 		loadAllItemsByType("collections",function(root){
 			$(".seriesCollection").empty();
 			$(".seriesCollection").append(root);
+			$(".seriesCollection").chosen();
 		})
 		emptyForm();
 	});
@@ -194,26 +238,33 @@ function loadBtnActions(){
 	$(".nextItemBtn").click(function() {
 		urlNextItem = $(".items li.accordion-heading-focus").next().find("a").attr("href");
 		nextItem = $(".items li.accordion-heading-focus").next();
-		if(nextItem.is("li")) {
+		if(!nextItem.is("li")) {
+			nextItem = $(".items li:first");
+			urlNextItem = $(".items li:first").find("a").attr("href");
+		}
 			nextItem.siblings().removeClass("accordion-heading-focus");
 			nextItem.addClass("accordion-heading-focus");
 			loadData(urlNextItem, function(data) {
 				fillUpForm(data)
 			});
-		}
+		
 	})
 
 
+
 	$(".previousItemBtn").click(function() {
-		urlNextItem = $(".items li.accordion-heading-focus").prev().find("a").attr("href");
+		urlPrevItem = $(".items li.accordion-heading-focus").prev().find("a").attr("href");
 		prevItem = $(".items li.accordion-heading-focus").prev();
-		if(prevItem.is("li")) {
-			prevItem.siblings().removeClass("accordion-heading-focus");
-			prevItem.addClass("accordion-heading-focus");
-			loadData(urlNextItem, function(data) {
+		if(!prevItem.is("li")) {
+			prevItem = $("#step2Info  .items li:last");
+			urlPrevItem = $("#step2Info .items li:last").find("a").attr("href");	
+			console.log(prevItem);		
+		}
+		prevItem.siblings().removeClass("accordion-heading-focus");
+		prevItem.addClass("accordion-heading-focus");
+			loadData(urlPrevItem, function(data) {
 				fillUpForm(data)
 			});
-		}
 	})
 
 }
@@ -243,10 +294,11 @@ function backbone(){
 
 	var Workspace = Backbone.Router.extend({
 	  routes: {
+	  	"edit":         "step2",
 	    "step1":        "step1",    // #help
 	    "step2":        "step2",  // #search/kiwis
 	    "step3":        "step3", 
-	    "step4":        "step4", 
+	    "step4":        "step4"
 	   
 	  },
 	
@@ -269,7 +321,7 @@ function backbone(){
 	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	    $("#step4,#step4Info").show();
 	    
-	  },
+	  }
 	
 	});
 	var w = new Workspace();

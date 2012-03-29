@@ -21,11 +21,7 @@ div.container
           .span7
             form.form-horizontal
               legend Make a choice
-              select
-                option --Series--
-                - series.forEach(function(item){
-                     option(value="#{item._id}") #{item.name} 
-                - })
+              select#itemEditSelection.chzn-select(data-placeholder="Choose an option...")
               .form-actions
                 ul.pager
                   li
