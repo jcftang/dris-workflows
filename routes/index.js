@@ -2,9 +2,9 @@
 /*
  * GET home page.
  */
-var data = require("../lib/dri.js");
-var admin = require("../lib/admin.js");
+var data = require("dri");
 var fedora = require("fedora");
+var admin = require("../lib/admin");
 
 exports.home = function(req, res){
   res.render('index', {
