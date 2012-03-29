@@ -44,16 +44,7 @@ function loadAllItemsByType(type,callback){
 	loadData("/" + type, function(items) {
 		var root = "";
 		if(items.length == 0) {
-			if(type == "series") {
-				root = "<option>No series</option>";
-			}
-			if(type == "collections") {
-				root = "<option>No collections</option>";
-			}
-				if(type == "items") {
-				root = "<option>No items</option>";
-			}
-			
+				root = "<option>No "+type+"</option>";
 		}
 
 		for(i in items) {
