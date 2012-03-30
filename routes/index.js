@@ -108,10 +108,25 @@ exports.create = function(req,res){
 }
   
 exports.adminMain = function(req,res){
-	admin.getSeries(req,res);
+	data.getAllRecordsByType("series",function(array){
+		res.render('admin', 
+			{title : "Admin series"
+			, id:"getSeries"
+			, series:array
+			, layout:"_layouts/layoutAdmin"}
+		)
+	});
+
 }
 exports.adminSerie = function(req,res){
-	admin.getItems(req,res);
+	data.getItems(req.params.id,function(array){
+		res.render('_includes/adminItems', 
+			{title: "Admin series"
+			, id: "getSeries"
+			, series: array
+			, layout: "_layouts/layoutAdmin"}
+		)
+	});
 }
 
 exports.removeItem = function(req,res){
