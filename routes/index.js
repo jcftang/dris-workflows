@@ -127,10 +127,25 @@ exports.create = function(req,res){
 }
   
 exports.adminMain = function(req,res){
-	admin.getSeries(req,res);
+	data.getAllRecordsByType("serie",function(array){
+		res.render('admin', 
+			{title : "Admin series"
+			, id:"getSeries"
+			, series:array
+			, layout:"_layouts/layoutAdmin"}
+		)
+	});
+
 }
 exports.adminSerie = function(req,res){
-	admin.getItems(req,res);
+	data.getItems(req.params.id,function(array){
+		res.render('_includes/adminItems', 
+			{title: "Admin series"
+			, id: "getSeries"
+			, series: array
+			, layout: "_layouts/layoutAdmin"}
+		)
+	});
 }
 
 exports.removeItem = function(req,res){
@@ -140,15 +155,16 @@ exports.removeItem = function(req,res){
 		console.log(err);
 	})
 }
-exports.fedora = function(req,res){
-	//fedora.getFedoraObjects(req,res);
-}
-exports.fedoraList = function(req,res){
-	//fedora.getFedoraList(req,res);
-}
 
 exports.fedoraCreateObject = function(req,res){
-	admin.approveItem(req,res);
+	data.approveItem(req.params.id, "cfedoraLib",function(response){
+		//success
+		res.send(response);
+	}, function(e){
+		//error
+		res.send(e);
+		console.log(e);
+	});
 }
 
 

@@ -14,13 +14,16 @@ $(document).ready(function() {
 		case "approve":
 			console.log("Approve");
 			$(this).prev().val("-1");
-			('#checkAll').removeAttr("checked");
+			approveAllSelected();
+			if (!('#checkAll:checkbox[checked]').length) {
+				('#checkAll').removeAttr("checked");
+			}
 		  break;
 		case "remove":
 			console.log("Remove All");
 			removeAllSelected();
 			$(this).prev().val("-1");
-			('#checkAll').removeAttr("checked");
+			//('#checkAll').removeAttr("checked");
 			
 		  break;
 		default:
@@ -52,6 +55,19 @@ $(document).ready(function() {
 		
 });
 
+function approveAllSelected(){
+	var confirmDialog= confirm("Are you sure you want to continue?\nThis cannot be undone!");
+	if (confirmDialog == true)
+	{
+		$('#series-table tbody input:checked').each(function() {
+			console.log($(this).attr("data-id"));
+			approveItem($(this).attr("data-id"), function(id){
+				$("#"+id).remove();
+			})
+		});
+	}
+
+}
 function removeAllSelected(){
 	var confirmDialog= confirm("Are you sure you want to continue?\nThis cannot be undone!");
 	if (confirmDialog == true)
