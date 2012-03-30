@@ -70,7 +70,7 @@ app.get('/', function(req, res){
 	res.redirect('/home');
 });
 
-
+/*
 function NotFound(msg){
 	this.name = 'NotFound';
 	Error.call(this, msg);
@@ -81,7 +81,7 @@ function NotFound(msg){
 NotFound.prototype.__proto__ = Error.prototype;
 app.get('/*', function(req, res){
 	throw new NotFound;
-});
+});*/
 
 module.exports = app;
 

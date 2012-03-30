@@ -52,28 +52,29 @@ function editActions(){
 */
 function loadAllItems(){
 
+
 	loadAllItemsByType("collections", function(root) {
-		console.log("collections");
 		var list = "<optgroup label='collections'>";
 		list += root;
 		list += "</optgroup>";
 		$("#itemEditSelection").append(list);
+		loadAllItemsByType("series", function(root) {
+			var list = "<optgroup label='series'>";
+			list += root;
+			list += "</optgroup>";
+			$("#itemEditSelection").append(list);
+			loadAllItemsByType("items", function(root) {
+				var list = "<optgroup label='items'>";
+				list += root;
+				list += "</optgroup>";
+				$("#itemEditSelection").append(list);
+				$("#itemEditSelection").chosen();
+			})
+		})
 	})
-	loadAllItemsByType("series", function(root) {
-		console.log("series");
-		var list = "<optgroup label='series'>";
-		list += root;
-		list += "</optgroup>";
-		$("#itemEditSelection").append(list);
-	})
-	loadAllItemsByType("items", function(root) {
-		console.log("items");
-		var list = "<optgroup label='items'>";
-		list += root;
-		list += "</optgroup>";
-		$("#itemEditSelection").append(list);
-		$("#itemEditSelection").chosen();
-	})
+
+
+	
 	
 }
 /*
@@ -251,7 +252,7 @@ function loadBtnActions(){
 	})
 
 	$("#step3Info .items ul li a").live("click", function(event) {
-
+		console.log(this);
 		event.preventDefault();
 		loadData(this.pathname,function(data){
 			fillUpForm(data)
@@ -330,7 +331,9 @@ function addInputFieldToFrom(btn){
 
 function loadAllImages(id){
 	$("#imageContainer").empty();
+	console.log("id");
 	loadData("images/" + id + "/list", function(data) {
+		console.log(data);
 		for(var file in data) {
 			$("#imageContainer").append("<img src='/image/" + data[file]._id + "/" + data[file].filename + "'>")
 		}

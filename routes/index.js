@@ -42,41 +42,58 @@ exports.all=function(req,res){
 	});
 }
 
-exports.createItem = function(req,res){
-	data.createitem(req,function(){
-			res.render('_includes/complete', {
-				title : "Complete",
-				id : "complete",
-				item : "Everything"
-			})
-	});
+
+exports.createItem = function(req, res) {
+	req.body.parentId = req.body.collection
+	delete req.body.collection;
+	console.log(req.body)
+
+	var amount = req.body.amount;
+	for(var i = 0; i < amount; i++) {
+		req.body.objectId = i +1; 
+		data.createItem(req.body, function() {
+		});
+	}
+	res.render('_includes/complete', {
+		title : "Complete",
+		id : "complete",
+		item : "Everything"
+	})
+
 }
-exports.createSeries = function(req,res){
-	data.createSeries(req,function(){
-		res.send(0);
+
+
+exports.createSeries = function(req, res) {
+	data.createSeries(req.body, function() {
+		res.redirect('/create');
+	}, function(err) {
+		console.log(err);
 	});
 }
 
+
 exports.createCollection = function(req,res){
-	data.createCollection(req,function(){
+	data.createCollection(req.body,function(){
 		res.redirect('/create');
+	},function(err){
+		console.log(err);
 	});
 }
 exports.getAllSeries = function(req,res){
-	data.getAllSeries(function(arr){
+	data.getAllRecordsByType("serie",function(arr){
 		res.send(arr);
 	});
 
 }
 exports.getAllCollections = function(req,res){
-	data.getAllCollections(function(arr){
+	data.getAllRecordsByType("collection",function(arr){
 		res.send(arr);
 	});
 
 }
 
-exports.getAllItems= function(req,res){
-	data.getAllItems(function(arr){
+exports.getAllItems = function(req,res){
+	data.getAllRecordsByType("item",function(arr){
 		res.send(arr);
 	});
 
@@ -91,11 +108,13 @@ exports.getItems = function(req,res){
 exports.getItem = function(req,res){
 	data.getItem(req.params.id,function(array){
 		res.send(array);
+	},function(err){
+		console.log(err);
 	});
 }
 
 exports.getItemImages = function(req,res){
-	data.findImages(req.params.id,function(files){
+	data.findMediaItem(req.params.id,function(files){
 		res.send(files);
 	});
 }
@@ -117,6 +136,8 @@ exports.adminSerie = function(req,res){
 exports.removeItem = function(req,res){
 	data.removeItem(req.params.id,function(){
 		res.send("0");
+	},function(err){
+		console.log(err);
 	})
 }
 exports.fedora = function(req,res){
