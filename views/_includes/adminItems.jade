@@ -29,7 +29,7 @@ div.container
                     - series.forEach(function(item){
                     tr(id="#{item._id}")
                       td
-                        input(type="checkbox",data-id="#{item.objectId}")
+                        input(type="checkbox",data-id="#{item._id}")
                       td #{item.objectId}
                       td 
                         a(href="#") #{item.Title}

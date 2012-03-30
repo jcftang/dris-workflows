@@ -132,6 +132,8 @@ exports.adminSerie = function(req,res){
 exports.removeItem = function(req,res){
 	data.removeItem(req.params.id,function(){
 		res.send("0");
+	}, function(e){
+		console.log(e);
 	})
 }
 
