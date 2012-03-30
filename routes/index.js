@@ -126,10 +126,10 @@ exports.create = function(req,res){
   });
 }
   
-exports.adminMain = function(req,res){
-	data.getAllRecordsByType("serie",function(array){
-		res.render('admin', 
-			{title : "Admin series"
+exports.adminCollections= function(req,res){
+	data.getAllRecordsByType("collection",function(array){
+		res.render('adminCollections', 
+			{title : "Collections - Admin - DRIS Workflows"
 			, id:"getSeries"
 			, series:array
 			, layout:"_layouts/layoutAdmin"}
@@ -137,10 +137,21 @@ exports.adminMain = function(req,res){
 	});
 
 }
-exports.adminSerie = function(req,res){
+exports.adminSeries= function(req,res){
 	data.getItems(req.params.id,function(array){
-		res.render('_includes/adminItems', 
-			{title: "Admin series"
+		res.render('adminSeries', 
+			{title : "Series - Admin - DRIS Workflows"
+			, id:"getSeries"
+			, series:array
+			, layout:"_layouts/layoutAdmin"}
+		)
+	});
+
+}
+exports.adminItems = function(req,res){
+	data.getItems(req.params.id,function(array){
+		res.render('adminItems', 
+			{title: "items - Admin - DRIS Workflows"
 			, id: "getSeries"
 			, series: array
 			, layout: "_layouts/layoutAdmin"}

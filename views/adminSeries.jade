@@ -1,0 +1,49 @@
+include _includes/header
+div.container
+      ul.breadcrumb
+        li.active Series
+      .dummy
+      .row
+        #step1
+          .span12
+            form.form-horizontal
+              legend All the items
+              .control-group
+                select.span2.bulk-action
+                  option(value="-1") --Bulk action--
+                  option(value="approve") Approve
+                  option(value="remove") Remove
+                input#bulk-execute.btn(type="button",value="Do eet!")
+                table#series-table.table.table-striped.table-bordered
+                  thead
+                    tr
+                      th.span1
+                        input#checkAll(type="checkbox")
+                      th Title
+                      th Author
+                      th.span1 Approve
+                      th.span1 Remove
+                  tbody
+                    - series.forEach(function(item){
+                    tr(id="#{item._id}")
+                      td
+                        input(type="checkbox",data-id="#{item._id}")
+                      td
+                        - type = item.type
+                        - if(type == 'item')
+                          i.icon-file
+                          &nbsp;
+                          a(href="#") #{item.Title}
+                        -else
+                          i.icon-folder-open
+                          &nbsp;
+                          a(href="/admin/items/#{item._id}") #{item.Title}
+                      td #{item.author}
+                      td
+                        input.btn.btn-success.btn-mini.approveItem(type="button",value="Approve",data-id="#{item._id}")
+                      td
+                        input.btn.btn-danger.btn-mini.removeItem(type="button",value="Remove",data-id="#{item._id}")
+                    - })
+                  
+                input#testing.btn(type="button",value="Do something")
+      include _includes/footer
