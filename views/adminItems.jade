@@ -1,7 +1,8 @@
 include _includes/header
 div.container
       ul.breadcrumb
-        li.active Series
+        li.active
+          a(href='/admin') Series
       .dummy
       .row
         #step1
@@ -19,8 +20,9 @@ div.container
                     tr
                       th.span1
                         input#checkAll(type="checkbox")
+                      th.span1 ID
                       th Title
-                      th Author
+                      th Subtitle
                       th.span1 Approve
                       th.span1 Remove
                   tbody
@@ -28,14 +30,13 @@ div.container
                     tr(id="#{item._id}")
                       td
                         input(type="checkbox",data-id="#{item._id}")
+                      td #{item.objectId}
                       td 
-                        a(href="/admin/#{item._id}") #{item.Title}
-                      td #{item.author}
+                        a(href="#") #{item.Title}
+                      td #{item.Subtitle}
                       td
                         input.btn.btn-success.btn-mini.approveItem(type="button",value="Approve",data-id="#{item._id}")
                       td
                         input.btn.btn-danger.btn-mini.removeItem(type="button",value="Remove",data-id="#{item._id}")
                     - })
-                  
-                input#testing.btn(type="button",value="Do something")
       include _includes/footer

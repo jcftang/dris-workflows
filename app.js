@@ -39,8 +39,9 @@ app.error(function(err, req, res, next){
 
 
 // Routes
-app.get('/admin',routes.adminMain);
-app.get('/admin/:id',routes.adminSerie);
+app.get('/admin',routes.adminCollections);
+app.get('/admin/series/:id',routes.adminSeries);
+app.get('/admin/items/:id',routes.adminItems);
 
 app.get('/all',routes.all);
 app.get('/create',routes.create);
