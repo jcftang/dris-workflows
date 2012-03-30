@@ -1,14 +1,35 @@
 include _includes/header
 div.container
-	p List of all binary blobs in mongodb, this page is just for demonstration purposes.
-	.row
+      ul.breadcrumb
+        li.active Media
+      .dummy
+      .row
+        #step1
+          .span12
+            form.form-horizontal
+              legend All the items
+              .control-group
+                select.span2.bulk-action
+                  option(value="-1") --Bulk action--
+                  option(value="remove") Remove
+                input#bulk-execute.btn(type="button",value="Do it!")
+                table#series-table.table.table-striped.table-bordered
+                  thead
+                    tr
+                      th.span1
+                        input#checkAll(type="checkbox")
+                      th Title
+                      th Author
+                      th.span1 Remove
+                  tbody
+                    - each val, key in items
+                        tr(id="#{val._id}")
+                          td 
+                            input(type="checkbox",data-id="#{val._id}")
+                          td 
+                            a(href="media/#{val._id}/remove") #{val._id}
+                          td #{val.filename}
+                          td
+                            a.btn.btn-danger.btn-mini.removeItem(href="media/#{val._id}/remove") Remove
+      include _includes/footer
 
-	div.span12
-	table(class="table table-bordered")
-		tbody
-			each val, key in items
-				tr
-					td #{key}:
-					td #{val.filename}
-
-	include _includes/footer

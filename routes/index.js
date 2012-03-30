@@ -156,6 +156,13 @@ exports.removeItem = function(req,res){
 	})
 }
 
+exports.removeMedia = function(req,res){
+	data.removeMedia(req.params.id,function(id){
+		res.send(id)
+	},function(err){
+		console.log(err);
+	})
+}
 exports.fedoraCreateObject = function(req,res){
 	data.approveItem(req.params.id, "cfedoraLib",function(response){
 		//success

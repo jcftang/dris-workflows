@@ -51,6 +51,7 @@ app.get('/image/:name/:id', routes.image);
 app.get('/images/:id/list',routes.getItemImages);
 app.get('/item/:id',routes.getItem);
 app.get('/item/:id/remove',routes.removeItem);
+app.get('/media/:id/remove',routes.removeMedia);
 app.get('/items/:id',routes.getItems);
 app.get('/series',routes.getAllSeries); //Returns all the series
 app.get('/collections',routes.getAllCollections);

@@ -12,8 +12,54 @@ $(document).ready(function() {
 	if(window.location.pathname == "/edit"){
 		editActions();
 	}
+	if(window.location.pathname == "/all"){
+		allActions();
+	}
 });
 
+function allActions(){
+	$('#checkAll').click(function () {
+		$('#series-table').find(':checkbox').attr('checked', this.checked);
+	});
+	$('#bulk-execute').click(function () {
+		var action = $(this).prev().val();
+		switch(action)
+		{
+		case "remove":
+			removeAllSelected();
+			$(this).prev().val("-1");
+		  break;
+		default:
+			console.log("Select an action");
+		}
+	});
+	
+}
+function removeAllSelected(){
+	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
+	if (confirmDialog == true)
+	{
+		$('tbody input:checked').each(function() {
+			console.log($(this).attr("data-id"));
+			removeItem($(this).attr("data-id"), function(id){
+				$("#"+id).remove();
+			})
+		});
+	}
+
+}
+function removeItem(id, callback){
+	$.ajax({
+		url : "/media/"+id+"/remove",
+		success : function(data) {
+			callback(id);
+		},
+		error:function(d,r){
+			console.log(d);
+			console.log(r);
+		}
+	});
+}
 /*
    Function: editActions
 
@@ -251,7 +297,7 @@ function loadBtnActions(){
 		loadAllImages($("input[name='_id']").val());
 	})
 
-	$("#step3Info .items ul li a").live("click", function(event) {
+	$("#step3Info .items #list2 li a").live("click", function(event) {
 		console.log(this);
 		event.preventDefault();
 		loadData(this.pathname,function(data){
@@ -331,7 +377,7 @@ function addInputFieldToFrom(btn){
 
 function loadAllImages(id){
 	$("#imageContainer").empty();
-	console.log("id");
+	console.log(id);
 	loadData("images/" + id + "/list", function(data) {
 		console.log(data);
 		for(var file in data) {
