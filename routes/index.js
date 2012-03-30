@@ -3,7 +3,6 @@
  */
 var data = require("dri");
 var fedora = require("fedora");
-var admin = require("../lib/admin");
 
 exports.home = function(req, res) {
 	res.render('index', {
