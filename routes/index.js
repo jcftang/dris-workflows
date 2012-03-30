@@ -2,9 +2,9 @@
 /*
  * GET home page.
  */
-var data = require("../lib/dri.js");
-var admin = require("../lib/admin.js");
+var data = require("dri");
 var fedora = require("fedora");
+var admin = require("../lib/admin");
 
 exports.home = function(req, res){
   res.render('index', {
@@ -16,7 +16,7 @@ exports.home = function(req, res){
 
 exports.edit = function(req, res){
 
-	data.edit(function(array) {
+	data.getAllRecordsByType("serie",function(array) {
 		res.render('edit', {
 			title : "Edit",
 			id : "edit",
@@ -35,7 +35,7 @@ exports.image=function(req,res){
 }
 
 exports.all=function(req,res){
-	data.getAll(function(arr){
+	data.getAllMediaItems(function(arr){
 		res.render('all', {
 				items:arr, id:"all", title:"All"
 			})
