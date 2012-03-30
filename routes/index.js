@@ -108,7 +108,7 @@ exports.create = function(req,res){
 }
   
 exports.adminMain = function(req,res){
-	data.getAllRecordsByType("series",function(array){
+	data.getAllRecordsByType("serie",function(array){
 		res.render('admin', 
 			{title : "Admin series"
 			, id:"getSeries"
@@ -134,15 +134,16 @@ exports.removeItem = function(req,res){
 		res.send("0");
 	})
 }
-exports.fedora = function(req,res){
-	//fedora.getFedoraObjects(req,res);
-}
-exports.fedoraList = function(req,res){
-	//fedora.getFedoraList(req,res);
-}
 
 exports.fedoraCreateObject = function(req,res){
-	admin.approveItem(req,res);
+	data.approveItem(req.params.id, "cfedoraLib",function(response){
+		//success
+		res.send(response);
+	}, function(e){
+		//error
+		res.send(e);
+		console.log(e);
+	});
 }
 
 
