@@ -1,7 +1,6 @@
 /**
  * @author Matthias Van Wambeke
- */
-//starts when the main html file is loaded
+ *///starts when the main html file is loaded
 $(document).ready(function() {
 	
 	//Hides all steps on the creation and edit page
@@ -32,6 +31,8 @@ function editActions(){
 			emptyForm();
 		});
 	})
+	
+	
 	//Highlights the selected item in the list
 	$(".items li").live("click", function() {
 		$(".items li").removeClass("accordion-heading-focus");
@@ -40,6 +41,8 @@ function editActions(){
 		$(".items li").eq($(this).index()).addClass("accordion-heading-focus");
 		$("#list2 li").eq($(this).index()).addClass("accordion-heading-focus");
 	})
+	
+	
 
 }
 /*
@@ -334,64 +337,45 @@ function loadAllImages(id){
 	});
 }
 	
-function backbone(){
+
+function backbone() {
 
 	var Workspace = Backbone.Router.extend({
-	  routes: {
-	  	"edit":         "step2",
-	    "step1":        "step1",    // #help
-	    "step2":        "step2",  // #search/kiwis
-	    "step3":        "step3", 
-	    "step4":        "step4"
-	   
-	  },
-	
-	  step1: function() {
-	  	firstLoad = false;
-	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-	    $("#step1,#step1Info").show();
-	  },
-	
-	  step2: function() {
-	  
-	  	if(w.firstLoad == false){
-	  		$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-	        $("#step2,#step2Info").show();
-	  	}else{
-	  		backFirstStep();
-	  	}
-	  	
-	    
-	  },
-	  step3: function(){
-	  	if(w.firstLoad == false){
-	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-	    $("#step3,#step3Info").show();
-	    }else{
-	  		backFirstStep();
-	  	}
+		routes : {
+			"edit" : "step2",
+			"step1" : "step1", // #help
+			"step2" : "step2", // #search/kiwis
+			"step3" : "step3",
+			"step4" : "step4"
 
-	  },
-	  step4: function() {
-	  	if(w.firstLoad == false){
-	  	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-	    $("#step4,#step4Info").show();
-	    }else{
-	  		backFirstStep();
-	  	}
-	    
-	  },
-	  firstLoad:true
-	
+		},
+
+		step1 : function() {
+
+			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+			$("#step1,#step1Info").show();
+		},
+		step2 : function() {
+
+			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+			$("#step2,#step2Info").show();
+
+		},
+		step3 : function() {
+
+			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+			$("#step3,#step3Info").show();
+
+		},
+		step4 : function() {
+
+			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+			$("#step4,#step4Info").show();
+
+		}
 	});
 	var w = new Workspace();
-	
+
 	Backbone.history.start();
-	
-	function backFirstStep(){
-	  		w.route("step1","step1")
-	  		w.navigate("#step1")
-	  		w.firstLoad = false;
-	}
-	
+
 }

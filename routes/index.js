@@ -53,7 +53,7 @@ exports.createItem = function(req,res){
 }
 exports.createSeries = function(req,res){
 	data.createSeries(req,function(){
-		res.redirect('/create');
+		res.send(0);
 	});
 }
 
