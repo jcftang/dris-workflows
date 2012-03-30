@@ -138,7 +138,7 @@ exports.adminCollections= function(req,res){
 
 }
 exports.adminSeries= function(req,res){
-	data.getAllRecordsByType("serie",function(array){
+	data.getItems(req.params.id,function(array){
 		res.render('adminSeries', 
 			{title : "Series - Admin - DRIS Workflows"
 			, id:"getSeries"

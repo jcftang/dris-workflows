@@ -28,6 +28,8 @@ div.container
                       td
                         input(type="checkbox",data-id="#{item._id}")
                       td 
+                        i.icon-folder-open
+                        &nbsp;
                         a(href="/admin/series/#{item._id}") #{item.Title}
                       td
                         input.btn.btn-success.btn-mini.approveItem(type="button",value="Approve",data-id="#{item._id}")
