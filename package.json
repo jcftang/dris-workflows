@@ -8,5 +8,8 @@
     , "passport": ">= 0.1.7"
     , "fedora": "http://howest-server.tchpc.tcd.ie/cgi-bin/cgit.cgi/howest/node/node-fedora.git/snapshot/node-fedora-master.tar.gz"
     , "dri": "http://howest-server.tchpc.tcd.ie/cgi-bin/cgit.cgi/howest/node/node-dri.git/snapshot/node-dri-master.tar.gz"
+  },
+  "scripts": {
+    "test": "expresso"
   }
 }
