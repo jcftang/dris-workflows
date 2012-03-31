@@ -12,8 +12,7 @@ exports.home = function(req, res) {
 }
 
 exports.edit = function(req, res) {
-
-	data.getAllRecordsByType("serie", function(array) {
+	data.getAllRecordsByType("series", function(array) {
 		res.render('edit', {
 			title : "Edit",
 			id : "edit",
