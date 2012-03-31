@@ -3,7 +3,6 @@
  */
 
 var express = require('express'), routes = require('./routes');
-
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -21,6 +20,7 @@ app.configure(function() {
 	app.use(app.router);
 });
 
+
 app.configure('development', function() {
 	app.use(express.errorHandler({
 		dumpExceptions : true,
@@ -28,9 +28,11 @@ app.configure('development', function() {
 	}));
 });
 
+
 app.configure('production', function() {
 	app.use(express.errorHandler());
 });
+
 
 app.error(function(err, req, res, next) {
 	console.log(err);
@@ -43,6 +45,8 @@ app.error(function(err, req, res, next) {
 		next(err);
 	}
 });
+
+
 // Routes
 app.get('/admin', routes.adminCollections);
 app.get('/admin/series/:id', routes.adminSeries);
