@@ -61,4 +61,19 @@ module.exports = {
 		});
 	},
 
+
+	'GET /admin' : function() {
+		assert.response(app, {
+			url : '/admin'
+		}, {
+			status : 200,
+			headers : {
+				'Content-Type' : 'text/html; charset=utf-8'
+			}
+		}, function(res) {
+			assert.includes(res.body, '<title>Collections - Admin - DRIS Workflows</title>');
+			assert.ok(res);
+		});
+	},
+
 }
