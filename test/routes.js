@@ -15,17 +15,50 @@ module.exports = {
 			assert.ok(res);
 		});
 	},
-	/* need setup and teardown for this */
-	/*
-	 'GET /all': function(){
-	 assert.response(app,
-	 { url: '/all' },
-	 { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' }},
 
-	 function(res){
-	 assert.includes(res.body, '<title>All</title>');
-	 assert.ok(res);
-	 });
-	 }
-	 */
+
+	'GET /all' : function() {
+		assert.response(app, {
+			url : '/all'
+		}, {
+			status : 200,
+			headers : {
+				'Content-Type' : 'text/html; charset=utf-8'
+			}
+		}, function(res) {
+			assert.includes(res.body, '<title>All</title>');
+			assert.ok(res);
+		});
+	},
+
+
+	'GET /create' : function() {
+		assert.response(app, {
+			url : '/create'
+		}, {
+			status : 200,
+			headers : {
+				'Content-Type' : 'text/html; charset=utf-8'
+			}
+		}, function(res) {
+			assert.includes(res.body, '<title>Create</title>');
+			assert.ok(res);
+		});
+	},
+
+
+	'GET /edit' : function() {
+		assert.response(app, {
+			url : '/edit'
+		}, {
+			status : 200,
+			headers : {
+				'Content-Type' : 'text/html; charset=utf-8'
+			}
+		}, function(res) {
+			assert.includes(res.body, '<title>Edit</title>');
+			assert.ok(res);
+		});
+	},
+
 }
