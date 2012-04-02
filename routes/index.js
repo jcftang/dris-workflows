@@ -42,7 +42,6 @@ exports.all = function(req, res) {
 function createItem(req, res) {
 	req.body.parentId = req.body.collection
 	delete req.body.collection;
-	console.log(req.body)
 
 	var amount = req.body.amount;
 	for(var i = 0; i < amount; i++) {
@@ -86,7 +85,6 @@ function getAllCollections(req, res) {
 
 function getAllItems(req, res) {
 	data.getAllRecordsByType("item", function(arr) {
-		console.log(arr)
 		res.send(arr);
 	});
 }
