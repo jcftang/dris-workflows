@@ -67,16 +67,21 @@ function removeItem(id, callback){
 */
 function editActions(){
 
+
 	loadAllItems();
 	//hides the box which allows users to upload files
 	$("#fileBox").hide();
 	$("#step2Btn").click(function() {
 		item = $("#step1 option:selected").parent().attr("label");
-		loadData("items/" + $("#step1 select").val(), function(data) {
-			showItems(data)
-			emptyForm();
+		loadData("item/" + $("#step1 select").val(), function(data) {
+			showItems([data],false)
+			loadData("items/" + $("#step1 select").val(), function(data) {
+				showItems(data,true)
+				emptyForm();
+			});
 		});
 	})
+
 	
 	
 	//Highlights the selected item in the list
@@ -99,17 +104,17 @@ function editActions(){
 function loadAllItems(){
 
 
-	loadAllItemsByType("collections", function(root) {
+	loadAllItemsByType("collection", function(root) {
 		var list = "<optgroup label='collections'>";
 		list += root;
 		list += "</optgroup>";
 		$("#itemEditSelection").append(list);
-		loadAllItemsByType("series", function(root) {
+		loadAllItemsByType("serie", function(root) {
 			var list = "<optgroup label='series'>";
 			list += root;
 			list += "</optgroup>";
 			$("#itemEditSelection").append(list);
-			loadAllItemsByType("items", function(root) {
+			loadAllItemsByType("item", function(root) {
 				var list = "<optgroup label='items'>";
 				list += root;
 				list += "</optgroup>";
@@ -139,7 +144,7 @@ function loadAllItems(){
 */
 function loadAllItemsByType(type,callback){
 
-	loadData("/" + type, function(items) {
+	loadData("/" + type+'s', function(items) {
 		var root = "";
 		//if no items are found it a creates a default option
 		if(items.length == 0) {
@@ -149,13 +154,13 @@ function loadAllItemsByType(type,callback){
 		//creates several options depending on the type of the data. Example <option>title (author)</option> for series.
 		for(i in items) {
 			root += "<option value='"
-			if(type == "series") {
+			if(type == "serie") {
 				root += items[i]._id + "'>" + items[i].Title + " (" + items[i].author+")";
 			}
-			if(type == "collections") {
+			if(type == "collection") {
 				root += items[i]._id + "'>" + items[i].Title;
 			}
-				if(type == "items") {
+				if(type == "item") {
 				root += items[i]._id + "'>" + items[i].Title + " ("+items[i].objectId+")";
 			}
 			root += "</option>";
@@ -175,17 +180,23 @@ function loadAllItemsByType(type,callback){
 
       items - an array which contains all the items to dispay. These items are the parent's object children.
 */
-function showItems(items){
+function showItems(items,remove){
 	var root = "";
 	if(items.length ==0){
-		root = "<li>No items</li>";
+		root = "<li>No children</li>";
 	}
 	for(i in items){
-		root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+" "+items[i]._id+"</a></li>";
+		console.log(items[i])
+		if(!remove){
+			root+= "<li><a href='item/"+items[i]._id+"'>Parent: "+items[i].Title+" "+items[i]._id+"</a></li>";
+		}else{
+			root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+" "+items[i]._id+"</a></li>";
+		}
 
 	}
-	
-	$(".items ul").empty();
+	if(!remove){
+		$(".items ul").empty();
+	}
 	$(".items ul").append(root);
 	
 
