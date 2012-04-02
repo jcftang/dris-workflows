@@ -27,9 +27,9 @@ div.container
                           td 
                             input(type="checkbox",data-id="#{val._id}")
                           td 
-                            a(href="media/#{val._id}/remove") #{val._id}
+                            a(href="object/media/#{val._id}/remove") #{val._id}
                           td #{val.filename}
                           td
-                            a.btn.btn-danger.btn-mini.removeItem(href="media/#{val._id}/remove") Remove
+                            a.btn.btn-danger.btn-mini.removeItem(href="object/media/#{val._id}/remove") Remove
       include _includes/footer
 

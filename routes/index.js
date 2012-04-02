@@ -25,8 +25,8 @@ exports.data = function(req, res) {
 	data.updateItem(req);
 }
 
-exports.image = function(req, res) {
-	data.loadImg(req.params.name, req.params.id, res);
+function getMedia(req, res) {
+	data.loadImg(req.params.id, res);
 }
 
 exports.all = function(req, res) {
@@ -39,7 +39,7 @@ exports.all = function(req, res) {
 	});
 }
 
-exports.createItem = function(req, res) {
+function createItem(req, res) {
 	req.body.parentId = req.body.collection
 	delete req.body.collection;
 	console.log(req.body)
@@ -58,7 +58,7 @@ exports.createItem = function(req, res) {
 
 }
 
-exports.createSeries = function(req, res) {
+function createSeries(req, res) {
 	data.createSeries(req.body, function() {
 		res.redirect('/create');
 	}, function(err) {
@@ -66,37 +66,38 @@ exports.createSeries = function(req, res) {
 	});
 }
 
-exports.createCollection = function(req, res) {
+function createCollection(req, res) {
 	data.createCollection(req.body, function() {
 		res.redirect('/create');
 	}, function(err) {
 		console.log(err);
 	});
 }
-exports.getAllSeries = function(req, res) {
-	data.getAllRecordsByType("serie", function(arr) {
+function getAllSeries(req, res) {
+	data.getAllRecordsByType("series", function(arr) {
 		res.send(arr);
 	});
 }
-exports.getAllCollections = function(req, res) {
+function getAllCollections(req, res) {
 	data.getAllRecordsByType("collection", function(arr) {
 		res.send(arr);
 	});
 }
 
-exports.getAllItems = function(req, res) {
+function getAllItems(req, res) {
 	data.getAllRecordsByType("item", function(arr) {
+		console.log(arr)
 		res.send(arr);
 	});
 }
 
-exports.getItems = function(req, res) {
+function getItems(req, res) {
 	data.getItems(req.params.id, function(array) {
 		res.send(array);
 	});
 }
 
-exports.getItem = function(req, res) {
+function getItem(req, res) {
 	data.getItem(req.params.id, function(array) {
 		res.send(array);
 	}, function(err) {
@@ -104,7 +105,7 @@ exports.getItem = function(req, res) {
 	});
 }
 
-exports.getItemImages = function(req, res) {
+function getItemMedia(req, res) {
 	data.findMediaItem(req.params.id, function(files) {
 		res.send(files);
 	});
@@ -148,7 +149,7 @@ exports.adminItems = function(req, res) {
 	});
 }
 
-exports.removeItem = function(req, res) {
+function removeItem(req, res) {
 	data.removeItem(req.params.id, function() {
 		res.send("0");
 	}, function(err) {
@@ -156,7 +157,7 @@ exports.removeItem = function(req, res) {
 	})
 }
 
-exports.removeMedia = function(req, res) {
+function removeMedia(req, res) {
 	data.removeMedia(req.params.id, function(id) {
 		res.send(id)
 	}, function(err) {
@@ -173,3 +174,71 @@ exports.fedoraCreateObject = function(req, res) {
 		console.log(e);
 	});
 }
+
+
+exports.processRequest = function(req, res) {
+	if(req.params.type == 'media') {
+		switch(req.params.command) {
+			case "remove":
+				removeMedia(req, res);
+				break;
+			case "get":
+				getMedia(req, res);
+				break;
+			case "list":
+				getItemMedia(req, res);
+				break;
+		}
+	}
+	if(req.params.type == 'collection'){
+		switch(req.params.command) {
+			case "post":
+				createCollection(req, res);
+				break;
+			case "get":
+				getAllCollections(req, res);
+				break;
+		}
+	}
+	if(req.params.type == 'series'){
+		switch(req.params.command) {
+			case "post":
+				createSeries(req, res);
+				break;
+			case "get":
+				getAllSeries(req, res);
+				break;
+		}
+	}
+
+	if(req.params.type == 'item') {
+		switch(req.params.command) {
+			case "remove":
+				removeItem(req, res);
+				break;
+			case "get":
+				getItem(req, res);
+				break;
+			case "post":
+				createItem(req, res);
+				break;
+		}
+	}
+	
+	
+	if(req.params.type == 'items') {
+		switch(req.params.id) {
+			case "all":
+				getAllItems(req, res);
+				break;
+			default:
+				getItems(req, res);
+				break;
+
+		}
+	}
+
+
+
+}
+

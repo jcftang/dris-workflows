@@ -50,7 +50,7 @@ function removeAllSelected(){
 }
 function removeItem(id, callback){
 	$.ajax({
-		url : "/media/"+id+"/remove",
+		url : "/object/media/"+id+"/remove",
 		success : function(data) {
 			callback(id);
 		},
@@ -73,9 +73,9 @@ function editActions(){
 	$("#fileBox").hide();
 	$("#step2Btn").click(function() {
 		item = $("#step1 option:selected").parent().attr("label");
-		loadData("item/" + $("#step1 select").val(), function(data) {
+		loadData("object/item/" + $("#step1 select").val()+"/get", function(data) {
 			showItems([data],false)
-			loadData("items/" + $("#step1 select").val(), function(data) {
+			loadData("object/items/" + $("#step1 select").val()+"/get", function(data) {
 				showItems(data,true)
 				emptyForm();
 			});
@@ -109,15 +109,16 @@ function loadAllItems(){
 		list += root;
 		list += "</optgroup>";
 		$("#itemEditSelection").append(list);
-		loadAllItemsByType("serie", function(root) {
+		loadAllItemsByType("series", function(root) {
 			var list = "<optgroup label='series'>";
 			list += root;
 			list += "</optgroup>";
 			$("#itemEditSelection").append(list);
-			loadAllItemsByType("item", function(root) {
+			loadAllItemsByType("items", function(root) {
 				var list = "<optgroup label='items'>";
 				list += root;
 				list += "</optgroup>";
+				console.log(root);
 				$("#itemEditSelection").append(list);
 				$("#itemEditSelection").chosen();
 			})
@@ -144,23 +145,19 @@ function loadAllItems(){
 */
 function loadAllItemsByType(type,callback){
 
-	loadData("/" + type+'s', function(items) {
+	loadData("object/" + type+"/all/get", function(items) {
 		var root = "";
-		//if no items are found it a creates a default option
-		if(items.length == 0) {
-				root = "<option>No "+type+"</option>";
-		}
 		
 		//creates several options depending on the type of the data. Example <option>title (author)</option> for series.
 		for(i in items) {
 			root += "<option value='"
-			if(type == "serie") {
+			if(type == "series") {
 				root += items[i]._id + "'>" + items[i].Title + " (" + items[i].author+")";
 			}
 			if(type == "collection") {
 				root += items[i]._id + "'>" + items[i].Title;
 			}
-				if(type == "item") {
+				if(type == "items") {
 				root += items[i]._id + "'>" + items[i].Title + " ("+items[i].objectId+")";
 			}
 			root += "</option>";
@@ -182,9 +179,7 @@ function loadAllItemsByType(type,callback){
 */
 function showItems(items,remove){
 	var root = "";
-	if(items.length ==0){
-		root = "<li>No children</li>";
-	}
+
 	for(i in items){
 		console.log(items[i])
 		if(!remove){
@@ -287,8 +282,12 @@ function loadBtnActions(){
 		$("#fileBox").toggle();
 	})
 
-	$("#creatItem,#editItem1,#editItem2").click(function() {
+	$("#creatItem,#editItem1,#editItem2").click(function(event) {
 		$("#itemCreation").submit();
+		$("#itemCreation").submit(function(){
+			alert("dfqfdsqf");
+			$(this).parent().append('<div class="alert alert-success">Success.</div>')
+		});
 	})
 
 	$("#createSerieBtn").click(function() {
@@ -311,14 +310,14 @@ function loadBtnActions(){
 	$("#step3Info .items #list2 li a").live("click", function(event) {
 		console.log(this);
 		event.preventDefault();
-		loadData(this.pathname,function(data){
+		loadData("/object"+this.pathname+"/get",function(data){
 			fillUpForm(data)
 		});
 		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
 	});
 	$("#step2Info .items ul li a").live("click",function(event) {
 		event.preventDefault();
-		loadData(this.pathname,function(data){
+		loadData("/object"+this.pathname+"/get",function(data){
 			fillUpForm(data)
 		});
 	});
@@ -328,7 +327,7 @@ function loadBtnActions(){
 		emptyForm();
 	});
 	$("#createSerie").live("click", function(event) {
-		loadAllItemsByType("collections",function(root){
+		loadAllItemsByType("collection",function(root){
 			$(".seriesCollection").empty();
 			$(".seriesCollection").append(root);
 			$(".seriesCollection").chosen();
@@ -375,6 +374,10 @@ function loadBtnActions(){
 function emptyForm(){
 	$(".dataform").empty();
 }
+
+function test(){
+	alert("test");
+}
 function addInputFieldToFrom(btn){
 	var input = '<div class="control-group"><label class="control-label">' + $(btn).text() + '</label><div class="controls">';
 	if($(btn).next().text() == "select"){
@@ -389,10 +392,10 @@ function addInputFieldToFrom(btn){
 function loadAllImages(id){
 	$("#imageContainer").empty();
 	console.log(id);
-	loadData("images/" + id + "/list", function(data) {
+	loadData("object/media/" + id + "/list", function(data) {
 		console.log(data);
 		for(var file in data) {
-			$("#imageContainer").append("<img src='/image/" + data[file]._id + "/" + data[file].filename + "'>")
+			$("#imageContainer").append("<img src='object/media/" + data[file]._id + "/get'>")
 		}
 	});
 }

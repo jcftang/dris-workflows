@@ -76,7 +76,7 @@ function removeAllSelected() {
 
 function removeItem(id, callback) {
 	$.ajax({
-		url : "/item/" + id + "/remove",
+		url : "object/item/" + id + "/remove",
 		success : function(data) {
 			callback(id);
 		},
