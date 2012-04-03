@@ -349,7 +349,7 @@ function loadBtnActions(){
 		$("#list2 li").eq(nextItem.index()).addClass("accordion-heading-focus");
 		nextItem.siblings().removeClass("accordion-heading-focus");
 		nextItem.addClass("accordion-heading-focus");
-		loadData(urlNextItem, function(data) {
+		loadData("object/"+urlNextItem+"/get", function(data) {
 			fillUpForm(data)
 		});
 	})
