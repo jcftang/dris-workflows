@@ -93,7 +93,11 @@ function editActions(){
 		$("#list2 li").eq($(this).index()).addClass("accordion-heading-focus");
 	})
 	
-	
+	$("#globalBtn").click(function(event){
+		event.preventDefault();
+		item = $("#step1 option:selected").parent().attr("label");
+		window.location.replace("object/item/" + $("#step1 select").val()+"/global");
+	})
 
 }
 /*

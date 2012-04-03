@@ -175,7 +175,11 @@ exports.fedoraCreateObject = function(req, res) {
 
 
 exports.processRequest = function(req, res) {
-	if(req.params.type == 'media') {
+	if(req.params.command == "global"){
+		console.log("edit");
+		res.render("globaledit",{title:"Global edit",id:"global",_id:req.params.id})
+	}
+	else if(req.params.type == 'media') {
 		switch(req.params.command) {
 			case "remove":
 				removeMedia(req, res);
@@ -188,7 +192,7 @@ exports.processRequest = function(req, res) {
 				break;
 		}
 	}
-	if(req.params.type == 'collection'){
+	else if(req.params.type == 'collection'){
 		switch(req.params.command) {
 			case "post":
 				createCollection(req, res);
@@ -198,7 +202,7 @@ exports.processRequest = function(req, res) {
 				break;
 		}
 	}
-	if(req.params.type == 'series'){
+	else if(req.params.type == 'series'){
 		switch(req.params.command) {
 			case "post":
 				createSeries(req, res);
@@ -209,7 +213,7 @@ exports.processRequest = function(req, res) {
 		}
 	}
 
-	if(req.params.type == 'item') {
+	else if(req.params.type == 'item') {
 		switch(req.params.command) {
 			case "remove":
 				removeItem(req, res);
@@ -224,19 +228,20 @@ exports.processRequest = function(req, res) {
 	}
 	
 	
-	if(req.params.type == 'items') {
-		switch(req.params.id) {
-			case "all":
+	else if(req.params.type == 'items') {
+		switch(req.params.command) {
+			case "get":
 				getAllItems(req, res);
 				break;
+			case "put":
+				console.log("put it mtf");
+				data.globalEdit(req.body,req.files)
 			default:
 				getItems(req, res);
 				break;
 
 		}
 	}
-
-
 
 }
 

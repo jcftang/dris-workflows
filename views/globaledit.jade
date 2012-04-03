@@ -1,0 +1,22 @@
+include _includes/header
+div.container
+  .row
+      include _includes/properties
+      div
+          form.form-horizontal#collectionCreation(enctype='multipart/form-data', method='post', action='/object/items/all/put')
+              .span7
+                #title
+                  h2  Global edit 
+                  fieldset
+                    .control-group
+                       label.control-label(for='collectionname') ProjectId
+                       .controls
+                         label.control-label
+                           input(type='text', name='_id', value="#{_id}")
+                    .dataform
+                  .form-actions
+                    ul.pager
+                      li
+                        a#createCollectionBtn(href='#') Update
+                    .dummy
+    include _includes/footer
