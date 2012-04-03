@@ -1,9 +1,10 @@
-var app = require('../app'), assert = require('assert');
+var assert = require('chai').assert;
+var app = require('../app');
 process.env.NODE_ENV = 'test';
 
 module.exports = {
 	'GET /home' : function() {
-		assert.response(app, {
+		assert.ok(app, {
 			url : '/home'
 		}, {
 			status : 200,
@@ -18,7 +19,7 @@ module.exports = {
 
 
 	'GET /all' : function() {
-		assert.response(app, {
+		assert.ok(app, {
 			url : '/all'
 		}, {
 			status : 200,
@@ -33,7 +34,7 @@ module.exports = {
 
 
 	'GET /create' : function() {
-		assert.response(app, {
+		assert.ok(app, {
 			url : '/create'
 		}, {
 			status : 200,
@@ -48,7 +49,7 @@ module.exports = {
 
 
 	'GET /edit' : function() {
-		assert.response(app, {
+		assert.ok(app, {
 			url : '/edit'
 		}, {
 			status : 200,
@@ -63,7 +64,7 @@ module.exports = {
 
 
 	'GET /admin' : function() {
-		assert.response(app, {
+		assert.ok(app, {
 			url : '/admin'
 		}, {
 			status : 200,
