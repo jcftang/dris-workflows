@@ -66,6 +66,5 @@ app.get('/fedora/:id/approve', routes.fedoraCreateObject);
 app.get('/', function(req, res) {
 	res.redirect('/home');
 });
-console.log("+++++++++++CREATED ROUTES++++++++++++");
 }
 

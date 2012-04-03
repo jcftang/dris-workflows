@@ -15,7 +15,7 @@ app.listen(7000);
 
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
-describe('My Server', function() {
+describe('Routes tests', function() {
 	describe('GET /home', function() {
 		it("should respond with the home site", function(done) {
 			request('http://localhost:7000/home', function(err, resp, body) {
@@ -57,19 +57,6 @@ describe('My Server', function() {
 			request('http://localhost:7000/admin', function(err, resp, body) {
 				assert.isNull(err);
 				assert.include(body, 'Admin - DRIS Workflows</title>');
-				done();
-			});
-		});
-	});
-	describe('POST /object/:type/:id/:command', function() {
-		it("should respond with the create site", function(done) {
-			request({
-				method:'POST',
-				uri: 'http://localhost:7000/object/collection/c/post',
-				body: '{"Title":"RoutesAutobot"}'
-			}, function(err, resp, body) {
-				assert.isNull(err);
-				assert.include(body, 'create');
 				done();
 			});
 		});
