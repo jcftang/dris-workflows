@@ -16,8 +16,6 @@ module.exports = {
 			assert.ok(res);
 		});
 	},
-
-
 	'GET /all' : function() {
 		assert.ok(app, {
 			url : '/all'
@@ -31,8 +29,6 @@ module.exports = {
 			assert.ok(res);
 		});
 	},
-
-
 	'GET /create' : function() {
 		assert.ok(app, {
 			url : '/create'
@@ -46,8 +42,6 @@ module.exports = {
 			assert.ok(res);
 		});
 	},
-
-
 	'GET /edit' : function() {
 		assert.ok(app, {
 			url : '/edit'
@@ -61,8 +55,6 @@ module.exports = {
 			assert.ok(res);
 		});
 	},
-
-
 	'GET /admin' : function() {
 		assert.ok(app, {
 			url : '/admin'
@@ -76,5 +68,18 @@ module.exports = {
 			assert.ok(res);
 		});
 	},
-
+	'POST /object/:type/:id/:command' : function() {
+		assert.response(app, {
+			url : '/object/collection/c/post',
+			method : 'POST'
+		}, {
+			body : '{"Title":"RoutesAutobot"}',
+			status : 200,
+			headers : {
+				'Content-Type' : 'text/html; charset=utf-8'
+			}
+		}, function(res) {
+			assert.includes(res.body, 'ysrtu4');
+		});
+	}
 }

@@ -103,8 +103,6 @@ app.post("/object/:type/:id/:command",routes.processRequest)
 //updates an object(series/collection or item)
 app.post('/post', routes.data); //refactor /update
 //----------------------------------------------------------------------------
-app.get('/fedora', routes.fedora);
-app.get('/fedora/list', routes.fedoraList);
 app.get('/fedora/:id/approve', routes.fedoraCreateObject);
 
 // Redirects
