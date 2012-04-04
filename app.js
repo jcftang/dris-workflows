@@ -15,18 +15,6 @@ appConfig.configure(app);
 // See app-routes.js to see the routes for the application
 appRoutes.createRoutes(app);
 
-/*
- function NotFound(msg){
- this.name = 'NotFound';
- Error.call(this, msg);
- Error.captureStackTrace(this, arguments.callee);
- }
-
- NotFound.prototype.__proto__ = Error.prototype;
- app.get('/*', function(req, res){
- throw new NotFound;
- });*/
-
 module.exports = app;
 
 app.listen(3000);
