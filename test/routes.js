@@ -13,11 +13,11 @@ appConfig.configure(app);
 appRoutes.createRoutes(app);
 app.listen(7000);
 
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+//console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
-describe('Routes tests', function() {
+describe('Try accessing top level Routes', function() {
 	describe('GET /home', function() {
-		it("should respond with the home site", function(done) {
+		it("should respond with the home page", function(done) {
 			request('http://localhost:7000/home', function(err, resp, body) {
 				assert.isNull(err);
 				assert.include(body, '<title>DRIS Workflows</title>');
@@ -26,7 +26,7 @@ describe('Routes tests', function() {
 		});
 	});
 	describe('GET /all', function() {
-		it("should respond with the all site", function(done) {
+		it("should respond with the all page", function(done) {
 			request('http://localhost:7000/all', function(err, resp, body) {
 				assert.isNull(err);
 				assert.include(body, '<title>All</title>');
@@ -35,7 +35,7 @@ describe('Routes tests', function() {
 		});
 	});
 	describe('GET /create', function() {
-		it("should respond with the create site", function(done) {
+		it("should respond with the create page", function(done) {
 			request('http://localhost:7000/create', function(err, resp, body) {
 				assert.isNull(err);
 				assert.include(body, '<title>Create</title>');
@@ -44,7 +44,7 @@ describe('Routes tests', function() {
 		});
 	});
 	describe('GET /edit', function() {
-		it("should respond with the edit site", function(done) {
+		it("should respond with the edit page", function(done) {
 			request('http://localhost:7000/edit', function(err, resp, body) {
 				assert.isNull(err);
 				assert.include(body, '<title>Edit</title>');
@@ -53,7 +53,7 @@ describe('Routes tests', function() {
 		});
 	});
 	describe('GET /admin', function() {
-		it("should respond with the admin site", function(done) {
+		it("should respond with the admin page", function(done) {
 			request('http://localhost:7000/admin', function(err, resp, body) {
 				assert.isNull(err);
 				assert.include(body, 'Admin - DRIS Workflows</title>');
