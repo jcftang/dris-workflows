@@ -198,7 +198,7 @@ exports.processRequest = function(req, res) {
 				createCollection(req, res);
 				break;
 			case "get":
-				getAllCollections(req, res);
+				this.getAllCollections(req, res);
 				break;
 		}
 	}

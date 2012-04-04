@@ -62,6 +62,13 @@ app.post('/post', routes.data); //refactor /update
 //----------------------------------------------------------------------------
 app.get('/fedora/:id/approve', routes.fedoraCreateObject);
 
+
+
+
+// API v2
+app.get("/documents/collections",routes.getAllCollections)
+
+
 // Redirects
 app.get('/', function(req, res) {
 	res.redirect('/home');
