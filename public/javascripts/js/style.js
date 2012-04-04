@@ -29,8 +29,6 @@ function allActions(){
 			removeAllSelected();
 			$(this).prev().val("-1");
 		  break;
-		default:
-			console.log("Select an action");
 		}
 	});
 	
@@ -75,7 +73,7 @@ function editActions(){
 		item = $("#step1 option:selected").parent().attr("label");
 		loadData("object/item/" + $("#step1 select").val()+"/get", function(data) {
 			showItems([data],false)
-			loadData("object/items/" + $("#step1 select").val()+"/get", function(data) {
+			loadData("object/items/" + $("#step1 select").val()+"/getid", function(data) {
 				showItems(data,true)
 				emptyForm();
 			});
@@ -98,6 +96,21 @@ function editActions(){
 		item = $("#step1 option:selected").parent().attr("label");
 		window.location.replace("object/item/" + $("#step1 select").val()+"/global");
 	})
+	
+
+	$(window).keydown(function(event) {
+		if(event.which == 66) {
+			event.preventDefault();
+			loadPrevItemInList();
+		}
+		if(event.which == 78) {
+			event.preventDefault();
+			loadNexItemInList();
+		}
+		
+	});
+
+
 
 }
 /*
@@ -122,7 +135,6 @@ function loadAllItems(){
 				var list = "<optgroup label='items'>";
 				list += root;
 				list += "</optgroup>";
-				console.log(root);
 				$("#itemEditSelection").append(list);
 				$("#itemEditSelection").chosen();
 			})
@@ -185,7 +197,6 @@ function showItems(items,remove){
 	var root = "";
 
 	for(i in items){
-		console.log(items[i])
 		if(!remove){
 			root+= "<li><a href='item/"+items[i]._id+"'>Parent: "+items[i].Title+" "+items[i]._id+"</a></li>";
 		}else{
@@ -312,7 +323,6 @@ function loadBtnActions(){
 	})
 
 	$("#step3Info .items #list2 li a").live("click", function(event) {
-		console.log(this);
 		event.preventDefault();
 		loadData("/object"+this.pathname+"/get",function(data){
 			fillUpForm(data)
@@ -344,37 +354,50 @@ function loadBtnActions(){
 	});	
 
 	$(".nextItemBtn").click(function() {
-		urlNextItem = $(".items li.accordion-heading-focus").next().find("a").attr("href");
-		nextItem = $(".items li.accordion-heading-focus").next();
-		if(!nextItem.is("li")) {
-			nextItem = $(".items li:first");
-			urlNextItem = $(".items li:first").find("a").attr("href");
-		}
-		$("#list2 li").eq(nextItem.index()).addClass("accordion-heading-focus");
-		nextItem.siblings().removeClass("accordion-heading-focus");
-		nextItem.addClass("accordion-heading-focus");
-		loadData("object/"+urlNextItem+"/get", function(data) {
-			fillUpForm(data)
-		});
+		loadNexItemInList()
 	})
 
+
+
 	$(".previousItemBtn").click(function() {
-		urlPrevItem = $(".items li.accordion-heading-focus").prev().find("a").attr("href");
-		prevItem = $(".items li.accordion-heading-focus").prev();
-		if(!prevItem.is("li")) {
-			prevItem = $("#step2Info  .items li:last");
-			urlPrevItem = $("#step2Info .items li:last").find("a").attr("href");
-		}
-		$("#list2 li").eq(prevItem.index()).addClass("accordion-heading-focus");
-		prevItem.siblings().removeClass("accordion-heading-focus");
-		prevItem.addClass("accordion-heading-focus");
-		loadData("object/"+urlPrevItem+"/get", function(data) {
-			fillUpForm(data)
-		});
+		loadPrevItemInList();
 	})
+	
+	
 
 
 }
+
+function loadNexItemInList() {
+	urlNextItem = $(".items li.accordion-heading-focus").next().find("a").attr("href");
+	nextItem = $(".items li.accordion-heading-focus").next();
+	if(!nextItem.is("li")) {
+		nextItem = $(".items li:first");
+		urlNextItem = $(".items li:first").find("a").attr("href");
+	}
+	$("#list2 li").eq(nextItem.index()).addClass("accordion-heading-focus");
+	nextItem.siblings().removeClass("accordion-heading-focus");
+	nextItem.addClass("accordion-heading-focus");
+	loadData("object/" + urlNextItem + "/get", function(data) {
+		fillUpForm(data)
+	});
+}
+
+function loadPrevItemInList() {
+	urlPrevItem = $(".items li.accordion-heading-focus").prev().find("a").attr("href");
+	prevItem = $(".items li.accordion-heading-focus").prev();
+	if(!prevItem.is("li")) {
+		prevItem = $("#step2Info  .items li:last");
+		urlPrevItem = $("#step2Info .items li:last").find("a").attr("href");
+	}
+	$("#list2 li").eq(prevItem.index()).addClass("accordion-heading-focus");
+	prevItem.siblings().removeClass("accordion-heading-focus");
+	prevItem.addClass("accordion-heading-focus");
+	loadData("object/" + urlPrevItem + "/get", function(data) {
+		fillUpForm(data)
+	});
+}
+
 function emptyForm(){
 	$(".dataform").empty();
 }
@@ -395,7 +418,6 @@ function addInputFieldToFrom(btn){
 
 function loadAllImages(id){
 	$("#imageContainer").empty();
-	console.log(id);
 	loadData("object/media/" + id + "/list", function(data) {
 		console.log(data);
 		for(var file in data) {
