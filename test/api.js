@@ -9,9 +9,9 @@ appConfig.configure(app);
 appRoutes.createRoutes(app);
 app.listen(7001);
 
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+//console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
-describe('API tests', function() {
+describe('Try and test the API', function() {
 
 	describe('POST /object/collection/c/post', function() {
 		it("should respond with the create site", function(done) {
@@ -44,8 +44,8 @@ describe('API tests', function() {
 			});
 		});
 	});
-	describe('POST /object/item/c/post', function() {
-		it("should respond with the create site", function(done) {
+	describe('POST /object/:type/:id/:command', function() {
+		it("should respond with the create created collection", function(done) {
 			request({
 				method : 'POST',
 				uri : 'http://localhost:7000/object/item/c/post',
