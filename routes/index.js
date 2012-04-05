@@ -44,10 +44,22 @@ function createItem(req, res) {
 	delete req.body.collection;
 
 	var amount = req.body.amount;
+	var incr = false
+	if(req.body.objectId){
+		incr = true;
+	}
 	for(var i = 0; i < amount; i++) {
-		req.body.objectId = i + 1;
-		data.createItem(req.body, function() {
-		});
+		if(incr){
+			insertNewItem(req);
+		}else{
+			req.body.objectId = i + 1;
+			
+			data.createItem(req.body, function(id) {
+			},function(err){
+				console.log(err);
+			});
+		}
+
 	}
 	res.render('_includes/complete', {
 		title : "Complete",
@@ -56,6 +68,18 @@ function createItem(req, res) {
 	})
 
 }
+
+
+function insertNewItem(req) {
+	data.updateIdOrder(req.body.parentId, req.body.objectId, 1, function(d) {
+		data.createItem(req.body, function(id) {
+			console.log(id);
+		}, function(err) {
+			console.log(err);
+		});
+	})
+}
+
 
 function createSeries(req, res) {
 	data.createSeries(req.body, function() {
@@ -234,14 +258,12 @@ exports.processRequest = function(req, res) {
 				getAllItems(req, res);
 				break;
 			case "put":
-				console.log("put it mtf");
 				data.globalEdit(req.body,req.files)
-			default:
+			case "getid":
 				getItems(req, res);
 				break;
 
 		}
 	}
-
 }
 
