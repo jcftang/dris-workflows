@@ -48,19 +48,23 @@ function createItem(req, res) {
 	if(req.body.objectId){
 		incr = true;
 	}
-	for(var i = 0; i < amount; i++) {
-		if(incr){
-			insertNewItem(req);
-		}else{
+
+	if(incr) {
+
+		insertNewItem(req);
+	} else {
+		for(var i = 0; i < amount; i++) {
 			req.body.objectId = i + 1;
-			
+
 			data.createItem(req.body, function(id) {
-			},function(err){
+			}, function(err) {
 				console.log(err);
 			});
 		}
-
 	}
+
+
+	
 	res.render('_includes/complete', {
 		title : "Complete",
 		id : "complete",
@@ -71,13 +75,18 @@ function createItem(req, res) {
 
 
 function insertNewItem(req) {
-	data.updateIdOrder(req.body.parentId, req.body.objectId, 1, function(d) {
-		data.createItem(req.body, function(id) {
-			console.log(id);
-		}, function(err) {
-			console.log(err);
-		});
-	})
+	if(parseInt(req.body.amount) > 0) {
+		req.body.objectId = parseInt(req.body.objectId) + parseInt(req.body.amount);
+		data.updateIdOrder(req.body.parentId, req.body.objectId, 1, function(d) {
+			data.createItem(req.body, function(id) {
+				req.body.amount = parseInt(req.body.amount) - 1;
+				insertNewItem(req)
+			}, function(err) {
+				console.log(err);
+			});
+		})
+	}
+
 }
 
 
