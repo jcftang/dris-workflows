@@ -22,7 +22,12 @@ exports.edit = function(req, res) {
 }
 
 exports.data = function(req, res) {
-	data.updateItem(req);
+	data.updateItem(req,function(data){
+		console.log(data);
+	}
+	,function(err){
+		console.log(err);
+	});
 }
 
 function getMedia(req, res) {
@@ -76,9 +81,9 @@ function createItem(req, res) {
 
 function insertNewItem(req) {
 	if(parseInt(req.body.amount) > 0) {
-		req.body.objectId = parseInt(req.body.objectId) + parseInt(req.body.amount);
 		data.updateIdOrder(req.body.parentId, req.body.objectId, 1, function(d) {
 			data.createItem(req.body, function(id) {
+				req.body.objectId = parseInt(req.body.objectId) + 1;
 				req.body.amount = parseInt(req.body.amount) - 1;
 				insertNewItem(req)
 			}, function(err) {
@@ -181,6 +186,8 @@ exports.adminItems = function(req, res) {
 }
 
 function removeItem(req, res) {
+	console.log(req.body);
+	console.log(req.params);
 	data.removeItem(req.params.id, function() {
 		res.send("0");
 	}, function(err) {
