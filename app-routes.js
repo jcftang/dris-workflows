@@ -2,76 +2,74 @@
  * Module dependencies.
  */
 var routes = require('./routes');
+var passport;
+exports.createRoutes = function make(app, pass) {
+	passport = pass;
+	//Top routes
+	//Loads all page with all media objects
+	app.get('/all', routes.all);
+	//loads the create page
+	app.get('/create', routes.create);
+	//loads the edit page
+	app.get('/edit', ensureAuthenticated, routes.edit);
+	//loads the home page
+	app.get('/home', routes.home);
 
-exports.createRoutes = function make(app) {
-// Routes
-app.get('/admin', routes.adminCollections);
-app.get('/admin/series/:id', routes.adminSeries);
-app.get('/admin/items/:id', routes.adminItems);
+	// Redirects
+	app.get('/', function(req, res) {
+		res.redirect('/home');
+	});
 
-//Top routes
-//Loads all page with all media objects
-app.get('/all', routes.all); 
-//loads the create page
-app.get('/create', routes.create);
-//loads the edit page
-app.get('/edit', routes.edit);
-//loads the home page
-app.get('/home', routes.home);
-
-app.get("/object/:type/:id/:command",routes.processRequest)
-app.post("/object/:type/:id/:command",routes.processRequest)
-//----------------------------------------------------------------------------
-//removes a media object with certain id
-//refactor /:type/:id/:command
-//app.get('/media/:id/remove', routes.removeMedia); //refactor /media/:id/remove
-//loads the image with certain id
-//app.get('/image/:name/:id', routes.image); //refactor /media/:id/get
-//loads all images
-//app.get('/images/:id/list', routes.getItemImages);//refactor /media/:id/list
-//----------------------------------------------------------------------------
-//creates a new collection
-//refactor /:type/:id/:command
-//app.post('/collection/post', routes.createCollection)//refactor /collection/c/post
-//loads all collections
-//app.get('/collections', routes.getAllCollections);//refactor /collection/all/get
-//----------------------------------------------------------------------------
-//creates a new serie
-//refactor /:type/:id/:command
-//app.post('/series/create', routes.createSeries)//refactor /series/c/post
-//gets all the series
-//app.get('/series', routes.getAllSeries);//refactor /series/all/get
-//----------------------------------------------------------------------------
-//gets all items
-//refactor /:type/:id/:command
-//app.get('/items', routes.getAllItems); //refactor /items/:all/:get
-//gets all items from a parentId
-//app.get('/items/:id', routes.getItems);//refactor /items/:id/:get
-//----------------------------------------------------------------------------
-//refactor /:type/:id/:command
-//gets an item with a certain id
-//app.get('/item/:id', routes.getItem);//refactor /item/:id/:get
-//removes an item with a certain id
-//app.get('/item/:id/remove', routes.removeItem);//refactor /item/:id/:remove
-//creates an item
-//app.post('/item/create', routes.createItem);//refactor /item/c/post
-//----------------------------------------------------------------------------
-//refactor /:type/:id/update
-//updates an object(series/collection or item)
-app.post('/post', routes.data); //refactor /update
-//----------------------------------------------------------------------------
-app.get('/fedora/:id/approve', routes.fedoraCreateObject);
-
-
-
-
-// API v2
-app.get("/documents/collections",routes.getAllCollections)
-
-
-// Redirects
-app.get('/', function(req, res) {
-	res.redirect('/home');
-});
+	app.get('/login', function(req, res) {
+		res.render('login', {
+			user : req.user,
+			message : req.flash('error'),
+			title : "login",
+			id : "login"
+		});
+	});
+	// GET /auth/google
+	//   Use passport.authenticate() as route middleware to authenticate the
+	//   request.  The first step in Google authentication will involve
+	//   redirecting the user to google.com.  After authorization, Google
+	//   will redirect the user back to this application at /auth/google/callback
+	app.get('/auth/google', passport.authenticate('google', {
+		scope : ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
+	}), function(req, res) {
+		// The request will be redirected to Google for authentication, so this
+		// function will not be called.
+	});
+	// GET /auth/google/callback
+	//   Use passport.authenticate() as route middleware to authenticate the
+	//   request.  If authentication fails, the user will be redirected back to the
+	//   login page.  Otherwise, the primary route function function will be called,
+	//   which, in this example, will redirect the user to the home page.
+	app.get('/auth/google/callback', passport.authenticate('google', {
+		failureRedirect : '/login'
+	}), function(req, res) {
+		res.redirect('/');
+	});
+	// POST /login
+	//   Use passport.authenticate() as route middleware to authenticate the
+	//   request.  If authentication fails, the user will be redirected back to the
+	//   login page.  Otherwise, the primary route function function will be called,
+	//   which, in this example, will redirect the user to the home page.
+	//
+	//   curl -v -d "username=bob&password=secret" http://127.0.0.1:3000/login
+	/*app.post('/login', passport.authenticate('local', {
+		failureRedirect : '/login',
+		failureFlash : true
+	}), function(req, res) {
+		res.redirect('/');
+	});*/
+	app.get('/logout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+	});
 }
-
+function ensureAuthenticated(req, res, next) {
+	if(req.isAuthenticated()) {
+		return next();
+	}
+	res.redirect('/login')
+}

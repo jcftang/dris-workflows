@@ -1,23 +1,28 @@
 /**
  * @author Matthias Van Wambeke
- *///starts when the main html file is loaded
-$(document).ready(function() {
-	
-	//Hides all steps on the creation and edit page
+ * 
+ *  
+ */
+var port = 4000;
+var socket = 'http://localhost:' + port;
+
+//starts when the main html file is loaded
+$(document).ready(function(){
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 	
 	loadBtnActions();
-	backbone();
-	//only executes if the current page is edit; it checks the url for that
-	if(window.location.pathname == "/edit"){
-		editActions();
+	switch(window.location.pathname){
+		case "/edit":
+				editAction();
+				break;
+		case "/all":
+				loadMediaData();
+				break;
 	}
-	if(window.location.pathname == "/all"){
-		allActions();
-	}
+
 });
 
-function allActions(){
+function loadMediaData(){
 	$('#checkAll').click(function () {
 		$('#series-table').find(':checkbox').attr('checked', this.checked);
 	});
@@ -33,52 +38,16 @@ function allActions(){
 	});
 	
 }
-function removeAllSelected(){
-	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
-	if (confirmDialog == true)
-	{
-		$('tbody input:checked').each(function() {
-			console.log($(this).attr("data-id"));
-			removeItem($(this).attr("data-id"), function(id){
-				$("#"+id).remove();
-			})
-		});
-	}
-
-}
-function removeItem(id, callback){
-	$.ajax({
-		url : "/object/media/"+id+"/remove",
-		success : function(data) {
-			callback(id);
-		},
-		error:function(d,r){
-			console.log(d);
-			console.log(r);
-		}
-	});
-}
-/*
-   Function: editActions
+/* Function: editActions
 
    Loads actions for the edit page
 */
-function editActions(){
+function editAction(){
 
-
-	loadAllItems();
+	$( "form" ).sortable({items:'div.control-group'});
+	//loadAllItems();
 	//hides the box which allows users to upload files
 	$("#fileBox").hide();
-	$("#step2Btn").click(function() {
-		item = $("#step1 option:selected").parent().attr("label");
-		loadData("object/item/" + $("#step1 select").val()+"/get", function(data) {
-			showItems([data],false)
-			loadData("object/items/" + $("#step1 select").val()+"/getid", function(data) {
-				showItems(data,true)
-				emptyForm();
-			});
-		});
-	})
 
 	
 	
@@ -113,38 +82,32 @@ function editActions(){
 
 
 }
-/*
-   Function: loadAllItems
-
-   loads all items,series and collections and put them into a selectbox with id itemEditSelection
-*/
-function loadAllItems(){
-
-
-	loadAllItemsByType("collection", function(root) {
-		var list = "<optgroup label='collections'>";
-		list += root;
-		list += "</optgroup>";
-		$("#itemEditSelection").append(list);
-		loadAllItemsByType("series", function(root) {
-			var list = "<optgroup label='series'>";
-			list += root;
-			list += "</optgroup>";
-			$("#itemEditSelection").append(list);
-			loadAllItemsByType("items", function(root) {
-				var list = "<optgroup label='items'>";
-				list += root;
-				list += "</optgroup>";
-				$("#itemEditSelection").append(list);
-				$("#itemEditSelection").chosen();
+function removeAllSelected(){
+	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
+	if (confirmDialog == true)
+	{
+		$('tbody input:checked').each(function() {
+			console.log($(this).attr("data-id"));
+			removeItem($(this).attr("data-id"), function(id){
+				$("#"+id).remove();
 			})
-		})
-	})
+		});
+	}
 
-
-	
-	
 }
+function removeItem(id, callback){
+	$.ajax({
+		url : "/object/media/"+id+"/remove",
+		success : function(data) {
+			callback(id);
+		},
+		error:function(d,r){
+			console.log(d);
+			console.log(r);
+		}
+	});
+}
+
 /*
    Function: loadAllItemsByType
 
@@ -155,35 +118,7 @@ function loadAllItems(){
       type - type of the item (series,collections or items)
       callback - the function to return it to
 
-   Returns:
 
-      A list of options for a select control.
-*/
-function loadAllItemsByType(type,callback){
-
-	loadData("object/" + type+"/all/get", function(items) {
-		var root = "";
-		
-		//creates several options depending on the type of the data. Example <option>title (author)</option> for series.
-		for(i in items) {
-			root += "<option value='"
-			if(type == "series") {
-				root += items[i]._id + "'>" + items[i].Title + " (" + items[i].author+")";
-			}
-			if(type == "collection") {
-				root += items[i]._id + "'>" + items[i].Title;
-			}
-				if(type == "items") {
-				root += items[i]._id + "'>" + items[i].Title + " ("+items[i].objectId+")";
-			}
-			root += "</option>";
-		}
-
-		callback(root);
-	});
-
-
-}
 /*
    Function: showItems
 
@@ -193,51 +128,28 @@ function loadAllItemsByType(type,callback){
 
       items - an array which contains all the items to dispay. These items are the parent's object children.
 */
-function showItems(items,remove){
+function showItems(items,type,remove){
+	console.log("loooad");
 	var root = "";
 
 	for(i in items){
 		if(!remove){
-			root+= "<li><a href='item/"+items[i]._id+"'>Parent: "+items[i].Title+" "+items[i]._id+"</a></li>";
+			root+= "<li><a href='"+type+"/"+items[i]._id+"'>Parent: "+items[i].Title+" "+items[i]._id+"</a></li>";
 		}else{
-			root+= "<li><a href='item/"+items[i]._id+"'>"+items[i].Title+" "+items[i]._id+"</a></li>";
+			root+= "<li><a href='"+type+"/"+items[i]._id+"'>"+items[i].Title+" "+items[i]._id+"</a></li>";
 		}
 
 	}
 	if(!remove){
 		$(".items ul").empty();
 	}
+	console.log(root);
 	$(".items ul").append(root);
 	
 
 }
 /*
-   Function: loadData
 
-   Gets any data from the server and gives it back
-
-   Parameters:
-
-      link - url where the data should come frome
-      callback - the function to return it to
-
-   Returns:
-
-      The requested data
-*/
-function loadData(link,callback){
-	$.ajax({
-				url : link,
-				cache:false,
-				success : function(data) {
-					callback(data);
-				},
-				error : function(d, r) {
-					console.log(d);
-					console.log(r);
-				}
-			});
-}
 /*
    Function: loadData
 
@@ -252,7 +164,7 @@ function fillUpForm(data) {
 	$(".dataform").empty();
 	for(var prop in data) {
 		if(data.hasOwnProperty(prop)) {
-			$(".dataform").append('<div class="control-group"><label class="control-label">' + prop + '</label><div class="controls"><input type="text" class="input-xlarge" id="input01" name="' + prop + '" value="' + data[prop] + '"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
+			$(".dataform").append('<div class="control-group"><label class="control-label">' + prop + '</label><div class="controls"><input type="text" class="input-xlarge" id="'+prop+'" name="' + prop + '" value="' + data[prop] + '"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
 		}
 	}
 }
@@ -298,25 +210,30 @@ function loadBtnActions(){
 	})
 
 	$("#creatItem,#editItem1,#editItem2").click(function(event) {
-		$("#itemCreation").submit();
-		$("#itemCreation").submit(function(){
-			alert("dfqfdsqf");
-			$(this).parent().append('<div class="alert alert-success">Success.</div>')
-		});
+		if(window.location.pathname == "/edit"){
+			postData($("#itemCreation"),'PUT',"application/x-www-form-urlencoded",$('#itemCreation').serializeArray(),socket + $(".items li.accordion-heading-focus").find("a").attr("href"))
+		}else{
+			var parent = $("#itemEditSelection option:selected").parent().attr("label")
+			var link
+			if(parent == "collections"){
+				
+			}else if(parent == "series"){
+				amount = $("#amount").val();
+				for(var i = 0;i<amount;i++){
+				link = socket+"/dev/collections/0/series/"+$("#itemEditSelection").val() +"/items";
+				postData($('#itemCreation'),'POST',$('#itemCreation').serializeArray(),link)	
+				}		 
+			}
+			
+		}
 	})
+	
+	
 
-	$("#createSerieBtn").click(function() {
-		$("#serieCreation").submit();
-		loadAllItemsByType("series",function(root){
-			$("#seriesItemCreation").empty();
-			$("#seriesItemCreation").append(root);
-			$("#seriesItemCreation").chosen();
-		})
-	})
 
-	$("#createCollectionBtn").click(function() {
-		$("#collectionCreation").submit();
-	})
+
+
+	
 
 	$('#step3EditBtn').click(function() {
 		loadAllImages($("input[name='_id']").val());
@@ -324,14 +241,14 @@ function loadBtnActions(){
 
 	$("#step3Info .items #list2 li a").live("click", function(event) {
 		event.preventDefault();
-		loadData("/object"+this.pathname+"/get",function(data){
+		loadData(this.pathname,function(data){
 			fillUpForm(data)
 		});
 		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
 	});
 	$("#step2Info .items ul li a").live("click",function(event) {
 		event.preventDefault();
-		loadData("/object"+this.pathname+"/get",function(data){
+		loadData(this.pathname,function(data){
 			fillUpForm(data)
 		});
 	});
@@ -340,16 +257,10 @@ function loadBtnActions(){
 		loadAllItems();
 		emptyForm();
 	});
-	$("#createSerie").live("click", function(event) {
-		loadAllItemsByType("collection",function(root){
-			$(".seriesCollection").empty();
-			$(".seriesCollection").append(root);
-			$(".seriesCollection").chosen();
-		})
-		emptyForm();
-	});
+	
 	
 	$("#createCollection,#createSerie").live("click", function(event) {
+		$("#successbox").hide();
 		emptyForm();
 	});	
 
@@ -419,7 +330,6 @@ function addInputFieldToFrom(btn){
 function loadAllImages(id){
 	$("#imageContainer").empty();
 	loadData("object/media/" + id + "/list", function(data) {
-		console.log(data);
 		for(var file in data) {
 			$("#imageContainer").append("<img src='object/media/" + data[file]._id + "/get'>")
 		}
@@ -427,44 +337,4 @@ function loadAllImages(id){
 }
 	
 
-function backbone() {
 
-	var Workspace = Backbone.Router.extend({
-		routes : {
-			"edit" : "step2",
-			"step1" : "step1", // #help
-			"step2" : "step2", // #search/kiwis
-			"step3" : "step3",
-			"step4" : "step4"
-
-		},
-
-		step1 : function() {
-
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-			$("#step1,#step1Info").show();
-		},
-		step2 : function() {
-
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-			$("#step2,#step2Info").show();
-
-		},
-		step3 : function() {
-
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-			$("#step3,#step3Info").show();
-
-		},
-		step4 : function() {
-
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-			$("#step4,#step4Info").show();
-
-		}
-	});
-	var w = new Workspace();
-
-	Backbone.history.start();
-
-}

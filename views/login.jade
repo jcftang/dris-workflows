@@ -1,0 +1,21 @@
+include _includes/header
+.container
+	a(href='/auth/google') Sign On with Google
+	//
+		-if(!user)
+			- if (message)
+				p #{message}
+			form(action='/login', method='post')
+				div
+					label Username:
+					input(type='text', name='username')
+					br
+				div
+					label Password:
+					input(type='password', name='password')
+				div
+					input.btn(type='submit', value='Submit')
+		-else
+			a(href="/logout") Log out
+
+	include _includes/footer

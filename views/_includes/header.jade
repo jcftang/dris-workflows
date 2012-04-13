@@ -16,3 +16,12 @@
                           - else
                             li
                               a(href='#{key}') #{val}
+                ul.nav.pull-right
+                    - if(user)
+                      li.divider-vertical
+                      li
+                        a(href="/logout") Logout
+                    - else
+                      li.divider-vertical
+                      li
+                        a(href="/login") Login

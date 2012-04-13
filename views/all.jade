@@ -22,14 +22,5 @@ div.container
                       th Author
                       th.span1 Remove
                   tbody
-                    - each val, key in items
-                        tr(id="#{val._id}")
-                          td 
-                            input(type="checkbox",data-id="#{val._id}")
-                          td 
-                            a(href="object/media/#{val._id}/remove") #{val._id}
-                          td #{val.filename}
-                          td
-                            a.btn.btn-danger.btn-mini.removeItem(href="object/media/#{val._id}/remove") Remove
       include _includes/footer
 

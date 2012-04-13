@@ -84,4 +84,27 @@ li.selected{
 .items ul{
 	margin-left: 0;
 }
+.successbox{
+	display: none;
+}
+#loginForm {
+	margin:0;
+	margin-top:10px;
+}
+#loginForm li{
+	float:left;
+}
+#loginForm label{
+	color:#999;
+	float:left;
+	margin-right: 5px;
+}
+#loginForm input[type="text"],#loginForm input[type="password"]{
+	width: 100px;
+	margin-right: 10px;
+
+}
+#loginForm input{
+		margin-top:-3px;
+}
 
