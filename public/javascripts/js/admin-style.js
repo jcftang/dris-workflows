@@ -7,7 +7,7 @@ var socket = 'http://localhost:' + port;
 var w = backbone();
 
 $(document).ready(function() {
-	w.navigate("#collections", {
+w.navigate("#collections", {
 		trigger : true
 	});
 	$('#checkAll').live('click',function() {
@@ -55,19 +55,16 @@ $(document).ready(function() {
 			console.log(data);
 		});
 	});
-	$("tbody a").live("click",function(event){
-		event.preventDefault();
-		loadChildren($(this).attr("href"));
-	});
 });
 
 
 function loadAdminData() {
+	console.log("load");
 	$("tbody").empty();
 
 	loadData("/dev/objects", function(items) {
 		for(i in items) {
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a href='" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
 	});
 }
@@ -75,14 +72,15 @@ function loadAdminData() {
 
 
 function loadChildren(id) {
-
+	console.log("load2");
+	console.log(id)
+	id = id.substring(2,id.length)
+	console.log(id)
 	$("tbody").empty();
-	w.navigate("#"+id, {
-		trigger : true
-	});
 	loadData("/dev/objects/" + id + "/list", function(items) {
+		console.log(items)
 		for(i in items) {
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a href='" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
 	}); 
 
@@ -164,27 +162,15 @@ function backbone() {
 	var Workspace = Backbone.Router.extend({
 		routes : {
 			"collections" : "collection",
-			"*path" : "defaultRoute"
+			"id:id" : "defaultRoute"
 		},
 
 		collection : function() {
  			loadAdminData();
 		},
 		defaultRoute : function() {
-			alert( w.routes[Backbone.history.fragment] );
-			loadChildren();
-		},
-		step3 : function() {
-
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-			$("#step3,#step3Info").show();
-
-		},
-		step4 : function() {
-
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-			$("#step4,#step4Info").show();
-
+			console.log("--loading children--")
+			loadChildren(Backbone.history.fragment);
 		}
 	});
 
