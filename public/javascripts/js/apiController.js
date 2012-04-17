@@ -52,7 +52,7 @@ function loadCreateData() {
 			"status" : "Open",
 			"type" : "series",
 			"properties":{},
-			parentId : $("#serieCreation select").val()
+			parentId : $("#seriesCollection").val()
 		};
 		var items = $('#serieCreation').serializeArray();
 		postData($('#serieCreation'), 'POST', prepareDataForPost(data,items), link,function(id){
@@ -79,7 +79,7 @@ function createItems(itemAmount) {
 			"status" : "Open",
 			"type" : "item",
 			"properties" : {},
-			parentId : $("#itemCreation select").val()
+			parentId : $("#itemEditSelection").val()
 		};
 		var items = $('#itemCreation').serializeArray();
 
@@ -267,7 +267,7 @@ function postData(form, type, data, link, callback) {
 		url : link,
 		success : function(id) {
 			console.log("id received" + id)
-			w.navigate("#step1", {
+			w.navigate("#collections", {
 				trigger : true
 			});
 			$(".successbox").show('fast');

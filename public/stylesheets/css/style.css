@@ -115,11 +115,12 @@ li.selected{
 	margin-bottom:10px;
 }
 
-.btn h2,i{
+.btn h2{
 	float:left
 }
 
 i{
+	float:right;
 	margin-top:10px;
 }
 
