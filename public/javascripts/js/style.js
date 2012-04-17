@@ -212,7 +212,7 @@ function loadBtnActions(){
 		if(window.location.pathname == "/edit") {
 			var data = {
 				"status" : "Open",
-				"type" : "i",
+				"type" : "item",
 				"properties" : {},
 				parentId : $("#itemEditSelection").val()
 			};
