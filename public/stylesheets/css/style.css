@@ -84,7 +84,7 @@ li.selected{
 .items ul{
 	margin-left: 0;
 }
-.successbox{
+.successbox,.updatebox{
 	display: none;
 }
 #loginForm {

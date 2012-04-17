@@ -29,21 +29,24 @@ div.container
                     a#step2Btn(href='#step2') Edit Items
                 .dummy
         div
-          form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='post')
+          form.form-horizontal#itemCreation
             #step2
               .span7
                 #title
                   h2  Metadata 
                   a.btn.previousItemBtn(href='#') <
                   a.btn.nextItemBtn(href='#') >
+
                   fieldset
                    .dataform
                    .alert.alert-success.successbox
                       a.close(data-dismiss='alert') ×
                       strong Successful
                       p Creation successful!
+                  .alert.alert-success.updatebox
+                    a.close(data-dismiss='alert') ×
+                    strong Updated
                   .form-actions
-                    
                     ul.pager
                       li
                         a#step3EditBtn(href='#step3') Next Step

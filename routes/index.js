@@ -35,6 +35,16 @@ exports.all = function(req, res) {
 		user: req.user
 	});
 }
+
+exports.admin = function(req, res) {
+
+	res.render('admin', {
+		id : "admin",
+		title : "Admin",
+		user: req.user,
+		layout: '_layouts/layoutAdmin'
+	});
+}
 /*
  exports.data = function(req, res) {
  data.updateItem(req,function(data){

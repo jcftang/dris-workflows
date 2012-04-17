@@ -9,8 +9,8 @@ var resourceTypes = ["text","cartographic","notated music",
 var buttons = [
 	["collapseZero","Project Info","objectId","text"], 
 	//----------------------------------------------//
-	["collapseOne","Title Info","Title","text"],
-	["collapseOne","Title Info","Subtitle","text"],
+	["collapseOne","Title Info","title","text"],
+	["collapseOne","Title Info","subtitle","text"],
 	["collapseOne","Title Info","partNumber","text"],
 	["collapseOne","Title Info","partName","text"],
 	["collapseOne","Title Info","nonSort","text"],

@@ -129,21 +129,19 @@ function removeItem(id, callback){
       items - an array which contains all the items to dispay. These items are the parent's object children.
 */
 function showItems(items,type,remove){
-	console.log("loooad");
 	var root = "";
 
 	for(i in items){
 		if(!remove){
-			root+= "<li><a href='"+type+"/"+items[i]._id+"'>Parent: "+items[i].Title+" "+items[i]._id+"</a></li>";
+			root+= "<li><a href='"+items[i]._id+"'>Parent: "+items[i].properties.title+" "+items[i]._id+"</a></li>";
 		}else{
-			root+= "<li><a href='"+type+"/"+items[i]._id+"'>"+items[i].Title+" "+items[i]._id+"</a></li>";
+			root+= "<li><a href='"+items[i]._id+"'>"+items[i].properties.title+" "+items[i]._id+"</a></li>";
 		}
 
 	}
 	if(!remove){
 		$(".items ul").empty();
 	}
-	console.log(root);
 	$(".items ul").append(root);
 	
 
@@ -161,11 +159,11 @@ function showItems(items,type,remove){
 
 */
 function fillUpForm(data) {
+	console.log("fill")
 	$(".dataform").empty();
-	for(var prop in data) {
-		if(data.hasOwnProperty(prop)) {
-			$(".dataform").append('<div class="control-group"><label class="control-label">' + prop + '</label><div class="controls"><input type="text" class="input-xlarge" id="'+prop+'" name="' + prop + '" value="' + data[prop] + '"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
-		}
+	for(var prop in data.properties) {	
+			$(".dataform").append('<div class="control-group"><label class="control-label">' + prop + '</label><div class="controls"><input type="text" class="input-xlarge" id="'+prop+'" name="' + prop + '" value="' + data.properties[prop] + '"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
+		
 	}
 }
 
@@ -209,30 +207,25 @@ function loadBtnActions(){
 		$("#fileBox").toggle();
 	})
 
-	$("#creatItem,#editItem1,#editItem2").click(function(event) {
-		if(window.location.pathname == "/edit"){
-			postData($("#itemCreation"),'PUT',"application/x-www-form-urlencoded",$('#itemCreation').serializeArray(),socket + $(".items li.accordion-heading-focus").find("a").attr("href"))
-		}else{
-			var parent = $("#itemEditSelection option:selected").parent().attr("label")
-			var link
-			if(parent == "collections"){
-				
-			}else if(parent == "series"){
-				amount = $("#amount").val();
-				for(var i = 0;i<amount;i++){
-				link = socket+"/dev/collections/0/series/"+$("#itemEditSelection").val() +"/items";
-				postData($('#itemCreation'),'POST',$('#itemCreation').serializeArray(),link)	
-				}		 
-			}
-			
+
+	$("#editItem1,#editItem2").click(function(event) {
+		if(window.location.pathname == "/edit") {
+			var data = {
+				"status" : "Open",
+				"type" : "i",
+				"properties" : {},
+				parentId : $("#itemEditSelection").val()
+			};
+			var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href")+"/edit";
+			var items = $("#itemCreation").serializeArray();
+
+			updateData($("#itemCreation"), 'GET', prepareDataForPost(data, items), link, function(id) {
+				console.log(id);
+			})
 		}
 	})
+
 	
-	
-
-
-
-
 	
 
 	$('#step3EditBtn').click(function() {
@@ -241,14 +234,14 @@ function loadBtnActions(){
 
 	$("#step3Info .items #list2 li a").live("click", function(event) {
 		event.preventDefault();
-		loadData(this.pathname,function(data){
+		loadData("/dev/objects"+this.pathname,function(data){
 			fillUpForm(data)
 		});
 		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
 	});
 	$("#step2Info .items ul li a").live("click",function(event) {
 		event.preventDefault();
-		loadData(this.pathname,function(data){
+		loadData("/dev/objects"+this.pathname,function(data){
 			fillUpForm(data)
 		});
 	});
@@ -259,7 +252,7 @@ function loadBtnActions(){
 	});
 	
 	
-	$("#createCollection,#createSerie").live("click", function(event) {
+	$("#createCollection,#createSerie,#createItems").live("click", function(event) {
 		$("#successbox").hide();
 		emptyForm();
 	});	
@@ -289,7 +282,7 @@ function loadNexItemInList() {
 	$("#list2 li").eq(nextItem.index()).addClass("accordion-heading-focus");
 	nextItem.siblings().removeClass("accordion-heading-focus");
 	nextItem.addClass("accordion-heading-focus");
-	loadData("object/" + urlNextItem + "/get", function(data) {
+	loadData("/dev/objects/" + urlNextItem , function(data) {
 		fillUpForm(data)
 	});
 }
@@ -304,7 +297,7 @@ function loadPrevItemInList() {
 	$("#list2 li").eq(prevItem.index()).addClass("accordion-heading-focus");
 	prevItem.siblings().removeClass("accordion-heading-focus");
 	prevItem.addClass("accordion-heading-focus");
-	loadData("object/" + urlPrevItem + "/get", function(data) {
+	loadData("/dev/objects/" + urlPrevItem, function(data) {
 		fillUpForm(data)
 	});
 }

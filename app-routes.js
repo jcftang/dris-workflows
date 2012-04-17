@@ -11,9 +11,10 @@ exports.createRoutes = function make(app, pass) {
 	//loads the create page
 	app.get('/create', routes.create);
 	//loads the edit page
-	app.get('/edit', ensureAuthenticated, routes.edit);
+	app.get('/edit', routes.edit);
 	//loads the home page
 	app.get('/home', routes.home);
+	app.get('/admin', routes.admin);
 
 	// Redirects
 	app.get('/', function(req, res) {

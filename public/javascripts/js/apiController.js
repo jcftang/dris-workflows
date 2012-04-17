@@ -2,7 +2,7 @@ var port = 4000;
 var socket = 'http://localhost:' + port;
 var w = backbone();
 $(document).ready(function() {
-	
+
 	jQuery.support.cors = true;
 	switch(window.location.pathname) {
 		case "/edit":
@@ -23,16 +23,18 @@ $(document).ready(function() {
 	}
 
 });
+
 function loadCreateData() {
 
 	$("#createSerie").live("click", function(event) {
-		loadData("/dev/collections", function(items) {
+		loadData("/dev/objects", function(items) {
 			root = "<optgroup label='collections'>";
 
 			//creates several options depending on the type of the data. Example <option>title (author)</option> for series.
 			for(i in items) {
+				if(items[i].type ="collection")
 				root += "<option value='";
-				root += items[i]._id + "'>" + items[i].Title;
+				root += items[i]._id + "'>" + items[i].properties.title;
 				root += "</option>";
 			}
 			root += "</optgroup>";
@@ -45,16 +47,67 @@ function loadCreateData() {
 	});
 
 	$("#createCollectionBtn").click(function() {
-		var link = socket + "/dev/collections";
-		postData($('#collectionCreation'),'POST',$('#collectionCreation').serializeArray(),link)
+		var link = socket + "/dev/objects";
+
+		var data = {
+			"status" : "Open",
+			"type" : "collection",
+			"properties":{}
+		};
+		items = $('#collectionCreation').serializeArray();
+		postData($('#collectionCreation'), 'POST', prepareDataForPost(data,items), link,function(id){
+		});
 	})
 
 	$("#createSerieBtn").click(function() {
-		var link = socket + "/dev/collections/" + $(".seriesCollection").val() + "/series";
-		console.log(link);
-		postData($('#serieCreation'),'POST',$('#serieCreation').serializeArray(),link)
-		
+		var link = socket + "/dev/objects";
+		var data = {
+			"status" : "Open",
+			"type" : "series",
+			"properties":{},
+			parentId : $("#serieCreation select").val()
+		};
+		var items = $('#serieCreation').serializeArray();
+		postData($('#serieCreation'), 'POST', prepareDataForPost(data,items), link,function(id){
+		});
 	})
+	
+	$("#createItemBtn").click(function(event) {
+		event.preventDefault();
+		var amount =  $("#amount").val();
+		createItems(amount);
+	})
+}
+
+
+function createItems(amount) {
+	amount = parseInt(amount);
+	if(amount > 1) {
+		var link = socket + "/dev/objects";
+		var data = {
+			"status" : "Open",
+			"type" : "item",
+			"properties" : {},
+			parentId : $("#itemCreation select").val()
+		};
+		var items = $('#itemCreation').serializeArray();
+
+		items.splice(0,1);
+
+		postData($('#itemCreation'), 'POST', prepareDataForPost(data, items), link, function(id) {
+			amount = parseInt(amount)- 1;
+			createItems(amount);
+		});
+	}
+}
+
+
+
+function prepareDataForPost(data,items){
+		for (var key in items) {
+ 				eval("data.properties."+items[key].name+"='"+items[key].value+"'");
+	 	}
+	 	return data
 }
 
 function loadMediaData() {
@@ -65,10 +118,10 @@ function loadEditData() {
 	loadAllItems();
 	$("#step2Btn").click(function() {
 		item = $("#step1 option:selected").parent().attr("label");
-		loadData("/dev/" + item + "/" + $("#step1 select").val(), function(data) {
+		loadData("/dev/objects/" + $("#step1 select").val(), function(data) {
 			var link = "dev/" + item + "";
 			showItems([data], link, false)
-			loadData("/dev/" + item + "/" + $("#step1 select").val() + "/series", function(data) {
+			loadData("/dev/objects/" + $("#step1 select").val() + "/list", function(data) {
 				var link = "dev/" + item + "/" + $("#step1 select").val() + "/series";
 				showItems(data, link, true)
 				emptyForm();
@@ -79,7 +132,7 @@ function loadEditData() {
 
 function loadAllItems() {
 
-	loadAllItemsByType("/dev/collections", function(root) {
+	loadAllItemsByType("/dev/objects", function(root) {
 		list = root;
 		$("#itemEditSelection").append(list);
 		$("#itemEditSelection").chosen();
@@ -87,43 +140,62 @@ function loadAllItems() {
 	})
 }
 
+
 function loadAllItemsByType(link, callback) {
 
 	loadData(link, function(items) {
-		var root = "<optgroup label='collections'>";
+		var root = "<optgroup label='collection'>";
 
 		//creates several options depending on the type of the data. Example <option>title (author)</option> for series.
 		for(i in items) {
-			console.log(items);
 			root += "<option value='";
-			root += items[i]._id + "'>" + items[i].Title;
+			root += items[i]._id + "'>" + items[i].properties.title;
 			root += "</option>";
 			if(i == items.length - 1) {
 				root += "</optgroup>";
 				root += "<optgroup label='series'>";
 				for(i in items) {
-					loadData(link + '/' + items[i]._id + '/series', function(items) {
+					loadData(link + '/' + items[i]._id + '/list', function(items) {
 						for(j in items) {
 							root += "<option value='";
-							root += items[j]._id + "'>" + items[j].Title;
+							root += items[j]._id + "'>" + items[j].properties.title;
 							root += "</option>";
 							if(j == items.length - 1) {
 								root += "</optgroup>";
-								callback(root);
+								root += "<optgroup label='items'>";
+								for(i in items) {
+									loadData(link + '/' + items[i]._id + '/list', function(items) {
+										for(k in items) {
+											root += "<option value='";
+											root += items[k]._id + "'>" + items[k].properties.title;
+											root += "</option>";
 
+											if(k == items.length - 1) {
+												callback(root)
+											}
+										}
+										if(items.length == 0) {
+											callback(root);
+										}
+									});
+								}
 							}
 						}
 						if(items.length == 0) {
 							callback(root);
 						}
 
-					})
+					});
 				}
 			}
 		}
 
 	});
 }
+
+
+
+
 
 /*Function: loadData
 
@@ -138,22 +210,7 @@ function loadAllItemsByType(link, callback) {
 
  The requested data
  */
-function loadData(link, callback) {
 
-	$.ajax({
-		url : socket + link,
-		dataType : 'jsonp',
-		success : function(data) {
-			callback(data);
-		},
-		error : function(x, h, r) {
-			console.log(x);
-			console.log(h);
-			console.log(r);
-		}
-	});
-
-}
 
 function backbone() {
 
@@ -197,9 +254,25 @@ function backbone() {
 	return obj
 
 }
-function postData(form,type,data, link) {
-	console.log(data)
-	console.log(link)
+
+function loadData(link, callback) {
+	$.ajax({
+		url : socket + link,
+		type:"GET",
+		dataType : 'jsonp',
+		success : function(data) {
+			callback(data);
+		},
+		error : function(x, h, r) {
+			console.log(x);
+			console.log(h);
+			console.log(r);
+		}
+	});
+
+}
+function postData(form, type, data, link, callback) {
+	console.log("link" + link);
 	form.submit(function() {
 		$.ajax({
 			type : type,
@@ -210,6 +283,10 @@ function postData(form,type,data, link) {
 					trigger : true
 				});
 				$(".successbox").show('fast');
+				if(callback != undefined) {
+					callback(id);
+
+				}
 			},
 			error : function(x, h, r) {
 				console.log(x);
@@ -221,6 +298,33 @@ function postData(form,type,data, link) {
 	});
 	form.submit();
 }
+
+
+
+function updateData(form, type, data, link, callback) {
+	form.submit(function() {
+		$.ajax({
+			type : type,
+			data : data,
+			url : link,
+			success : function(id) {
+				console.log("id");
+					callback(id);
+					$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
+			},
+			error : function(x, h, r) {
+				console.log(x);
+				console.log(h);
+				console.log(r);
+			}
+		})
+		return false;
+	});
+	form.submit();
+}
+
+
+
 /*
  ALL
 
