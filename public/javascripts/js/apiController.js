@@ -270,7 +270,7 @@ function postData(form, type, data, link, callback) {
 			w.navigate("#collections", {
 				trigger : true
 			});
-			$(".successbox").show('fast');
+			$(".successbox").fadeIn().delay(900).fadeOut();
 			if(callback != undefined) {
 				callback(id);
 			}
