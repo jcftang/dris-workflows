@@ -63,7 +63,7 @@ function editAction(){
 	$("#globalBtn").click(function(event){
 		event.preventDefault();
 		item = $("#step1 option:selected").parent().attr("label");
-		window.location.replace("object/item/" + $("#step1 select").val()+"/global");
+		window.location.replace("edit/"+$("tbody input").attr('checked', 'checked').attr("data-id")+ "/global");
 	})
 	
 
@@ -216,10 +216,10 @@ function loadBtnActions(){
 				"properties" : {},
 				parentId : $("#itemEditSelection").val()
 			};
-			var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href")+"/edit";
+			var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href")+"/update";
 			var items = $("#itemCreation").serializeArray();
 
-			updateData($("#itemCreation"), 'GET', prepareDataForPost(data, items), link, function(id) {
+			updateData($("#itemCreation"), 'POST', prepareDataForPost(data, items), link, function(id) {
 				console.log(id);
 			})
 		}

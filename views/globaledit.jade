@@ -3,7 +3,7 @@ div.container
   .row
       include _includes/properties
       div
-          form.form-horizontal#collectionCreation(enctype='multipart/form-data', method='post', action='/object/items/all/put')
+          form.form-horizontal#collectionCreation(enctype='multipart/form-data', method='post', action='')
               .span7
                 #title
                   h2  Global edit 
@@ -12,11 +12,11 @@ div.container
                        label.control-label(for='collectionname') ProjectId
                        .controls
                          label.control-label
-                           input(type='text', name='_id', value="#{_id}")
+                           input#parentId(type='text', name='_id', value="#{_id}", disabled='')
                     .dataform
                   .form-actions
                     ul.pager
                       li
-                        a#createCollectionBtn(href='#') Update
+                        a#updateItems(href='#') Update
                     .dummy
     include _includes/footer

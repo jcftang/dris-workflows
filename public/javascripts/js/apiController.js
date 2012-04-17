@@ -4,6 +4,7 @@ var w = backbone();
 $(document).ready(function() {
 
 	jQuery.support.cors = true;
+
 	switch(window.location.pathname) {
 		case "/edit":
 		w.navigate("#collections", {
@@ -21,9 +22,19 @@ $(document).ready(function() {
 			});
 			break;
 	}
+	$("updateItems").click(function(event){
+		event.preventDefault();
+		alert("gqfd")})
 
 });
-
+function updateChildren(){
+	
+	var type = "";
+	loadData("/dev/objects/"+$("parentId").val(),function(data){
+		type = data.type;
+		console.log(data);
+	}) 
+}
 function loadCreateData() {
 
 	$("#createSerie").live("click", function(event) {

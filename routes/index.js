@@ -45,6 +45,15 @@ exports.admin = function(req, res) {
 		layout: '_layouts/layoutAdmin'
 	});
 }
+
+exports.globalEdit = function(req,res){
+		res.render('globaledit', {
+		id : "edit",
+		title : "edit",
+		user: req.user,
+		_id:req.params.id
+	});
+}
 /*
  exports.data = function(req, res) {
  data.updateItem(req,function(data){
