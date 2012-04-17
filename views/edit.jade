@@ -21,7 +21,14 @@ div.container
           .span7
             form.form-horizontal
               legend Make a choice
-              select#itemEditSelection.chzn-select(data-placeholder="Choose an option...")
+              .control-group
+                table#series-table.table.table-striped.table-bordered
+                  thead
+                    tr
+                      th.span1
+                      th Title
+                      th Type
+                  tbody
               .form-actions
                 ul.pager
                   li

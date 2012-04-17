@@ -6,10 +6,10 @@ $(document).ready(function() {
 	jQuery.support.cors = true;
 	switch(window.location.pathname) {
 		case "/edit":
+		w.navigate("#collections", {
+		trigger : true
+	});
 			loadEditData();
-			w.navigate("#step1", {
-				trigger : true
-			});
 			break;
 		case "/all":
 			loadMediaData();
@@ -75,14 +75,18 @@ function loadCreateData() {
 	$("#createItemBtn").click(function(event) {
 		event.preventDefault();
 		var amount =  $("#amount").val();
+		console.log(amount + ": the amount I want")
 		createItems(amount);
 	})
 }
 
 
-function createItems(amount) {
-	amount = parseInt(amount);
-	if(amount > 1) {
+
+function createItems(itemAmount) {
+	amount = parseInt(itemAmount);
+	console.log(amount)
+	if(amount > 0) {
+		console.log("create")
 		var link = socket + "/dev/objects";
 		var data = {
 			"status" : "Open",
@@ -92,14 +96,19 @@ function createItems(amount) {
 		};
 		var items = $('#itemCreation').serializeArray();
 
-		items.splice(0,1);
+		items.splice(0, 1);
 
 		postData($('#itemCreation'), 'POST', prepareDataForPost(data, items), link, function(id) {
-			amount = parseInt(amount)- 1;
-			createItems(amount);
+			console.log(id +  ":id")
+			if(amount >0){amount = amount - 1
+console.log(amount + "amount i'm sending")
+				createItems(amount);
+			}
 		});
 	}
+
 }
+
 
 
 
@@ -115,15 +124,14 @@ function loadMediaData() {
 }
 
 function loadEditData() {
-	loadAllItems();
+	
+	$("#itemEditCat").chosen();
 	$("#step2Btn").click(function() {
-		item = $("#step1 option:selected").parent().attr("label");
-		loadData("/dev/objects/" + $("#step1 select").val(), function(data) {
-			var link = "dev/" + item + "";
-			showItems([data], link, false)
-			loadData("/dev/objects/" + $("#step1 select").val() + "/list", function(data) {
-				var link = "dev/" + item + "/" + $("#step1 select").val() + "/series";
-				showItems(data, link, true)
+		item = $("tbody input").attr('checked', 'checked').attr("data-id");
+		loadData("/dev/objects/" + item, function(data) {
+			showItems([data], false)
+			loadData("/dev/objects/" + item+ "/list", function(data) {
+				showItems(data, true)
 				emptyForm();
 			});
 		});
@@ -193,7 +201,33 @@ function loadAllItemsByType(link, callback) {
 	});
 }
 
+function loadAdminData() {
+	console.log("load");
+	$("tbody").empty();
 
+	loadData("/dev/objects", function(items) {
+		for(i in items) {
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='radio' data-id='" + items[i]._id + "'></td><td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>"+items[i].type+"</td></tr>")
+		}
+	});
+}
+
+
+
+function loadChildren(id) {
+	console.log("load2");
+	console.log(id)
+	id = id.substring(2,id.length)
+	console.log(id)
+	$("tbody").empty();
+	loadData("/dev/objects/" + id + "/list", function(items) {
+		console.log(items)
+		for(i in items) {
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='radio' data-id='" + items[i]._id + "'></td><td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>"+items[i].type+"</td></tr>")
+		}
+	}); 
+
+}
 
 
 
@@ -220,7 +254,9 @@ function backbone() {
 			"step1" : "step1", // #help
 			"step2" : "step2", // #search/kiwis
 			"step3" : "step3",
-			"step4" : "step4"
+			"step4" : "step4",
+			"collections" : "collection",
+			"id:id" : "defaultRoute"
 
 		},
 
@@ -246,6 +282,14 @@ function backbone() {
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 			$("#step4,#step4Info").show();
 
+		},
+		collection : function() {
+ 			loadAdminData();
+ 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+			$("#step1,#step1Info").show();
+		},
+		defaultRoute : function() {
+			loadChildren(Backbone.history.fragment);
 		}
 	});
 
@@ -258,6 +302,7 @@ function backbone() {
 function loadData(link, callback) {
 	$.ajax({
 		url : socket + link,
+		cache:false,
 		type:"GET",
 		dataType : 'jsonp',
 		success : function(data) {
@@ -271,33 +316,31 @@ function loadData(link, callback) {
 	});
 
 }
-function postData(form, type, data, link, callback) {
-	console.log("link" + link);
-	form.submit(function() {
-		$.ajax({
-			type : type,
-			data : data,
-			url : link,
-			success : function(id) {
-				w.navigate("#step1", {
-					trigger : true
-				});
-				$(".successbox").show('fast');
-				if(callback != undefined) {
-					callback(id);
 
-				}
-			},
-			error : function(x, h, r) {
-				console.log(x);
-				console.log(h);
-				console.log(r);
+function postData(form, type, data, link, callback) {
+	$.ajax({
+		type : type,
+		cache : false,
+		data : data,
+		url : link,
+		success : function(id) {
+			console.log("id received" + id)
+			w.navigate("#step1", {
+				trigger : true
+			});
+			$(".successbox").show('fast');
+			if(callback != undefined) {
+				callback(id);
 			}
-		})
-		return false;
+		},
+		error : function(x, h, r) {
+			console.log(x);
+			console.log(h);
+			console.log(r);
+		}
 	});
-	form.submit();
 }
+
 
 
 

@@ -128,7 +128,7 @@ function removeItem(id, callback){
 
       items - an array which contains all the items to dispay. These items are the parent's object children.
 */
-function showItems(items,type,remove){
+function showItems(items,remove){
 	var root = "";
 
 	for(i in items){
