@@ -247,7 +247,9 @@ function loadBtnActions(){
 	});
 
 	$("#createItems").live("click", function(event) {
-		loadAllItems();
+		id = Backbone.history.fragment
+		id = id.substr(2,id.length);
+        $("#itemEditSelection").val(id)
 		emptyForm();
 	});
 	

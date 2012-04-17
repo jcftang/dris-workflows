@@ -107,4 +107,19 @@ li.selected{
 #loginForm input{
 		margin-top:-3px;
 }
+#createItems, #createSerie{
+	display:none;
+	margin-right:10px;
+}
+.div{
+	margin-bottom:10px;
+}
+
+.btn h2,i{
+	float:left
+}
+
+i{
+	margin-top:10px;
+}
 

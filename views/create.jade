@@ -10,12 +10,17 @@ div.container
         #step1
           .span7
               h2 What do you want to create?
-              .control-group
-                 a.btn#createCollection(href='#step2') Collection
-              .control-group
-                 a.btn#createSerie(href='#step3') Series
-              .control-group
-                 a.btn#createItems(href='#step4') Item
+              .div
+                |Add:
+                a.btn#createItems(href='#step4') Item
+                a.btn#createSerie(href='#step3') Series
+                a.btn#createCollection(href='#step2') Collection
+              table#series-table.table.table-striped.table-bordered
+                  thead
+                    tr
+                      th Title
+                      th Type
+                  tbody
                .alert.alert-success.successbox
                  a.close(data-dismiss='alert') ×
                  strong Successful
@@ -45,10 +50,10 @@ div.container
                   h2  Series 
                   fieldset
                     .control-group
-                       label.control-label(for='series') Choose the collection
+                       label.control-label(for='series') parentId
                        .controls
                          label.control-label
-                           select.seriesCollection.chzn-select(name="collection", data-placeholder="Choose an collection...")
+                           input#seriesCollection.input-xlarge.disabled(type='text', disabled='')
                     .control-group
                        label.control-label(for='seriename') name
                        .controls
@@ -76,9 +81,9 @@ div.container
                          label.control-label
                            input#amount(type='number', name='amount')
                     .control-group
-                       label.control-label(for='series') What is the parent?
+                       label.control-label(for='series') parentId
                        .controls
-                         select#itemEditSelection.chzn-select(data-placeholder="Choose an option...", name="collection")
+                         input#itemEditSelection.input-xlarge.disabled(type='text', disabled='')
                 .dataform
                 .form-actions
                   ul.pager

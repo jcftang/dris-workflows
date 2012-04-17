@@ -16,7 +16,7 @@ $(document).ready(function() {
 			break;
 		case "/create":
 			loadCreateData();
-			w.navigate("#step1", {
+			w.navigate("#collections", {
 				trigger : true
 			});
 			break;
@@ -27,22 +27,9 @@ $(document).ready(function() {
 function loadCreateData() {
 
 	$("#createSerie").live("click", function(event) {
-		loadData("/dev/objects", function(items) {
-			root = "<optgroup label='collections'>";
-
-			//creates several options depending on the type of the data. Example <option>title (author)</option> for series.
-			for(i in items) {
-				if(items[i].type ="collection")
-				root += "<option value='";
-				root += items[i]._id + "'>" + items[i].properties.title;
-				root += "</option>";
-			}
-			root += "</optgroup>";
-
-			$(".seriesCollection").empty();
-			$(".seriesCollection").append(root);
-			$(".seriesCollection").chosen();
-		})
+		id = Backbone.history.fragment
+		id = id.substr(2,id.length);
+        $("#seriesCollection").val(id)
 		emptyForm();
 	});
 
@@ -138,68 +125,6 @@ function loadEditData() {
 	})
 }
 
-function loadAllItems() {
-
-	loadAllItemsByType("/dev/objects", function(root) {
-		list = root;
-		$("#itemEditSelection").append(list);
-		$("#itemEditSelection").chosen();
-
-	})
-}
-
-
-function loadAllItemsByType(link, callback) {
-
-	loadData(link, function(items) {
-		var root = "<optgroup label='collection'>";
-
-		//creates several options depending on the type of the data. Example <option>title (author)</option> for series.
-		for(i in items) {
-			root += "<option value='";
-			root += items[i]._id + "'>" + items[i].properties.title;
-			root += "</option>";
-			if(i == items.length - 1) {
-				root += "</optgroup>";
-				root += "<optgroup label='series'>";
-				for(i in items) {
-					loadData(link + '/' + items[i]._id + '/list', function(items) {
-						for(j in items) {
-							root += "<option value='";
-							root += items[j]._id + "'>" + items[j].properties.title;
-							root += "</option>";
-							if(j == items.length - 1) {
-								root += "</optgroup>";
-								root += "<optgroup label='items'>";
-								for(i in items) {
-									loadData(link + '/' + items[i]._id + '/list', function(items) {
-										for(k in items) {
-											root += "<option value='";
-											root += items[k]._id + "'>" + items[k].properties.title;
-											root += "</option>";
-
-											if(k == items.length - 1) {
-												callback(root)
-											}
-										}
-										if(items.length == 0) {
-											callback(root);
-										}
-									});
-								}
-							}
-						}
-						if(items.length == 0) {
-							callback(root);
-						}
-
-					});
-				}
-			}
-		}
-
-	});
-}
 
 function loadAdminData() {
 	console.log("load");
@@ -207,27 +132,37 @@ function loadAdminData() {
 
 	loadData("/dev/objects", function(items) {
 		for(i in items) {
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='radio' data-id='" + items[i]._id + "'></td><td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>"+items[i].type+"</td></tr>")
+			var rbt = "<td><input type='radio' data-id='" + items[i]._id + "'></td>";
+			if(window.location.pathname == "/create") {
+				rbt = ""
+			}
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 	});
 }
 
-
-
 function loadChildren(id) {
-	console.log("load2");
-	console.log(id)
-	id = id.substring(2,id.length)
-	console.log(id)
+
+	id = id.substring(2, id.length)
+
 	$("tbody").empty();
+
 	loadData("/dev/objects/" + id + "/list", function(items) {
 		console.log(items)
 		for(i in items) {
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='radio' data-id='" + items[i]._id + "'></td><td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>"+items[i].type+"</td></tr>")
+			var rbt = "<td><input type='radio' data-id='" + items[i]._id + "'></td>";
+			if(window.location.pathname == "/create") {
+				rbt = ""
+			}
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
-	}); 
+		if(items.length == 0) {
+			$("tbody").append("<tr><td></td><td>No Children here<td></tr>")
+		}
+	});
 
 }
+
 
 
 
@@ -285,10 +220,12 @@ function backbone() {
 		},
 		collection : function() {
  			loadAdminData();
- 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
-			$("#step1,#step1Info").show();
+ 			resetCreatePage()
 		},
 		defaultRoute : function() {
+			resetCreatePage()
+			$("#createItems, #createSerie").show();
+			$("#createCollection").hide();
 			loadChildren(Backbone.history.fragment);
 		}
 	});
@@ -298,7 +235,12 @@ function backbone() {
 	return obj
 
 }
-
+function resetCreatePage(){
+	$("#createItems, #createSerie").hide();
+			$("#createCollection").show();
+ 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+			$("#step1,#step1Info").show();
+}
 function loadData(link, callback) {
 	$.ajax({
 		url : socket + link,

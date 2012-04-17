@@ -5,6 +5,7 @@
 var port = 4000;
 var socket = 'http://localhost:' + port;
 var w = backbone();
+var goDeeper = false;
 
 $(document).ready(function() {
 w.navigate("#collections", {
@@ -55,7 +56,11 @@ w.navigate("#collections", {
 			console.log(data);
 		});
 	});
+	$("tbody a").live("click",function(){
+		goDeeper = true;
+	})
 });
+
 
 
 function loadAdminData() {
@@ -66,8 +71,12 @@ function loadAdminData() {
 		for(i in items) {
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
+		if(items.length == 0) {
+			$("tbody").append("<tr><td></td><td>No items available<td></tr>")
+		}
 	});
 }
+
 
 
 
@@ -81,6 +90,9 @@ function loadChildren(id) {
 		console.log(items)
 		for(i in items) {
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+		}
+		if(items.length == 0){
+			$("tbody").append("<tr><td></td><td>No Children here<td></tr>")
 		}
 	}); 
 
@@ -140,6 +152,7 @@ function approveItem(id, callback) {
 	});
 };
 
+
 function loadData(link, callback) {
 	$.ajax({
 		url : socket + link,
@@ -167,9 +180,23 @@ function backbone() {
 
 		collection : function() {
  			loadAdminData();
+ 			if(goDeeper){
+			$(".breadcrumb").append("<li><a href='#'>Home</a><span class='divider'>/</span></li>")
+			 goDeeper = false;
+			}
+			else{
+				$(".breadcrumb li:last").remove();
+			}
 		},
 		defaultRoute : function() {
-			console.log("--loading children--")
+			console.log(Backbone.history);
+			if(goDeeper){
+			$(".breadcrumb").append("<li>"+Backbone.history.fragment+"<span class='divider'>/</span></li>")
+			 goDeeper = false;
+			}
+			else{
+				$(".breadcrumb li:last").remove();
+			}
 			loadChildren(Backbone.history.fragment);
 		}
 	});
