@@ -274,8 +274,8 @@ function backbone() {
  			resetCreatePage()
 		},
 		defaultRoute : function() {
-			console.log(Backbone.history)
-			$("#createCollection").hide();
+			console.log($("#createCollection"))
+		
 			if(goDeeper) {
 				$(".row .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
 				goDeeper = false;
@@ -284,6 +284,7 @@ function backbone() {
 				$(".row .breadcrumb li:last").remove();
 			}
 			resetCreatePage()
+				$("#createCollection").hide();
 			loadChildren(Backbone.history.fragment); 
 
 		}
