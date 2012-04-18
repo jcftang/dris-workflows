@@ -132,9 +132,9 @@ function showItems(items,remove){
 
 	for(i in items){
 		if(!remove){
-			root+= "<li><a href='"+items[i]._id+"'>Parent: "+items[i].properties.title+" "+items[i]._id+"</a></li>";
+			root+= "<li><a data-type='"+items[i].type+"' href='"+items[i]._id+"'>Parent: "+items[i].properties.title+" "+items[i]._id+"</a></li>";
 		}else{
-			root+= "<li><a href='"+items[i]._id+"'>"+items[i].properties.title+" "+items[i]._id+"</a></li>";
+			root+= "<li><a data-type='"+items[i].type+"'  href='"+items[i]._id+"'>"+items[i].properties.title+" "+items[i]._id+"</a></li>";
 		}
 
 	}
@@ -211,7 +211,7 @@ function loadBtnActions(){
 		if(window.location.pathname == "/edit") {
 			var data = {
 				"status" : "Open",
-				"type" : "item",
+				"type" : $(".items li.accordion-heading-focus").find("a").attr("data-type"),
 				"properties" : {},
 				parentId : $("#itemEditSelection").val()
 			};
