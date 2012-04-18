@@ -190,6 +190,7 @@ function backbone() {
 			}
 		},
 		defaultRoute : function() {
+			console.log(Backbone.history)
 			if(goDeeper){
 			$(".breadcrumb").append("<li>"+parentType+": "+Backbone.history.fragment+"<span class='divider'>/</span></li>")
 			 goDeeper = false;

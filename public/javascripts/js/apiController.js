@@ -33,13 +33,26 @@ $(document).ready(function() {
 	
 
 });
-function updateChildren(){
-	console.log("/dev/objects/"+$("#parentId").val()+"/list");
+
+function updateChildren() {
+	console.log("/dev/objects/" + $("#parentId").val() + "/list");
 	var type = "";
-	loadData("/dev/objects/"+$("#parentId").val()+"/list",function(data){
-		
-	}) 
+	loadData("/dev/objects/" + $("#parentId").val() + "/list", function(data) {
+		console.log(data);
+		for(var i = 0; i < data.length; i++) {
+			var link = socket + "/dev/objects/" + data[i]._id + "/update";
+			var newData = {
+				"properties" : {},
+			};
+			var items = $('#updateObjects').serializeArray();
+			var items = items.splice(0,1);
+			postData($('#serieCreation'), 'POST', prepareDataForPost(newData, items), link, function(id) {
+				console.log("update")
+			});
+		}
+	})
 }
+
 function loadCreateData() {
 
 	$("#createSerie").live("click", function(event) {
@@ -251,7 +264,7 @@ function backbone() {
  			resetCreatePage()
 		},
 		defaultRoute : function() {
-			console.log(goDeeper)
+			console.log(Backbone.history)
 			$("#createCollection").hide();
 			if(goDeeper) {
 				$(".row .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
@@ -297,6 +310,8 @@ function loadData(link, callback) {
 }
 
 function postData(form, type, data, link, callback) {
+	console.log(link);
+	console.log(data);
 	$.ajax({
 		type : type,
 		cache : false,
