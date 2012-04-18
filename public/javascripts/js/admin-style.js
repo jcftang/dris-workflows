@@ -6,6 +6,7 @@ var port = 4000;
 var socket = 'http://localhost:' + port;
 var w = backbone();
 var goDeeper = false;
+var parentType = "";
 
 $(document).ready(function() {
 w.navigate("#collections", {
@@ -58,6 +59,7 @@ w.navigate("#collections", {
 	});
 	$("tbody a").live("click",function(){
 		goDeeper = true;
+		parentType = $(this).attr("data-type");
 	})
 });
 
@@ -69,7 +71,7 @@ function loadAdminData() {
 
 	loadData("/dev/objects", function(items) {
 		for(i in items) {
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a data-type='"+items[i].type +"' href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
 		if(items.length == 0) {
 			$("tbody").append("<tr><td></td><td>No items available<td></tr>")
@@ -89,10 +91,10 @@ function loadChildren(id) {
 	loadData("/dev/objects/" + id + "/list", function(items) {
 		console.log(items)
 		for(i in items) {
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
 		if(items.length == 0){
-			$("tbody").append("<tr><td></td><td>No Children here<td></tr>")
+			$("tbody").append("<tr><td></td><td>No Children here<td><td></td></tr>")
 		}
 	}); 
 
@@ -189,9 +191,8 @@ function backbone() {
 			}
 		},
 		defaultRoute : function() {
-			console.log(Backbone.history);
 			if(goDeeper){
-			$(".breadcrumb").append("<li>"+Backbone.history.fragment+"<span class='divider'>/</span></li>")
+			$(".breadcrumb").append("<li>"+parentType+": "+Backbone.history.fragment+"<span class='divider'>/</span></li>")
 			 goDeeper = false;
 			}
 			else{

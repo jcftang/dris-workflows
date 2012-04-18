@@ -1,4 +1,6 @@
 var w = backbone();
+var goDeeper = false;
+var parentType = "";
 $(document).ready(function() {
 
 	jQuery.support.cors = true;
@@ -23,6 +25,12 @@ $(document).ready(function() {
 	$("#updateItems").click(function(event){
 		updateChildren()
 	})
+	
+	$("tbody a").live("click",function(){
+		goDeeper = true;
+		parentType = $(this).attr("data-type");
+	})
+	
 
 });
 function updateChildren(){
@@ -68,14 +76,16 @@ function loadCreateData() {
 		postData($('#serieCreation'), 'POST', prepareDataForPost(data,items), link,function(id){
 			$(".successbox").fadeIn().delay(900).fadeOut();
 		});
-	})
+	});
 	
 	$("#createItemBtn").click(function(event) {
 		event.preventDefault();
 		var amount =  $("#amount").val();
 		console.log(amount + ": the amount I want")
 		createItems(amount);
-	})
+	});
+	
+
 }
 
 
@@ -149,7 +159,7 @@ function loadAdminData() {
 			if(window.location.pathname == "/create") {
 				rbt = ""
 			}
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 	});
 }
@@ -167,7 +177,7 @@ function loadChildren(id) {
 			if(window.location.pathname == "/create") {
 				rbt = ""
 			}
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		if(items.length == 0) {
 			$("tbody").append("<tr><td></td><td>No Children here<td></tr>")
@@ -238,7 +248,14 @@ function backbone() {
 		defaultRoute : function() {
 			resetCreatePage()
 			$("#createCollection").hide();
-			loadChildren(Backbone.history.fragment);
+			if(goDeeper) {
+				$(".row .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
+				goDeeper = false;
+			} else {
+				$(".breadcrumb li:last").remove();
+			}
+			loadChildren(Backbone.history.fragment); 
+
 		}
 	});
 

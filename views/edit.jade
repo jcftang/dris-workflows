@@ -21,6 +21,8 @@ div.container
           .span7
             form.form-horizontal
               legend Make a choice
+              .breadcrumb
+                li /
               .control-group
                 table#series-table.table.table-striped.table-bordered
                   thead
@@ -39,6 +41,9 @@ div.container
           form.form-horizontal#itemCreation
             #step2
               .span7
+                .alert.alert-success.updatebox
+                    a.close(data-dismiss='alert') ×
+                    strong Updated
                 #title
                   h2  Metadata 
                   a.btn.previousItemBtn(href='#') <
@@ -50,9 +55,7 @@ div.container
                       a.close(data-dismiss='alert') ×
                       strong Successful
                       p Creation successful!
-                  .alert.alert-success.updatebox
-                    a.close(data-dismiss='alert') ×
-                    strong Updated
+
                   .form-actions
                     ul.pager
                       li
