@@ -1,5 +1,3 @@
-var port = 4000;
-var socket = 'http://localhost:' + port;
 var w = backbone();
 $(document).ready(function() {
 

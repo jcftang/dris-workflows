@@ -3,8 +3,7 @@
  * 
  *  
  */
-var port = 4000;
-var socket = 'http://localhost:' + port;
+
 
 //starts when the main html file is loaded
 $(document).ready(function(){
