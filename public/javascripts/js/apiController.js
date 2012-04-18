@@ -1,5 +1,5 @@
 var w = backbone();
-var goDeeper = false;
+var goDeeper = true;
 var parentType = "";
 $(document).ready(function() {
 
@@ -37,8 +37,7 @@ function updateChildren(){
 	console.log("/dev/objects/"+$("#parentId").val()+"/list");
 	var type = "";
 	loadData("/dev/objects/"+$("#parentId").val()+"/list",function(data){
-		type = data.type;
-		console.log(data);
+		
 	}) 
 }
 function loadCreateData() {
@@ -242,18 +241,26 @@ function backbone() {
 
 		},
 		collection : function() {
+			 if(goDeeper){
+			 	goDeeper = false;
+			}
+			else{
+				$(".row .breadcrumb li:last").remove();
+			}
  			loadAdminData();
  			resetCreatePage()
 		},
 		defaultRoute : function() {
-			resetCreatePage()
+			console.log(goDeeper)
 			$("#createCollection").hide();
 			if(goDeeper) {
 				$(".row .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
 				goDeeper = false;
 			} else {
-				$(".breadcrumb li:last").remove();
+				
+				$(".row .breadcrumb li:last").remove();
 			}
+			resetCreatePage()
 			loadChildren(Backbone.history.fragment); 
 
 		}

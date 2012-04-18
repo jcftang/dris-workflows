@@ -5,7 +5,7 @@
 var port = 4000;
 var socket = 'http://localhost:' + port;
 var w = backbone();
-var goDeeper = false;
+var goDeeper = true;
 var parentType = "";
 
 $(document).ready(function() {
@@ -183,7 +183,6 @@ function backbone() {
 		collection : function() {
  			loadAdminData();
  			if(goDeeper){
-			$(".breadcrumb").append("<li><a href='#'>Home</a><span class='divider'>/</span></li>")
 			 goDeeper = false;
 			}
 			else{
