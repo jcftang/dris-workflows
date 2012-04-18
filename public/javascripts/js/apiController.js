@@ -172,10 +172,8 @@ function loadEditData() {
 
 
 function loadAdminData() {
-	console.log("load");
-	$("tbody").empty();
-
 	loadData("/dev/objects", function(items) {
+			$("tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input type='radio' data-id='" + items[i]._id + "'></td>";
 			if(window.location.pathname == "/create") {
@@ -184,16 +182,15 @@ function loadAdminData() {
 			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 	});
+	
 }
 
 function loadChildren(id) {
 
 	id = id.substring(2, id.length)
 
-	$("tbody").empty();
-
 	loadData("/dev/objects/" + id + "/list", function(items) {
-		console.log(items)
+			$("tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input type='radio' data-id='" + items[i]._id + "'></td>";
 			if(window.location.pathname == "/create") {
@@ -264,6 +261,7 @@ function backbone() {
 
 		},
 		collection : function() {
+			$("tbody").empty();
 			 if(goDeeper){
 			 	goDeeper = false;
 			}
@@ -274,8 +272,9 @@ function backbone() {
  			resetCreatePage()
 		},
 		defaultRoute : function() {
-			console.log($("#createCollection"))
-		
+			console.log("$")
+			console.log($("tbody"))
+
 			if(goDeeper) {
 				$(".row .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
 				goDeeper = false;
