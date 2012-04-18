@@ -9,6 +9,10 @@ div.container
         include _includes/properties
         #step1
           .span7
+              .alert.alert-success.successbox
+                 a.close(data-dismiss='alert') ×
+                 strong Successful
+                 p Creation successful!
               h2 What do you want to create?
               .div
                 |Add:
@@ -21,10 +25,6 @@ div.container
                       th Title
                       th Type
                   tbody
-               .alert.alert-success.successbox
-                 a.close(data-dismiss='alert') ×
-                 strong Successful
-                 p Creation successful!
         div
           form.form-horizontal#collectionCreation(enctype='multipart/form-data', method='post', action='')
             #step2

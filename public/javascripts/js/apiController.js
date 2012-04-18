@@ -20,15 +20,15 @@ $(document).ready(function() {
 			});
 			break;
 	}
-	$("updateItems").click(function(event){
-		event.preventDefault();
-		alert("gqfd")})
+	$("#updateItems").click(function(event){
+		updateChildren()
+	})
 
 });
 function updateChildren(){
-	
+	console.log("/dev/objects/"+$("#parentId").val()+"/list");
 	var type = "";
-	loadData("/dev/objects/"+$("parentId").val(),function(data){
+	loadData("/dev/objects/"+$("#parentId").val()+"/list",function(data){
 		type = data.type;
 		console.log(data);
 	}) 
@@ -52,6 +52,7 @@ function loadCreateData() {
 		};
 		items = $('#collectionCreation').serializeArray();
 		postData($('#collectionCreation'), 'POST', prepareDataForPost(data,items), link,function(id){
+			$(".successbox").fadeIn().delay(900).fadeOut();
 		});
 	})
 
@@ -65,6 +66,7 @@ function loadCreateData() {
 		};
 		var items = $('#serieCreation').serializeArray();
 		postData($('#serieCreation'), 'POST', prepareDataForPost(data,items), link,function(id){
+			$(".successbox").fadeIn().delay(900).fadeOut();
 		});
 	})
 	
@@ -101,6 +103,8 @@ console.log(amount + "amount i'm sending")
 				createItems(amount);
 			}
 		});
+	}else{
+		$(".successbox").fadeIn().delay(900).fadeOut();
 	}
 
 }
@@ -233,7 +237,6 @@ function backbone() {
 		},
 		defaultRoute : function() {
 			resetCreatePage()
-			$("#createItems, #createSerie").show();
 			$("#createCollection").hide();
 			loadChildren(Backbone.history.fragment);
 		}
@@ -245,12 +248,13 @@ function backbone() {
 
 }
 function resetCreatePage(){
-	$("#createItems, #createSerie").hide();
+
 			$("#createCollection").show();
  			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 			$("#step1,#step1Info").show();
 }
 function loadData(link, callback) {
+	console.log(socket + link)
 	$.ajax({
 		url : socket + link,
 		cache:false,
@@ -279,7 +283,6 @@ function postData(form, type, data, link, callback) {
 			w.navigate("#collections", {
 				trigger : true
 			});
-			$(".successbox").fadeIn().delay(900).fadeOut();
 			if(callback != undefined) {
 				callback(id);
 			}
