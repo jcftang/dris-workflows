@@ -244,8 +244,10 @@ function loadBtnActions(){
 
 	$("#createItems").live("click", function(event) {
 		id = Backbone.history.fragment
+		if(id != "collections"){
 		id = id.substr(2,id.length);
         $("#itemEditSelection").val(id)
+       }
 		emptyForm();
 	});
 	

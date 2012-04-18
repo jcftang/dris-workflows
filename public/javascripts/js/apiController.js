@@ -57,8 +57,10 @@ function loadCreateData() {
 
 	$("#createSerie").live("click", function(event) {
 		id = Backbone.history.fragment
+		if(id != "collections"){
 		id = id.substr(2,id.length);
         $("#seriesCollection").val(id)
+       }
 		emptyForm();
 	});
 
@@ -78,12 +80,16 @@ function loadCreateData() {
 
 	$("#createSerieBtn").click(function() {
 		var link = socket + "/dev/objects";
+		var parent= $("#seriesCollection").val();
 		var data = {
 			"status" : "Open",
 			"type" : "series",
 			"properties":{},
-			parentId : $("#seriesCollection").val()
+			parentId : parent
 		};
+		if(parent == ""){
+			delete data.parentId;
+		}
 		var items = $('#serieCreation').serializeArray();
 		postData($('#serieCreation'), 'POST', prepareDataForPost(data,items), link,function(id){
 			$(".successbox").fadeIn().delay(900).fadeOut();
@@ -108,12 +114,16 @@ function createItems(itemAmount) {
 	if(amount > 0) {
 		console.log("create")
 		var link = socket + "/dev/objects";
+		var parent= $("#itemEditSelection").val();
 		var data = {
 			"status" : "Open",
 			"type" : "item",
 			"properties" : {},
-			parentId : $("#itemEditSelection").val()
+			parentId : parent
 		};
+		if(parent == ""){
+			delete data.parentId;
+		}
 		var items = $('#itemCreation').serializeArray();
 
 		items.splice(0, 1);
