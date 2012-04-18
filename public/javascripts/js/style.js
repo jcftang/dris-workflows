@@ -210,10 +210,7 @@ function loadBtnActions(){
 	$("#editItem1,#editItem2").click(function(event) {
 		if(window.location.pathname == "/edit") {
 			var data = {
-				"status" : "Open",
-				"type" : $(".items li.accordion-heading-focus").find("a").attr("data-type"),
 				"properties" : {},
-				parentId : $("#itemEditSelection").val()
 			};
 			var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href")+"/update";
 			var items = $("#itemCreation").serializeArray();
