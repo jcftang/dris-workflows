@@ -3,7 +3,7 @@
  */
 
 
-
+var express = require('express');
 exports.configure = function configure(app) {
 /*
 	// Passport session setup.
@@ -81,13 +81,13 @@ exports.configure = function configure(app) {
 		app.use(express.cookieParser());
 		app.use(express.bodyParser());
 		app.use(express.methodOverride());
-		app.use(express.session({
+		/*app.use(express.session({
 			secret : 'keyboard cat'
-		}));
+		}));*/
 		// Initialize Passport!  Also use passport.session() middleware, to support
 		// persistent login sessions (recommended).
-		app.use(passport.initialize());
-		app.use(passport.session());
+		//app.use(passport.initialize());
+		//app.use(passport.session());
 		app.use(express.static(__dirname + '/public'));
 		app.use(app.router);
 	});

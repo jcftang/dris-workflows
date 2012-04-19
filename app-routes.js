@@ -4,6 +4,7 @@
 var routes = require('./routes');
 
 exports.createRoutes = function make(app) {
+
 	//Top routes
 	//Loads all page with all media objects
 	app.get('/all', routes.all);
