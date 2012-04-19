@@ -64,21 +64,6 @@ function editAction(){
 		item = $("#step1 option:selected").parent().attr("label");
 		window.location.replace("edit/"+$("tbody input").attr('checked', 'checked').attr("data-id")+ "/global");
 	})
-	
-
-	$(window).keydown(function(event) {
-		if(event.which == 66) {
-			event.preventDefault();
-			loadPrevItemInList();
-		}
-		if(event.which == 78) {
-			event.preventDefault();
-			loadNexItemInList();
-		}
-		
-	});
-
-
 
 }
 function removeAllSelected(){
@@ -131,6 +116,7 @@ function showItems(items,remove){
 	var root = "";
 
 	for(i in items){
+		console.log(items[i])
 		if(!remove){
 			root+= "<li><a data-type='"+items[i].type+"' href='"+items[i]._id+"'>Parent: "+items[i].properties.title+" "+items[i]._id+"</a></li>";
 		}else{
@@ -145,18 +131,6 @@ function showItems(items,remove){
 	
 
 }
-/*
-
-/*
-   Function: loadData
-
-   Adds a input field to the form (gets triggered by option list).
-
-   Parameters:
-
-      array - data from the propertie to display
-
-*/
 function fillUpForm(data) {
 	console.log("fill")
 	$(".dataform").empty();
@@ -310,11 +284,12 @@ function test(){
 	alert("test");
 }
 function addInputFieldToFrom(btn){
+	console.log(btn)
 	var input = '<div class="control-group"><label class="control-label">' + $(btn).text() + '</label><div class="controls">';
 	if($(btn).next().text() == "select"){
 		input +=  $(btn).next().next().html();
 	}else{
-	input += '<input type="' + $(btn).next().text()+ '" class="input-xlarge" id="input01" name="'+ $(btn).text() + '">';
+	input += '<input type="' + $(btn).next().text()+ '" class="input-xlarge" id="'+$(btn).text()+'" name="'+ $(btn).text() + '">';
 	}
 	input += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
 	$(".dataform").append(input);
