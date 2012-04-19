@@ -43,7 +43,7 @@ function loadMediaData(){
 */
 function editAction(){
 
-	$( "form" ).sortable({items:'div.control-group'});
+	$( "form" ).not("#step1 form").sortable({items:'div.control-group'});
 	//loadAllItems();
 	//hides the box which allows users to upload files
 	$("#fileBox").hide();
