@@ -4,7 +4,7 @@ var parentType = "";
 $(document).ready(function() {
 
 	jQuery.support.cors = true;
-
+	$("#properties").hide();
 	switch(window.location.pathname) {
 		case "/edit":
 		w.navigate("#collections", {
@@ -175,7 +175,7 @@ function loadAdminData() {
 	loadData("/dev/objects", function(items) {
 			$("tbody").empty();
 		for(i in items) {
-			var rbt = "<td><input type='radio' data-id='" + items[i]._id + "'></td>";
+			var rbt = "<td><input name='items' type='radio' data-id='" + items[i]._id + "'></td>";
 			if(window.location.pathname == "/create") {
 				rbt = ""
 			}
@@ -192,7 +192,7 @@ function loadChildren(id) {
 	loadData("/dev/objects/" + id + "/list", function(items) {
 			$("tbody").empty();
 		for(i in items) {
-			var rbt = "<td><input type='radio' data-id='" + items[i]._id + "'></td>";
+			var rbt = "<td><input  name='items' type='radio' data-id='" + items[i]._id + "'></td>";
 			if(window.location.pathname == "/create") {
 				rbt = ""
 			}
@@ -238,7 +238,7 @@ function backbone() {
 		},
 
 		step1 : function() {
-
+		
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 			$("#step1,#step1Info").show();
 		},
@@ -246,19 +246,20 @@ function backbone() {
 
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 			$("#step2,#step2Info").show();
+			$("#properties").show();
 
 		},
 		step3 : function() {
 
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 			$("#step3,#step3Info").show();
-
+			$("#properties").show();
 		},
 		step4 : function() {
 
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 			$("#step4,#step4Info").show();
-
+			$("#properties").show();
 		},
 		collection : function() {
 			$("tbody").empty();
@@ -282,8 +283,8 @@ function backbone() {
 				
 				$(".row .breadcrumb li:last").remove();
 			}
-			resetCreatePage()
-				$("#createCollection").hide();
+			resetCreatePage();
+			$("#createCollection").hide();
 			loadChildren(Backbone.history.fragment); 
 
 		}
@@ -299,6 +300,7 @@ function resetCreatePage(){
 			$("#createCollection").show();
  			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 			$("#step1,#step1Info").show();
+			$("#properties").hide();
 }
 function loadData(link, callback) {
 	console.log(socket + link)

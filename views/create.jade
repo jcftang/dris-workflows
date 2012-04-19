@@ -8,20 +8,22 @@ div.container
       .row
         include _includes/properties
         #step1
-          .span7
+          .span12
               .alert.alert-success.successbox
                  a.close(data-dismiss='alert') ×
                  strong Successful
                  p Creation successful!
-              h2 What do you want to create?
-              .div
-                |Add:
-                a.btn#createItems(href='#step4') Item
-                a.btn#createSerie(href='#step3') Series
-                a.btn#createCollection(href='#step2') Collection
-              ul.breadcrumb
-                li /
-              table#series-table.table.table-striped.table-bordered
+              form   
+                legend What do you want to create?
+                ul.breadcrumb
+                  li /
+                .div
+                  |Add:
+                  a.btn#createItems(href='#step4') Item
+                  a.btn#createSerie(href='#step3') Series
+                  a.btn#createCollection(href='#step2') Collection
+
+                table#series-table.table.table-striped.table-bordered
                   thead
                     tr
                       th Title

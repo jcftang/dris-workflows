@@ -1,19 +1,4 @@
 #properties.span4
-          #step1Info
-           
-            - if (title == "Edit")
-                h2 Step 1
-                p Select the serie you want to edit
-            - else if (title=="Create")
-              h2 Make a choice
-              p What do you want to create?
-            - else
-              a.btn(href='#', data-toggle='collapse', data-target='#proper')
-                i.icon-plus
-                h2 Properties
-              #proper.accordion.collapse
-                script
-                  $("#proper").append(createPropertyButtons());
           #step2Info
             - if (title == "Edit")
               a.btn(href='#', data-toggle='collapse', data-target='#proper')
