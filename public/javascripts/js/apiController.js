@@ -68,7 +68,7 @@ function loadCreateData() {
 		var link = socket + "/dev/objects";
 
 		var data = {
-			"status" : "pen",
+			"status" : "open",
 			"type" : "collection",
 			"properties":{}
 		};
@@ -112,7 +112,10 @@ function loadCreateData() {
 
 function insertItems(){
 	loadData("/dev/objects/" + $("#itemEditSelection").val() + "/list", function(data) {
-		for(var i = 0;i<data)
+		for(var i = 0;i<data;i++)
+		{
+			
+		}
 	});
 }
 

@@ -2,22 +2,10 @@
  * Module dependencies.
  */
 
-var express = require('express');
-// Configuration
-var users = [{
-	id : 1,
-	username : 'bob',
-	password : 'secret',
-	email : 'bob@example.com'
-}, {
-	id : 2,
-	username : 'joe',
-	password : 'birthday',
-	email : 'joe@example.com'
-}];
 
-exports.configure = function configure(app, passport, GoogleStrategy) {
 
+exports.configure = function configure(app) {
+/*
 	// Passport session setup.
 	//   To support persistent login sessions, Passport needs to be able to
 	//   serialize users into and deserialize users out of the session.  Typically,
@@ -62,7 +50,7 @@ exports.configure = function configure(app, passport, GoogleStrategy) {
 	 return done(null, user);
 	 })
 	 });
-	 }));*/
+	 }));
 	var GOOGLE_CLIENT_ID = "713766413952.apps.googleusercontent.com";
 	var GOOGLE_CLIENT_SECRET = "DiblvgE4xAZfe6amLz7Uyubm";
 	passport.use(new GoogleStrategy({
@@ -80,7 +68,7 @@ exports.configure = function configure(app, passport, GoogleStrategy) {
 			return done(null, profile);
 		});
 	}));
-
+*/
 	app.configure(function() {
 		app.set('views', __dirname + '/views');
 		app.set('view options', {
@@ -137,22 +125,4 @@ exports.configure = function configure(app, passport, GoogleStrategy) {
 	 app.get('/*', function(req, res){
 	 throw new NotFound;
 	 });*/
-}
-function findById(id, fn) {
-	var idx = id - 1;
-	if(users[idx]) {
-		fn(null, users[idx]);
-	} else {
-		fn(new Error('User ' + id + ' does not exist'));
-	}
-}
-
-function findByUsername(username, fn) {
-	for(var i = 0, len = users.length; i < len; i++) {
-		var user = users[i];
-		if(user.username === username) {
-			return fn(null, user);
-		}
-	}
-	return fn(null, null);
 }

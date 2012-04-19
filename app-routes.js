@@ -2,9 +2,8 @@
  * Module dependencies.
  */
 var routes = require('./routes');
-var passport;
-exports.createRoutes = function make(app, pass) {
-	passport = pass;
+
+exports.createRoutes = function make(app) {
 	//Top routes
 	//Loads all page with all media objects
 	app.get('/all', routes.all);
@@ -20,7 +19,7 @@ exports.createRoutes = function make(app, pass) {
 	app.get('/', function(req, res) {
 		res.redirect('/home');
 	});
-
+	/*
 	app.get('/login', function(req, res) {
 		res.render('login', {
 			user : req.user,
@@ -29,6 +28,7 @@ exports.createRoutes = function make(app, pass) {
 			id : "login"
 		});
 	});
+	
 	// GET /auth/google
 	//   Use passport.authenticate() as route middleware to authenticate the
 	//   request.  The first step in Google authentication will involve
@@ -62,15 +62,18 @@ exports.createRoutes = function make(app, pass) {
 		failureFlash : true
 	}), function(req, res) {
 		res.redirect('/');
-	});*/
+	});
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
+	*/
 }
+/*
 function ensureAuthenticated(req, res, next) {
 	if(req.isAuthenticated()) {
 		return next();
 	}
 	res.redirect('/login')
 }
+*/
