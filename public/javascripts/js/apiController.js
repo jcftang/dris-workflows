@@ -68,7 +68,7 @@ function loadCreateData() {
 		var link = socket + "/dev/objects";
 
 		var data = {
-			"status" : "Open",
+			"status" : "pen",
 			"type" : "collection",
 			"properties":{}
 		};
@@ -82,7 +82,7 @@ function loadCreateData() {
 		var link = socket + "/dev/objects";
 		var parent= $("#seriesCollection").val();
 		var data = {
-			"status" : "Open",
+			"status" : "open",
 			"type" : "series",
 			"properties":{},
 			parentId : parent
@@ -98,12 +98,22 @@ function loadCreateData() {
 	
 	$("#createItemBtn").click(function(event) {
 		event.preventDefault();
-		var amount =  $("#amount").val();
-		console.log(amount + ": the amount I want")
-		createItems(amount);
+		var objId =  $("objectId").size();
+		if(objId > 0){
+			insertItems();
+		}else{
+			var amount =  $("#amount").val();
+			createItems(amount);
+		}
 	});
 	
 
+}
+
+function insertItems(){
+	loadData("/dev/objects/" + $("#itemEditSelection").val() + "/list", function(data) {
+		for(var i = 0;i<data)
+	});
 }
 
 
@@ -114,32 +124,36 @@ function createItems(itemAmount) {
 	if(amount > 0) {
 		console.log("create")
 		var link = socket + "/dev/objects";
-		var parent= $("#itemEditSelection").val();
+		var parent = $("#itemEditSelection").val();
 		var data = {
-			"status" : "Open",
+			"status" : "open",
 			"type" : "item",
 			"properties" : {},
 			parentId : parent
 		};
-		if(parent == ""){
+		data.properties.objectId = amount;
+		if(parent == "") {
 			delete data.parentId;
 		}
 		var items = $('#itemCreation').serializeArray();
 
 		items.splice(0, 1);
-
+		console.log(prepareDataForPost(data, items))
 		postData($('#itemCreation'), 'POST', prepareDataForPost(data, items), link, function(id) {
-			console.log(id +  ":id")
-			if(amount >0){amount = amount - 1
-console.log(amount + "amount i'm sending")
+			console.log(id + ":id")
+			if(amount > 0) {
+				amount = amount - 1
+				console.log(amount + "amount i'm sending")
 				createItems(amount);
 			}
 		});
-	}else{
+	} else {
 		$(".successbox").fadeIn().delay(900).fadeOut();
 	}
 
 }
+
+
 
 
 
@@ -159,7 +173,8 @@ function loadEditData() {
 	
 	$("#itemEditCat").chosen();
 	$("#step2Btn").click(function() {
-		item = $("tbody input").attr('checked', 'checked').attr("data-id");
+		item = $("input[type=radio]:checked").attr("data-id");
+		console.log(item)
 		loadData("/dev/objects/" + item, function(data) {
 			showItems([data], false)
 			loadData("/dev/objects/" + item+ "/list", function(data) {
@@ -208,19 +223,6 @@ function loadChildren(id) {
 
 
 
-/*Function: loadData
-
- Gets any data from the server and gives it back
-
- Parameters:
-
- link - url where the data should come frome
- callback - the function to return it to
-
- Returns:
-
- The requested data
- */
 
 
 function backbone() {
@@ -302,6 +304,20 @@ function resetCreatePage(){
 			$("#step1,#step1Info").show();
 			$("#properties").hide();
 }
+/*Function: loadData
+
+ Gets any data from the server and gives it back
+
+ Parameters:
+
+ link - url where the data should come frome
+ callback - the function to return it to
+
+ Returns:
+
+ The requested data
+ */
+
 function loadData(link, callback) {
 	console.log(socket + link)
 	$.ajax({
