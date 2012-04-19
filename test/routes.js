@@ -56,7 +56,7 @@ describe('Try accessing top level Routes', function() {
 		it("should respond with the admin page", function(done) {
 			request('http://localhost:7000/admin', function(err, resp, body) {
 				assert.isNull(err);
-				assert.include(body, 'Admin - DRIS Workflows</title>');
+				assert.include(body, '<title>Admin</title>');
 				done();
 			});
 		});
