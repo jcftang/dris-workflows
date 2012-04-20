@@ -51,12 +51,12 @@ function editAction(){
 	
 	
 	//Highlights the selected item in the list
-	$(".items li").live("click", function() {
+	$(".items li a").live("click", function() {
 		$(".items li").removeClass("accordion-heading-focus");
-		$(this).addClass("accordion-heading-focus");
+		$(this).parent().addClass("accordion-heading-focus");
 		//highlights the same item in the other steps (when switching between step 2 and 3)
-		$(".items li").eq($(this).index()).addClass("accordion-heading-focus");
-		$("#list2 li").eq($(this).index()).addClass("accordion-heading-focus");
+		$(".items li").eq($(this).parent().index()).addClass("accordion-heading-focus");
+		$("#list2 li").eq($(this).parent().index()).addClass("accordion-heading-focus");
 	})
 	
 
@@ -195,7 +195,7 @@ function loadBtnActions(){
 		loadAllImages($("input[name='_id']").val());
 	})
 
-	$("#step3Info .items #list2 li a").live("click", function(event) {
+	$(".items #list2 li a").live("click", function(event) {
 		event.preventDefault();
 		$("#multi").hide();
 		$("#single").show();
@@ -204,7 +204,7 @@ function loadBtnActions(){
 		});
 		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
 	});
-	$("#step2Info .items ul li a").live("click",function(event) {
+	$(".items ul li a").live("click",function(event) {
 		event.preventDefault();
 		$("#multi").hide();
 		$("#single").show();

@@ -15,7 +15,6 @@ exports.createRoutes = function make(app) {
 	//loads the home page
 	app.get('/home', routes.home);
 	app.get('/admin', routes.admin);
-	app.get('/edit/:id/global',routes.globalEdit)
 	// Redirects
 	app.get('/', function(req, res) {
 		res.redirect('/home');

@@ -1,4 +1,4 @@
-#properties.span4
+#properties.span3
           #step2Info
             - if (title == "Edit")
               a.btn(href='#', data-toggle='collapse', data-target='#proper')
@@ -7,12 +7,6 @@
               #proper.accordion.collapse
                 script
                   $("#proper").append(createPropertyButtons());
-               a.btn#gblEdit(href='#')
-                |I want to edit all these Items
-              .items
-                  
-                    h2 Items            
-                    ul#list1
             - else
               a.btn(href='#', data-toggle='collapse', data-target='#proper')
                 i.icon-plus
@@ -25,10 +19,6 @@
               h2 Media
               p
               | Add some media if you have it.
-              .items
-                  
-                    h2 Items            
-                    ul#list2
             -else
               a.btn(href='#', data-toggle='collapse', data-target='#proper2')
                 i.icon-plus

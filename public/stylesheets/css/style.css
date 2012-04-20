@@ -10,6 +10,7 @@ p{
 	border-radius:4px;
 	padding:10px;
 	float:left;
+	width:150px;
 }
 #properties .selectData{
 	display:none;
@@ -31,7 +32,7 @@ p{
 	text-align: left;
 }
 div#step1Info a.btn,div#step2Info a.btn,div#step3Info a.btn,div#step4Info a.btn{
-	width: 93%;
+	width: 88%;
 	margin-bottom: 5px;
 }
 .accordion-heading-focus{
@@ -121,5 +122,15 @@ li.selected{
 i{
 	float:right;
 	margin-top:10px;
+}
+#step2 .well,#step2 span7{
+	float:left;
+}
+
+#step2 .list,#step3 .list{
+	background-color: #F9F9F9;
+	border-radius:4px;
+	width:180px;
+	padding:5px;
 }
 

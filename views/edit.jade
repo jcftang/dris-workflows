@@ -87,7 +87,9 @@ div.container
                     a.btn.previousItemBtn(href='#') <
                     a.btn.nextItemBtn(href='#') >
                     .dummy
-              .well.span2
+              .span2.list
+                      a.btn#gblEdit(href='#',value="")
+                        |I want to edit all these Items
                       .items
                         h2 Items            
                         ul#list1
@@ -115,7 +117,11 @@ div.container
                       a(href='#step2') Previous Step
                     li
                       a#editItem2(href='#') Save
-                  .dummy  
+                  .dummy 
+              .span2.list
+                      .items
+                        h2 Items
+                        ul#list2 
         #step4
           .span7
             h2 Overview
