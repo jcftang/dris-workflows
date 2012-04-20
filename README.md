@@ -12,6 +12,8 @@
 To install the needed dependancies for this web-application you must do the following, from the root directory of the web-application.
 
 	$ npm install
+	
+To get data from mongo you need to configure configuration.js with the correct server path to mongodb
 
 ## Usage
 

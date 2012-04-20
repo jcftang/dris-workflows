@@ -182,6 +182,7 @@ function loadEditData() {
 	})
 	$("#gblEdit").click(function(){
 		emptyForm();
+		$(".items li").removeClass("accordion-heading-focus");
 		$("#multi").show();
 		$("#single").hide();
 	})
