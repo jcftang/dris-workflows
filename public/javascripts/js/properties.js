@@ -7,7 +7,7 @@ var resourceTypes = ["text","cartographic","notated music",
 //categorieGroup,groupName,property,type
 //No spaces in categorieGroup
 var buttons = [
-	["collapseZero","Project Info","objectId","text"], 
+	["collapseZero","Project Info","objectId","number"], 
 	//----------------------------------------------//
 	["collapseOne","Title Info","title","text"],
 	["collapseOne","Title Info","subtitle","text"],

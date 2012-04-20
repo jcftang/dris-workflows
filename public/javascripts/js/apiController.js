@@ -1,55 +1,56 @@
 var w = backbone();
 var goDeeper = true;
 var parentType = "";
+
 $(document).ready(function() {
 
 	jQuery.support.cors = true;
-	$("#properties").hide();
 	switch(window.location.pathname) {
 		case "/edit":
-		w.navigate("#collections", {
-		trigger : true
-	});
+			w.navigate("#collections", {
+				trigger : true
+			});
+			$("#properties").hide();
 			loadEditData();
 			break;
 		case "/all":
 			loadMediaData();
 			break;
 		case "/create":
+		$("#properties").hide();
 			loadCreateData();
 			w.navigate("#collections", {
 				trigger : true
 			});
 			break;
 	}
-	$("#updateItems").click(function(event){
+	$("#updateItems").click(function(event) {
 		updateChildren()
 	})
-	
-	$("tbody a").live("click",function(){
+
+	$("tbody a").live("click", function() {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
 	})
-	
+}); 
 
-});
 
 function updateChildren() {
-	console.log("/dev/objects/" + $("#parentId").val() + "/list");
+
 	var type = "";
 	loadData("/dev/objects/" + $("#parentId").val() + "/list", function(data) {
-		console.log(data);
 		for(var i = 0; i < data.length; i++) {
 			var link = socket + "/dev/objects/" + data[i]._id + "/update";
-			var newData = {
-				"properties" : {},
-			};
 			var items = $('#updateObjects').serializeArray();
 			var items = items.splice(0,1);
-			postData($('#serieCreation'), 'POST', prepareDataForPost(newData, items), link, function(id) {
-				console.log("update")
+			for(var j = 0;j<items.length;j++){
+				var item = data[i];
+			    eval("item.properties."+items[j].name+"='"+items[j].value+"'");
+			}
+			updateData($('#updateObjects'), 'POST',{"properties" : data[i].properties} , link, function(id) {
 			});
 		}
+		$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
 	})
 }
 
@@ -98,33 +99,51 @@ function loadCreateData() {
 	
 	$("#createItemBtn").click(function(event) {
 		event.preventDefault();
-		var objId =  $("objectId").size();
-		if(objId > 0){
+		var objId =  $("#objectId").size();
+		if(objId > 0 && $("#step4 #objectId").val() != undefined){
 			insertItems();
 		}else{
 			var amount =  $("#amount").val();
-			createItems(amount);
+			createItems(amount,amount);
 		}
 	});
 	
 
 }
 
-function insertItems(){
+
+
+
+function insertItems() {
+	var objId = parseInt($("#step4 #objectId").val());
 	loadData("/dev/objects/" + $("#itemEditSelection").val() + "/list", function(data) {
-		for(var i = 0;i<data;i++)
-		{
-			
+		for(var i = 0; i < data.length; i++) {
+			if(parseInt(data[i].properties.objectId) >= parseInt(objId)) {
+				var link = socket + "/dev/objects/" + data[i]._id + "/update";
+				data[i].properties.objectId = parseInt(data[i].properties.objectId) + 1;
+				updateData($("#itemCreation"), 'POST', {"properties" : data[i].properties}, link, function(id) {
+				})
+			}
+			if(i == data.length - 1) {
+				var amount = parseInt($("#amount").val());
+				objId = amount + objId;
+				createItems(amount, objId)
+			}
 		}
 	});
 }
 
 
 
-function createItems(itemAmount) {
+
+
+
+function createItems(itemAmount,objId) {
 	amount = parseInt(itemAmount);
+	objId =  parseInt(objId);
 	console.log(amount)
-	if(amount > 0) {
+	console.log(objId)
+	if(amount > 0 && objId > 0) {
 		console.log("create")
 		var link = socket + "/dev/objects";
 		var parent = $("#itemEditSelection").val();
@@ -134,20 +153,19 @@ function createItems(itemAmount) {
 			"properties" : {},
 			parentId : parent
 		};
-		data.properties.objectId = amount;
+		data.properties.objectId = objId;
 		if(parent == "") {
 			delete data.parentId;
 		}
 		var items = $('#itemCreation').serializeArray();
 
 		items.splice(0, 1);
-		console.log(prepareDataForPost(data, items))
 		postData($('#itemCreation'), 'POST', prepareDataForPost(data, items), link, function(id) {
-			console.log(id + ":id")
-			if(amount > 0) {
+			if(amount > 0 && objId > 0) {
+				objId = objId -1;
 				amount = amount - 1
-				console.log(amount + "amount i'm sending")
-				createItems(amount);
+
+				createItems(amount,objId);
 			}
 		});
 	} else {
@@ -253,18 +271,21 @@ function backbone() {
 			$("#step2,#step2Info").show();
 			$("#properties").show();
 
+
 		},
 		step3 : function() {
 
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 			$("#step3,#step3Info").show();
 			$("#properties").show();
+
 		},
 		step4 : function() {
 
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 			$("#step4,#step4Info").show();
 			$("#properties").show();
+
 		},
 		collection : function() {
 			$("tbody").empty();
@@ -272,7 +293,9 @@ function backbone() {
 			 	goDeeper = false;
 			}
 			else{
+				if($(".row .breadcrumb li").size() >= 1){
 				$(".row .breadcrumb li:last").remove();
+				}
 			}
  			loadAdminData();
  			resetCreatePage()
@@ -301,11 +324,9 @@ function backbone() {
 
 }
 function resetCreatePage(){
-
-			$("#createCollection").show();
+		$("#createCollection").show();
  			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
 			$("#step1,#step1Info").show();
-			$("#properties").hide();
 }
 /*Function: loadData
 
@@ -365,10 +386,8 @@ function postData(form, type, data, link, callback) {
 	});
 }
 
-
-
-
 function updateData(form, type, data, link, callback) {
+	console.log(data);
 	form.submit(function() {
 		$.ajax({
 			type : type,
@@ -377,7 +396,6 @@ function updateData(form, type, data, link, callback) {
 			success : function(id) {
 				console.log("id");
 					callback(id);
-					$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
 			},
 			error : function(x, h, r) {
 				console.log(x);

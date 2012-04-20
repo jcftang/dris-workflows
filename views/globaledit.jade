@@ -1,8 +1,18 @@
 include _includes/header
 div.container
   .row
-      include _includes/properties
-      div
+      #properties.span4
+          #step1Info
+              a.btn(href='#', data-toggle='collapse', data-target='#proper')
+                i.icon-plus
+                h2 Properties
+              #proper.accordion.collapse
+                script
+                  $("#proper").append(createPropertyButtons());
+      div.span7
+          .alert.alert-success.updatebox
+                    a.close(data-dismiss='alert') ×
+                    strong Updated
           form.form-horizontal#updateObjects(enctype='multipart/form-data', method='post', action='')
               .span7
                 #title

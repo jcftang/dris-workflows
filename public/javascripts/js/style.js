@@ -61,8 +61,8 @@ function editAction(){
 	
 	$("#globalBtn").click(function(event){
 		event.preventDefault();
-		item = $("#step1 option:selected").parent().attr("label");
-		window.location.replace("edit/"+$("tbody input").attr('checked', 'checked').attr("data-id")+ "/global");
+		var item = $("input[type=radio]:checked").attr("data-id");
+		window.location.replace("edit/"+item+ "/global");
 	})
 
 }
@@ -190,7 +190,7 @@ function loadBtnActions(){
 			var items = $("#itemCreation").serializeArray();
 
 			updateData($("#itemCreation"), 'POST', prepareDataForPost(data, items), link, function(id) {
-				console.log(id);
+				$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
 			})
 		}
 	})
@@ -289,7 +289,7 @@ function addInputFieldToFrom(btn){
 	if($(btn).next().text() == "select"){
 		input +=  $(btn).next().next().html();
 	}else{
-	input += '<input type="' + $(btn).next().text()+ '" class="input-xlarge" id="'+$(btn).text()+'" name="'+ $(btn).text() + '">';
+	input += '<input type="' + $(btn).next().text()+ '" id="'+$(btn).text()+'" name="'+ $(btn).text() + '" class="input-xlarge" />';
 	}
 	input += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
 	$(".dataform").append(input);
