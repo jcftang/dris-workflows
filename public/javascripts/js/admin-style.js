@@ -2,8 +2,6 @@
  * @author Quirijn Groot Bluemink
  * @author Matthias Van Wambeke
  */
-var port = 4000;
-var socket = 'http://localhost:' + port;
 var w = backbone();
 var goDeeper = true;
 var parentType = "";
