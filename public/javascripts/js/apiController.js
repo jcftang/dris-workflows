@@ -1,7 +1,7 @@
 var w = backbone();
 var goDeeper = true;
 var parentType = "";
-
+var editItems = [];
 $(document).ready(function() {
 
 	jQuery.support.cors = true;
@@ -24,34 +24,31 @@ $(document).ready(function() {
 			});
 			break;
 	}
-	$("#updateItems").click(function(event) {
-		updateChildren()
-	})
 
 	$("tbody a").live("click", function() {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
-	})
+	});
+	$(".close").live("click",function(){
+		$(this).parent().remove();
+	});
 }); 
 
 
-function updateChildren() {
-
-	var type = "";
-	loadData("/dev/objects/" + $("#parentId").val() + "/list", function(data) {
+function updateChildren(data) {
 		for(var i = 0; i < data.length; i++) {
 			var link = socket + "/dev/objects/" + data[i]._id + "/update";
-			var items = $('#updateObjects').serializeArray();
-			var items = items.splice(0,1);
+			var items = $('#globalData').serializeArray();
 			for(var j = 0;j<items.length;j++){
 				var item = data[i];
 			    eval("item.properties."+items[j].name+"='"+items[j].value+"'");
 			}
-			updateData($('#updateObjects'), 'POST',{"properties" : data[i].properties} , link, function(id) {
+			console.log(link)
+			console.log({"properties" : data[i].properties})
+			updateData('POST',{"properties" : data[i].properties} , link, function(id) {
 			});
 		}
 		$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
-	})
 }
 
 function loadCreateData() {
@@ -111,9 +108,6 @@ function loadCreateData() {
 
 }
 
-
-
-
 function insertItems() {
 	var objId = parseInt($("#step4 #objectId").val());
 	loadData("/dev/objects/" + $("#itemEditSelection").val() + "/list", function(data) {
@@ -121,7 +115,7 @@ function insertItems() {
 			if(parseInt(data[i].properties.objectId) >= parseInt(objId)) {
 				var link = socket + "/dev/objects/" + data[i]._id + "/update";
 				data[i].properties.objectId = parseInt(data[i].properties.objectId) + 1;
-				updateData($("#itemCreation"), 'POST', {"properties" : data[i].properties}, link, function(id) {
+				updateData('POST', {"properties" : data[i].properties}, link, function(id) {
 				})
 			}
 			if(i == data.length - 1) {
@@ -133,18 +127,10 @@ function insertItems() {
 	});
 }
 
-
-
-
-
-
 function createItems(itemAmount,objId) {
 	amount = parseInt(itemAmount);
 	objId =  parseInt(objId);
-	console.log(amount)
-	console.log(objId)
 	if(amount > 0 && objId > 0) {
-		console.log("create")
 		var link = socket + "/dev/objects";
 		var parent = $("#itemEditSelection").val();
 		var data = {
@@ -191,18 +177,36 @@ function loadMediaData() {
 }
 
 function loadEditData() {
-	
+	$("#gblUpdate").click(function(){
+		updateChildren(editItems);
+	})
+	$("#gblEdit").click(function(){
+		emptyForm();
+		$("#multi").show();
+		$("#single").hide();
+	})
+	$('#checkAll').live('click',function() {
+		$('#series-table').find(':checkbox').attr('checked', this.checked);
+	});
 	$("#itemEditCat").chosen();
 	$("#step2Btn").click(function() {
-		item = $("input[type=radio]:checked").attr("data-id");
-		console.log(item)
-		loadData("/dev/objects/" + item, function(data) {
-			showItems([data], false)
-			loadData("/dev/objects/" + item+ "/list", function(data) {
-				showItems(data, true)
-				emptyForm();
+		var size = $('tbody input:checked').size()
+		var arr = new Array();
+		var objects = $('tbody input:checked');
+
+		for(var i = 0; i < objects.length; i++) {
+			loadData("/dev/objects/" + $(objects[i]).attr("data-id"), function(data) {
+				arr.push(data);
+				console.log(arr.length)
+				if(arr.length == size) {
+					showItems(arr)
+					emptyForm();
+					editItems = arr;
+				}
 			});
-		});
+
+		};
+
 	})
 }
 
@@ -211,7 +215,7 @@ function loadAdminData() {
 	loadData("/dev/objects", function(items) {
 			$("tbody").empty();
 		for(i in items) {
-			var rbt = "<td><input name='items' type='radio' data-id='" + items[i]._id + "'></td>";
+			var rbt = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
 			if(window.location.pathname == "/create") {
 				rbt = ""
 			}
@@ -228,7 +232,7 @@ function loadChildren(id) {
 	loadData("/dev/objects/" + id + "/list", function(items) {
 			$("tbody").empty();
 		for(i in items) {
-			var rbt = "<td><input  name='items' type='radio' data-id='" + items[i]._id + "'></td>";
+			var rbt = "<td><input  name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
 			if(window.location.pathname == "/create") {
 				rbt = ""
 			}
@@ -267,9 +271,10 @@ function backbone() {
 		},
 		step2 : function() {
 
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#multi").hide();
 			$("#step2,#step2Info").show();
 			$("#properties").show();
+			
 
 
 		},
@@ -386,9 +391,7 @@ function postData(form, type, data, link, callback) {
 	});
 }
 
-function updateData(form, type, data, link, callback) {
-	console.log(data);
-	form.submit(function() {
+function updateData( type, data, link, callback) {
 		$.ajax({
 			type : type,
 			data : data,
@@ -404,8 +407,6 @@ function updateData(form, type, data, link, callback) {
 			}
 		})
 		return false;
-	});
-	form.submit();
 }
 
 

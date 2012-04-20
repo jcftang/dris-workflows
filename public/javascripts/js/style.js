@@ -59,11 +59,6 @@ function editAction(){
 		$("#list2 li").eq($(this).index()).addClass("accordion-heading-focus");
 	})
 	
-	$("#globalBtn").click(function(event){
-		event.preventDefault();
-		var item = $("input[type=radio]:checked").attr("data-id");
-		window.location.replace("edit/"+item+ "/global");
-	})
 
 }
 function removeAllSelected(){
@@ -112,22 +107,20 @@ function removeItem(id, callback){
 
       items - an array which contains all the items to dispay. These items are the parent's object children.
 */
-function showItems(items,remove){
+function showItems(items){
 	var root = "";
-
-	for(i in items){
+	$(".items ul").empty();
+	
+	for(var i = 0;i<items.length;i++){
 		console.log(items[i])
-		if(!remove){
-			root+= "<li><a data-type='"+items[i].type+"' href='"+items[i]._id+"'>Parent: "+items[i].properties.title+" "+items[i]._id+"</a></li>";
-		}else{
-			root+= "<li><a data-type='"+items[i].type+"'  href='"+items[i]._id+"'>"+items[i].properties.title+" "+items[i]._id+"</a></li>";
+		root+= "<li><a data-type='"+items[i].type+"'  href='"+items[i]._id+"'>"+items[i].properties.title+" "+items[i]._id+"</a></li>";
+		if(i == items.length-1){
+			console.log(root)
+			$(".items ul").append(root);
 		}
 
 	}
-	if(!remove){
-		$(".items ul").empty();
-	}
-	$(".items ul").append(root);
+	
 	
 
 }
@@ -187,9 +180,9 @@ function loadBtnActions(){
 				"properties" : {},
 			};
 			var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href")+"/update";
-			var items = $("#itemCreation").serializeArray();
+			var items = $("#singleData").serializeArray();
 
-			updateData($("#itemCreation"), 'POST', prepareDataForPost(data, items), link, function(id) {
+			updateData('POST', prepareDataForPost(data, items), link, function(id) {
 				$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
 			})
 		}
@@ -204,6 +197,8 @@ function loadBtnActions(){
 
 	$("#step3Info .items #list2 li a").live("click", function(event) {
 		event.preventDefault();
+		$("#multi").hide();
+		$("#single").show();
 		loadData("/dev/objects"+this.pathname,function(data){
 			fillUpForm(data)
 		});
@@ -211,6 +206,8 @@ function loadBtnActions(){
 	});
 	$("#step2Info .items ul li a").live("click",function(event) {
 		event.preventDefault();
+		$("#multi").hide();
+		$("#single").show();
 		loadData("/dev/objects"+this.pathname,function(data){
 			fillUpForm(data)
 		});

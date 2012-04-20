@@ -20,7 +20,7 @@ div.container
         #step1
           .span12
             form.form-horizontal
-              legend Select the set you want to edit
+              legend Select the objects you want to edit
               .breadcrumb
                 li /
               .control-group
@@ -28,33 +28,34 @@ div.container
                   thead
                     tr
                       th.span1
+                        input#checkAll(type="checkbox")
                       th Title
                       th Type
                   tbody
               .form-actions
                 ul.pager
                   li
-                    a#globalBtn(href='') Global edit
-                    a#step2Btn(href='#step2') Edit object/children
+                    a#step2Btn(href='#step2') Edit Selected
                 .dummy
         div
-          form.form-horizontal#itemCreation
             #step2
               .span7
                 .alert.alert-success.updatebox
                     a.close(data-dismiss='alert') ×
                     strong Updated
-                #title
-                  h2  Metadata 
-                  a.btn.previousItemBtn(href='#') <
-                  a.btn.nextItemBtn(href='#') >
+                #single
+                 form.form-horizontal#singleData
+                   legend Metadata
+                   a.btn.previousItemBtn(href='#') <
+                   a.btn.nextItemBtn(href='#') >
+                   .dummy
 
-                  fieldset
-                   .dataform
-                   .alert.alert-success.successbox
-                      a.close(data-dismiss='alert') ×
-                      strong Successful
-                      p Creation successful!
+                   fieldset
+                     .dataform
+                     .alert.alert-success.successbox
+                        a.close(data-dismiss='alert') ×
+                        strong Successful
+                        p Creation successful!
 
                   .form-actions
                     ul.pager
@@ -62,6 +63,27 @@ div.container
                         a#step3EditBtn(href='#step3') Next Step
                       li
                         a#editItem2(href='#') Save
+                    a.btn.previousItemBtn(href='#') <
+                    a.btn.nextItemBtn(href='#') >
+                    .dummy
+                #multi
+                 form.form-horizontal#globalData
+                   legend Add the properties you want to add or edit
+                   a.btn.previousItemBtn(href='#') <
+                   a.btn.nextItemBtn(href='#') >
+                   .dummy
+
+                   fieldset
+                     .dataform
+                     .alert.alert-success.successbox
+                        a.close(data-dismiss='alert') ×
+                        strong Successful
+                        p Creation successful!
+
+                  .form-actions
+                    ul.pager
+                      li
+                        a#gblUpdate(href='#') Save
                     a.btn.previousItemBtn(href='#') <
                     a.btn.nextItemBtn(href='#') >
                     .dummy
