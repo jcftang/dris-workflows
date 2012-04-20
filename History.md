@@ -2,6 +2,9 @@
 0.0.3 / 2012-04-20 
 ==================
 
+  * Merge branch 'master' of ssh://howest-server.tchpc.tcd.ie/howest/node/dris-workflows
+  * start of 0.0.3 release process
+  * Global edit and update of items now works properly
   * update changelog
   * sortable fix
   * removed passport code
