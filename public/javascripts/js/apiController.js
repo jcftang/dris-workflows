@@ -213,6 +213,7 @@ function loadEditData() {
 
 
 function loadAdminData() {
+	$('#loadingDiv').show()
 	loadData("/dev/objects", function(items) {
 			$("tbody").empty();
 		for(i in items) {
@@ -222,12 +223,13 @@ function loadAdminData() {
 			}
 			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
+		$('#loadingDiv').hide()
 	});
 	
 }
 
 function loadChildren(id) {
-
+$('#loadingDiv').show()
 	id = id.substring(2, id.length)
 
 	loadData("/dev/objects/" + id + "/list", function(items) {
@@ -239,6 +241,7 @@ function loadChildren(id) {
 			}
 			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
+		$('#loadingDiv').hide()
 		if(items.length == 0) {
 			$("tbody").append("<tr><td></td><td>No Children here<td></tr>")
 		}

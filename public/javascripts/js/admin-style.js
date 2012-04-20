@@ -59,19 +59,24 @@ w.navigate("#collections", {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
 	})
+	
+
+;
 });
 
 
 
 function loadAdminData() {
-
+$('#loadingDiv').show()
 	loadData("/dev/objects", function(items) {
 			$("tbody").empty();
 		for(i in items) {
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a data-type='"+items[i].type +"' href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
+		$('#loadingDiv').hide()
 		if(items.length == 0) {
 			$("tbody").append("<tr><td></td><td>No items available<td></tr>")
+			$('#loadingDiv').hide()
 		}
 	});
 }
@@ -80,7 +85,7 @@ function loadAdminData() {
 
 
 function loadChildren(id) {
-
+$('#loadingDiv').show()
 	id = id.substring(2,id.length)
 
 	$("tbody").empty();
@@ -89,6 +94,7 @@ function loadChildren(id) {
 		for(i in items) {
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td><td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td><td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
+		$('#loadingDiv').hide()
 		if(items.length == 0){
 			$("tbody").append("<tr><td></td><td>No Children here<td><td></td></tr>")
 		}
