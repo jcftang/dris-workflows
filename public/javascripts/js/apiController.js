@@ -30,7 +30,8 @@ $(document).ready(function() {
 		parentType = $(this).attr("data-type");
 	});
 	$(".close").live("click",function(){
-		$(this).parent().remove();
+		if(!$(this).hasClass("mdl"))
+			$(this).parent().remove();
 	});
 }); 
 
@@ -177,10 +178,24 @@ function loadMediaData() {
 }
 
 function loadEditData() {
+	$("#pidSelect").click(function(event){
+		event.preventDefault();
+		var id = $('input[type=radio]:checked').attr("data-id");
+		$("div.pId").text(id);
+		$("#myModal").modal("hide");
+		var pos =$(".items li.accordion-heading-focus").attr('data-pos');
+		console.log(editItems[pos]);
+		editItems[pos].parentId = id;
+		console.log(editItems[pos]);
+	})
+	$("#pIdBtn").click(function(){
+		loadpIdData();
+	})
 	$("#gblUpdate").click(function(){
 		updateChildren(editItems);
 	})
-	$("#gblEdit").click(function(){
+	$("#gblEdit").click(function(event){
+		event.preventDefault();
 		emptyForm();
 		$(".items li").removeClass("accordion-heading-focus");
 		$("#multi").show();
@@ -228,6 +243,34 @@ function loadAdminData() {
 	
 }
 
+function loadpIdData() {
+	loadData("/dev/objects", function(items) {
+			$(".modal tbody").empty();
+		for(i in items) {
+			var rbt = "<td><input name='items' type='radio' data-id='" + items[i]._id + "'></td>";
+			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#pd" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
+		}
+
+	});
+	
+}
+function loadPidChildren(id) {
+
+	id = id.substring(2, id.length)
+
+	loadData("/dev/objects/" + id + "/list", function(items) {
+			$(".modal tbody").empty();
+		for(i in items) {
+			var rbt = "<td><input  name='items' type='radio' data-id='" + items[i]._id + "'></td>";
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#pd" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
+		}
+		if(items.length == 0) {
+			$(".modal tbody").append("<tr><td></td><td>No Children here<td></tr>")
+		}
+	});
+
+}
+
 function loadChildren(id) {
 $('#loadingDiv').show()
 	id = id.substring(2, id.length)
@@ -264,7 +307,9 @@ function backbone() {
 			"step3" : "step3",
 			"step4" : "step4",
 			"collections" : "collection",
-			"id:id" : "defaultRoute"
+			"id:id" : "defaultRoute",
+			"pd:id" : "loadPid",
+			"myModal":"loadPidTop",
 
 		},
 
@@ -276,11 +321,9 @@ function backbone() {
 		step2 : function() {
 
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#multi").hide();
-			$("#step2,#step2Info").show();
+			$("#step2,#step2Info,#single").show();
 			$("#properties").show();
-			
-
-
+			loadpIdData();
 		},
 		step3 : function() {
 
@@ -324,6 +367,9 @@ function backbone() {
 			$("#createCollection").hide();
 			loadChildren(Backbone.history.fragment); 
 
+		},
+		loadPid : function(){
+			loadPidChildren(Backbone.history.fragment); 
 		}
 	});
 
@@ -352,6 +398,7 @@ function resetCreatePage(){
  */
 
 function loadData(link, callback) {
+	console.log("load")
 	console.log(socket + link)
 	$.ajax({
 		url : socket + link,
@@ -371,6 +418,7 @@ function loadData(link, callback) {
 }
 
 function postData(form, type, data, link, callback) {
+	console.log("remove")
 	console.log(link);
 	console.log(data);
 	$.ajax({
@@ -400,6 +448,7 @@ function updateData( type, data, link, callback) {
 			type : type,
 			data : data,
 			url : link,
+			cache:false,
 			success : function(id) {
 				console.log("id");
 					callback(id);

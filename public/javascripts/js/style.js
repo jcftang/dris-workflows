@@ -113,7 +113,7 @@ function showItems(items){
 	
 	for(var i = 0;i<items.length;i++){
 		console.log(items[i])
-		root+= "<li><a data-type='"+items[i].type+"'  href='"+items[i]._id+"'>"+items[i].properties.title+" "+items[i]._id+"</a></li>";
+		root+= "<li data-pos='"+i+"'><a data-type='"+items[i].type+"'  href='"+items[i]._id+"'>"+items[i].properties.title+" "+items[i]._id+"</a></li>";
 		if(i == items.length-1){
 			console.log(root)
 			$(".items ul").append(root);
@@ -125,8 +125,11 @@ function showItems(items){
 
 }
 function fillUpForm(data) {
-	console.log("fill")
+	console.log(data.type)
 	$(".dataform").empty();
+	if(data.parentId){
+		$("div.pId").text(data.parentId)
+	}
 	for(var prop in data.properties) {	
 			$(".dataform").append('<div class="control-group"><label class="control-label">' + prop + '</label><div class="controls"><input type="text" class="input-xlarge" id="'+prop+'" name="' + prop + '" value="' + data.properties[prop] + '"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
 		
@@ -151,12 +154,10 @@ function loadBtnActions(){
 		return false
 	});
 
-	$(".breadcrumb a").click(function() {
-
-		if(!$(this).hasClass("breaddisabled")) {
+	$(".breadcrumb li a").live("click",function() {
+		console.log($(this))
 			$(".breadcrumb a").parent().removeClass("active");
 			$(this).parent().addClass("active");
-		}
 	});
 	$(".pager a").click(function() {
 
@@ -179,6 +180,10 @@ function loadBtnActions(){
 			var data = {
 				"properties" : {},
 			};
+			var pos =$(".items li.accordion-heading-focus").attr('data-pos');
+			if(editItems[pos].parentId){
+				data.parentId = editItems[pos].parentId
+			}
 			var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href")+"/update";
 			var items = $("#singleData").serializeArray();
 
@@ -208,7 +213,11 @@ function loadBtnActions(){
 		event.preventDefault();
 		$("#multi").hide();
 		$("#single").show();
-		loadData("/dev/objects"+this.pathname,function(data){
+		var link = "/dev/objects"
+		if($.browser.msie){
+			link = "/dev/objects/"
+		}
+		loadData(link+this.pathname,function(data){
 			fillUpForm(data)
 		});
 	});

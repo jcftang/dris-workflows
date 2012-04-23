@@ -3,7 +3,7 @@ include _includes/header
 div.container
       ul.breadcrumb
         li.active
-          a(href='#step1') Step 1
+          a(href='#collections') Step 1
           span.divider |
         li
           a(href='#step2') Step 2
@@ -16,7 +16,6 @@ div.container
       .dummy
       .row
         include _includes/properties
-        
         #step1
           .span12
             form.form-horizontal
@@ -47,9 +46,14 @@ div.container
                     strong Updated
                 #single
                  form.form-horizontal#singleData
-                   legend Metadata
+                   legend Single edit: Metadata
+                   
                    a.btn.previousItemBtn(href='#') <
                    a.btn.nextItemBtn(href='#') >
+                   .pIdContainer
+                     p ParentId:
+                     .pId None
+                     a.btn#pIdBtn(data-toggle='modal', href='#myModal') Change
                    .dummy
 
                    fieldset
@@ -70,7 +74,7 @@ div.container
                     .dummy
                 #multi
                  form.form-horizontal#globalData
-                   legend Add the properties you want to add or edit
+                   legend Global edit: Add the properties you want to add or edit
                    a.btn.previousItemBtn(href='#') <
                    a.btn.nextItemBtn(href='#') >
                    .dummy
@@ -90,7 +94,7 @@ div.container
                     a.btn.nextItemBtn(href='#') >
                     .dummy
               .span2.list
-                      a.btn#gblEdit(href='#',value="")
+                      a.btn#gblEdit(href='',value="")
                         |Go to global edit
                       .items
                         h2 Items            
@@ -132,5 +136,20 @@ div.container
                 li
                   a(href='#step3') Previous
               .dummy
-
       include _includes/footer
+#myModal.modal.hide.fade
+    .modal-header
+        a.close.mdl(data-dismiss='modal') ×
+        h3 Select the new parent
+      .modal-body
+        table#pIdTalbe-table.table.table-striped.table-bordered
+         thead
+                    tr
+                      th.span1
+                      th Title
+                      th Type
+                  tbody
+      .modal-footer
+        a.btn(href='#', data-dismiss='modal') Close
+        a.btn.btn-primary#pidSelect(href='') Select
+      

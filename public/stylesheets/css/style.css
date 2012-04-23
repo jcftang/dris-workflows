@@ -115,7 +115,7 @@ li.selected{
 	margin-bottom:10px;
 }
 
-.btn h2{
+.btn h2,.pId,.pIdContainer p,#step2 .well,#step2 span7{
 	float:left
 }
 
@@ -123,14 +123,21 @@ i{
 	float:right;
 	margin-top:10px;
 }
-#step2 .well,#step2 span7{
-	float:left;
-}
 
 #step2 .list,#step3 .list{
 	background-color: #F9F9F9;
 	border-radius:4px;
 	width:180px;
 	padding:5px;
+}
+
+#step2 fieldset{
+	margin-top:10px;
+}
+.pIdContainer{
+	float:right;
+}
+.pId{
+	margin-right:5px;
 }
 

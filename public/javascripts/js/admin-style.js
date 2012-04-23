@@ -129,10 +129,12 @@ function removeAllSelected() {
 };
 
 function removeItem(id, callback) {
-	console.log("/dev/objects/" + id + "/delete")
+	console.log(socket+"/dev/objects/" + id + "/delete")
 	$.ajax({
 		type:"get",
 		url : socket + "/dev/objects/" + id + "/delete",
+		dataType:"jsonp",
+		cache:false,
 		success : function(data) {
 			callback(id);
 		},
