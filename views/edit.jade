@@ -142,6 +142,8 @@ div.container
         a.close.mdl(data-dismiss='modal') ×
         h3 Select the new parent
       .modal-body
+        ul.breadcrumb
+          li /
         table#pIdTalbe-table.table.table-striped.table-bordered
          thead
                     tr
@@ -150,6 +152,8 @@ div.container
                       th Type
                   tbody
       .modal-footer
+        
         a.btn(href='#', data-dismiss='modal') Close
         a.btn.btn-primary#pidSelect(href='') Select
+        a.btn#goUp(href="") < Go up
       

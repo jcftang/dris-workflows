@@ -178,15 +178,18 @@ function loadMediaData() {
 }
 
 function loadEditData() {
+	$("#goUp").click(function(event){
+		event.preventDefault();
+		history.back();
+	})
 	$("#pidSelect").click(function(event){
 		event.preventDefault();
 		var id = $('input[type=radio]:checked').attr("data-id");
 		$("div.pId").text(id);
 		$("#myModal").modal("hide");
 		var pos =$(".items li.accordion-heading-focus").attr('data-pos');
-		console.log(editItems[pos]);
+		w.navigate("#step2")
 		editItems[pos].parentId = id;
-		console.log(editItems[pos]);
 	})
 	$("#pIdBtn").click(function(){
 		loadpIdData();
@@ -208,6 +211,7 @@ function loadEditData() {
 	$("#step2Btn").click(function() {
 		var size = $('tbody input:checked').size()
 		var arr = new Array();
+		$(".pId").text("None");
 		var objects = $('tbody input:checked');
 
 		for(var i = 0; i < objects.length; i++) {
@@ -324,6 +328,15 @@ function backbone() {
 			$("#step2,#step2Info,#single").show();
 			$("#properties").show();
 			loadpIdData();
+			if(goDeeper){
+			 	goDeeper = false;
+			}
+			else{
+				if($(".modal .breadcrumb li").size() >= 1){
+				$(".modal .breadcrumb li:last").remove();
+				$("#goUp").attr("disabled", "disabled");
+				}
+			}
 		},
 		step3 : function() {
 
@@ -369,6 +382,14 @@ function backbone() {
 
 		},
 		loadPid : function(){
+			if(goDeeper) {
+				$(".modal .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
+				$("#goUp").removeAttr("disabled");
+				goDeeper = false;
+			} else {
+				$("#goUp").removeAttr("disabled");
+				$(".modal .breadcrumb li:last").remove();
+			}
 			loadPidChildren(Backbone.history.fragment); 
 		}
 	});
