@@ -204,9 +204,10 @@ function loadBtnActions(){
 		event.preventDefault();
 		$("#multi").hide();
 		$("#single").show();
-		loadData("/dev/objects"+this.pathname,function(data){
-			fillUpForm(data)
-		});
+		var pos =$(this).parent().attr("data-pos");
+		if(editItems[pos]){
+			fillUpForm(editItems[pos]);
+		}
 		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
 	});
 	$(".items ul li a").live("click",function(event) {
@@ -217,9 +218,11 @@ function loadBtnActions(){
 		if($.browser.msie){
 			link = "/dev/objects/"
 		}
-		loadData(link+this.pathname,function(data){
-			fillUpForm(data)
-		});
+		var pos =$(this).parent().attr("data-pos");
+		if(editItems[pos]){
+			fillUpForm(editItems[pos]);
+		}
+
 	});
 
 	$("#createItems").live("click", function(event) {

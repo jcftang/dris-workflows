@@ -178,6 +178,38 @@ function loadMediaData() {
 }
 
 function loadEditData() {
+
+	$("#step2 form input").live("blur", function() {
+		var items = $("#singleData").serializeArray();
+		var data = {
+			"properties" : {},
+		};
+		$(".items li.accordion-heading-focus").css({"background-color":"#9F111B"})
+		var pos =$(".items li.accordion-heading-focus").attr('data-pos');
+		w.navigate("#step2")
+		editItems[pos].properties = prepareDataForPost(data, items).properties;
+	}); 
+	
+	$("#saveAll").click(function(){
+		for(var i = 0;i< editItems.length;i++){
+			var link = socket + "/dev/objects/" + editItems[i]._id+"/update";
+			console.log(link)
+			var data = editItems[i];
+			delete editItems[i]._id;
+			console.log(data);
+			updateData('POST', data, link, function(id) {
+				console.log(id + " updated")
+				if(i = editItems.length -1){
+					loadEditObjects();
+					$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
+				}
+			})
+			
+		}
+		
+		
+	})
+
 	$("#goUp").click(function(event){
 		event.preventDefault();
 		history.back();
@@ -209,7 +241,11 @@ function loadEditData() {
 	});
 	$("#itemEditCat").chosen();
 	$("#step2Btn").click(function() {
-		var size = $('tbody input:checked').size()
+		loadEditObjects();
+	})
+}
+function loadEditObjects(){
+			var size = $('tbody input:checked').size()
 		var arr = new Array();
 		$(".pId").text("None");
 		var objects = $('tbody input:checked');
@@ -226,10 +262,7 @@ function loadEditData() {
 			});
 
 		};
-
-	})
 }
-
 
 function loadAdminData() {
 	$('#loadingDiv').show()
