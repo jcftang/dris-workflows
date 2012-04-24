@@ -231,6 +231,7 @@ function loadEditData() {
 	})
 	$("#gblEdit").click(function(event){
 		event.preventDefault();
+		$(".controls").hide();
 		emptyForm();
 		$(".items li").removeClass("accordion-heading-focus");
 		$("#multi").show();
@@ -240,8 +241,14 @@ function loadEditData() {
 		$('#series-table').find(':checkbox').attr('checked', this.checked);
 	});
 	$("#itemEditCat").chosen();
-	$("#step2Btn").click(function() {
-		loadEditObjects();
+	$("#step2Btn").click(function(event) {
+		if($('tbody input:checked').size()>0){
+			$(".controls").show();
+			loadEditObjects();
+		}else{
+			event.preventDefault();
+		}
+		
 	})
 }
 function loadEditObjects(){

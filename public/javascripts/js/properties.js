@@ -1,4 +1,6 @@
-
+/*
+ * @author Matthias Van Wambeke
+ */
 var resourceTypes = ["text","cartographic","notated music",
 "sound recording ","sound recording-musical",
 "sound recording-nonmusical","still image",
@@ -72,4 +74,24 @@ function createSelect(items){
 	return select;
 	
 }
+
+
+var driObjectSchema = {
+	titleInfo : {
+		title : String,
+		subtitle : String,
+		partNumer : String,
+		nonSort : String
+	},
+	Name : {
+		namePart : String,
+		displayForm : String,
+		affiliation : String,
+		roleTerm : String,
+		description : String
+	},
+
+}; 
+
+
 

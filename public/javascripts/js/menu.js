@@ -4,17 +4,9 @@
 
 
 
-/*var group = '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#'+categorieGroup+'"> '+categorieGroup +'</a></div>';
-var inner = '<div id="'+categorieGroup+'" class="accordion-body collapse "><div class="accordion-inner">';
-var btn = '<button class="btn btn-small">'+property+'</button><span class="type">'+type+'</span>';
-var close ='</div></div></div>';
-var end = '</div>';*/
 
-
-
-
-
-function createPropertyButtons(){
+/*function createPropertyButtons(){
+	createJsonMenu();
 	parentId = Math.floor(Math.random()*Math.random()*1000-1);
 	var heading ='<div class="accordion" id="accordion'+parentId+'">';
 	var previousGroup = "";
@@ -53,4 +45,56 @@ function createPropertyButtons(){
 			}
 		
 	}
+}*/
+
+
+
+
+function createPropertyButtons() {
+	var p = driObjectSchema;
+
+var arr = new Array();
+	$.each(p, function(index, obj) {
+		console.log(index)
+		arr.push({name: index, value: obj});
+
+	}); 
+	parentId = Math.floor(Math.random() * Math.random() * 1000 - 1);
+	var heading = '<div class="accordion" id="accordion' + parentId + '">';
+	for(var i = 0;i<arr.length;i++){
+
+		var random = Math.floor(Math.random() * Math.random() * 1000 - 1);
+		var group = '<div class="accordion-group"><div class="accordion-heading">'
+					+ '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion' 
+					+ parentId + '" href="#group' + random + '"> ' + arr[i].name + '</a></div>'
+					+'<div id="group' + random + '" class="accordion-body collapse "><div class="accordion-inner">';
+		heading += group;
+		for(var key in arr[i].value) {
+
+		    var name = arr[i].value[key];
+		    console.log(getFunctionName(name))
+			var btn = '<button class="btn btn-small">' + key + '</button><span class="type">' + "text" + '</span>';
+			heading += btn;
+		}
+		heading += "</div></div></div>";
+
+		if(i == arr.length -1){
+						var close ='</div></div></div>';
+				var end = '</div>';
+				heading += close;
+				heading += end;
+				return heading;
+		}
+	}
 }
+
+function getFunctionName(func) {
+  if ( typeof func == "function" || typeof func == "object" )
+  var fName = (""+func).match(
+    /function\s*([\w\$]*)\s*\(/
+  ); if ( fName !== null ) return fName[1];
+}
+
+
+
+

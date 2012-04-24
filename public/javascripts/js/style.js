@@ -201,6 +201,7 @@ function loadBtnActions(){
 	})
 
 	$(".items #list2 li a").live("click", function(event) {
+		$(".controls").show();
 		event.preventDefault();
 		$("#multi").hide();
 		$("#single").show();
@@ -211,6 +212,7 @@ function loadBtnActions(){
 		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
 	});
 	$(".items ul li a").live("click",function(event) {
+		$(".controls").show();
 		event.preventDefault();
 		$("#multi").hide();
 		$("#single").show();
@@ -256,6 +258,7 @@ function loadBtnActions(){
 }
 
 function loadNexItemInList() {
+	$(".controls").show();
 	urlNextItem = $(".items li.accordion-heading-focus").next().find("a").attr("href");
 	nextItem = $(".items li.accordion-heading-focus").next();
 	if(!nextItem.is("li")) {
@@ -271,6 +274,7 @@ function loadNexItemInList() {
 }
 
 function loadPrevItemInList() {
+	$(".controls").show();
 	urlPrevItem = $(".items li.accordion-heading-focus").prev().find("a").attr("href");
 	prevItem = $(".items li.accordion-heading-focus").prev();
 	if(!prevItem.is("li")) {

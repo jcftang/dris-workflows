@@ -8,9 +8,9 @@ p{
 #properties{
 	background-color: #F9F9F9;
 	border-radius:4px;
-	padding:10px;
+	padding:5px;
 	float:left;
-	width:150px;
+	width:155px;
 }
 #properties .selectData{
 	display:none;
@@ -24,7 +24,7 @@ p{
 	margin-right: 5px;
 }
 #properties button{
-	width: 95%;
+	width: 90%;
 	margin-bottom: 5px;
 }
 
