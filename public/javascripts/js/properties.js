@@ -78,19 +78,6 @@ var buttons = [
  ]*/
  
  
-
-function createSelect(items){
-	var select = "<select>";
-	for(var i in items){
-		select += "<option>"+items[i]+"</option>";
-	}
-	select += "</select>"
-	return select;
-	
-}
-
-
-
 var driObjectSchema = {
 	titleInfo : {
 		title : String,

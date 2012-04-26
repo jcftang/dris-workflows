@@ -303,7 +303,6 @@ function addInputFieldToFrom(index){
 	var root = '<div id="'+counter+'"class="formInput">'
 	root += '<h3>'+optionsArray[index].name+'</h3>'
 	root += '<a class="close" data-dismiss="alert" href="#">&times;</a><hr>'
-	console.log(optionsArray[index].value)
 
 	for(var i in optionsArray[index].value) {
 		root += '<div class="control-group"><label class="control-label">' +i + '</label>';
@@ -314,7 +313,6 @@ function addInputFieldToFrom(index){
 
 		}else if(checkSingleField(i)){
 			root += '<div class="controls">';
-			console.log( addSpecialField(i))
 			root +=  addSpecialField(i);
 			root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a>';	
 		}else{
@@ -364,12 +362,12 @@ function addSpecialField(name) {
 	removebtn = '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>'
 	switch(name) {
 		case "role":
-			return "<li><div class='inputBox'><select class='input-small'><option value='text'>text</option>" 
+			return "<li><div class='inputBox'><select class='input-small' name='role'><option value='text'>text</option>" 
 			+ "<option value='code'>code</option></select>"
 			+ "<label>Authority</label><input name='authority' type='text' class='input-small'>" + removebtn + "</div></li> ";
 			break;
 		case "typeOfResource":
-			return createSelect(resourceTypes);
+			return createSelect(resourceTypes, name);
 			break;
 		case "genre":
 			return "<label>type</label><input name='type' type='text' class='input-small'>"
@@ -381,7 +379,7 @@ function addSpecialField(name) {
 			+"<label>Authority</label><input name='authority' type='text' class='input-small'>" + removebtn + "</div></li> ";
 			break;
 		case "digitalOrigin":
-			return createSelect(physicalDescriptionObjects)
+			return createSelect(physicalDescriptionObjects,name)
 			break;
 		case "internetMediaType":
 		 	return "<li class='dummy'><div class='inputBox'><label>Type:</label><input type='text' name='mediaType'>" + removebtn + "</div></li> ";
@@ -396,7 +394,7 @@ function addSpecialField(name) {
 			return "<li class='dummy'><div class='inputBox'><label>Topic:</label><input type='text' name='topic'>" + removebtn + "</div></li> ";
 			break;
 		case "name":
-			return "<li><div class='inputBox'>"+ createSelect(nameObjects) +"<input type='text'>"+ removebtn + "</div></li>";
+			return "<li><div class='inputBox'>"+ createSelect(nameObjects, name) +"<input type='text'>"+ removebtn + "</div></li>";
 			break;
 		case "identifier":
 			return "<li class='dummy'><div class='inputBox'><label>type</label><input name='type' type='text' class='input-small'>"
@@ -406,13 +404,16 @@ function addSpecialField(name) {
 	}
 }
 
-function createSelect(items){
-	var root = "<select>"
-			for(var i = 0; i < items.length; i++) {
-				root += "<option>" + resourceTypes[i] + "</option>";
-			}
-			root += "</select>"
-			return root;
+
+function createSelect(items, name) {
+
+	var root = "<select name='" + name + "''>"
+	for(var i = 0; i < items.length; i++) {
+		root += "<option>" + resourceTypes[i] + "</option>";
+
+	}
+	root += "</select>"
+	return root;
 }
 
 
