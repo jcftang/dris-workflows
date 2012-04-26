@@ -6,8 +6,22 @@ var resourceTypes = ["text","cartographic","notated music",
 "sound recording-nonmusical","still image",
 "moving image","three dimensional object",
 "software, multimedia","mixed material"];
+
+var physicalDescriptionObjects = ['born digital',
+'reformatted digital',
+'digitized microfilm ',
+'digitized other analog'];
+
+var nameObjects = [
+		"namePart" ,
+		"displayForm" ,
+		"affiliation" ,
+		"role" ,
+		"description"
+];
 //categorieGroup,groupName,property,type
 //No spaces in categorieGroup
+/*
 var buttons = [
 	["collapseZero","Project Info","objectId","number"], 
 	//----------------------------------------------//
@@ -61,7 +75,7 @@ var buttons = [
 	//----------------------------------------------//
 	["collapseTwentyOne","recordInfo","genre","text"]
 	//----------------------------------------------//
- ]
+ ]*/
  
  
 
@@ -76,6 +90,7 @@ function createSelect(items){
 }
 
 
+
 var driObjectSchema = {
 	titleInfo : {
 		title : String,
@@ -83,15 +98,55 @@ var driObjectSchema = {
 		partNumer : String,
 		nonSort : String
 	},
-	Name : {
+	name : {
 		namePart : String,
 		displayForm : String,
 		affiliation : String,
-		roleTerm : String,
+		role : String,
 		description : String
 	},
+	typeOfResource : {
+		typeOfResource : String
+	},
+	genre : {
+		genre : String
+	},
+	originInfo : {
+		place : String,
+		publisher : String,
+		dateIssued : String,
+		dateCreated : String,
+		dateCaptured : String,
+		dateValid : String,
+		dateModified : String,
+		copyrightDate : String,
+		dateOther : String,
+		edition : String,
+		issuance : String,
+		frequency : String
+	},
+	physicalDescription:{
+		extent:String,
+		note: String,
+		internetMediaType: String,
+		digitalOrigin: String
+	},
+	abstract:{abstract:String},
+	note:{note:String},
+	subject: { topic: String,
+		geographic: String,
+		temporal: String,
+		titleInfo: String,
+		name: String,
+		/*genre: String,*/
+		hierarchicalGeographic: String,
+		cartographics: String,
+		geographicCode: String,
+		occupation: String,
+	},
+	identifier:{identifier:String}
+};
 
-}; 
 
 
 

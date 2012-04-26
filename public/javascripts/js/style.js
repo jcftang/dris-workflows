@@ -135,12 +135,12 @@ function fillUpForm(data) {
 		
 	}
 }
-
+ var counter = 100
 function loadBtnActions(){
 
 	//Triggers when there is an option/input that needs to be added to the form
 	$("#properties button").click(function() {
-		addInputFieldToFrom(this);
+		addInputFieldToFrom($(this).index());
 		
 	});
 	//when clicking a dropdown section it makes it "highlighted"
@@ -194,7 +194,10 @@ function loadBtnActions(){
 	})
 
 	
-	
+	$(".addInput").live("click",function(event){
+		event.preventDefault();
+		$(this).next().append(addSpecialField($(this).attr("data-type")));
+	})
 
 	$('#step3EditBtn').click(function() {
 		loadAllImages($("input[name='_id']").val());
@@ -296,16 +299,41 @@ function emptyForm(){
 function test(){
 	alert("test");
 }
-function addInputFieldToFrom(btn){
-	console.log(btn)
+function addInputFieldToFrom(index){
+	var root = '<div id="'+counter+'"class="formInput">'
+	root += '<h3>'+optionsArray[index].name+'</h3>'
+	root += '<a class="close" data-dismiss="alert" href="#">&times;</a><hr>'
+	console.log(optionsArray[index].value)
+
+	for(var i in optionsArray[index].value) {
+		root += '<div class="control-group"><label class="control-label">' +i + '</label>';
+		if(checkSpecialField(i)){
+			root += '<a class="close" data-dismiss="alert" href="#">&times;</a>';	
+			root += "<div class='controls'><button class='btn addInput' data-type='"+i+"'>Add " + i +"</button>";
+			root += '<ul>'+addSpecialField(i)+'</ul>';
+
+		}else if(checkSingleField(i)){
+			root += '<div class="controls">';
+			console.log( addSpecialField(i))
+			root +=  addSpecialField(i);
+			root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a>';	
+		}else{
+			root += '<div class="controls"><input type="text" id="' + i+"_"+counter + '" name="' + i+"_"+counter+'" class="input-xlarge" />';
+			root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';	
+		}	
+	}
+	root +="</div>"
+	counter++;
+
+	/*console.log(btn)
 	var input = '<div class="control-group"><label class="control-label">' + $(btn).text() + '</label><div class="controls">';
 	if($(btn).next().text() == "select"){
 		input +=  $(btn).next().next().html();
 	}else{
 	input += '<input type="' + $(btn).next().text()+ '" id="'+$(btn).text()+'" name="'+ $(btn).text() + '" class="input-xlarge" />';
 	}
-	input += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
-	$(".dataform").append(input);
+	input += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';*/
+	$(".dataform").append(root);
 }
 
 function loadAllImages(id){
@@ -317,5 +345,74 @@ function loadAllImages(id){
 	});
 }
 	
+function checkSpecialField(name){
+	if(name =="role" || name=="place" || name == "internetMediaType" || name =="topic" || name =="name" ||name =="identifier"){
+		return true;
+	}
+	return false;
+}
+
+function checkSingleField(name){
+	if(name =="typeOfResource"|| name =="genre" || name == "digitalOrigin" || name == "abstract" || name == "note"){
+		return true;
+	}
+	return false;
+}
+
+
+function addSpecialField(name) {
+	removebtn = '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>'
+	switch(name) {
+		case "role":
+			return "<li><div class='inputBox'><select class='input-small'><option value='text'>text</option>" 
+			+ "<option value='code'>code</option></select>"
+			+ "<label>Authority</label><input name='authority' type='text' class='input-small'>" + removebtn + "</div></li> ";
+			break;
+		case "typeOfResource":
+			return createSelect(resourceTypes);
+			break;
+		case "genre":
+			return "<label>type</label><input name='type' type='text' class='input-small'>"
+			+"<label>Authority</label><input name='authority' type='text' class='input-small'>";
+			break
+		case "place":
+			return "<li><div class='inputBox'><select class='input-small'><option value='text'>text</option>" 
+			+ "<option value='code'>code</option></select>"
+			+"<label>Authority</label><input name='authority' type='text' class='input-small'>" + removebtn + "</div></li> ";
+			break;
+		case "digitalOrigin":
+			return createSelect(physicalDescriptionObjects)
+			break;
+		case "internetMediaType":
+		 	return "<li class='dummy'><div class='inputBox'><label>Type:</label><input type='text' name='mediaType'>" + removebtn + "</div></li> ";
+			break;
+		case "abstract":
+			return "<textarea rows='5' cols='50'></textarea>";
+			break
+		case "note":
+			return "<textarea rows='5' cols='50'></textarea>";
+			break
+		case "topic":
+			return "<li class='dummy'><div class='inputBox'><label>Topic:</label><input type='text' name='topic'>" + removebtn + "</div></li> ";
+			break;
+		case "name":
+			return "<li><div class='inputBox'>"+ createSelect(nameObjects) +"<input type='text'>"+ removebtn + "</div></li>";
+			break;
+		case "identifier":
+			return "<li class='dummy'><div class='inputBox'><label>type</label><input name='type' type='text' class='input-small'>"
+			+"<label>value</label><input name='value' type='text' class='input-small'>" + removebtn + "</div></li> ";
+			break;
+		
+	}
+}
+
+function createSelect(items){
+	var root = "<select>"
+			for(var i = 0; i < items.length; i++) {
+				root += "<option>" + resourceTypes[i] + "</option>";
+			}
+			root += "</select>"
+			return root;
+}
 
 

@@ -140,4 +140,29 @@ i{
 .pId{
 	margin-right:5px;
 }
+.formInput{
+	padding:10px;
+
+	border:#DDD solid 1px;
+}
+.formInput h3{
+	display: inline;
+}
+.formInput hr{
+	margin:0;
+}
+
+.inputBox{
+	width:90%;
+	padding:3px;
+}
+.inputBox label,.inputBox input,.inputBox select,.inputBox .close,inputBox .close,.controls label,.controls input,textarea{
+	float:left;
+	margin-right: 3px;
+}
+
+form ul{
+	list-style-type: none;
+	margin:0;
+}
 
