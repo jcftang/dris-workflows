@@ -300,7 +300,7 @@ function test(){
 	alert("test");
 }
 function addInputFieldToFrom(index){
-	var root = '<div id="'+counter+'"class="formInput">'
+	var root = '<div id="'+counter+"_"+optionsArray[index].name+'"class="formInput">'
 	root += '<h3>'+optionsArray[index].name+'</h3>'
 	root += '<a class="close" data-dismiss="alert" href="#">&times;</a><hr>'
 
@@ -309,14 +309,14 @@ function addInputFieldToFrom(index){
 		if(checkSpecialField(i)){
 			root += '<a class="close" data-dismiss="alert" href="#">&times;</a>';	
 			root += "<div class='controls'><button class='btn addInput' data-type='"+i+"'>Add " + i +"</button>";
-			root += '<ul>'+addSpecialField(i)+'</ul>';
+			root += '<ul data-name="'+i+'">'+addSpecialField(i)+'</ul>';
 
 		}else if(checkSingleField(i)){
 			root += '<div class="controls">';
 			root +=  addSpecialField(i);
 			root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a>';	
 		}else{
-			root += '<div class="controls"><input type="text" id="' + i+"_"+counter + '" name="' + i+"_"+counter+'" class="input-xlarge" />';
+			root += '<div class="controls"><input type="text" id="' + i + '" name="' + i +'" class="input-xlarge" />';
 			root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';	
 		}	
 	}
@@ -362,7 +362,7 @@ function addSpecialField(name) {
 	removebtn = '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>'
 	switch(name) {
 		case "role":
-			return "<li><div class='inputBox'><select class='input-small' name='role'><option value='text'>text</option>" 
+			return "<li data-type='role'><div class='inputBox'><select class='input-small' name='role'><option value='text'>text</option>" 
 			+ "<option value='code'>code</option></select>"
 			+ "<label>Authority</label><input name='authority' type='text' class='input-small'>" + removebtn + "</div></li> ";
 			break;
@@ -414,6 +414,56 @@ function createSelect(items, name) {
 	}
 	root += "</select>"
 	return root;
+}
+
+
+function createModels(form) {
+	var dataBlocks = $(".dataform > div",form);
+	console.log(dataBlocks);
+
+	Person = Backbone.Model.extend();
+
+	 var person = new Person();
+
+	
+
+
+	for(var k = 0; k < dataBlocks.length; k++) {
+		var parent = new Object()
+		var b = new Object();
+		parent[$(dataBlocks[k]).attr("id")] =[]
+		var fields = $("input", dataBlocks[k]);
+		for(var i = 0; i < fields.length; i++) {
+			b[$(fields[i]).attr("name")] = $(fields[i]).val();
+			if(i ==  fields.length -1){
+				parent[$(dataBlocks[k]).attr("id")][0]  = b
+				console.log(parent)
+			}
+		}
+		var lists = $("ul", dataBlocks[k])
+
+		for(var j = 0; j < lists.length; j++) {
+			var items = $("li", lists[j])
+			var itemsArray = [];
+			for(var i = 0; i < items.length; i++) {
+				var obj = new Object();
+				obj[$("select", items[i]).attr("name")] = $("select", items[i]).val();
+				obj[$("input", items[i]).attr("name")] = $("input", items[i]).val();
+				itemsArray.push(obj)
+				console.log(parent)
+
+			}
+
+			b[$(lists[j]).attr("data-name")] = itemsArray;
+			parent[$(dataBlocks[k]).attr("id")][0] = b
+			console.log(parent)
+
+		}
+
+		person.set(parent);
+		console.log(person.toJSON())
+	}
+
 }
 
 

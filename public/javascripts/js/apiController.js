@@ -97,13 +97,14 @@ function loadCreateData() {
 	
 	$("#createItemBtn").click(function(event) {
 		event.preventDefault();
-		var objId =  $("#objectId").size();
+		createModels("#itemCreation");
+		/*var objId =  $("#objectId").size();
 		if(objId > 0 && $("#step4 #objectId").val() != undefined){
 			insertItems();
 		}else{
 			var amount =  $("#amount").val();
 			createItems(amount,amount);
-		}
+		}*/
 	});
 	
 
