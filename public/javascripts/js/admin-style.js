@@ -72,7 +72,7 @@ $('#loadingDiv').show()
 			$("tbody").empty();
 		for(i in items) {
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>"
-				+ "<td><a data-type='" + items[i].type + "' href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td>"
+				+ "<td><a data-type='" + items[i].type + "' href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>"
 				+ "<td>" + items[i].type + "</td>"
 				+ "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>"
 				+ "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
@@ -97,7 +97,7 @@ $('#loadingDiv').show()
 			$("tbody").empty();
 		for(i in items) {
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>"
-				+ "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td>"
+				+ "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>"
 				+ "<td>" + items[i].type + "</td>"
 				+ "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>"
 				+ "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")

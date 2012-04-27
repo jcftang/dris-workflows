@@ -63,48 +63,55 @@ function loadCreateData() {
 		emptyForm();
 	});
 
+
 	$("#createCollectionBtn").click(function() {
 		var link = socket + "/dev/objects";
 
 		var data = {
 			"status" : "open",
 			"type" : "collection",
-			"properties":{}
+			"properties" : {}
 		};
-		items = $('#collectionCreation').serializeArray();
-		postData($('#collectionCreation'), 'POST', prepareDataForPost(data,items), link,function(id){
-			$(".successbox").fadeIn().delay(900).fadeOut();
+		createModels("#collectionCreation", function(model) {
+			data.properties = model;
+			postData($('#collectionCreation'), 'POST', data, link, function(id) {
+				$(".successbox").fadeIn().delay(900).fadeOut();
+			});
 		});
 	})
 
+
 	$("#createSerieBtn").click(function() {
 		var link = socket + "/dev/objects";
-		var parent= $("#seriesCollection").val();
+		var parent = $("#seriesCollection").val();
 		var data = {
 			"status" : "open",
 			"type" : "series",
-			"properties":{},
+			"properties" : {},
 			parentId : parent
 		};
-		if(parent == ""){
+		if(parent == "") {
 			delete data.parentId;
 		}
-		var items = $('#serieCreation').serializeArray();
-		postData($('#serieCreation'), 'POST', prepareDataForPost(data,items), link,function(id){
-			$(".successbox").fadeIn().delay(900).fadeOut();
+		createModels("#serieCreation", function(model) {
+			data.properties = model;
+			postData($('#serieCreation'), 'POST', data, link, function(id) {
+				$(".successbox").fadeIn().delay(900).fadeOut();
+			});
 		});
+		
 	});
-	
+
 	$("#createItemBtn").click(function(event) {
 		event.preventDefault();
-		createModels("#itemCreation");
-		/*var objId =  $("#objectId").size();
+		var objId =  $("#objectId").size();
 		if(objId > 0 && $("#step4 #objectId").val() != undefined){
 			insertItems();
 		}else{
+			console.log("create")
 			var amount =  $("#amount").val();
 			createItems(amount,amount);
-		}*/
+		}
 	});
 	
 
@@ -129,9 +136,10 @@ function insertItems() {
 	});
 }
 
-function createItems(itemAmount,objId) {
+
+function createItems(itemAmount, objId) {
 	amount = parseInt(itemAmount);
-	objId =  parseInt(objId);
+	objId = parseInt(objId);
 	if(amount > 0 && objId > 0) {
 		var link = socket + "/dev/objects";
 		var parent = $("#itemEditSelection").val();
@@ -141,26 +149,27 @@ function createItems(itemAmount,objId) {
 			"properties" : {},
 			parentId : parent
 		};
-		data.properties.objectId = objId;
-		if(parent == "") {
+		if(parent ==""){
 			delete data.parentId;
 		}
-		var items = $('#itemCreation').serializeArray();
+		createModels("#itemCreation", function(model) {
+			data.properties = model;
+			postData($('#itemCreation'), 'POST', data, link, function(id) {
+				if(amount > 0 && objId > 0) {
+					objId = objId - 1;
+					amount = amount - 1
 
-		items.splice(0, 1);
-		postData($('#itemCreation'), 'POST', prepareDataForPost(data, items), link, function(id) {
-			if(amount > 0 && objId > 0) {
-				objId = objId -1;
-				amount = amount - 1
-
-				createItems(amount,objId);
-			}
+					createItems(amount, objId);
+				}
+			});
 		});
+
 	} else {
 		$(".successbox").fadeIn().delay(900).fadeOut();
 	}
 
 }
+
 
 
 
@@ -180,7 +189,7 @@ function loadMediaData() {
 
 function loadEditData() {
 
-	$("#step2 form input").live("blur", function() {
+	/*$("#step2 form input").live("blur", function() {
 		var items = $("#singleData").serializeArray();
 		var data = {
 			"properties" : {},
@@ -189,7 +198,7 @@ function loadEditData() {
 		var pos =$(".items li.accordion-heading-focus").attr('data-pos');
 		w.navigate("#step2")
 		editItems[pos].properties = prepareDataForPost(data, items).properties;
-	}); 
+	}); */
 	
 	$("#saveAll").click(function(){
 		for(var i = 0;i< editItems.length;i++){
@@ -253,7 +262,7 @@ function loadEditData() {
 	})
 }
 function loadEditObjects(){
-			var size = $('tbody input:checked').size()
+		var size = $('tbody input:checked').size()
 		var arr = new Array();
 		$(".pId").text("None");
 		var objects = $('tbody input:checked');
@@ -281,7 +290,7 @@ function loadAdminData() {
 			if(window.location.pathname == "/create") {
 				rbt = ""
 			}
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		$('#loadingDiv').hide()
 	});
@@ -293,7 +302,7 @@ function loadpIdData() {
 			$(".modal tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input name='items' type='radio' data-id='" + items[i]._id + "'></td>";
-			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#pd" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#pd" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 
 	});
@@ -307,7 +316,7 @@ function loadPidChildren(id) {
 			$(".modal tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input  name='items' type='radio' data-id='" + items[i]._id + "'></td>";
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#pd" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#pd" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		if(items.length == 0) {
 			$(".modal tbody").append("<tr><td></td><td>No Children here<td></tr>")
@@ -327,7 +336,7 @@ $('#loadingDiv').show()
 			if(window.location.pathname == "/create") {
 				rbt = ""
 			}
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {

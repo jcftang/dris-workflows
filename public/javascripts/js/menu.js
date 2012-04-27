@@ -62,11 +62,22 @@ function createPropertyButtons() {
 		});
 
 	});
-	console.log(optionsArray)
 	parentId = Math.floor(Math.random() * Math.random() * 1000 - 1);
 	var heading = '<div class="accordion" id="accordion' + parentId + '">';
+	
+	var random2 = Math.floor(Math.random() * Math.random() * 1000 - 1);
+	var group2 = '<div class="accordion-group"><div class="accordion-heading">' + '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion' 
+	+ parentId + '" href="#project' + random2 + '">Project</a></div>' 
+	+ '<div id="project' + random2 + '" class="accordion-body collapse "><div class="accordion-inner">'
+	+ '<button class="btn btn-small">objectId</button>'
+	+ '</div></div></div>';
+	heading += group2;
+	
 	var random = Math.floor(Math.random() * Math.random() * 1000 - 1);
-	var group = '<div class="accordion-group"><div class="accordion-heading">' + '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion' + parentId + '" href="#group' + random + '">Properties</a></div>' + '<div id="group' + random + '" class="accordion-body collapse "><div class="accordion-inner">';
+	var group = '<div class="accordion-group"><div class="accordion-heading">'
+	+ '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion' 
+	+ parentId + '" href="#group' + random + '">Properties</a></div>' + '<div id="group' 
+	+ random + '" class="accordion-body collapse "><div class="accordion-inner">';
 	heading += group;
 	for(var i = 0; i < optionsArray.length; i++) {
 		var btn = '<button class="btn btn-small">' + optionsArray[i].name + '</button>';
@@ -80,15 +91,9 @@ function createPropertyButtons() {
 			return heading;
 		}
 	}
+	return heading;
 }
 
-
-function getFunctionName(func) {
-  if ( typeof func == "function" || typeof func == "object" )
-  var fName = (""+func).match(
-    /function\s*([\w\$]*)\s*\(/
-  ); if ( fName !== null ) return fName[1];
-}
 
 
 

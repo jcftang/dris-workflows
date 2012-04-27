@@ -113,7 +113,7 @@ function showItems(items){
 	
 	for(var i = 0;i<items.length;i++){
 		console.log(items[i])
-		root+= "<li data-pos='"+i+"'><a data-type='"+items[i].type+"'  href='"+items[i]._id+"'>"+items[i].properties.title+" "+items[i]._id+"</a></li>";
+		root+= "<li data-pos='"+i+"'><a data-type='"+items[i].type+"'  href='"+items[i]._id+"'>"+items[i].properties.titleInfo[0].title+" "+items[i]._id+"</a></li>";
 		if(i == items.length-1){
 			console.log(root)
 			$(".items ul").append(root);
@@ -124,23 +124,44 @@ function showItems(items){
 	
 
 }
+
 function fillUpForm(data) {
-	console.log(data.type)
 	$(".dataform").empty();
-	if(data.parentId){
+	var position = 0;
+	for(var i in data.properties) {
+		
+		
+	
+
+		for(var j in data.properties[i]) {
+			var info = data.properties[i][j]
+			addInputFieldToFrom(position);
+
+			for(k in info){
+				console.log()				
+				$("#"+$('[name="'+k+'"]:last').attr("id")).val(info[k])
+			}
+			
+		}
+		position++;
+	}
+	console.log(data)
+
+	if(data.parentId) {
 		$("div.pId").text(data.parentId)
 	}
-	for(var prop in data.properties) {	
-			$(".dataform").append('<div class="control-group"><label class="control-label">' + prop + '</label><div class="controls"><input type="text" class="input-xlarge" id="'+prop+'" name="' + prop + '" value="' + data.properties[prop] + '"> </div><a class="close" data-dismiss="alert" href="#">&times;</a></div>');
-		
-	}
 }
+
  var counter = 100
 function loadBtnActions(){
 
 	//Triggers when there is an option/input that needs to be added to the form
 	$("#properties button").click(function() {
-		addInputFieldToFrom($(this).index());
+		if($(this).text() == "objectId"){
+			addProjectField($(this))
+		}else{
+			addInputFieldToFrom($(this).index());
+		}
 		
 	});
 	//when clicking a dropdown section it makes it "highlighted"
@@ -300,7 +321,8 @@ function test(){
 	alert("test");
 }
 function addInputFieldToFrom(index){
-	var root = '<div id="'+counter+"_"+optionsArray[index].name+'"class="formInput">'
+	console.log(index)
+	var root = '<div id="'+optionsArray[index].name+'"class="formInput">'
 	root += '<h3>'+optionsArray[index].name+'</h3>'
 	root += '<a class="close" data-dismiss="alert" href="#">&times;</a><hr>'
 
@@ -316,11 +338,12 @@ function addInputFieldToFrom(index){
 			root +=  addSpecialField(i);
 			root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a>';	
 		}else{
-			root += '<div class="controls"><input type="text" id="' + i + '" name="' + i +'" class="input-xlarge" />';
+			root += '<div class="controls"><input type="text" id="' + i+counter + '" name="' + i +'" class="input-xlarge" />';
 			root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';	
 		}	
 	}
 	root +="</div>"
+	console.log(root);
 	counter++;
 
 	/*console.log(btn)
@@ -332,6 +355,7 @@ function addInputFieldToFrom(index){
 	}
 	input += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';*/
 	$(".dataform").append(root);
+	console.log($(".dataform"))
 }
 
 function loadAllImages(id){
@@ -406,10 +430,9 @@ function addSpecialField(name) {
 
 
 function createSelect(items, name) {
-
 	var root = "<select name='" + name + "''>"
 	for(var i = 0; i < items.length; i++) {
-		root += "<option>" + resourceTypes[i] + "</option>";
+		root += "<option>" + items[i] + "</option>";
 
 	}
 	root += "</select>"
@@ -417,28 +440,27 @@ function createSelect(items, name) {
 }
 
 
-function createModels(form) {
+function createModels(form,callback) {
 	var dataBlocks = $(".dataform > div",form);
-	console.log(dataBlocks);
+	Model = Backbone.Model.extend();
 
-	Person = Backbone.Model.extend();
-
-	 var person = new Person();
-
-	
-
-
+	 var dataModel = new Model();
+	var parent = new Object();
 	for(var k = 0; k < dataBlocks.length; k++) {
-		var parent = new Object()
+		
 		var b = new Object();
-		parent[$(dataBlocks[k]).attr("id")] =[]
-		var fields = $("input", dataBlocks[k]);
+		console.log(parent[$(dataBlocks[k]).attr("id")])
+		if(parent[$(dataBlocks[k]).attr("id")] == undefined) {
+			parent[$(dataBlocks[k]).attr("id")] = new Array();
+		}
+
+		console.log(parent)
+		var fields = $("input,select,textarea", dataBlocks[k]).not("ul input, ul select");
 		for(var i = 0; i < fields.length; i++) {
+			if($(fields[i]).val() != ""){
 			b[$(fields[i]).attr("name")] = $(fields[i]).val();
-			if(i ==  fields.length -1){
-				parent[$(dataBlocks[k]).attr("id")][0]  = b
-				console.log(parent)
 			}
+
 		}
 		var lists = $("ul", dataBlocks[k])
 
@@ -447,23 +469,41 @@ function createModels(form) {
 			var itemsArray = [];
 			for(var i = 0; i < items.length; i++) {
 				var obj = new Object();
-				obj[$("select", items[i]).attr("name")] = $("select", items[i]).val();
-				obj[$("input", items[i]).attr("name")] = $("input", items[i]).val();
+				var selects  =  $("select", items[i])
+				for(var l = 0; l < selects.length; l++) {
+					obj[$(selects[l]).attr("name")] = $(selects[l]).val();
+					obj[$(selects[l]).attr("name")] = $(selects[l]).val();
+				}
+				var selects  =  $("input", items[i])
+				for(var m = 0; m < selects.length; m++) {
+					obj[$(selects[m]).attr("name")] = $(selects[m]).val();
+					obj[$(selects[m]).attr("name")] = $(selects[m]).val();
+				}
+
 				itemsArray.push(obj)
-				console.log(parent)
-
 			}
-
 			b[$(lists[j]).attr("data-name")] = itemsArray;
-			parent[$(dataBlocks[k]).attr("id")][0] = b
-			console.log(parent)
-
+			
 		}
-
-		person.set(parent);
-		console.log(person.toJSON())
+		parent[$(dataBlocks[k]).attr("id")].push(b);
+		console.log(parent[$(dataBlocks[k]).attr("id")])
+		dataModel.set(parent);
+		console.log()
 	}
+	callback(dataModel.toJSON());
+	
 
+}
+
+function addProjectField(obj){
+	var s = "#"+$(obj).text()
+	var objects = $(s)
+	if(objects.length == 0 ){
+	var root = '<div class="control-group"><label class="control-label">' +$(obj).text()  + '</label>';
+	root += '<div class="controls"><input type="text" id="' + $(obj).text() + '" name="' + $(obj).text()  +'" class="input-xlarge" />';
+	root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
+	$(".dataform").append(root);
+	}
 }
 
 

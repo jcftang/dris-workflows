@@ -7,10 +7,10 @@ var resourceTypes = ["text","cartographic","notated music",
 "moving image","three dimensional object",
 "software, multimedia","mixed material"];
 
-var physicalDescriptionObjects = ['born digital',
-'reformatted digital',
-'digitized microfilm ',
-'digitized other analog'];
+var physicalDescriptionObjects = ["born digital",
+"reformatted digital",
+"digitized microfilm ",
+"digitized other analog"];
 
 var nameObjects = [
 		"namePart" ,
