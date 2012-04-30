@@ -360,6 +360,7 @@ function backbone() {
 			"step2" : "step2", // #search/kiwis
 			"step3" : "step3",
 			"step4" : "step4",
+			"step5" : "step5",
 			"collections" : "collection",
 			"id:id" : "defaultRoute",
 			"pd:id" : "loadPid",
@@ -369,12 +370,12 @@ function backbone() {
 
 		step1 : function() {
 		
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step1,#step1Info").show();
 		},
 		step2 : function() {
 
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#multi").hide();
+			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step2,#step2Info,#single").show();
 			$("#properties").show();
 			loadpIdData();
@@ -390,16 +391,22 @@ function backbone() {
 		},
 		step3 : function() {
 
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step3,#step3Info").show();
 			$("#properties").show();
 
 		},
 		step4 : function() {
 
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step4,#step4Info").show();
 			$("#properties").show();
+
+		},
+		step5 : function() {
+
+			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
+			$("#step5,#step5Info").show();
 
 		},
 		collection : function() {
@@ -451,7 +458,7 @@ function backbone() {
 }
 function resetCreatePage(){
 		$("#createCollection").show();
- 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info").hide();
+ 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step1,#step1Info").show();
 }
 /*Function: loadData
