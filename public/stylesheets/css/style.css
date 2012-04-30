@@ -166,4 +166,6 @@ form ul{
 	list-style-type: none;
 	margin:0;
 }
-
+#loadingDiv td{
+	text-align:center;
+}
