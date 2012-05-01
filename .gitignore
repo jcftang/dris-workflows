@@ -1,3 +1,4 @@
 *.log
 lib-cov
 node_modules
+public/javascripts/js/configuration.js
