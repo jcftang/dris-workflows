@@ -172,23 +172,13 @@ function createItems(itemAmount, objId) {
 
 }
 
-<<<<<<< HEAD
-=======
-function prepareDataForPost(data, items) {
-	for(var key in items) {
-		eval("data.properties." + items[key].name + "='" + items[key].value + "'");
-	}
-	return data
-}
 
->>>>>>> 0ba9e727b222f30f0fe29cdccc2be0fc880a4bc0
 function loadMediaData() {
 
 }
 
 function loadEditData() {
 
-<<<<<<< HEAD
 	$("#step2 form input").live("blur", function() {
 		
 		$(".items li.accordion-heading-focus").css({"background-color":"#9F111B"})
@@ -203,22 +193,6 @@ function loadEditData() {
 	$("#saveAll").click(function(){
 		for(var i = 0;i< editItems.length;i++){
 			var link = socket + "/dev/objects/" + editItems[i]._id+"/update";
-=======
-	/*$("#step2 form input").live("blur", function() {
-	 var items = $("#singleData").serializeArray();
-	 var data = {
-	 "properties" : {},
-	 };
-	 $(".items li.accordion-heading-focus").css({"background-color":"#9F111B"})
-	 var pos =$(".items li.accordion-heading-focus").attr('data-pos');
-	 w.navigate("#step2")
-	 editItems[pos].properties = prepareDataForPost(data, items).properties;
-	 }); */
-
-	$("#saveAll").click(function() {
-		for(var i = 0; i < editItems.length; i++) {
-			var link = socket + "/dev/objects/" + editItems[i]._id + "/update";
->>>>>>> 0ba9e727b222f30f0fe29cdccc2be0fc880a4bc0
 			console.log(link)
 			var data = editItems[i];
 			delete editItems[i]._id;
@@ -243,13 +217,9 @@ function loadEditData() {
 		var id = $('input[type=radio]:checked').attr("data-id");
 		$("div.pId").text(id);
 		$("#myModal").modal("hide");
-<<<<<<< HEAD
 		var pos =$(".items li.accordion-heading-focus").attr('data-pos');
 		workspace.navigate("#step2")
-=======
-		var pos = $(".items li.accordion-heading-focus").attr('data-pos');
-		w.navigate("#step2")
->>>>>>> 0ba9e727b222f30f0fe29cdccc2be0fc880a4bc0
+
 		editItems[pos].parentId = id;
 	})
 	$("#pIdBtn").click(function() {
