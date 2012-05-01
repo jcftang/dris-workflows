@@ -53,9 +53,9 @@ var headAttributes = [{}]
 var optionsArray = new Array();
 function createPropertyButtons() {
 	optionsArray = new Array();
-	var p = driObjectSchema;
+	var scheme = driObjectSchema;
 	
-	$.each(p, function(index, obj) {
+	$.each(scheme, function(index, obj) {
 		optionsArray.push({
 			name : index,
 			value : obj

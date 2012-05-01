@@ -2,12 +2,12 @@
  * @author Quirijn Groot Bluemink
  * @author Matthias Van Wambeke
  */
-var w = backbone();
+var workspace = backbone();
 var goDeeper = true;
 var parentType = "";
 
 $(document).ready(function() {
-w.navigate("#collections", {
+workspace.navigate("#collections", {
 		trigger : true
 	});
 	$('#checkAll').live('click',function() {

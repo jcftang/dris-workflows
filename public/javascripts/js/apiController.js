@@ -1,4 +1,4 @@
-var w = backbone();
+var workspace= backbone();
 var goDeeper = true;
 var parentType = "";
 var editItems = [];
@@ -7,7 +7,7 @@ $(document).ready(function() {
 	jQuery.support.cors = true;
 	switch(window.location.pathname) {
 		case "/edit":
-			w.navigate("#collections", {
+			workspace.navigate("#collections", {
 				trigger : true
 			});
 			$("#properties").hide();
@@ -19,7 +19,7 @@ $(document).ready(function() {
 		case "/create":
 		$("#properties").hide();
 			loadCreateData();
-			w.navigate("#collections", {
+			workspace.navigate("#collections", {
 				trigger : true
 			});
 			break;
@@ -72,7 +72,7 @@ function loadCreateData() {
 			"type" : "collection",
 			"properties" : {}
 		};
-		createModels("#collectionCreation", function(model) {
+		createMetaDataModels("#collectionCreation", function(model) {
 			data.properties = model;
 			postData($('#collectionCreation'), 'POST', data, link, function(id) {
 				$(".successbox").fadeIn().delay(900).fadeOut();
@@ -93,7 +93,7 @@ function loadCreateData() {
 		if(parent == "") {
 			delete data.parentId;
 		}
-		createModels("#serieCreation", function(model) {
+		createMetaDataModels("#serieCreation", function(model) {
 			data.properties = model;
 			postData($('#serieCreation'), 'POST', data, link, function(id) {
 				$(".successbox").fadeIn().delay(900).fadeOut();
@@ -152,16 +152,17 @@ function createItems(itemAmount, objId) {
 		if(parent ==""){
 			delete data.parentId;
 		}
-		createModels("#itemCreation", function(model) {
+		createMetaDataModels("#itemCreation", function(model) {
 			data.properties = model;
-			postData($('#itemCreation'), 'POST', data, link, function(id) {
+			console.log(model)
+			/*postData($('#itemCreation'), 'POST', data, link, function(id) {
 				if(amount > 0 && objId > 0) {
 					objId = objId - 1;
 					amount = amount - 1
 
 					createItems(amount, objId);
 				}
-			});
+			});*/
 		});
 
 	} else {
@@ -170,35 +171,22 @@ function createItems(itemAmount, objId) {
 
 }
 
-
-
-
-
-
-
-function prepareDataForPost(data,items){
-		for (var key in items) {
- 				eval("data.properties."+items[key].name+"='"+items[key].value+"'");
-	 	}
-	 	return data
-}
-
 function loadMediaData() {
 
 }
 
 function loadEditData() {
 
-	/*$("#step2 form input").live("blur", function() {
-		var items = $("#singleData").serializeArray();
-		var data = {
-			"properties" : {},
-		};
+	$("#step2 form input").live("blur", function() {
+		
 		$(".items li.accordion-heading-focus").css({"background-color":"#9F111B"})
 		var pos =$(".items li.accordion-heading-focus").attr('data-pos');
-		w.navigate("#step2")
-		editItems[pos].properties = prepareDataForPost(data, items).properties;
-	}); */
+		workspace.navigate("#step2")
+		createMetaDataModels("#singleData",function(data){
+			editItems[pos].properties = data;
+		})
+		
+	}); 
 	
 	$("#saveAll").click(function(){
 		for(var i = 0;i< editItems.length;i++){
@@ -230,7 +218,7 @@ function loadEditData() {
 		$("div.pId").text(id);
 		$("#myModal").modal("hide");
 		var pos =$(".items li.accordion-heading-focus").attr('data-pos');
-		w.navigate("#step2")
+		workspace.navigate("#step2")
 		editItems[pos].parentId = id;
 	})
 	$("#pIdBtn").click(function(){
@@ -499,7 +487,7 @@ function postData(form, type, data, link, callback) {
 		url : link,
 		success : function(id) {
 			console.log("id received" + id)
-			w.navigate("#collections", {
+			workspace.navigate("#collections", {
 				trigger : true
 			});
 			if(callback != undefined) {
@@ -532,19 +520,3 @@ function updateData( type, data, link, callback) {
 		})
 		return false;
 }
-
-
-
-/*
- ALL
-
- - each val, key in items
- tr(id="#{val._id}")
- td
- input(type="checkbox",data-id="#{val._id}")
- td
- a(href="object/media/#{val._id}/remove") #{val._id}
- td #{val.filename}
- td
- a.btn.btn-danger.btn-mini.removeItem(href="object/media/#{val._id}/remove") Remove
- */
