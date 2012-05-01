@@ -22,7 +22,7 @@ div.container
                   a.btn#createItems(href='#step4') Item
                   a.btn#createSerie(href='#step3') Series
                   a.btn#createCollection(href='#step2') Collection
-
+                  a.btn#createImage(href='#step5') Images
                 table#series-table.table.table-striped.table-bordered
                   thead
                     tr
@@ -73,6 +73,26 @@ div.container
                        label.control-label(for='series') parentId
                        .controls
                          input#itemEditSelection.input-xlarge.disabled(type='text', disabled='')
+                .dataform
+                .form-actions
+                  ul.pager
+                    li
+                      a#createItemBtn(href='#') Save
+                  .dummy
+          form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='')
+            #step5
+              .span7
+                legend Item
+                p Select images to upload
+                    .control-group
+                       label.control-label(for='amount') Images
+                       .controls
+                         label.control-label
+                           input#images(type='file', name='images')
+                    .control-group
+                       label.control-label(for='series') Some value
+                       .controls
+                         input#itemEditSelection.input-xlarge(type='text')
                 .dataform
                 .form-actions
                   ul.pager
