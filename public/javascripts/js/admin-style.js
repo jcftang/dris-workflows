@@ -7,10 +7,10 @@ var goDeeper = true;
 var parentType = "";
 
 $(document).ready(function() {
-w.navigate("#collections", {
+	w.navigate("#collections", {
 		trigger : true
 	});
-	$('#checkAll').live('click',function() {
+	$('#checkAll').live('click', function() {
 		$('#series-table').find(':checkbox').attr('checked', this.checked);
 	});
 	$('#bulk-execute').click(function() {
@@ -35,7 +35,7 @@ w.navigate("#collections", {
 				console.log("Select an action");
 		}
 	});
-	$('.removeItem').live("click",function() {
+	$('.removeItem').live("click", function() {
 		$this = $(this)
 		id = $(this).attr("data-id");
 
@@ -47,7 +47,7 @@ w.navigate("#collections", {
 			})
 		}
 	});
-	$('.approveItem').live("click",function() {
+	$('.approveItem').live("click", function() {
 		$this = $(this)
 		id = $(this).attr("data-id");
 		console.log("Approve: " + id);
@@ -55,27 +55,17 @@ w.navigate("#collections", {
 			console.log(data);
 		});
 	});
-	$("tbody a").live("click",function(){
+	$("tbody a").live("click", function() {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
-	})
-	
-
-;
-});
-
-
-
+	});
+})
 function loadAdminData() {
-$('#loadingDiv').show()
+	$('#loadingDiv').show()
 	loadData("/dev/objects", function(items) {
-			$("tbody").empty();
+		$("tbody").empty();
 		for(i in items) {
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>"
-				+ "<td><a data-type='" + items[i].type + "' href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>"
-				+ "<td>" + items[i].type + "</td>"
-				+ "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>"
-				+ "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
@@ -85,32 +75,24 @@ $('#loadingDiv').show()
 	});
 }
 
-
-
-
 function loadChildren(id) {
-$('#loadingDiv').show()
-	id = id.substring(2,id.length)
+	$('#loadingDiv').show()
+	id = id.substring(2, id.length)
 
 	$("tbody").empty();
 	loadData("/dev/objects/" + id + "/list", function(items) {
-			$("tbody").empty();
+		$("tbody").empty();
 		for(i in items) {
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>"
-				+ "<td><a data-type='"+items[i].type +"'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>"
-				+ "<td>" + items[i].type + "</td>"
-				+ "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>"
-				+ "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
 		$('#loadingDiv').hide()
-		if(items.length == 0){
+		if(items.length == 0) {
 			$("tbody").append("<tr><td></td><td>No Children here<td><td></td></tr>")
 		}
-	}); 
+	});
 
 }
 
-	
 function approveAllSelected() {
 	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
 	if(confirmDialog == true) {
@@ -137,12 +119,12 @@ function removeAllSelected() {
 };
 
 function removeItem(id, callback) {
-	console.log(socket+"/dev/objects/" + id + "/delete")
+	console.log(socket + "/dev/objects/" + id + "/delete")
 	$.ajax({
-		type:"get",
+		type : "get",
 		url : socket + "/dev/objects/" + id + "/delete",
-		dataType:"jsonp",
-		cache:false,
+		dataType : "jsonp",
+		cache : false,
 		success : function(data) {
 			callback(id);
 		},
@@ -166,11 +148,10 @@ function approveItem(id, callback) {
 	});
 };
 
-
 function loadData(link, callback) {
 	$.ajax({
 		url : socket + link,
-		type:"GET",
+		type : "GET",
 		dataType : 'jsonp',
 		success : function(data) {
 			callback(data);
@@ -193,21 +174,19 @@ function backbone() {
 		},
 
 		collection : function() {
- 			loadAdminData();
- 			if(goDeeper){
-			 goDeeper = false;
-			}
-			else{
+			loadAdminData();
+			if(goDeeper) {
+				goDeeper = false;
+			} else {
 				$(".breadcrumb li:last").remove();
 			}
 		},
 		defaultRoute : function() {
 			console.log(Backbone.history)
-			if(goDeeper){
-			$(".breadcrumb").append("<li>"+parentType+": "+Backbone.history.fragment+"<span class='divider'>/</span></li>")
-			 goDeeper = false;
-			}
-			else{
+			if(goDeeper) {
+				$(".breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
+				goDeeper = false;
+			} else {
 				$(".breadcrumb li:last").remove();
 			}
 			loadChildren(Backbone.history.fragment);
