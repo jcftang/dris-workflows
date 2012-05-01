@@ -156,14 +156,14 @@ function createItems(itemAmount, objId) {
 		createMetaDataModels("#itemCreation", function(model) {
 			data.properties = model;
 			console.log(model)
-			/*postData($('#itemCreation'), 'POST', data, link, function(id) {
+			postData($('#itemCreation'), 'POST', data, link, function(id) {
 				if(amount > 0 && objId > 0) {
 					objId = objId - 1;
 					amount = amount - 1
 
 					createItems(amount, objId);
 				}
-			});*/
+			});
 		});
 
 	} else {

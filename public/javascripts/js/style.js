@@ -129,6 +129,8 @@ function fillUpForm(data) {
 	for(var i in data.properties) {
 		for(var j in data.properties[i]) {
 			var info = data.properties[i][j]
+			console.log(data.properties[i])
+			console.log(info)
 			addInputFieldToFrom(position);
 			for(i in info) {
 				
