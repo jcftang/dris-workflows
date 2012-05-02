@@ -79,25 +79,23 @@ div.container
                     li
                       a#createItemBtn(href='#') Save
                   .dummy
-          form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='')
-            #step5
-              .span7
-                legend Item
-                p Select images to upload
+          #step5
+           form(action='http://localhost:4000/dev/upload', enctype='multipart/form-data', method='post')
+             .span7
+                  legend Upload 
+                  fieldset
                     .control-group
-                       label.control-label(for='amount') Images
+                       label.control-label(for='series') parentId
                        .controls
                          label.control-label
-                           input#images(type='file', name='images')
-                    .control-group
-                       label.control-label(for='series') Some value
-                       .controls
-                         input#itemEditSelection.input-xlarge(type='text')
-                .dataform
-                .form-actions
-                  ul.pager
-                    li
-                      a#createItemBtn(href='#') Save
-                  .dummy  
+                           input(type="file",name='upload')
+                   .dataform
+                  .form-actions
+                    ul.pager
+                      li
+                        input(type='submit')
+                    .dummy
+
+
 
       include _includes/footer

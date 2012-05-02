@@ -15,10 +15,13 @@ exports.createRoutes = function make(app) {
 	//loads the home page
 	app.get('/home', routes.home);
 	app.get('/admin', routes.admin);
+	app.get('/upload',routes.upload)
 	// Redirects
 	app.get('/', function(req, res) {
 		res.redirect('/home');
 	});
+	
+	app.get('/cors/result*',routes.results)
 	
 	app.get('/login', function(req, res) {
 		res.render('login', {

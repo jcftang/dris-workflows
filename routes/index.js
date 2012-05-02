@@ -54,6 +54,22 @@ exports.globalEdit = function(req,res){
 		_id:req.params.id
 	});
 }
+
+exports.upload = function(req, res) {
+
+	res.render('upload', {
+		id : "all",
+		title : "All",
+	});
+}
+
+exports.results = function(req, res) {
+
+	res.render('result', {
+		id : "all",
+		title : "All",
+	});
+}
 /*
  exports.data = function(req, res) {
  data.updateItem(req,function(data){
