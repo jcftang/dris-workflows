@@ -80,22 +80,5 @@ div.container
                       a#createItemBtn(href='#') Save
                   .dummy
           #step5
-           form(action='http://localhost:4000/dev/upload', enctype='multipart/form-data', method='post')
-             .span7
-                  legend Upload 
-                  fieldset
-                    .control-group
-                       label.control-label(for='series') parentId
-                       .controls
-                         label.control-label
-                           input(type="file",name='upload')
-                   .dataform
-                  .form-actions
-                    ul.pager
-                      li
-                        input(type='submit')
-                    .dummy
-
-
-
+           include upload
       include _includes/footer

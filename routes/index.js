@@ -58,16 +58,16 @@ exports.globalEdit = function(req,res){
 exports.upload = function(req, res) {
 
 	res.render('upload', {
-		id : "all",
-		title : "All",
+		id : "upload",
+		title : "Upload",
 	});
 }
 
 exports.results = function(req, res) {
 
 	res.render('result', {
-		id : "all",
-		title : "All",
+		id : "result",
+		title : "result",
 	});
 }
 /*

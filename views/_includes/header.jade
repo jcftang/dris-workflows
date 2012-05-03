@@ -8,7 +8,7 @@
             a.brand(href='home') DRIS
             .nav-collapse
                 ul.nav
-                    - var obj = { '': 'Home', '/all': 'All', '/create': 'Create', '/edit': 'Edit', '/admin': 'Admin'}
+                    - var obj = { '': 'Home', '/all': 'All', '/create': 'Create', '/edit': 'Edit', '/admin': 'Admin', '/upload': 'Upload'}
                         - each val, key in obj
                           - if (id == key) 
                             li.active
@@ -16,12 +16,3 @@
                           - else
                             li
                               a(href='#{key}') #{val}
-                ul.nav.pull-right
-                    - if(user)
-                      li.divider-vertical
-                      li
-                        a(href="/logout") Logout
-                    - else
-                      li.divider-vertical
-                      li
-                        a(href="/login") Login

@@ -35,6 +35,9 @@ $(document).ready(function() {
 	});
 });
 
+function uploadSucces(){
+	alert("success")
+}
 function updateChildren(data) {
 	for(var i = 0; i < data.length; i++) {
 		var link = socket + "/dev/objects/" + data[i]._id + "/update";
@@ -56,6 +59,16 @@ function updateChildren(data) {
 }
 
 function loadCreateData() {
+
+		$('#uploadFile').fileupload({
+			forceIframeTransport : true,
+			url : this.action,
+			done : function(e, data) {
+				console.log(data)
+			}
+		})
+		$('#uploadFile').fileupload('option', 'redirect', window.location.href.replace(/\/[^\/]*$/, '/cors/result?'));
+	
 
 	$("#createSerie").live("click", function(event) {
 		id = Backbone.history.fragment
@@ -280,7 +293,7 @@ function loadAdminData() {
 			if(window.location.pathname == "/create") {
 				rbt = ""
 			}
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		$('#loadingDiv').hide()
 	});

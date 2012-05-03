@@ -6,17 +6,6 @@
 
 //starts when the main html file is loaded
 $(document).ready(function() {
-
-
-	$('#upload').live('change', function() {
-		$("#preview").html('');
-		$("#preview").html('<img src="loader.gif" alt="Uploading...."/>');
-		$("#imageform").ajaxForm({
-			target : '#preview'
-		}).submit();
-	}); 
-
-
 	
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 
@@ -31,28 +20,6 @@ $(document).ready(function() {
 	}
 
 });
-
-
-function uploadFile() {
-	var file = $("[name='upload']")[0].files[0]
-	console.log(file)
-	var fd = new FormData();
-	fd.append('file', file);
-
-	$.ajax({
-		url : socket + port + "/dev/upload",
-		data : fd,
-		cache : false,
-		dataType : "jsonp",
-		contentType : false,
-		processData : false,
-		type : 'POST',
-		success : function(data) {
-			alert(data);
-		}
-	})
-}
-
 
 function loadMediaData() {
 	$('#checkAll').click(function() {
