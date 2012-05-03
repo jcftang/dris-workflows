@@ -118,7 +118,7 @@ li.selected{
 	margin-bottom:10px;
 }
 
-.btn h2,.pId,.pIdContainer p,#step2 .well,#step2 span7{
+.btn h2,.pId,.pIdContainer p,#step2 .well,#step2 span7,.list{
 	float:left
 }
 
@@ -171,4 +171,7 @@ form ul{
 }
 #loadingDiv td{
 	text-align:center;
+}
+#multi{
+	display:none;
 }
