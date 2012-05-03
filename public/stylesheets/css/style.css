@@ -111,7 +111,7 @@ li.selected{
 #loginForm input{
 		margin-top:-3px;
 }
-#createItems, #createSerie{
+#createItems, #createSerie,#createCollection{
 	margin-right:10px;
 }
 .div{
