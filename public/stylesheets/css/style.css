@@ -122,7 +122,7 @@ li.selected{
 	float:left
 }
 
-i{
+#properties i{
 	float:right;
 	margin-top:10px;
 }

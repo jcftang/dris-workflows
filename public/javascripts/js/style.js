@@ -6,6 +6,18 @@
 
 //starts when the main html file is loaded
 $(document).ready(function() {
+
+
+	$('#upload').live('change', function() {
+		$("#preview").html('');
+		$("#preview").html('<img src="loader.gif" alt="Uploading...."/>');
+		$("#imageform").ajaxForm({
+			target : '#preview'
+		}).submit();
+	}); 
+
+
+	
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 
 	loadBtnActions();
@@ -19,6 +31,28 @@ $(document).ready(function() {
 	}
 
 });
+
+
+function uploadFile() {
+	var file = $("[name='upload']")[0].files[0]
+	console.log(file)
+	var fd = new FormData();
+	fd.append('file', file);
+
+	$.ajax({
+		url : socket + port + "/dev/upload",
+		data : fd,
+		cache : false,
+		dataType : "jsonp",
+		contentType : false,
+		processData : false,
+		type : 'POST',
+		success : function(data) {
+			alert(data);
+		}
+	})
+}
+
 
 function loadMediaData() {
 	$('#checkAll').click(function() {
@@ -123,17 +157,14 @@ function showItems(items) {
 
 
 function fillUpForm(data) {
-	console.log(data)
+
 	$(".dataform").empty();
 	var position = 0;
 	for(var i in data.properties) {
 		for(var j in data.properties[i]) {
 			var info = data.properties[i][j]
-			console.log(data.properties[i])
-			console.log(info)
-			addInputFieldToFrom(position);
+			addEditFormFields(info,i);
 			for(i in info) {
-				
 				$("#" + $('[name="' + i + '"]:last').attr("id")).val(info[i])
 				if( typeof info[i] == "object") {
 					$("#" + $(".dataform ul:last").attr("id")).empty()
@@ -156,10 +187,8 @@ function fillUpForm(data) {
 function fillInSpecialDataFields(info,name) {
 	for(var i in info) {
 		var spField = $(addSpecialField(name))
-		console.log(i)
 
 		for(j in info[i]) {
-			console.log(spField)
 			$('[name="' + j + '"]', spField).val(info[i][j]);
 
 			//$("#" + $('.dataform ul:last li:last [name="' + j + '"]:last').attr("id")).val(info[i][j])
@@ -179,7 +208,7 @@ function loadBtnActions(){
 		if($(this).text() == "objectId") {
 			addProjectField($(this))
 		} else {
-			addInputFieldToFrom($(this).index());
+			addInputFieldToFrom($(this).index(),optionsArray);
 		}
 
 	});
@@ -194,7 +223,6 @@ function loadBtnActions(){
 	});
 
 	$(".breadcrumb li a").live("click", function() {
-		console.log($(this))
 		$(".breadcrumb a").parent().removeClass("active");
 		$(this).parent().addClass("active");
 	});
@@ -329,13 +357,12 @@ function emptyForm() {
 }
 
 
-function addInputFieldToFrom(index){
+function addInputFieldToFrom(index,dataObject){
 
-	console.log(index)
-	var root = '<div id="' + optionsArray[index].name + '"class="formInput">'
-	root += '<h3>' + optionsArray[index].name + '</h3>'
+	var root = '<div id="' + dataObject[index].name + '"class="formInput">'
+	root += '<h3>' + dataObject[index].name + '</h3>'
 	root += '<a class="close" data-dismiss="alert" href="#">&times;</a><hr>'
-	for(var i in optionsArray[index].value) {
+	for(var i in dataObject[index].value) {
 
 		root += '<div class="control-group"><label class="control-label">' +i + '</label>';
 		if(checkSpecialField(i)){
@@ -358,6 +385,43 @@ function addInputFieldToFrom(index){
 	$(".dataform").append(root);
 	console.log($(".dataform"))
 }
+
+
+
+function addEditFormFields(dataObject, name) {
+	console.log(dataObject)
+	var root = '<div id="' + name + '"class="formInput">'
+	root += '<h3>' + name + '</h3>'
+	root += '<a class="close" data-dismiss="alert" href="#">&times;</a><hr>'
+
+	for(var j in optionsArray) {
+		console.log(optionsArray[j])
+		for(var i in optionsArray[j].value) {
+			if(optionsArray[j].name == name) {
+				root += '<div class="control-group"><label class="control-label">' + i + '</label>';
+				if(checkSpecialField(i)) {
+					root += '<a class="close" data-dismiss="alert" href="#">&times;</a>';
+					root += "<div class='controls'><button class='btn addInput' data-type='" + i + "'>Add " + i + "</button>";
+					root += '<ul data-name="' + i + '" id="ul' + counter + '">' + addSpecialField(i) + '</ul>';
+				} else if(checkSingleField(i)) {
+					root += '<div class="controls">';
+					root += addSpecialField(i);
+					root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a>';
+				} else {
+					root += '<div class="controls"><input type="text" id="' + i + counter + '" name="' + i + '" class="input-xlarge" />';
+					root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
+				}
+			}
+		}
+	}
+
+	root += "</div>"
+	counter++;
+
+	$(".dataform").append(root);
+}
+
+
 
 function loadAllImages(id) {
 	$("#imageContainer").empty();
