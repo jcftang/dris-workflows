@@ -5,6 +5,9 @@
 p{
 	font-size: 1em;
 }
+.center{
+	text-align:center;
+}s
 #properties{
 	background-color: #F9F9F9;
 	border-radius:4px;

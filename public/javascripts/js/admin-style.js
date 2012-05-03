@@ -7,7 +7,7 @@ var goDeeper = true;
 var parentType = "";
 
 $(document).ready(function() {
-workspace.navigate("#collections", {
+	workspace.navigate("#collections", {
 		trigger : true
 	});
 	$('#checkAll').live('click', function() {
@@ -82,12 +82,13 @@ function loadChildren(id) {
 	$("tbody").empty();
 	loadData("/dev/objects/" + id + "/list", function(items) {
 		$("tbody").empty();
-		for(i in items) {
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
-		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
-			$("tbody").append("<tr><td></td><td>No Children here<td><td></td></tr>")
+			$("tbody").append("<tr><td class='center' colspan='5'>No Children here</td></tr>")
+		} else {
+			for(i in items) {
+				$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			}
 		}
 	});
 
@@ -137,7 +138,8 @@ function removeItem(id, callback) {
 
 function approveItem(id, callback) {
 	$.ajax({
-		url : "/fedora/" + id + "/approve",
+		url : socket + "/dev/objects/" + id + "/approve",
+		type : "GET",
 		success : function(data) {
 			callback(data);
 		},
