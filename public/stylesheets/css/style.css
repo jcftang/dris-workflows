@@ -7,7 +7,7 @@ p{
 }
 .center{
 	text-align:center;
-}s
+}
 #properties{
 	background-color: #F9F9F9;
 	border-radius:4px;
@@ -159,12 +159,18 @@ li.selected{
 .inputBox{
 	width:90%;
 	padding:3px;
+	clear:both;
 }
-.inputBox label,.inputBox input,.inputBox select,.inputBox .close,inputBox .close,.controls label,.controls input,textarea{
+inputBox .close,.controls input,textarea{
 	float:left;
 	margin-right: 3px;
 }
-
+.inputBox br,.controls br{
+	clear: both;
+}
+.specialClose{
+	margin-top:-30px;
+}
 form ul{
 	list-style-type: none;
 	margin:0;

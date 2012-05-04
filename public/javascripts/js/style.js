@@ -114,7 +114,6 @@ function showItems(items) {
 		console.log(items[i])
 		root += "<li data-pos='" + i + "'><a data-type='" + items[i].type + "'  href='" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + " " + items[i]._id + "</a></li>";
 		if(i == items.length - 1) {
-			console.log(root)
 			$(".items ul").append(root);
 		}
 
@@ -122,19 +121,22 @@ function showItems(items) {
 
 }
 
-
+var itemPos = 0;
 function fillUpForm(data) {
 
 	$(".dataform").empty();
 	var position = 0;
 	for(var i in data.properties) {
+		var item = i;
 		for(var j in data.properties[i]) {
-			var info = data.properties[i][j]
-			addEditFormFields(info,i);
+			
+			var info = data.properties[item][j]
+			addEditFormFields(info,item);
 			for(i in info) {
 				$("#" + $('[name="' + i + '"]:last').attr("id")).val(info[i])
 				if( typeof info[i] == "object") {
-					$("#" + $(".dataform ul:last").attr("id")).empty()
+					$.fn.reverse = [].reverse; 
+					$(".dataform ul").eq(itemPos).empty()
 					fillInSpecialDataFields(info[i],i)
 				}
 			}
@@ -161,7 +163,10 @@ function fillInSpecialDataFields(info,name) {
 			//$("#" + $('.dataform ul:last li:last [name="' + j + '"]:last').attr("id")).val(info[i][j])
 
 		}
-		$("#"+$(".dataform ul:last").attr("id")).append(spField)
+		$.fn.reverse = [].reverse; 
+		
+		$(".dataform ul").eq(itemPos).append(spField);
+		itemPos++;
 
 	}
 }
@@ -324,6 +329,7 @@ function emptyForm() {
 }
 
 
+
 function addInputFieldToFrom(index,dataObject){
 
 	var root = '<div id="' + dataObject[index].name + '"class="formInput">'
@@ -339,7 +345,7 @@ function addInputFieldToFrom(index,dataObject){
 		} else if(checkSingleField(i)) {
 			root += '<div class="controls">';
 			root += addSpecialField(i);
-			root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a>';
+			root += '</div><a class="close specialClose" data-dismiss="alert" href="#">&times;</a></div>';
 		} else {
 			root += '<div class="controls"><input type="text" id="' + i + counter + '" name="' + i + '" class="input-xlarge" />';
 			root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
@@ -350,19 +356,16 @@ function addInputFieldToFrom(index,dataObject){
 	counter++;
 
 	$(".dataform").append(root);
-	console.log($(".dataform"))
 }
 
 
 
 function addEditFormFields(dataObject, name) {
-	console.log(dataObject)
 	var root = '<div id="' + name + '"class="formInput">'
 	root += '<h3>' + name + '</h3>'
 	root += '<a class="close" data-dismiss="alert" href="#">&times;</a><hr>'
 
 	for(var j in optionsArray) {
-		console.log(optionsArray[j])
 		for(var i in optionsArray[j].value) {
 			if(optionsArray[j].name == name) {
 				root += '<div class="control-group"><label class="control-label">' + i + '</label>';
@@ -373,7 +376,7 @@ function addEditFormFields(dataObject, name) {
 				} else if(checkSingleField(i)) {
 					root += '<div class="controls">';
 					root += addSpecialField(i);
-					root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a>';
+					root += '</div><a class="close specialClose" data-dismiss="alert" href="#">&times;</a>';
 				} else {
 					root += '<div class="controls"><input type="text" id="' + i + counter + '" name="' + i + '" class="input-xlarge" />';
 					root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
@@ -385,7 +388,7 @@ function addEditFormFields(dataObject, name) {
 	root += "</div>"
 	counter++;
 
-	$(".dataform").append(root);
+	$(".dataform").prepend(root);
 }
 
 
@@ -400,40 +403,41 @@ function loadAllImages(id) {
 }
 
 function checkSpecialField(name) {
-	if(name == "role" || name == "place" || name == "internetMediaType" || name == "topic" || name == "name" || name == "identifier") {
+	if(name =="name" ||name == "role" || name == "place" || name == "internetMediaType" || name == "topic" || name == "name" || name == "identifier" || name == "languageTerm") {
 		return true;
 	}
 	return false;
 }
 
 function checkSingleField(name) {
-	if(name == "typeOfResource" || name == "genre" || name == "digitalOrigin" || name == "abstract" || name == "note") {
+	if(name == "dateOther" || name == "typeOfResource" || name == "genre" || name == "digitalOrigin" || name == "abstract" || name == "note") {
 		return true;
 	}
 	return false;
 }
 
 function addSpecialField(name) {
-	console.log(name)
 	counter++
 	removebtn = '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>'
 	switch(name) {
 		case "role":
-			return "<li data-type='role'><div class='inputBox'><select class='input-small' name='role'  id='input"+counter+"' ><option value='text'>text</option>" 
+			return "<li data-type='role'><div class='inputBox'><select class='input-small' name='role'  id='"+name+counter+"' ><option value='text'>text</option>" 
 			+ "<option value='code'>code</option></select>"
-			+ "<label>Authority</label><input id='input"+counter+"a' name='authority' type='text' class='input-small'>" + removebtn + "</div></li> ";
+			+ "<label>Authority</label><input id='"+name+counter+"a' name='authority' type='text' class='input-small'>" + removebtn + "</div></li> ";
 			break;
 		case "typeOfResource":
 			return createSelect(resourceTypes, name);
 			break;
 		case "genre":
-			return "<label>type</label><input id='input"+counter+"' name='type' type='text' class='input-small'>"
-			+"<label>Authority</label><input  id='input"+counter+"a' name='authority' type='text' class='input-small'>";
+			return "<label>type</label><input id='input"+counter+"' name='type' type='text' class='input-small'><br />"
+			+"<label>Authority</label><input  id='input"+counter+"a' name='authority' value='aat' type='text' class='input-small'><br />"
+			+"<label>Genre</label><input  id='input"+counter+"b' name='genre' type='text' class='input-small'><br /><hr>";
 			break
 		case "place":
-			return "<li><div class='inputBox'><select id='input"+counter+"' class='input-small'><option value='text'>text</option>" 
+			return "<li><div class='inputBox'><hr><select id='input"+counter+"' class='input-small'><option value='text'>text</option>" 
 			+ "<option value='code'>code</option></select>"
-			+"<label>Authority</label><input id='input"+counter+"a' name='authority' type='text' class='input-small'>" + removebtn + "</div></li> ";
+			+"<label>Authority</label><input id='input"+counter+"a' name='authority' type='text' class='input-small'><br>"
+			+"<label>Place</label><input id='input"+counter+"b' name='place' type='text' class='input-small'>"+ removebtn + "</div></li> ";
 			break;
 		case "digitalOrigin":
 			return createSelect(physicalDescriptionObjects, name)
@@ -450,13 +454,27 @@ function addSpecialField(name) {
 		case "topic":
 			return "<li class='dummy'><div class='inputBox'><label>Topic:</label><input id='input"+counter+"' type='text' name='topic'>" + removebtn + "</div></li> ";
 			break;
-		case "name":
-			return "<li><div class='inputBox'>"+ createSelect(nameObjects, name) +"<input id='input"+counter+"' type='text'>"+ removebtn + "</div></li>";
-			break;
 		case "identifier":
 			return "<li class='dummy'><div class='inputBox'><label>type</label><input id='input"+counter+"a' name='type' type='text' class='input-small'>"
 			+"<label>value</label><input id='input"+counter+"' name='value' type='text' class='input-small'>" + removebtn + "</div></li> ";
 			break;
+		case "dateOther":
+			return "<label>point</label><input id='input"+counter+"' name='point' type='text' class='input-small'><br />"
+			+"<label>dateOther</label><input id='input"+ counter +"a' name='dateOther' value='aat' type='text' class='input-small'><br /><br/>";
+			break;
+		case "languageTerm":
+		return "<li><div class='inputBox'><hr><select id='input"+counter+"' class='input-small'><option value='text'>text</option>" 
+			+ "<option value='code'>code</option></select>"
+			+"<label>Authority</label><input id='input"+counter+"a' name='authority' type='text' class='input-small'><br>"
+			+"<label>language</label><input id='input"+counter+"b' name='language' type='text' class='input-small'>"+ removebtn + "</div></li> ";
+			break;
+		case "name":
+			return "<li><div class='inputBox'><hr>"
+			+"<label>namePart</label><input id='"+name+counter+"d' name='namePart' type='text' class='input-small'><br>"
+			+"<label>displayForm</label><input id='"+name+counter+"e' name='displayForm' type='text' class='input-small'><br>"
+			+"<label>affiliation</label><input id='"+name+counter+"f' name='affiliation' type='text' class='input-small'><br>"+ removebtn + "</div></li>";
+			break
+		
 	}
 }
 
@@ -479,14 +497,12 @@ function createMetaDataModels(form,callback) {
 	var parent = new Object();
 	for(var k = 0; k < dataBlocks.length; k++) {
 		var b = new Object();
-		console.log(parent[$(dataBlocks[k]).attr("id")])
 		if(parent[$(dataBlocks[k]).attr("id")] == undefined) {
 			parent[$(dataBlocks[k]).attr("id")] = new Array();
 		}
-		console.log(parent)
-		console.log(dataBlocks[k])
+
 		var fields = $("input,select,textarea", dataBlocks[k]).not("ul input, ul select");
-		console.log(fields)
+
 		for(var i = 0; i < fields.length; i++) {
 			if($(fields[i]).val() != "") {
 				b[$(fields[i]).attr("name")] = $(fields[i]).val();
@@ -513,9 +529,7 @@ function createMetaDataModels(form,callback) {
 			b[$(lists[j]).attr("data-name")] = itemsArray;
 		}
 		parent[$(dataBlocks[k]).attr("id")].push(b);
-		console.log(parent[$(dataBlocks[k]).attr("id")])
 		dataModel.set(parent);
-		console.log()
 	}
 	callback(dataModel.toJSON());
 }

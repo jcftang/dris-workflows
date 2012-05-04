@@ -7,8 +7,8 @@ var resourceTypes = ["text","cartographic","notated music",
 "moving image","three dimensional object",
 "software, multimedia","mixed material"];
 
-var physicalDescriptionObjects = ["born digital",
-"reformatted digital",
+var physicalDescriptionObjects = ["reformatted digital",
+"born digital",
 "digitized microfilm ",
 "digitized other analog"];
 
@@ -22,6 +22,7 @@ var nameObjects = [
  
 var driObjectSchema = {
 	titleInfo : {
+		type:String,
 		title : String,
 		subtitle : String,
 		partNumer : String,
@@ -54,6 +55,9 @@ var driObjectSchema = {
 		issuance : String,
 		frequency : String
 	},
+	language:{
+		languageTerm :String
+	},
 	physicalDescription:{
 		extent:String,
 		note: String,
@@ -61,17 +65,12 @@ var driObjectSchema = {
 		digitalOrigin: String
 	},
 	abstract:{abstract:String},
-	note:{note:String},
+	note:{
+		type:String,
+		note:String},
 	subject: { topic: String,
-		geographic: String,
-		temporal: String,
-		titleInfo: String,
+		authority:String,
 		name: String,
-		/*genre: String,*/
-		hierarchicalGeographic: String,
-		cartographics: String,
-		geographicCode: String,
-		occupation: String,
 	},
 	identifier:{identifier:String}
 };
