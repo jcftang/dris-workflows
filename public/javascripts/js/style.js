@@ -388,7 +388,7 @@ function addEditFormFields(dataObject, name) {
 	root += "</div>"
 	counter++;
 
-	$(".dataform").prepend(root);
+	$(".dataform").append(root);
 }
 
 

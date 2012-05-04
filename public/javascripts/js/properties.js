@@ -68,9 +68,11 @@ var driObjectSchema = {
 	note:{
 		type:String,
 		note:String},
-	subject: { topic: String,
+		
+	subject: { name: String,
+		topic: String,
 		authority:String,
-		name: String,
+		
 	},
 	identifier:{identifier:String}
 };
