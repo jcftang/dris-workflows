@@ -26,9 +26,10 @@ var noteType = ["acquisition", "bibliographic history", "bibliography", "content
 var nameObjects = ["type", "authority", "name"];
 var subjectAuth = ["lcsh","aat","lctgm","local"];
 
-var identifiertype = ["dris", "DRIS_FOLDER", "lcn", "calm "]
+var identifiertype = ["dris", "DRIS_FOLDER", "lcn", "calm ","doi", "hdl","uri", "isbn","lccn","issn"]
 
 var relatedType = ["series","host","project"];
+var accessConditions = ["restriction on access", "use and reproduction","use and reproduction (link)"]
 
 
 var driObjectSchema = {
@@ -93,6 +94,15 @@ var driObjectSchema = {
 	identifier:{
 		type:String,
 		identifier:String
+	},
+	location:{
+		physicalLocation:String,
+		shelfLocator:String,
+		enumerationAndChronology:String,
+		url:String
+	},
+	accessCondition:{
+		accessCondition:String
 	}
 };
 

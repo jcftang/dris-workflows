@@ -360,6 +360,9 @@ function addInputFieldToFrom(index,dataObject){
 	counter++;
 
 	$(".dataform").append(root);
+	console.log($(".chzn-select"))
+	$(".chzn-select").chosen();
+	$(".chzn-select").trigger("liszt:updated");
 }
 
 
@@ -380,7 +383,7 @@ function addEditFormFields(dataObject, name) {
 				} else if(checkSingleField(i+name)) {
 					root += '<div class="controls">';
 					root += addSpecialField(name,i+name);
-					root += '</div><a class="close specialClose" data-dismiss="alert" href="#">&times;</a>';
+					root += '</div><a class="close specialClose" data-dismiss="alert" href="#">&times;</a></div>';
 				} else {
 					root += '<div class="controls"><input type="text" id="' + i + counter + '" name="' + i + '" class="input-xlarge" />';
 					root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
@@ -393,6 +396,9 @@ function addEditFormFields(dataObject, name) {
 	counter++;
 
 	$(".dataform").append(root);
+	
+		$(".chzn-select").chosen();
+	$(".chzn-select").trigger("liszt:updated");
 }
 
 
@@ -417,7 +423,7 @@ function checkSpecialField(name) {
 	return false;
 }
 
-var singleFields = ["typeidentifier","namesubject","typesubject","texttableOfContents","typetableOfContents","typenote","typephysicalDescription","digitalOriginphysicalDescription","typeOfResourcetypeOfResource", "genregenre","notenote", "typetitleInfo","typename","authorityname","rolename"]
+var singleFields = ["accessConditionaccessCondition","typerelatedItem","typeidentifier","namesubject","typesubject","texttableOfContents","typetableOfContents","typenote","typephysicalDescription","digitalOriginphysicalDescription","typeOfResourcetypeOfResource", "genregenre","notenote", "typetitleInfo","typename","authorityname","rolename"]
 function checkSingleField(name) {
 
 	for(var i = 0; i < singleFields.length; i++) {
@@ -524,12 +530,18 @@ function addSpecialField(name,prop) {
 		case "typeidentifier":
 			return createSelect(identifiertype,"type")
 			break;
+		case "typerelatedItem":
+			return createSelect(relatedType,"type")
+			break;
+		case "accessConditionaccessCondition":
+			return createSelect(accessConditions,"type")
+			break;
 		
 	}
 }
 
 function createSelect(items, name) {
-	var root = "<select name='" + name + "' id='select"+counter+"'>"
+	var root = "<select class='chzn-select' name='" + name + "' id='select"+counter+"'>"
 	for(var i = 0; i < items.length; i++) {
 		root += "<option>" + items[i] + "</option>";
 	}
@@ -582,7 +594,7 @@ function createMetaDataModels(form,callback) {
 		dataModel.set(parent);
 	}
 	console.log(dataModel.toJSON())
-	//callback(dataModel.toJSON());
+	callback(dataModel.toJSON());
 }
 
 function addProjectField(obj) {

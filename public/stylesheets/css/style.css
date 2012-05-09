@@ -181,3 +181,6 @@ form ul{
 #multi{
 	display:none;
 }
+.dataform .chzn-container{
+	width: 230px !important;
+}
