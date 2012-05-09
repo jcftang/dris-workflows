@@ -51,7 +51,8 @@ function editAction() {
 	$("#fileBox").hide();
 
 	//Highlights the selected item in the list
-	$(".items li a").live("click", function() {
+	$(document).on("click",".items li a", function(event) {
+		event.preventDefault();
 		$(".items li").removeClass("accordion-heading-focus");
 		$(this).parent().addClass("accordion-heading-focus");
 		//highlights the same item in the other steps (when switching between step 2 and 3)
@@ -194,7 +195,8 @@ function loadBtnActions(){
 		return false
 	});
 
-	$(".breadcrumb li a").live("click", function() {
+	$(document).on("click",".breadcrumb li a", function(event) {
+		event.preventDefault();
 		$(".breadcrumb a").parent().removeClass("active");
 		$(this).parent().addClass("active");
 	});
@@ -232,17 +234,16 @@ function loadBtnActions(){
 		}
 	})
 
-	$(".addInput").live("click",function(event){
-
+	$(document).on("click",".addInput",function(event){
 		event.preventDefault();
-		$(this).next().append(addSpecialField($(this).attr("data-type")));
+		$(this).next().append(addSpecialField($(this).attr("data-type"),$(this).attr("data-type")));
 	})
 
 	$('#step3EditBtn').click(function() {
 		loadAllImages($("input[name='_id']").val());
 	})
 
-	$(".items #list2 li a").live("click", function(event) {
+	$(document).on("click",".items #list2 li a", function(event) {
 		$(".controls").show();
 		event.preventDefault();
 		$("#multi").hide();
@@ -253,7 +254,7 @@ function loadBtnActions(){
 		}
 		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
 	});
-	$(".items ul li a").live("click", function(event) {
+	$(document).on("click",".items ul li a", function(event) {
 		$(".controls").show();
 		event.preventDefault();
 		$("#multi").hide();
@@ -269,7 +270,8 @@ function loadBtnActions(){
 
 	});
 
-	$("#createItems").live("click", function(event) {
+	$(document).on("click","#createItems", function(event) {
+		event.preventDefault();
 		id = Backbone.history.fragment
 		if(id != "collections") {
 			id = id.substr(2, id.length);
@@ -278,7 +280,8 @@ function loadBtnActions(){
 		emptyForm();
 	});
 
-	$("#createCollection,#createSerie,#createItems").live("click", function(event) {
+	$(document).on("click","#createCollection,#createSerie,#createItems", function(event) {
+		event.preventDefault;
 		$("#successbox").hide();
 		emptyForm();
 	});
@@ -331,20 +334,21 @@ function emptyForm() {
 
 
 function addInputFieldToFrom(index,dataObject){
-
+	var name = dataObject[index].name;
+	console.log(name)
 	var root = '<div id="' + dataObject[index].name + '"class="formInput">'
 	root += '<h3>' + dataObject[index].name + '</h3>'
 	root += '<a class="close" data-dismiss="alert" href="#">&times;</a><hr>'
 	for(var i in dataObject[index].value) {
 
 		root += '<div class="control-group"><label class="control-label">' +i + '</label>';
-		if(checkSpecialField(i)){
+		if(checkSpecialField(i+name)){
 			root += '<a class="close" data-dismiss="alert" href="#">&times;</a>';	
-			root += "<div class='controls'><button class='btn addInput' data-type='"+i+"'>Add " + i +"</button>";
-			root += '<ul data-name="'+i+'" id="ul'+counter+'">'+addSpecialField(i)+'</ul>';
-		} else if(checkSingleField(i)) {
+			root += "<div class='controls'><button class='btn addInput' data-type='"+i+name+"'>Add " + i +"</button>";
+			root += '<ul data-name="'+i+'" id="ul'+counter+'">'+addSpecialField(name,i+name)+'</ul>';
+		} else if(checkSingleField(i+name)) {
 			root += '<div class="controls">';
-			root += addSpecialField(i);
+			root += addSpecialField(name,i+name);
 			root += '</div><a class="close specialClose" data-dismiss="alert" href="#">&times;</a></div>';
 		} else {
 			root += '<div class="controls"><input type="text" id="' + i + counter + '" name="' + i + '" class="input-xlarge" />';
@@ -369,13 +373,13 @@ function addEditFormFields(dataObject, name) {
 		for(var i in optionsArray[j].value) {
 			if(optionsArray[j].name == name) {
 				root += '<div class="control-group"><label class="control-label">' + i + '</label>';
-				if(checkSpecialField(i)) {
+				if(checkSpecialField(i+name)) {
 					root += '<a class="close" data-dismiss="alert" href="#">&times;</a>';
-					root += "<div class='controls'><button class='btn addInput' data-type='" + i + "'>Add " + i + "</button>";
-					root += '<ul data-name="' + i + '" id="ul' + counter + '">' + addSpecialField(i) + '</ul>';
-				} else if(checkSingleField(i)) {
+					root += "<div class='controls'><button class='btn addInput' data-type='" + i+name + "'>Add " + i + "</button>";
+					root += '<ul data-name="' + i + '" id="ul' + counter + '">' + addSpecialField(name,i+name) + '</ul>';
+				} else if(checkSingleField(i+name)) {
 					root += '<div class="controls">';
-					root += addSpecialField(i);
+					root += addSpecialField(name,i+name);
 					root += '</div><a class="close specialClose" data-dismiss="alert" href="#">&times;</a>';
 				} else {
 					root += '<div class="controls"><input type="text" id="' + i + counter + '" name="' + i + '" class="input-xlarge" />';
@@ -402,36 +406,44 @@ function loadAllImages(id) {
 	});
 }
 
+var specialFields = ["topicsubject","internetMediaTypephysicalDescription","languageTermlanguage","dateOtheroriginInfo","abstractabstract"]
 function checkSpecialField(name) {
-	if(name =="name" ||name == "role" || name == "place" || name == "internetMediaType" || name == "topic" || name == "name" || name == "identifier" || name == "languageTerm") {
-		return true;
+
+	for(var i = 0; i < specialFields.length; i++) {
+		if(name == specialFields[i]) {
+			return true;
+		}
 	}
 	return false;
 }
 
+var singleFields = ["typeidentifier","namesubject","typesubject","texttableOfContents","typetableOfContents","typenote","typephysicalDescription","digitalOriginphysicalDescription","typeOfResourcetypeOfResource", "genregenre","notenote", "typetitleInfo","typename","authorityname","rolename"]
 function checkSingleField(name) {
-	if(name == "dateOther" || name == "typeOfResource" || name == "genre" || name == "digitalOrigin" || name == "abstract" || name == "note") {
-		return true;
+
+	for(var i = 0; i < singleFields.length; i++) {
+		if(name == singleFields[i]) {
+			return true;
+		}
 	}
 	return false;
 }
 
-function addSpecialField(name) {
+function addSpecialField(name,prop) {
+	console.log(name)
 	counter++
 	removebtn = '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>'
-	switch(name) {
+	switch(prop) {
 		case "role":
 			return "<li data-type='role'><div class='inputBox'><select class='input-small' name='role'  id='"+name+counter+"' ><option value='text'>text</option>" 
 			+ "<option value='code'>code</option></select>"
 			+ "<label>Authority</label><input id='"+name+counter+"a' name='authority' type='text' class='input-small'>" + removebtn + "</div></li> ";
 			break;
-		case "typeOfResource":
+		case "typeOfResourcetypeOfResource":
 			return createSelect(resourceTypes, name);
 			break;
-		case "genre":
-			return "<label>type</label><input id='input"+counter+"' name='type' type='text' class='input-small'><br />"
-			+"<label>Authority</label><input  id='input"+counter+"a' name='authority' value='aat' type='text' class='input-small'><br />"
-			+"<label>Genre</label><input  id='input"+counter+"b' name='genre' type='text' class='input-small'><br /><hr>";
+		case "genregenre":
+			return "<label>Authority</label><input  id='input"+counter+"a' name='authority' value='aat' type='text' class='input-small'><br />"
+			+"<label>Genre</label>"+createSelect(genres,"genre")+"<br /><hr>";
 			break
 		case "place":
 			return "<li><div class='inputBox'><hr><select id='input"+counter+"' class='input-small'><option value='text'>text</option>" 
@@ -439,16 +451,16 @@ function addSpecialField(name) {
 			+"<label>Authority</label><input id='input"+counter+"a' name='authority' type='text' class='input-small'><br>"
 			+"<label>Place</label><input id='input"+counter+"b' name='place' type='text' class='input-small'>"+ removebtn + "</div></li> ";
 			break;
-		case "digitalOrigin":
-			return createSelect(physicalDescriptionObjects, name)
+		case "digitalOriginphysicalDescription":
+			return createSelect(physicalDescriptionObjects, "digitalOrigin")
 			break;
-		case "internetMediaType":
-		 	return "<li class='dummy'><div class='inputBox'><label>Type:</label><input id='input"+counter+"a' type='text' name='mediaType'>" + removebtn + "</div></li> ";
+		case "internetMediaTypephysicalDescription":
+		 	return "<li class='dummy'><div class='inputBox'><label>Type:</label>"+createSelect(mediaTypes,"internetMediaType") + removebtn + "</div></li> ";
 			break;
-		case "abstract":
-			return "<textarea  id='input"+counter+"' rows='5' cols='50'></textarea>";
+		case "abstractabstract":
+			return "<li><div class='inputBox'><label>Type:</label>"+createSelect(abstractType,"type")+"<br /><textarea  id='input"+counter+"' rows='5' cols='50'></textarea>" + removebtn + "</div></li>" ;
 			break
-		case "note":
+		case "notenote":
 			return "<textarea  id='input"+counter+"'  rows='5' cols='50'></textarea>";
 			break
 		case "topic":
@@ -458,15 +470,15 @@ function addSpecialField(name) {
 			return "<li class='dummy'><div class='inputBox'><label>type</label><input id='input"+counter+"a' name='type' type='text' class='input-small'>"
 			+"<label>value</label><input id='input"+counter+"' name='value' type='text' class='input-small'>" + removebtn + "</div></li> ";
 			break;
-		case "dateOther":
-			return "<label>point</label><input id='input"+counter+"' name='point' type='text' class='input-small'><br />"
-			+"<label>dateOther</label><input id='input"+ counter +"a' name='dateOther' value='aat' type='text' class='input-small'><br /><br/>";
+		case "dateOtheroriginInfo":
+			return "<li><div class='inputBox'><label>point</label>"+createSelect(dateOther,"point")+"<br />"
+			+"<label>dateOther</label><input id='input"+ counter +"a' name='dateOther' type='text' class='input-small'><br />"+ removebtn + "</div></li>";
 			break;
-		case "languageTerm":
+		case "languageTermlanguage":
 		return "<li><div class='inputBox'><hr><select id='input"+counter+"' class='input-small'><option value='text'>text</option>" 
 			+ "<option value='code'>code</option></select>"
-			+"<label>Authority</label><input id='input"+counter+"a' name='authority' type='text' class='input-small'><br>"
-			+"<label>language</label><input id='input"+counter+"b' name='language' type='text' class='input-small'>"+ removebtn + "</div></li> ";
+			+"<label>Authority</label><input id='input"+counter+"a' name='authority' type='text' value='iso639-2b' class='input-small'><br>"
+			+"<label>language</label>"+createSelect(languages,"language")+ removebtn + "</div></li> ";
 			break;
 		case "name":
 			return "<li><div class='inputBox'><hr>"
@@ -474,6 +486,44 @@ function addSpecialField(name) {
 			+"<label>displayForm</label><input id='"+name+counter+"e' name='displayForm' type='text' class='input-small'><br>"
 			+"<label>affiliation</label><input id='"+name+counter+"f' name='affiliation' type='text' class='input-small'><br>"+ removebtn + "</div></li>";
 			break
+		case "typetitleInfo":
+			return createSelect(titleType,"type")
+			break 
+		case "typename":
+			return createSelect(nameType,"type")
+			break 
+		case "authorityname":
+			return createSelect(nameAuth,"authority")
+			break 
+		case "rolename":
+			return createSelect(nameRole,"role")
+			break 
+		case "typephysicalDescription":
+			return createSelect(physcialDescriptionType,'type')
+			break;
+		case "typenote":
+			return createSelect(noteType,'type')
+			break;
+		case "typetableOfContents":
+			return createSelect(abstractType,'type')
+			break;
+		case "texttableOfContents":
+			return "<textarea  id='input"+counter+"' rows='5' cols='50'></textarea>"
+			break;
+		case "namesubject":
+			return "<label>name</label><input id='"+name+counter+"' name='name' type='text' class='input-large'><br>"
+			+"<label>type</label>"+ createSelect(nameType,"type")+"<br />"
+			+"<label>authority</label>"+createSelect(nameAuth,"authority")
+			+"<hr>"
+			break;
+		case "topicsubject":
+			return "<li><div class='inputBox'><hr><label>topic</label><input id='"+name+counter+"' name='topic' type='text' class='input-large'><br>"
+			+"<label>authority</label>"+createSelect(subjectAuth,"authority")
+			+ removebtn + "</div></li>";
+			break;
+		case "typeidentifier":
+			return createSelect(identifiertype,"type")
+			break;
 		
 	}
 }
@@ -531,7 +581,8 @@ function createMetaDataModels(form,callback) {
 		parent[$(dataBlocks[k]).attr("id")].push(b);
 		dataModel.set(parent);
 	}
-	callback(dataModel.toJSON());
+	console.log(dataModel.toJSON())
+	//callback(dataModel.toJSON());
 }
 
 function addProjectField(obj) {

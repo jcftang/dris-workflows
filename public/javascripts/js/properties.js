@@ -1,39 +1,49 @@
 /*
- * @author Matthias Van Wambeke
+ * author Matthias Van Wambeke
  */
-var resourceTypes = ["text","cartographic","notated music",
-"sound recording ","sound recording-musical",
-"sound recording-nonmusical","still image",
-"moving image","three dimensional object",
-"software, multimedia","mixed material"];
 
-var physicalDescriptionObjects = ["reformatted digital",
-"born digital",
-"digitized microfilm ",
-"digitized other analog"];
+var resourceTypes = ["text", "cartographic", "notated music", "sound recording ", "sound recording-musical", "sound recording-nonmusical", "still image", "moving image", "three dimensional object", "software, multimedia", "mixed material"]; 
 
-var nameObjects = [
-		"namePart" ,
-		"displayForm" ,
-		"affiliation" ,
-		"role" ,
-		"description"
-];
- 
+var titleType = ["alternative","abbreviated","translated"];
+var nameType = ["personal","corporate","conference"];
+var nameAuth = ["naf","ulan","local"];
+var nameRole = ["arc","art" ,"asn","aut","col","cmp","ctg","dnr","dte","egr","ill","ppm","prt","scl","srv","trl"];
+var genres = ["advertisements", "albums", "architecture (object genre)", "artifacts (object genre)", "books", "clippings (information artifacts)", "diaries", "drawings (visual works)", "ephemera", "field ", "notes", "illuminated ", "manuscripts", "journals (periodicals)", "landscapes (representations)", "manuscripts (document genre)", "maps", "documents", "music", "paintings (visual works)", "pamphlets", "photographs", "postcards", "posters", "prints (visual works)", "scores", "sheet music"]
+
+var dateOther = ["beginning", "completion", "circa"];
+
+var languages = ["English", "Irish", "French", "Spanish", "German", "Italian", "Chinese", "Latin", "Greek", "Russian", "Welsh"];
+
+var physcialDescriptionType = ["condition", "medium", "support", "marks", "organization", "physical description", "physical details", "presentation", "script", "technique"]
+var physicalDescriptionObjects = ["reformatted digital", "born digital", "digitized microfilm ", "digitized other analog"]; 
+
+var mediaTypes = ["image/tiff", "image/jpeg"]
+var abstractType = ["text", "link"]; 
+
+
+var noteType = ["acquisition", "bibliographic history", "bibliography", "content", "exhibitions", "funding", "numbering", "publications", "restriction"]
+
+var nameObjects = ["type", "authority", "name"];
+var subjectAuth = ["lcsh","aat","lctgm","local"];
+
+var identifiertype = ["dris", "DRIS_FOLDER", "lcn", "calm "]
+
+var relatedType = ["series","host","project"];
+
+
 var driObjectSchema = {
 	titleInfo : {
 		type:String,
 		title : String,
 		subtitle : String,
-		partNumer : String,
+		partNumber : String,
 		nonSort : String
 	},
 	name : {
-		namePart : String,
-		displayForm : String,
-		affiliation : String,
-		role : String,
-		description : String
+		type : String,
+		name : String,
+		authority : String,
+		role : String
 	},
 	typeOfResource : {
 		typeOfResource : String
@@ -45,10 +55,8 @@ var driObjectSchema = {
 		place : String,
 		publisher : String,
 		dateIssued : String,
-		dateCreated : String,
 		dateCaptured : String,
 		dateValid : String,
-		dateModified : String,
 		copyrightDate : String,
 		dateOther : String,
 		edition : String,
@@ -59,6 +67,7 @@ var driObjectSchema = {
 		languageTerm :String
 	},
 	physicalDescription:{
+		type:String,
 		extent:String,
 		note: String,
 		internetMediaType: String,
@@ -68,13 +77,23 @@ var driObjectSchema = {
 	note:{
 		type:String,
 		note:String},
-		
-	subject: { name: String,
+	tableOfContents:{
+		type:String,
+		text:String
+	},	
+	subject: { 
+		name: String,
 		topic: String,
-		authority:String,
 		
 	},
-	identifier:{identifier:String}
+	relatedItem:{
+		type:String,
+		title:String	
+	},
+	identifier:{
+		type:String,
+		identifier:String
+	}
 };
 
 
