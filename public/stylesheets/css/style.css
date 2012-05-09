@@ -192,3 +192,7 @@ form ul{
 .dataform .chzn-container{
 	width: 230px !important;
 }
+.list a{
+	margin-bottom: 5px;
+}
+}

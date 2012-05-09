@@ -544,7 +544,7 @@ function addSpecialField(name,prop) {
 function createSelect(items, name) {
 	var root = "<select class='chzn-select' name='" + name + "' id='select"+counter+"'>"
 	for(var i = 0; i < items.length; i++) {
-		root += "<option>" + items[i] + "</option>";
+		root += "<option value="+items[i]+">" + items[i] + "</option>";
 	}
 	root += "</select>"
 	return root;
