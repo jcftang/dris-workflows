@@ -272,7 +272,6 @@ function loadBtnActions(){
 	});
 
 	$(document).on("click","#createItems", function(event) {
-		event.preventDefault();
 		id = Backbone.history.fragment
 		if(id != "collections") {
 			id = id.substr(2, id.length);
