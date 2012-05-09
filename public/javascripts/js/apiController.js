@@ -319,7 +319,7 @@ function loadPidChildren(id) {
 		$(".modal tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input  name='items' type='radio' data-id='" + items[i]._id + "'></td>";
-			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		if(items.length == 0) {
 			$(".modal tbody").append("<tr><td></td><td>No Children here<td></tr>")
@@ -333,17 +333,17 @@ function loadChildren(id) {
 	id = id.substring(2, id.length)
 
 	loadData("/dev/objects/" + id + "/list", function(items) {
-		$("tbody").empty();
+		$("#step1 tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input  name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
 			if(window.location.pathname == "/create") {
 				rbt = ""
 			}
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
-			$("tbody").append("<tr><td></td><td>No Children here<td></tr>")
+			$("#step1 tbody").append("<tr><td></td><td>No Children here<td></tr>")
 		}
 	});
 
