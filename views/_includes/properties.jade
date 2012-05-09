@@ -1,14 +1,14 @@
 #properties.span3
           #step2Info
             - if (title == "Edit")
-              a.btn(href='#', data-toggle='collapse', data-target='#proper')
+              a.btn(href='', data-toggle='collapse', data-target='#proper')
                 i.icon-plus
                 h2 Properties
               #proper.accordion.collapse
                 script
                   $("#proper").append(createPropertyButtons());
             - else
-              a.btn(href='#', data-toggle='collapse', data-target='#proper')
+              a.btn(href='', data-toggle='collapse', data-target='#proper')
                 i.icon-plus
                 h2 Properties
               #proper.accordion.collapse
@@ -20,7 +20,7 @@
               p
               | Add some media if you have it.
             -else
-              a.btn(href='#', data-toggle='collapse', data-target='#proper2')
+              a.btn(href='', data-toggle='collapse', data-target='#proper2')
                 i.icon-plus
                 h2 Properties
               #proper2.accordion.collapse
@@ -31,7 +31,7 @@
               h2 Overview
               p This is an overview of the data that will be stored. Please check this data so that you are sue everything is correct.
             -else
-              a.btn(href='#', data-toggle='collapse', data-target='#proper3')
+              a.btn(href='', data-toggle='collapse', data-target='#proper3')
                 i.icon-plus
                 h2 Properties
               #proper3.accordion.collapse

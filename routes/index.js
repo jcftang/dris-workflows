@@ -57,7 +57,7 @@ exports.globalEdit = function(req,res){
 
 exports.upload = function(req, res) {
 
-	res.render('upload', {
+	res.render('_includes/upload', {
 		id : "upload",
 		title : "Upload",
 	});

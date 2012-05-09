@@ -111,7 +111,6 @@ function showItems(items) {
 	$(".items ul").empty();
 
 	for(var i = 0; i < items.length; i++) {
-		console.log(items[i])
 		root += "<li data-pos='" + i + "'><a data-type='" + items[i].type + "'  href='" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + " " + items[i]._id + "</a></li>";
 		if(i == items.length - 1) {
 			$(".items ul").append(root);
@@ -184,6 +183,7 @@ function loadBtnActions(){
 		}
 
 	});
+	$("#properties a").click(function(event) {event.preventDefault()})
 	//when clicking a dropdown section it makes it "highlighted"
 	$(".accordion-heading").click(function() {
 		$(".accordion-heading").removeClass("accordion-heading-focus");
@@ -335,7 +335,6 @@ function emptyForm() {
 
 function addInputFieldToFrom(index,dataObject){
 	var name = dataObject[index].name;
-	console.log(name)
 	var root = '<div id="' + dataObject[index].name + '"class="formInput">'
 	root += '<h3>' + dataObject[index].name + '</h3>'
 	root += '<a class="close" data-dismiss="alert" href="#">&times;</a><hr>'
@@ -360,9 +359,10 @@ function addInputFieldToFrom(index,dataObject){
 	counter++;
 
 	$(".dataform").append(root);
-	console.log($(".chzn-select"))
-	$(".chzn-select").chosen();
-	$(".chzn-select").trigger("liszt:updated");
+	
+	//$(".dataform .chzn-select").chosen()
+
+	
 }
 
 
@@ -397,8 +397,8 @@ function addEditFormFields(dataObject, name) {
 
 	$(".dataform").append(root);
 	
-		$(".chzn-select").chosen();
-	$(".chzn-select").trigger("liszt:updated");
+	//$(".dataform .chzn-select").chosen().trigger("liszt:updated");
+	
 }
 
 
@@ -435,7 +435,6 @@ function checkSingleField(name) {
 }
 
 function addSpecialField(name,prop) {
-	console.log(name)
 	counter++
 	removebtn = '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>'
 	switch(prop) {
@@ -593,7 +592,6 @@ function createMetaDataModels(form,callback) {
 		parent[$(dataBlocks[k]).attr("id")].push(b);
 		dataModel.set(parent);
 	}
-	console.log(dataModel.toJSON())
 	callback(dataModel.toJSON());
 }
 
