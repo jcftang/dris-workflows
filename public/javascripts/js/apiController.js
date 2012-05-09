@@ -319,7 +319,7 @@ function loadPidChildren(id) {
 		$(".modal tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input  name='items' type='radio' data-id='" + items[i]._id + "'></td>";
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		if(items.length == 0) {
 			$(".modal tbody").append("<tr><td></td><td>No Children here<td></tr>")
