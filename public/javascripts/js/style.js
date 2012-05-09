@@ -6,7 +6,6 @@
 
 //starts when the main html file is loaded
 $(document).ready(function() {
-	
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 
 	loadBtnActions();
@@ -196,7 +195,6 @@ function loadBtnActions(){
 	});
 
 	$(document).on("click",".breadcrumb li a", function(event) {
-		event.preventDefault();
 		$(".breadcrumb a").parent().removeClass("active");
 		$(this).parent().addClass("active");
 	});
@@ -223,6 +221,9 @@ function loadBtnActions(){
 			var pos = $(".items li.accordion-heading-focus").attr('data-pos');
 			if(editItems[pos].parentId) {
 				data.parentId = editItems[pos].parentId
+			}
+			if(fileUploadLocation != ""){
+				data.fileLocation = fileUploadLocation
 			}
 			createMetaDataModels("#singleData", function(model) {
 				var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href") + "/update";

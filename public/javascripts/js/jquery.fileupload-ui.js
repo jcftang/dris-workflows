@@ -142,6 +142,7 @@
                     preview;
                 if (data.context) {
                     data.context.each(function (index) {
+                    	fileUploadLocation = data.result[index].fileLocation;
                         var file = ($.isArray(data.result) &&
                                 data.result[index]) || {error: 'emptyResult'};
                         if (file.error) {

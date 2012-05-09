@@ -26,6 +26,14 @@ p{
 	float:left;
 	margin-right: 5px;
 }
+#fileBox input{
+	float:none;
+}
+
+.upload button{
+	margin-right: 5px;
+}
+
 #properties button{
 	width: 90%;
 	margin-bottom: 5px;

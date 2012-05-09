@@ -2,6 +2,7 @@ var workspace= backbone();
 var goDeeper = true;
 var parentType = "";
 var editItems = [];
+var fileUploadLocation = "";
 $(document).ready(function() {
 
 	jQuery.support.cors = true;
@@ -35,9 +36,7 @@ $(document).ready(function() {
 	});
 });
 
-function uploadSucces(){
-	alert("success")
-}
+
 function updateChildren(data) {
 	for(var i = 0; i < data.length; i++) {
 		var link = socket + "/dev/objects/" + data[i]._id + "/update";

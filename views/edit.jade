@@ -112,10 +112,8 @@ div.container
                       | I have media (images,video,...).
                 .dummy
                 #fileBox.control-group
-                  label.control-label(for='media') Upload your file:
-                  .controls
-                    input#media(type='file', name='media')
-                    #fileContainer
+                  include _includes/upload
+                  #fileContainer
                 .dummy
                 h2 Media included
                 #imageContainer
