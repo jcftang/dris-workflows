@@ -8,6 +8,9 @@ p{
 .center{
 	text-align:center;
 }
+.navbar .container{
+	width:940px;
+}
 #properties{
 	background-color: #F9F9F9;
 	border-radius:4px;
