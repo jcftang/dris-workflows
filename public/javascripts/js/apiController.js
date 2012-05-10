@@ -2,7 +2,7 @@ var workspace= backbone();
 var goDeeper = true;
 var parentType = "";
 var editItems = [];
-var fileUploadLocation = "";
+var fileUploadLocation = new Array;
 $(document).ready(function() {
 
 	jQuery.support.cors = true;

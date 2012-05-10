@@ -223,8 +223,13 @@ function loadBtnActions(){
 			if(editItems[pos].parentId) {
 				data.parentId = editItems[pos].parentId
 			}
-			if(fileUploadLocation != ""){
-				data.fileLocation = fileUploadLocation
+			if(fileUploadLocation.length > 0){
+				data.fileLocation = {};
+				for(var i = 0; i< fileUploadLocation.length; i++){
+					var hash = fileUploadLocation[i].substring(0,fileUploadLocation[i].indexOf("/"))
+					data.fileLocation[hash] = fileUploadLocation[i]
+					console.log(data)
+				}
 			}
 			createMetaDataModels("#singleData", function(model) {
 				var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href") + "/update";
@@ -604,6 +609,7 @@ function addProjectField(obj) {
 		var root = '<div class="control-group"><label class="control-label">' + $(obj).text() + '</label>';
 		root += '<div class="controls"><input type="text" id="' + $(obj).text() + '" name="' + $(obj).text() + '" class="input-xlarge" />';
 		root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
+		$(".dataform").prepend(root)
 
 	} else if($(obj).text() == "upload") {
 
