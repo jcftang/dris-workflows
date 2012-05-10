@@ -330,6 +330,7 @@ function loadPrevItemInList() {
 
 function emptyForm() {
 	$(".dataform").empty();
+	$(".upload").remove();
 }
 
 
@@ -607,8 +608,8 @@ function addProjectField(obj) {
 	} else if($(obj).text() == "upload") {
 
 		$.get("/upload.htm", function(data) {
-			var test = "<div id='" + $(obj).text() + "'><a class='close' data-dismiss='alert'>×</a>" + data + "</div>";
-			$(".dataform").prepend(test)
+			var test = "<div class='formInput' id='" + $(obj).text() + "'><a class='close' data-dismiss='alert'>×</a>" + data + "</div>";
+			$(".dataform").before(test)
 		})
 	}
 
