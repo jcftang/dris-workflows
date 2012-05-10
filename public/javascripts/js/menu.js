@@ -20,10 +20,15 @@ function createPropertyButtons() {
 	var random2 = Math.floor(Math.random() * Math.random() * 1000 - 1);
 	var group2 = '<div class="accordion-group"><div class="accordion-heading">' + '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion' 
 	+ parentId + '" href="#project' + random2 + '">Project</a></div>' 
-	+ '<div id="project' + random2 + '" class="accordion-body collapse "><div class="accordion-inner">'
-	+ '<button class="btn btn-small">objectId</button>'
-	+ '</div></div></div>';
+	+ '<div id="project' + random2 + '" class="accordion-body collapse "><div class="accordion-inner">';
 	heading += group2;
+
+	for(var i = 0; i < projectItems.length; i++) {
+		heading += '<button class="btn btn-small">' + projectItems[i] + '</button>';
+
+	}
+	heading += '</div></div></div>'; 
+
 	
 	var random = Math.floor(Math.random() * Math.random() * 1000 - 1);
 	var group = '<div class="accordion-group"><div class="accordion-heading">'
@@ -45,7 +50,6 @@ function createPropertyButtons() {
 	}
 	return heading;
 }
-
 
 
 

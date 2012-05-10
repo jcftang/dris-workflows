@@ -7,7 +7,6 @@
 //starts when the main html file is loaded
 $(document).ready(function() {
 	$("#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
-
 	loadBtnActions();
 	switch(window.location.pathname) {
 		case "/edit":
@@ -175,8 +174,10 @@ function fillInSpecialDataFields(info,name) {
 var counter = 100
 function loadBtnActions(){
 	//Triggers when there is an option/input that needs to be added to the form
-	$("#properties button").click(function() {
-		if($(this).text() == "objectId") {
+	$(".accordion-heading")
+	$("#properties button").click(function(event) {
+		event.preventDefault()
+		if($(this).text() == "objectId" || $(this).text() == "upload"  ) {
 			addProjectField($(this))
 		} else {
 			addInputFieldToFrom($(this).index(),optionsArray);
@@ -551,7 +552,7 @@ function createSelect(items, name) {
 
 
 function createMetaDataModels(form,callback) {
-	var dataBlocks = $(".dataform > div",form);
+	var dataBlocks = $(".dataform > div",form).not(".upload");
 	Model = Backbone.Model.extend();
 
 	var dataModel = new Model();
@@ -595,14 +596,23 @@ function createMetaDataModels(form,callback) {
 	callback(dataModel.toJSON());
 }
 
+
 function addProjectField(obj) {
-	var s = "#" + $(obj).text()
-	var objects = $(s)
-	if(objects.length == 0) {
+
+	if($(obj).text() == "objectId") {
 		var root = '<div class="control-group"><label class="control-label">' + $(obj).text() + '</label>';
 		root += '<div class="controls"><input type="text" id="' + $(obj).text() + '" name="' + $(obj).text() + '" class="input-xlarge" />';
 		root += '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>';
-		$(".dataform").append(root);
+
+	} else if($(obj).text() == "upload") {
+
+		$.get("/upload.htm", function(data) {
+			var test = "<div id='" + $(obj).text() + "'><a class='close' data-dismiss='alert'>×</a>" + data + "</div>";
+			$(".dataform").prepend(test)
+		})
 	}
+
 }
+
+
 

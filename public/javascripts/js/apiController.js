@@ -30,8 +30,9 @@ $(document).ready(function() {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
 	});
-	$(".close").live("click", function() {
+	$(document).on("click",".close", function() {
 		if(!$(this).hasClass("mdl"))
+		console.log($(this).parent())
 			$(this).parent().remove();
 	});
 });
@@ -86,10 +87,14 @@ function loadCreateData() {
 			"type" : "collection",
 			"properties" : {}
 		};
+		if(fileUploadLocation != "") {
+			data.fileLocation = fileUploadLocation
+		}
 		createMetaDataModels("#collectionCreation", function(model) {
 			data.properties = model;
 			postData($('#collectionCreation'), 'POST', data, link, function(id) {
 				$(".successbox").fadeIn().delay(900).fadeOut();
+				fileUploadLocation = "";
 			});
 		});
 	})
@@ -106,10 +111,15 @@ function loadCreateData() {
 		if(parent == "") {
 			delete data.parentId;
 		}
+		if(fileUploadLocation != "") {
+			data.fileLocation = fileUploadLocation
+		}
 		createMetaDataModels("#serieCreation", function(model) {
 			data.properties = model;
+			
 			postData($('#serieCreation'), 'POST', data, link, function(id) {
 				$(".successbox").fadeIn().delay(900).fadeOut();
+				fileUploadLocation = "";
 			});
 		});
 
@@ -128,6 +138,7 @@ function loadCreateData() {
 	});
 
 }
+
 
 function insertItems() {
 	var objId = parseInt($("#step4 #objectId").val());
@@ -150,6 +161,7 @@ function insertItems() {
 	});
 }
 
+
 function createItems(itemAmount, objId) {
 	amount = parseInt(itemAmount);
 	objId = parseInt(objId);
@@ -165,6 +177,10 @@ function createItems(itemAmount, objId) {
 		if(parent == "") {
 			delete data.parentId;
 		}
+		if(fileUploadLocation != "") {
+			data.fileLocation = fileUploadLocation
+		}
+
 		createMetaDataModels("#itemCreation", function(model) {
 			data.properties = model;
 			console.log(model)
@@ -180,6 +196,7 @@ function createItems(itemAmount, objId) {
 
 	} else {
 		$(".successbox").fadeIn().delay(900).fadeOut();
+		fileUploadLocation = "";
 	}
 
 }
@@ -475,13 +492,13 @@ function resetCreatePage() {
 
 function loadData(link, callback) {
 	console.log("load")
-	console.log(socket + link)
 	$.ajax({
 		url : socket + link,
 		cache : false,
 		type : "GET",
 		dataType : 'jsonp',
 		success : function(data) {
+			console.log(data)
 			callback(data);
 		},
 		error : function(x, h, r) {

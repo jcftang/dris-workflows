@@ -26,8 +26,8 @@ p{
 	float:left;
 	margin-right: 5px;
 }
-#fileBox input{
-	float:none;
+#fileBox input, .upload input{
+	float:none !important;
 }
 
 .upload button{

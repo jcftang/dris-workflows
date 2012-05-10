@@ -60,6 +60,7 @@ exports.upload = function(req, res) {
 	res.render('_includes/upload', {
 		id : "upload",
 		title : "Upload",
+		layout: false
 	});
 }
 

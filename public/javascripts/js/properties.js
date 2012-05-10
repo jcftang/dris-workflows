@@ -31,7 +31,7 @@ var identifiertype = ["dris", "DRIS_FOLDER", "lcn", "calm ","doi", "hdl","uri", 
 var relatedType = ["series","host","project"];
 var accessConditions = ["restriction on access", "use and reproduction","use and reproduction (link)"]
 
-
+var projectItems = ["objectId","upload"];
 var driObjectSchema = {
 	titleInfo : {
 		type:String,
