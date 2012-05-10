@@ -236,6 +236,7 @@ function loadBtnActions(){
 				data.properties = model
 				updateData('POST', data, link, function(id) {
 					$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
+					fileUploadLocation = new Array();
 				})
 			})
 		}

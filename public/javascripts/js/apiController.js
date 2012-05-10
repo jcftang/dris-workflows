@@ -87,14 +87,21 @@ function loadCreateData() {
 			"type" : "collection",
 			"properties" : {}
 		};
-		if(fileUploadLocation != "") {
-			data.fileLocation = fileUploadLocation
+
+		if(fileUploadLocation.length > 0) {
+			data.fileLocation = {};
+			for(var i = 0; i < fileUploadLocation.length; i++) {
+				var hash = fileUploadLocation[i].substring(0, fileUploadLocation[i].indexOf("/"))
+				data.fileLocation[hash] = fileUploadLocation[i]
+				console.log(data)
+			}
 		}
+
 		createMetaDataModels("#collectionCreation", function(model) {
 			data.properties = model;
 			postData($('#collectionCreation'), 'POST', data, link, function(id) {
 				$(".successbox").fadeIn().delay(900).fadeOut();
-				fileUploadLocation = "";
+				fileUploadLocation = new Array()
 			});
 		});
 	})
@@ -111,15 +118,20 @@ function loadCreateData() {
 		if(parent == "") {
 			delete data.parentId;
 		}
-		if(fileUploadLocation != "") {
-			data.fileLocation = fileUploadLocation
+		if(fileUploadLocation.length > 0) {
+			data.fileLocation = {};
+			for(var i = 0; i < fileUploadLocation.length; i++) {
+				var hash = fileUploadLocation[i].substring(0, fileUploadLocation[i].indexOf("/"))
+				data.fileLocation[hash] = fileUploadLocation[i]
+				console.log(data)
+			}
 		}
 		createMetaDataModels("#serieCreation", function(model) {
 			data.properties = model;
 			
 			postData($('#serieCreation'), 'POST', data, link, function(id) {
 				$(".successbox").fadeIn().delay(900).fadeOut();
-				fileUploadLocation = "";
+				fileUploadLocation = new Array();
 			});
 		});
 
@@ -177,8 +189,13 @@ function createItems(itemAmount, objId) {
 		if(parent == "") {
 			delete data.parentId;
 		}
-		if(fileUploadLocation != "") {
-			data.fileLocation = fileUploadLocation
+		if(fileUploadLocation.length > 0) {
+			data.fileLocation = {};
+			for(var i = 0; i < fileUploadLocation.length; i++) {
+				var hash = fileUploadLocation[i].substring(0, fileUploadLocation[i].indexOf("/"))
+				data.fileLocation[hash] = fileUploadLocation[i]
+				console.log(data)
+			}
 		}
 
 		createMetaDataModels("#itemCreation", function(model) {
@@ -196,7 +213,7 @@ function createItems(itemAmount, objId) {
 
 	} else {
 		$(".successbox").fadeIn().delay(900).fadeOut();
-		fileUploadLocation = "";
+		fileUploadLocation = new Array()
 	}
 
 }
