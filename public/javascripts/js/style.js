@@ -223,13 +223,19 @@ function loadBtnActions(){
 			if(editItems[pos].parentId) {
 				data.parentId = editItems[pos].parentId
 			}
-			if(fileUploadLocation.length > 0){
-				data.fileLocation = {};
-				for(var i = 0; i< fileUploadLocation.length; i++){
-					var hash = fileUploadLocation[i].substring(0,fileUploadLocation[i].indexOf("/"))
-					data.fileLocation[hash] = fileUploadLocation[i]
-					console.log(data)
+
+			if(fileUploadLocation.length > 0) {
+				if(editItems[pos].fileLocation) {
+					data.fileLocation = editItems[pos].fileLocation
+					for(var i = 0; i < fileUploadLocation.length; i++) {
+						data.fileLocation.push(fileUploadLocation[i])
+						console.log(data)
+					}
+				} else {
+					data.fileLocation = fileUploadLocation;
+
 				}
+
 			}
 			createMetaDataModels("#singleData", function(model) {
 				var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href") + "/update";

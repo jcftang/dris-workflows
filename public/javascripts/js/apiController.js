@@ -89,12 +89,7 @@ function loadCreateData() {
 		};
 
 		if(fileUploadLocation.length > 0) {
-			data.fileLocation = {};
-			for(var i = 0; i < fileUploadLocation.length; i++) {
-				var hash = fileUploadLocation[i].substring(0, fileUploadLocation[i].indexOf("/"))
-				data.fileLocation[hash] = fileUploadLocation[i]
-				console.log(data)
-			}
+			data.fileLocation = fileUploadLocation;
 		}
 
 		createMetaDataModels("#collectionCreation", function(model) {
@@ -119,12 +114,7 @@ function loadCreateData() {
 			delete data.parentId;
 		}
 		if(fileUploadLocation.length > 0) {
-			data.fileLocation = {};
-			for(var i = 0; i < fileUploadLocation.length; i++) {
-				var hash = fileUploadLocation[i].substring(0, fileUploadLocation[i].indexOf("/"))
-				data.fileLocation[hash] = fileUploadLocation[i]
-				console.log(data)
-			}
+			data.fileLocation = fileUploadLocation;
 		}
 		createMetaDataModels("#serieCreation", function(model) {
 			data.properties = model;
@@ -190,12 +180,7 @@ function createItems(itemAmount, objId) {
 			delete data.parentId;
 		}
 		if(fileUploadLocation.length > 0) {
-			data.fileLocation = {};
-			for(var i = 0; i < fileUploadLocation.length; i++) {
-				var hash = fileUploadLocation[i].substring(0, fileUploadLocation[i].indexOf("/"))
-				data.fileLocation[hash] = fileUploadLocation[i]
-				console.log(data)
-			}
+			data.fileLocation = fileUploadLocation;
 		}
 
 		createMetaDataModels("#itemCreation", function(model) {
