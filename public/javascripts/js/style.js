@@ -57,20 +57,31 @@ function editAction() {
 		$(".items li").eq($(this).parent().index()).addClass("accordion-heading-focus");
 		$("#list2 li").eq($(this).parent().index()).addClass("accordion-heading-focus");
 	})
+	
+	$(document).on("click","#boxFiles ul a",function(event){
+		event.preventDefault();
+		var index = $(this).parent().index();
+		var pos = $(".items li.accordion-heading-focus").attr('data-pos');
+		$(this).parent().remove()
+		editItems[pos].fileLocation.splice(index,1)
+
+	})
 }
 
 
-	function removeAllSelected() {
-		var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
-		if(confirmDialog == true) {
-			$('tbody input:checked').each(function() {
-				removeItem($(this).attr("data-id"), function(id) {
-					$("#" + id).remove();
-				})
-			});
-		}
 
+function removeAllSelected() {
+	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
+	if(confirmDialog == true) {
+		$('tbody input:checked').each(function() {
+			removeItem($(this).attr("data-id"), function(id) {
+				$("#" + id).remove();
+			})
+		});
 	}
+
+}
+
 
 
 function removeItem(id, callback) {
@@ -142,6 +153,13 @@ function fillUpForm(data) {
 		}
 		position++;
 	}
+	var root = "<div class = 'formInput' id='boxFiles'><h3>Files</h3><hr><ul>"
+	for(var i = 0;i<data.fileLocation.length;i++){
+		var name = data.fileLocation[i].substr(data.fileLocation[i].indexOf("/")+1);
+		root +="<li>"+name+" | <a href=''>remove</a></li>"
+	}
+	root +="</ul></div>";
+	$(".dataform").before(root);
 	if(data.parentId) {
 		$("div.pId").text(data.parentId)
 	}
@@ -235,8 +253,12 @@ function loadBtnActions(){
 					data.fileLocation = fileUploadLocation;
 
 				}
-
+			}else {
+				if(editItems[pos].fileLocation) {
+					data.fileLocation = editItems[pos].fileLocation
+				}
 			}
+
 			createMetaDataModels("#singleData", function(model) {
 				var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href") + "/update";
 				data.properties = model
@@ -343,6 +365,7 @@ function loadPrevItemInList() {
 function emptyForm() {
 	$(".dataform").empty();
 	$(".upload").remove();
+	$("#boxFiles").remove();
 }
 
 
