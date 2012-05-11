@@ -89,12 +89,7 @@ function loadCreateData() {
 		};
 
 		if(fileUploadLocation.length > 0) {
-			data.fileLocation = {};
-			for(var i = 0; i < fileUploadLocation.length; i++) {
-				var hash = fileUploadLocation[i].substring(0, fileUploadLocation[i].indexOf("/"))
-				data.fileLocation[hash] = fileUploadLocation[i]
-				console.log(data)
-			}
+			data.fileLocation = fileUploadLocation;
 		}
 
 		createMetaDataModels("#collectionCreation", function(model) {
@@ -119,12 +114,7 @@ function loadCreateData() {
 			delete data.parentId;
 		}
 		if(fileUploadLocation.length > 0) {
-			data.fileLocation = {};
-			for(var i = 0; i < fileUploadLocation.length; i++) {
-				var hash = fileUploadLocation[i].substring(0, fileUploadLocation[i].indexOf("/"))
-				data.fileLocation[hash] = fileUploadLocation[i]
-				console.log(data)
-			}
+			data.fileLocation = fileUploadLocation;
 		}
 		createMetaDataModels("#serieCreation", function(model) {
 			data.properties = model;
@@ -190,12 +180,7 @@ function createItems(itemAmount, objId) {
 			delete data.parentId;
 		}
 		if(fileUploadLocation.length > 0) {
-			data.fileLocation = {};
-			for(var i = 0; i < fileUploadLocation.length; i++) {
-				var hash = fileUploadLocation[i].substring(0, fileUploadLocation[i].indexOf("/"))
-				data.fileLocation[hash] = fileUploadLocation[i]
-				console.log(data)
-			}
+			data.fileLocation = fileUploadLocation;
 		}
 
 		createMetaDataModels("#itemCreation", function(model) {
@@ -278,6 +263,7 @@ function loadEditData() {
 		event.preventDefault();
 		$(".controls").hide();
 		emptyForm();
+		$("#boxFiles").remove();
 		$(".items li").removeClass("accordion-heading-focus");
 		$("#multi").show();
 		$("#single").hide();
@@ -285,7 +271,7 @@ function loadEditData() {
 	$('#checkAll').live('click', function() {
 		$('#series-table').find(':checkbox').attr('checked', this.checked);
 	});
-	$("#itemEditCat").chosen();
+
 	$("#step2Btn").click(function(event) {
 		if($('tbody input:checked').size() > 0) {
 			$(".controls").show();
@@ -317,7 +303,7 @@ function loadEditObjects() {
 	};
 }
 
-function loadAdminData() {
+function loadTopLevelData() {
 	$('#loadingDiv').show()
 	loadData("/dev/objects", function(items) {
 		$("tbody").empty();
@@ -445,11 +431,11 @@ function backbone() {
 			if(goDeeper) {
 				goDeeper = false;
 			} else {
-				if($(".row .breadcrumb li").size() >= 1) {
+				if($(".row .breadcrumb li").size() > 1) {
 					$(".row .breadcrumb li:last").remove();
 				}
 			}
-			loadAdminData();
+			loadTopLevelData();
 			resetCreatePage()
 		},
 		defaultRoute : function() {
@@ -457,7 +443,7 @@ function backbone() {
 			console.log($("tbody"))
 
 			if(goDeeper) {
-				$(".row .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
+				$(".row .breadcrumb").append("<li>" + parentType + "<span class='divider'>/</span></li>")
 				goDeeper = false;
 			} else {
 
@@ -470,7 +456,7 @@ function backbone() {
 		},
 		loadPid : function() {
 			if(goDeeper) {
-				$(".modal .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
+				$(".modal .breadcrumb").append("<li>" + parentType + "<span class='divider'>/</span></li>")
 				$("#goUp").removeAttr("disabled");
 				goDeeper = false;
 			} else {

@@ -5,6 +5,7 @@
 var workspace = backbone();
 var goDeeper = true;
 var parentType = "";
+var positionObj = ["#collections"];
 
 $(document).ready(function() {
 	workspace.navigate("#collections", {
@@ -35,6 +36,7 @@ $(document).ready(function() {
 				console.log("Select an action");
 		}
 	});
+	
 	$('.removeItem').live("click", function() {
 		$this = $(this)
 		id = $(this).attr("data-id");
@@ -199,16 +201,23 @@ function backbone() {
 			if(goDeeper) {
 				goDeeper = false;
 			} else {
-				$(".breadcrumb li:last").remove();
+				if($(".row .breadcrumb li").size() > 1) {
+					$(".row .breadcrumb li:last").remove();
+				}
 			}
 		},
 		defaultRoute : function() {
 			console.log(Backbone.history)
 			if(goDeeper) {
-				$(".breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
+				$(".breadcrumb").append("<li>"+ parentType + "<span class='divider'>/</span></li>")
 				goDeeper = false;
 			} else {
-				$(".breadcrumb li:last").remove();
+				
+				if($(".breadcrumb li").size() > 1) {
+					$(".breadcrumb li:last").remove();
+				}
+
+				
 			}
 			loadChildren(Backbone.history.fragment);
 		}

@@ -57,20 +57,31 @@ function editAction() {
 		$(".items li").eq($(this).parent().index()).addClass("accordion-heading-focus");
 		$("#list2 li").eq($(this).parent().index()).addClass("accordion-heading-focus");
 	})
+	
+	$(document).on("click","#boxFiles ul a",function(event){
+		event.preventDefault();
+		var index = $(this).parent().index();
+		var pos = $(".items li.accordion-heading-focus").attr('data-pos');
+		$(this).parent().remove()
+		editItems[pos].fileLocation.splice(index,1)
+
+	})
 }
 
 
-	function removeAllSelected() {
-		var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
-		if(confirmDialog == true) {
-			$('tbody input:checked').each(function() {
-				removeItem($(this).attr("data-id"), function(id) {
-					$("#" + id).remove();
-				})
-			});
-		}
 
+function removeAllSelected() {
+	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
+	if(confirmDialog == true) {
+		$('tbody input:checked').each(function() {
+			removeItem($(this).attr("data-id"), function(id) {
+				$("#" + id).remove();
+			})
+		});
 	}
+
+}
+
 
 
 function removeItem(id, callback) {
@@ -122,7 +133,7 @@ function showItems(items) {
 var itemPos = 0;
 function fillUpForm(data) {
 
-	$(".dataform").empty();
+	emptyForm()
 	var position = 0;
 	for(var i in data.properties) {
 		var item = i;
@@ -142,6 +153,17 @@ function fillUpForm(data) {
 		}
 		position++;
 	}
+
+	if(data.fileLocation) {
+		var root = "<div class = 'formInput' id='boxFiles'><h3>Files</h3><hr><ul>"
+		for(var i = 0; i < data.fileLocation.length; i++) {
+			var name = data.fileLocation[i].substr(data.fileLocation[i].indexOf("/") + 1);
+			root += "<li>" + name + " | <a href=''>remove</a></li>"
+		}
+		root += "</ul></div>";
+		$(".dataform").before(root);
+	}
+
 	if(data.parentId) {
 		$("div.pId").text(data.parentId)
 	}
@@ -191,8 +213,8 @@ function loadBtnActions(){
 		$(this).addClass("accordion-heading-focus");
 	})
 
-	$(".breaddisabled").click(function() {
-		return false
+	$(document).on("click",".breaddisabled",function(event) {
+		return false;
 	});
 
 	$(document).on("click",".breadcrumb li a", function(event) {
@@ -223,14 +245,24 @@ function loadBtnActions(){
 			if(editItems[pos].parentId) {
 				data.parentId = editItems[pos].parentId
 			}
-			if(fileUploadLocation.length > 0){
-				data.fileLocation = {};
-				for(var i = 0; i< fileUploadLocation.length; i++){
-					var hash = fileUploadLocation[i].substring(0,fileUploadLocation[i].indexOf("/"))
-					data.fileLocation[hash] = fileUploadLocation[i]
-					console.log(data)
+
+			if(fileUploadLocation.length > 0) {
+				if(editItems[pos].fileLocation) {
+					data.fileLocation = editItems[pos].fileLocation
+					for(var i = 0; i < fileUploadLocation.length; i++) {
+						data.fileLocation.push(fileUploadLocation[i])
+						console.log(data)
+					}
+				} else {
+					data.fileLocation = fileUploadLocation;
+
+				}
+			}else {
+				if(editItems[pos].fileLocation) {
+					data.fileLocation = editItems[pos].fileLocation
 				}
 			}
+
 			createMetaDataModels("#singleData", function(model) {
 				var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href") + "/update";
 				data.properties = model
@@ -323,8 +355,8 @@ function loadPrevItemInList() {
 	urlPrevItem = $(".items li.accordion-heading-focus").prev().find("a").attr("href");
 	prevItem = $(".items li.accordion-heading-focus").prev();
 	if(!prevItem.is("li")) {
-		prevItem = $("#step2Info  .items li:last");
-		urlPrevItem = $("#step2Info .items li:last").find("a").attr("href");
+		prevItem = $("#list1 li:last");
+		urlPrevItem = $("#list1 li:last").find("a").attr("href");
 	}
 	$("#list2 li").eq(prevItem.index()).addClass("accordion-heading-focus");
 	prevItem.siblings().removeClass("accordion-heading-focus");
@@ -336,7 +368,8 @@ function loadPrevItemInList() {
 
 function emptyForm() {
 	$(".dataform").empty();
-	$(".upload").remove();
+	$("#upload").remove();
+	$("#boxFiles").remove();
 }
 
 
@@ -368,7 +401,7 @@ function addInputFieldToFrom(index,dataObject){
 
 	$(".dataform").append(root);
 	
-	//$(".dataform .chzn-select").chosen()
+	$(".dataform select").ufd();
 
 	
 }
