@@ -32,7 +32,12 @@ p{
 #fileBox input, .upload input{
 	float:none !important;
 }
-
+.upload{
+	margin-right: -10px;	
+}
+.upload td{
+	padding: 4px 0px 4px 0;
+}
 .upload button{
 	margin-right: 5px;
 }

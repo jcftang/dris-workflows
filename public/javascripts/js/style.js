@@ -133,7 +133,7 @@ function showItems(items) {
 var itemPos = 0;
 function fillUpForm(data) {
 
-	$(".dataform").empty();
+	emptyForm()
 	var position = 0;
 	for(var i in data.properties) {
 		var item = i;
@@ -153,13 +153,17 @@ function fillUpForm(data) {
 		}
 		position++;
 	}
-	var root = "<div class = 'formInput' id='boxFiles'><h3>Files</h3><hr><ul>"
-	for(var i = 0;i<data.fileLocation.length;i++){
-		var name = data.fileLocation[i].substr(data.fileLocation[i].indexOf("/")+1);
-		root +="<li>"+name+" | <a href=''>remove</a></li>"
+
+	if(data.fileLocation) {
+		var root = "<div class = 'formInput' id='boxFiles'><h3>Files</h3><hr><ul>"
+		for(var i = 0; i < data.fileLocation.length; i++) {
+			var name = data.fileLocation[i].substr(data.fileLocation[i].indexOf("/") + 1);
+			root += "<li>" + name + " | <a href=''>remove</a></li>"
+		}
+		root += "</ul></div>";
+		$(".dataform").before(root);
 	}
-	root +="</ul></div>";
-	$(".dataform").before(root);
+
 	if(data.parentId) {
 		$("div.pId").text(data.parentId)
 	}
@@ -364,7 +368,7 @@ function loadPrevItemInList() {
 
 function emptyForm() {
 	$(".dataform").empty();
-	$(".upload").remove();
+	$("#upload").remove();
 	$("#boxFiles").remove();
 }
 
