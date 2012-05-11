@@ -38,7 +38,6 @@ $(document).ready(function() {
 	$('.removeItem').live("click", function() {
 		$this = $(this)
 		id = $(this).attr("data-id");
-
 		var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
 		if(confirmDialog == true) {
 			removeItem(id, function(id) {
@@ -49,10 +48,19 @@ $(document).ready(function() {
 	});
 	$('.approveItem').live("click", function() {
 		$this = $(this)
+		$this.attr("disabled", "disabled");
+		$this.addClass('disabled')
+		$this.attr("value", "Approving");
 		id = $(this).attr("data-id");
-		console.log("Approve: " + id);
-		approveItem(id, function(data) {
-			console.log(data);
+		approveItem(id, function(err, data) {
+			if(err) {
+				$this.removeAttr("disabled");
+				$this.removeClass('disabled')
+				$this.attr("value", "Approve");
+			} else {
+				console.log(data);
+				$this.attr("value", "Approved");
+			}
 		});
 	});
 	$("tbody a").live("click", function() {
@@ -102,9 +110,15 @@ function approveAllSelected() {
 	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
 	if(confirmDialog == true) {
 		$('#series-table tbody input:checked').each(function() {
-			console.log($(this).attr("data-id"));
-			approveItem($(this).attr("data-id"), function(id) {
-				$("#" + id).remove();
+			console.log($(this))
+			approveItem($(this).attr("data-id"), function(err, id) {
+
+				if(err) {
+					console.log(err);
+				} else {
+					console.log(id);
+					$(this).attr("value", "Approved");
+				}
 			})
 		});
 	}
@@ -145,9 +159,10 @@ function approveItem(id, callback) {
 		url : socket + "/dev/objects/" + id + "/approve",
 		type : "GET",
 		success : function(data) {
-			callback(data);
+			callback(null, data);
 		},
 		error : function(d, r) {
+			callback(r, null);
 			console.log(d);
 			console.log(r);
 		}
