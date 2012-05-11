@@ -161,7 +161,7 @@ li.selected{
 }
 .formInput{
 	padding:10px;
-
+	margin-bottom:4px;
 	border:#DDD solid 1px;
 }
 .formInput h3{
@@ -171,7 +171,9 @@ li.selected{
 	margin:0;
 	margin-bottom:5px;
 }
-
+.nextItemBtn{
+	margin-left: 5px;
+}
 .inputBox{
 	width:90%;
 	padding:3px;
@@ -202,5 +204,14 @@ form ul{
 }
 .list a{
 	margin-bottom: 5px;
+}
+
+/*ADMIN PAGE*/
+.bulk-action{
+	margin-bottom: 5px !important;
+	margin-right: 5px;
+}
+#bulk-execute{
+	margin-top:-5px;
 }
 
