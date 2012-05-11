@@ -355,8 +355,8 @@ function loadPrevItemInList() {
 	urlPrevItem = $(".items li.accordion-heading-focus").prev().find("a").attr("href");
 	prevItem = $(".items li.accordion-heading-focus").prev();
 	if(!prevItem.is("li")) {
-		prevItem = $("#step2Info  .items li:last");
-		urlPrevItem = $("#step2Info .items li:last").find("a").attr("href");
+		prevItem = $("#list1 li:last");
+		urlPrevItem = $("#list1 li:last").find("a").attr("href");
 	}
 	$("#list2 li").eq(prevItem.index()).addClass("accordion-heading-focus");
 	prevItem.siblings().removeClass("accordion-heading-focus");
@@ -401,7 +401,7 @@ function addInputFieldToFrom(index,dataObject){
 
 	$(".dataform").append(root);
 	
-	//$(".dataform .chzn-select").chosen()
+	$(".dataform select").ufd();
 
 	
 }

@@ -5,6 +5,7 @@
 var workspace = backbone();
 var goDeeper = true;
 var parentType = "";
+var positionObj = ["#collections"];
 
 $(document).ready(function() {
 	workspace.navigate("#collections", {

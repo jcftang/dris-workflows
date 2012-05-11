@@ -271,7 +271,7 @@ function loadEditData() {
 	$('#checkAll').live('click', function() {
 		$('#series-table').find(':checkbox').attr('checked', this.checked);
 	});
-	$("#itemEditCat").chosen();
+
 	$("#step2Btn").click(function(event) {
 		if($('tbody input:checked').size() > 0) {
 			$(".controls").show();
@@ -443,7 +443,7 @@ function backbone() {
 			console.log($("tbody"))
 
 			if(goDeeper) {
-				$(".row .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
+				$(".row .breadcrumb").append("<li>" + parentType + "<span class='divider'>/</span></li>")
 				goDeeper = false;
 			} else {
 
@@ -456,7 +456,7 @@ function backbone() {
 		},
 		loadPid : function() {
 			if(goDeeper) {
-				$(".modal .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
+				$(".modal .breadcrumb").append("<li>" + parentType + "<span class='divider'>/</span></li>")
 				$("#goUp").removeAttr("disabled");
 				goDeeper = false;
 			} else {
