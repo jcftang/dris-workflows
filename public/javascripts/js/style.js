@@ -213,8 +213,8 @@ function loadBtnActions(){
 		$(this).addClass("accordion-heading-focus");
 	})
 
-	$(".breaddisabled").click(function() {
-		return false
+	$(document).on("click",".breaddisabled",function(event) {
+		return false;
 	});
 
 	$(document).on("click",".breadcrumb li a", function(event) {

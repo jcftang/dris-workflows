@@ -263,6 +263,7 @@ function loadEditData() {
 		event.preventDefault();
 		$(".controls").hide();
 		emptyForm();
+		$("#boxFiles").remove();
 		$(".items li").removeClass("accordion-heading-focus");
 		$("#multi").show();
 		$("#single").hide();
@@ -302,7 +303,7 @@ function loadEditObjects() {
 	};
 }
 
-function loadAdminData() {
+function loadTopLevelData() {
 	$('#loadingDiv').show()
 	loadData("/dev/objects", function(items) {
 		$("tbody").empty();
@@ -430,11 +431,11 @@ function backbone() {
 			if(goDeeper) {
 				goDeeper = false;
 			} else {
-				if($(".row .breadcrumb li").size() >= 1) {
+				if($(".row .breadcrumb li").size() > 1) {
 					$(".row .breadcrumb li:last").remove();
 				}
 			}
-			loadAdminData();
+			loadTopLevelData();
 			resetCreatePage()
 		},
 		defaultRoute : function() {
