@@ -401,7 +401,6 @@ function backbone() {
 	var Workspace = Backbone.Router.extend({
 		routes : {
 			"edit" : "step2",
-			"step1" : "step1", // #help
 			"step2" : "step2", // #search/kiwis
 			"step3" : "step3",
 			"step4" : "step4",
@@ -413,11 +412,6 @@ function backbone() {
 
 		},
 
-		step1 : function() {
-
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
-			$("#step1,#step1Info").show();
-		},
 		step2 : function() {
 
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
@@ -454,6 +448,7 @@ function backbone() {
 
 		},
 		collection : function() {
+			
 			$("tbody").empty();
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {

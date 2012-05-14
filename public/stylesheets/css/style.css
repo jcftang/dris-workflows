@@ -27,6 +27,10 @@ p{
 	float:left;
 	margin-right: 5px;
 }
+
+#step2,#step2info,#step3,#step3info,#step4info,#properties,#step4,#step5{
+	display:none;
+}
 #fileBox input, .upload input{
 	float:none !important;
 }
