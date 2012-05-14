@@ -5,6 +5,7 @@
 var workspace = backbone();
 var goDeeper = true;
 var parentType = "";
+var currentParentName = ""
 var positionObj = ["#collections"];
 
 $(document).ready(function() {
@@ -60,6 +61,17 @@ $(document).ready(function() {
 	$("tbody a").live("click", function() {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
+		currentParentName = $(this).text()
+	});
+	
+	$(document).on("click", "form .breadcrumb li a", function(event) {
+		event.preventDefault()
+		$(this).parent().nextAll().remove();
+		goDeeper = false;
+		$(".row .breadcrumb").append("<li>")
+		workspace.navigate("#" + $(this).attr("href"), {
+			trigger : true
+		});
 	});
 })
 function loadAdminData() {
@@ -183,26 +195,21 @@ function backbone() {
 
 		collection : function() {
 			loadAdminData();
-			if(goDeeper) {
-				goDeeper = false;
-			} else {
+			if(!goDeeper){
 				if($(".row .breadcrumb li").size() > 1) {
 					$(".row .breadcrumb li:last").remove();
 				}
 			}
+			goDeeper = false;
 		},
 		defaultRoute : function() {
-			console.log(Backbone.history)
 			if(goDeeper) {
-				$(".breadcrumb").append("<li>"+ parentType + "<span class='divider'>/</span></li>")
+				$("form .breadcrumb a:last").parent().removeClass("active");
+				$(".row .breadcrumb").append("<li class='active'><a href='"+Backbone.history.fragment+"'>" + parentType + ": " + currentParentName +"</a><span class='divider'>/</span></li>");
 				goDeeper = false;
 			} else {
-				
-				if($(".breadcrumb li").size() > 1) {
-					$(".breadcrumb li:last").remove();
-				}
-
-				
+				$(".row .breadcrumb li:last").remove();
+				$("form .breadcrumb a:last").parent().addClass("active");
 			}
 			loadChildren(Backbone.history.fragment);
 		}

@@ -1,7 +1,5 @@
 /**
  * @author Matthias Van Wambeke
- *
- *
  */
 
 //starts when the main html file is loaded

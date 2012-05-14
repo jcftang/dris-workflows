@@ -1,6 +1,7 @@
 var workspace= backbone();
 var goDeeper = true;
 var parentType = "";
+var currentParentName = ""
 var editItems = [];
 var fileUploadLocation = new Array;
 var navloc = new Array()
@@ -30,12 +31,23 @@ $(document).ready(function() {
 	$("tbody a").live("click", function(event) {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
+		currentParentName = $(this).text()
 	});
 	$(document).on("click",".close", function() {
 		if(!$(this).hasClass("mdl"))
 		console.log($(this).parent())
 			$(this).parent().remove();
 	});
+		$(document).on("click", "form .breadcrumb li a", function(event) {
+		event.preventDefault()
+		console.log($(this).attr("href"));
+		$(this).parent().nextAll().remove();
+		goDeeper = false;
+		$(".row .breadcrumb").append("<li>")
+		workspace.navigate("#"+$(this).attr("href"), {
+				trigger : true
+			});
+	}); 
 });
 
 
@@ -207,18 +219,6 @@ function loadMediaData() {
 }
 
 function loadEditData() {
-
-	$(document).on("click", ".breadcrumb li a", function(event) {
-		event.preventDefault()
-		console.log($(this).attr("href"));
-		$(this).parent().nextAll().remove();
-		goDeeper = false;
-		$(".row .breadcrumb").append("<li>")
-		workspace.navigate("#"+$(this).attr("href"), {
-				trigger : true
-			});
-	}); 
-
 
 	$("#step2 form input").live("blur", function() {
 		
@@ -434,7 +434,6 @@ function backbone() {
 
 		},
 		collection : function() {
-			console.log(navloc)
 			$("tbody").empty();
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
@@ -446,16 +445,13 @@ function backbone() {
 			resetCreatePage()
 		},
 		defaultRoute : function() {
-			console.log(window.history)
-
-
 			if(goDeeper) {
 				$("form .breadcrumb a:last").parent().removeClass("active");
-				$(".row .breadcrumb").append("<li class='active'><a href='"+Backbone.history.fragment+"'>" + parentType + ": " + Backbone.history.fragment +"</a><span class='divider'>/</span></li>");
+				$(".row .breadcrumb").append("<li class='active'><a href='"+Backbone.history.fragment+"'>" + parentType + ": " + currentParentName +"</a><span class='divider'>/</span></li>");
 				goDeeper = false;
 			} else {
-
 				$(".row .breadcrumb li:last").remove();
+				$("form .breadcrumb a:last").parent().addClass("active");
 			}
 			resetCreatePage();
 			$("#createCollection").hide();
@@ -464,12 +460,15 @@ function backbone() {
 		},
 		loadPid : function() {
 			if(goDeeper) {
-				$(".modal .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
+				$(".modal .breadcrumb a:last").parent().removeClass("active");
+				$(".modal .breadcrumb").append("<li class='active'><a href='"+Backbone.history.fragment+"'>" + parentType + ": " + currentParentName +"</a><span class='divider'>/</span></li>");
 				$("#goUp").removeAttr("disabled");
 				goDeeper = false;
 			} else {
 				$("#goUp").removeAttr("disabled");
 				$(".modal .breadcrumb li:last").remove();
+				$(".modal .breadcrumb a:last").parent().addClass("active");
+				
 			}
 			loadPidChildren(Backbone.history.fragment);
 		}
