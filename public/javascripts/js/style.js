@@ -97,16 +97,6 @@ function removeItem(id, callback) {
 	});
 }
 
-/*
- Function: loadAllItemsByType
-
- loads all the items of a cetain type(series,collections,items)
-
- Parameters:
-
- type - type of the item (series,collections or items)
- callback - the function to return it to
-
  /*
  Function: showItems
 
