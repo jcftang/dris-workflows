@@ -64,7 +64,6 @@ function loadCreateData() {
 			forceIframeTransport : true,
 			url : this.action,
 			done : function(e, data) {
-				console.log(data)
 			}
 		})
 		$('#uploadFile').fileupload('option', 'redirect', window.location.href.replace(/\/[^\/]*$/, '/cors/result?'));
@@ -133,7 +132,6 @@ function loadCreateData() {
 		if(objId > 0 && $("#step4 #objectId").val() != undefined) {
 			insertItems();
 		} else {
-			console.log("create")
 			var amount = $("#amount").val();
 			createItems(amount, amount);
 		}
@@ -185,7 +183,6 @@ function createItems(itemAmount, objId) {
 
 		createMetaDataModels("#itemCreation", function(model) {
 			data.properties = model;
-			console.log(model)
 			postData($('#itemCreation'), 'POST', data, link, function(id) {
 				if(amount > 0 && objId > 0) {
 					objId = objId - 1;
@@ -221,23 +218,19 @@ function loadEditData() {
 		
 	}); 
 	
-	$("#saveAll").click(function(){
-		for(var i = 0;i< editItems.length;i++){
-			var link = socket + "/dev/objects/" + editItems[i]._id+"/update";
-			console.log(link)
+
+	$("#saveAll").click(function() {
+		for(var i = 0; i < editItems.length; i++) {
+			var link = socket + "/dev/objects/" + editItems[i]._id + "/update";
 			var data = editItems[i];
 			delete editItems[i]._id;
-			console.log(data);
 			updateData('POST', data, link, function(id) {
-				console.log(id + " updated")
-				if( i = editItems.length - 1) {
-					loadEditObjects();
-					$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
-				}
+				loadEditObjects();
+				$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
 			})
 		}
-
 	})
+
 
 	$("#goUp").click(function(event) {
 		event.preventDefault();
@@ -271,11 +264,11 @@ function loadEditData() {
 	$('#checkAll').live('click', function() {
 		$('#series-table').find(':checkbox').attr('checked', this.checked);
 	});
-
 	$("#step2Btn").click(function(event) {
 		if($('tbody input:checked').size() > 0) {
 			$(".controls").show();
 			loadEditObjects();
+			
 		} else {
 			event.preventDefault();
 		}
@@ -294,9 +287,10 @@ function loadEditObjects() {
 			arr.push(data);
 			console.log(arr.length)
 			if(arr.length == size) {
-				showItems(arr)
 				emptyForm();
+				showItems(arr)
 				editItems = arr;
+				$(".items li:first a").trigger("click")
 			}
 		});
 
@@ -443,7 +437,7 @@ function backbone() {
 			console.log($("tbody"))
 
 			if(goDeeper) {
-				$(".row .breadcrumb").append("<li>" + parentType + "<span class='divider'>/</span></li>")
+				$(".row .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
 				goDeeper = false;
 			} else {
 
@@ -456,7 +450,7 @@ function backbone() {
 		},
 		loadPid : function() {
 			if(goDeeper) {
-				$(".modal .breadcrumb").append("<li>" + parentType + "<span class='divider'>/</span></li>")
+				$(".modal .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
 				$("#goUp").removeAttr("disabled");
 				goDeeper = false;
 			} else {
