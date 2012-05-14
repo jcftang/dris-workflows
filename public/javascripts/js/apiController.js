@@ -3,6 +3,7 @@ var goDeeper = true;
 var parentType = "";
 var editItems = [];
 var fileUploadLocation = new Array;
+var navloc = new Array()
 $(document).ready(function() {
 
 	jQuery.support.cors = true;
@@ -26,7 +27,7 @@ $(document).ready(function() {
 			break;
 	}
 
-	$("tbody a").live("click", function() {
+	$("tbody a").live("click", function(event) {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
 	});
@@ -206,6 +207,18 @@ function loadMediaData() {
 }
 
 function loadEditData() {
+
+	$(document).on("click", ".breadcrumb li a", function(event) {
+		event.preventDefault()
+		console.log($(this).attr("href"));
+		$(this).parent().nextAll().remove();
+		goDeeper = false;
+		$(".row .breadcrumb").append("<li>")
+		workspace.navigate("#"+$(this).attr("href"), {
+				trigger : true
+			});
+	}); 
+
 
 	$("#step2 form input").live("blur", function() {
 		
@@ -421,23 +434,24 @@ function backbone() {
 
 		},
 		collection : function() {
+			console.log(navloc)
 			$("tbody").empty();
-			if(goDeeper) {
-				goDeeper = false;
-			} else {
+			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
 					$(".row .breadcrumb li:last").remove();
 				}
 			}
+			goDeeper = false;
 			loadTopLevelData();
 			resetCreatePage()
 		},
 		defaultRoute : function() {
-			console.log("$")
-			console.log($("tbody"))
+			console.log(window.history)
+
 
 			if(goDeeper) {
-				$(".row .breadcrumb").append("<li>" + parentType + ": " + Backbone.history.fragment + "<span class='divider'>/</span></li>")
+				$("form .breadcrumb a:last").parent().removeClass("active");
+				$(".row .breadcrumb").append("<li class='active'><a href='"+Backbone.history.fragment+"'>" + parentType + ": " + Backbone.history.fragment +"</a><span class='divider'>/</span></li>");
 				goDeeper = false;
 			} else {
 
