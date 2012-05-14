@@ -55,7 +55,7 @@ function editAction() {
 		$(this).parent().addClass("accordion-heading-focus");
 		//highlights the same item in the other steps (when switching between step 2 and 3)
 		$(".items li").eq($(this).parent().index()).addClass("accordion-heading-focus");
-		$("#list2 li").eq($(this).parent().index()).addClass("accordion-heading-focus");
+		//$("#list2 li").eq($(this).parent().index()).addClass("accordion-heading-focus");
 	})
 	
 	$(document).on("click","#boxFiles ul a",function(event){
@@ -127,12 +127,13 @@ function showItems(items) {
 		}
 
 	}
+	$(".items li:first").addClass("accordion-heading-focus");
 
 }
 
 var itemPos = 0;
 function fillUpForm(data) {
-
+	console.log("filling up")
 	emptyForm()
 	var position = 0;
 	for(var i in data.properties) {
@@ -169,19 +170,12 @@ function fillUpForm(data) {
 	}
 }
 
-
-
-
-
 function fillInSpecialDataFields(info,name) {
 	for(var i in info) {
 		var spField = $(addSpecialField(name))
 
 		for(j in info[i]) {
 			$('[name="' + j + '"]', spField).val(info[i][j]);
-
-			//$("#" + $('.dataform ul:last li:last [name="' + j + '"]:last').attr("id")).val(info[i][j])
-
 		}
 		$.fn.reverse = [].reverse; 
 		
@@ -283,7 +277,7 @@ function loadBtnActions(){
 		loadAllImages($("input[name='_id']").val());
 	})
 
-	$(document).on("click",".items #list2 li a", function(event) {
+	/*$(document).on("click",".items #list2 li a", function(event) {
 		$(".controls").show();
 		event.preventDefault();
 		$("#multi").hide();
@@ -293,7 +287,7 @@ function loadBtnActions(){
 			fillUpForm(editItems[pos]);
 		}
 		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
-	});
+	});*/
 	$(document).on("click",".items ul li a", function(event) {
 		$(".controls").show();
 		event.preventDefault();
@@ -342,12 +336,13 @@ function loadNexItemInList() {
 		nextItem = $(".items li:first");
 		urlNextItem = $(".items li:first").find("a").attr("href");
 	}
-	$("#list2 li").eq(nextItem.index()).addClass("accordion-heading-focus");
+	//$("#list2 li").eq(nextItem.index()).addClass("accordion-heading-focus");
 	nextItem.siblings().removeClass("accordion-heading-focus");
 	nextItem.addClass("accordion-heading-focus");
-	loadData("/dev/objects/" + urlNextItem, function(data) {
-		fillUpForm(data)
-	});
+	var pos = $(nextItem).attr("data-pos");
+	if(editItems[pos]) {
+		fillUpForm(editItems[pos]);
+	}
 }
 
 function loadPrevItemInList() {
@@ -358,12 +353,15 @@ function loadPrevItemInList() {
 		prevItem = $("#list1 li:last");
 		urlPrevItem = $("#list1 li:last").find("a").attr("href");
 	}
-	$("#list2 li").eq(prevItem.index()).addClass("accordion-heading-focus");
+	//$("#list2 li").eq(prevItem.index()).addClass("accordion-heading-focus");
 	prevItem.siblings().removeClass("accordion-heading-focus");
 	prevItem.addClass("accordion-heading-focus");
-	loadData("/dev/objects/" + urlPrevItem, function(data) {
-		fillUpForm(data)
-	});
+
+	var pos = $(prevItem).attr("data-pos");
+	if(editItems[pos]) {
+		fillUpForm(editItems[pos]);
+	}
+
 }
 
 function emptyForm() {
@@ -437,8 +435,7 @@ function addEditFormFields(dataObject, name) {
 	counter++;
 
 	$(".dataform").append(root);
-	
-	//$(".dataform .chzn-select").chosen().trigger("liszt:updated");
+	$(".dataform select").ufd();
 	
 }
 
