@@ -117,7 +117,6 @@ function showItems(items) {
 
 var itemPos = 0;
 function fillUpForm(data) {
-	console.log("filling up")
 	emptyForm()
 	var position = 0;
 	for(var i in data.properties) {
@@ -229,7 +228,6 @@ function loadBtnActions(){
 					data.fileLocation = editItems[pos].fileLocation
 					for(var i = 0; i < fileUploadLocation.length; i++) {
 						data.fileLocation.push(fileUploadLocation[i])
-						console.log(data)
 					}
 				} else {
 					data.fileLocation = fileUploadLocation;

@@ -19,14 +19,12 @@ $(document).ready(function() {
 		var action = $(this).prev().val();
 		switch(action) {
 			case "approve":
-				console.log("Approve");
 				approveAllSelected();
 				if(!('#checkAll:checkbox[checked]').length) {
 					('#checkAll').removeAttr("checked");
 				}
 				break;
 			case "remove":
-				console.log("Remove All");
 				removeAllSelected();
 				$(this).prev().val("-1");
 				if(!('#checkAll:checkbox[checked]').length) {
@@ -44,7 +42,6 @@ $(document).ready(function() {
 		var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
 		if(confirmDialog == true) {
 			removeItem(id, function(id) {
-				console.log(id);
 				$("#" + id).remove();
 			})
 		}
@@ -61,7 +58,6 @@ $(document).ready(function() {
 				$this.removeClass('disabled')
 				$this.attr("value", "Approve");
 			} else {
-				console.log(data);
 				$this.attr("value", "Approved");
 			}
 		});
@@ -124,13 +120,11 @@ function approveAllSelected() {
 	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
 	if(confirmDialog == true) {
 		$('#series-table tbody input:checked').each(function() {
-			console.log($(this))
 			approveItem($(this).attr("data-id"), function(err, id) {
 
 				if(err) {
 					console.log(err);
 				} else {
-					console.log(id);
 					$(this).attr("value", "Approved");
 				}
 			})
@@ -143,7 +137,6 @@ function removeAllSelected() {
 	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
 	if(confirmDialog == true) {
 		$('#series-table tbody input:checked').each(function() {
-			console.log($(this).attr("data-id"));
 			removeItem($(this).attr("data-id"), function(id) {
 				$("#" + id).remove();
 			})
@@ -152,7 +145,6 @@ function removeAllSelected() {
 };
 
 function removeItem(id, callback) {
-	console.log(socket + "/dev/objects/" + id + "/delete")
 	$.ajax({
 		type : "get",
 		url : socket + "/dev/objects/" + id + "/delete",

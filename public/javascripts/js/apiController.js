@@ -35,13 +35,11 @@ $(document).ready(function() {
 	});
 	$(document).on("click",".close", function() {
 		if(!$(this).hasClass("mdl"))
-		console.log($(this).parent())
 			$(this).parent().remove();
 	});
 
 	$(document).on("click", "form .breadcrumb li a", function(event) {
 		event.preventDefault()
-		console.log($(this).attr("href"));
 		$(this).parent().nextAll().remove();
 		goDeeper = false;
 		$(".row .breadcrumb").append("<li>")
@@ -61,10 +59,6 @@ function updateChildren(data) {
 			var item = data[i];
 			eval("item.properties." + items[j].name + "='" + items[j].value + "'");
 		}
-		console.log(link)
-		console.log({
-			"properties" : data[i].properties
-		})
 		updateData('POST', {
 			"properties" : data[i].properties
 		}, link, function(id) {
@@ -313,7 +307,6 @@ function loadEditObjects() {
 	for(var i = 0; i < objects.length; i++) {
 		loadData("/dev/objects/" + $(objects[i]).attr("data-id"), function(data) {
 			arr.push(data);
-			console.log(arr.length)
 			if(arr.length == size) {
 				emptyForm();
 				showItems(arr)
@@ -497,6 +490,7 @@ function backbone() {
 
 function resetCreatePage() {
 	$("#createCollection").show();
+	$("#properties").hide()
 	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 	$("#step1,#step1Info").show();
 }
@@ -516,14 +510,12 @@ function resetCreatePage() {
  */
 
 function loadData(link, callback) {
-	console.log("load")
 	$.ajax({
 		url : socket + link,
 		cache : false,
 		type : "GET",
 		dataType : 'jsonp',
 		success : function(data) {
-			console.log(data)
 			callback(data);
 		},
 		error : function(x, h, r) {
@@ -536,16 +528,12 @@ function loadData(link, callback) {
 }
 
 function postData(form, type, data, link, callback) {
-	console.log("remove")
-	console.log(link);
-	console.log(data);
 	$.ajax({
 		type : type,
 		cache : false,
 		data : data,
 		url : link,
 		success : function(id) {
-			console.log("id received" + id)
 			workspace.navigate("#collections", {
 				trigger : true
 			});
@@ -569,7 +557,6 @@ function updateData(type, data, link, callback) {
 		url : link,
 		cache : false,
 		success : function(id) {
-			console.log("id");
 			callback(id);
 		},
 		error : function(x, h, r) {
