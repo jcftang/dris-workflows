@@ -38,16 +38,18 @@ $(document).ready(function() {
 		console.log($(this).parent())
 			$(this).parent().remove();
 	});
-		$(document).on("click", "form .breadcrumb li a", function(event) {
+
+	$(document).on("click", "form .breadcrumb li a", function(event) {
 		event.preventDefault()
 		console.log($(this).attr("href"));
 		$(this).parent().nextAll().remove();
 		goDeeper = false;
 		$(".row .breadcrumb").append("<li>")
-		workspace.navigate("#"+$(this).attr("href"), {
-				trigger : true
-			});
-	}); 
+		workspace.navigate("#" + $(this).attr("href"), {
+			trigger : true
+		});
+	});
+
 });
 
 
@@ -220,6 +222,19 @@ function loadMediaData() {
 
 function loadEditData() {
 
+	$(document).on("click", ".editRow", function() {
+		loadData("/dev/objects/" + $(this).attr("data-id"), function(data) {
+			emptyForm();
+			showItems([data])
+			editItems = [data];
+			workspace.navigate("#step2", {
+				trigger : true
+			});
+			$(".items li:first a").trigger("click")
+
+		});
+	})
+
 	$("#step2 form input").live("blur", function() {
 		
 		$(".items li.accordion-heading-focus").css({"background-color":"#9F111B"})
@@ -316,10 +331,12 @@ function loadTopLevelData() {
 		$("tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
+			var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>"
 			if(window.location.pathname == "/create") {
 				rbt = ""
+				action = ""
 			}
-			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td>"+action+"</tr>")
 		}
 		$('#loadingDiv').hide()
 	});
@@ -346,10 +363,11 @@ function loadPidChildren(id) {
 		$(".modal tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input  name='items' type='radio' data-id='" + items[i]._id + "'></td>";
+			var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>";
 			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		if(items.length == 0) {
-			$(".modal tbody").append("<tr><td></td><td>No Children here<td></tr>")
+			$(".modal tbody").append("<tr><td>No Children here<td></tr>")
 		}
 	});
 
@@ -363,14 +381,16 @@ function loadChildren(id) {
 		$("#step1 tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input  name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
+			var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>"
 			if(window.location.pathname == "/create") {
 				rbt = ""
+				action = ""
 			}
-			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td>"+action+"</tr>")
 		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
-			$("#step1 tbody").append("<tr><td></td><td>No Children here<td></tr>")
+			$("#step1 tbody").append("<tr><td colspan='4'>No Children here</td></tr>")
 		}
 	});
 

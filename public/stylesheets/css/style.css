@@ -5,9 +5,7 @@
 p{
 	font-size: 1em;
 }
-.center{
-	text-align:center;
-}
+
 .navbar .container{
 	width:940px;
 }
@@ -77,6 +75,10 @@ div#step1Info a.btn,div#step2Info a.btn,div#step3Info a.btn,div#step4Info a.btn{
 }
 .pager{
 	float:right;
+}
+
+#step1 .pager{
+	float:left;
 }
 
 .dummy{
@@ -202,7 +204,11 @@ form ul{
 .dataform .chzn-container{
 	width: 230px !important;
 }
-.list a{
+.list a, #step2Btn{
+	margin-bottom: 5px;
+}
+
+#step1 table{
 	margin-bottom: 5px;
 }
 

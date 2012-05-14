@@ -30,7 +30,6 @@ function loadMediaData() {
 				break;
 		}
 	});
-
 }
 
 /* Function: editActions

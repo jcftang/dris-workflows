@@ -83,7 +83,7 @@ function loadAdminData() {
 		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
-			$("tbody").append("<tr><td></td><td>No items available<td></tr>")
+			$("tbody").append("<tr><td colspan='2'>No items available<td></tr>")
 			$('#loadingDiv').hide()
 		}
 	});
@@ -98,7 +98,7 @@ function loadChildren(id) {
 		$("tbody").empty();
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
-			$("tbody").append("<tr><td class='center' colspan='5'>No Children here</td></tr>")
+			$("tbody").append("<tr><td colspan='5'>No Children here</td></tr>")
 		} else {
 			for(i in items) {
 				if(items[i].status == "approved") {
