@@ -79,6 +79,18 @@ $(document).ready(function() {
 	});
 })
 function createPagination(meta) {
+	//console.log(Backbone.history.fragment)
+	var pos = Backbone.history.fragment.indexOf('/')+1
+	var id = Backbone.history.fragment.substring( pos, (pos +24))
+	//console.log(id)
+	if(meta.numPages <2){
+		return
+	}
+	if(meta.page == 0){
+		meta.page = 1
+	}
+	var currentPage = parseInt(meta.page)
+	console.log(currentPage)
 	// Create pagination
 	var pagination = $(".pagination ul")
 	pagination.empty();
@@ -86,33 +98,43 @@ function createPagination(meta) {
 	// Add general back button
 	var a = $(document.createElement('a'))
 	a.text("<<")
-	a.attr('href', '#'+Backbone.history.fragment+"/-1")
+	a.attr('href', '#id/' + id + "/" + (currentPage-1))
 	var goBack = $(document.createElement('li')).append(a);
 	if(meta.page < 2) {
 		goBack.addClass('disabled')
+		a.click(function(e) {
+			e.preventDefault();
+		})
 	}
 	pagination.append(goBack)
 
 	// Add pages
-	for(var i = 1; i < meta.numPages + 1; i++) {
+	for(var i = 1; i < meta.numPages; i++) {
 		var pagecntrl = $(document.createElement('li'))
 		var a = $(document.createElement('a'))
 		if(i == meta.page) {
 			pagecntrl.addClass('active')
+			a.click(function(e) {
+				e.preventDefault();
+			})
 		}
-		a.attr('href', '#'+Backbone.history.fragment+"/"+i)
+		a.attr('href', '#id/' + id + "/" + i)
 		a.text(i)
 		pagecntrl.append(a)
 		pagination.append(pagecntrl)
 	};
 
 	// Add general forward button
-	a = $(document.createElement('a'))
+	var a = $(document.createElement('a'))
 	a.text(">>")
-	a.attr('href', '#'+Backbone.history.fragment+"/+1")
+	a.attr('href', '#id/' + id + "/" + (currentPage+1))
 	var goForward = $(document.createElement('li')).append(a);
-	if(meta.page > (meta.numPages - 1)) {
+	if(meta.page > (meta.numPages - 2)) {
 		goForward.addClass('disabled')
+		a.click(function(e) {
+			goDeeper = true;
+			e.preventDefault();
+		})
 	}
 	pagination.append(goForward)
 
@@ -127,11 +149,12 @@ function loadAdminData(page, amount) {
 		link = "/dev/objects"
 	}
 	loadData(link, function(meta, items) {
-		$("tbody").empty();
+		
 		createPagination(meta)
+		$("tbody").empty();
 		for(i in items) {
 			var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#id/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
@@ -143,7 +166,6 @@ function loadAdminData(page, amount) {
 
 function loadChildren(id, page, amount) {
 	$('#loadingDiv').show()
-	id = id.substring(2, id.length)
 
 	$("tbody").empty();
 	var link = ""
@@ -162,9 +184,9 @@ function loadChildren(id, page, amount) {
 			for(i in items) {
 				var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
 				if(items[i].status == "approved") {
-					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 				} else {
-					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 				}
 			}
 		}
@@ -238,7 +260,6 @@ function loadData(link, callback) {
 		type : "GET",
 		dataType : 'jsonp',
 		success : function(data, status, r) {
-			console.log(data)
 			callback(data.meta, data.objects);
 		},
 		error : function(x, h, r) {
@@ -255,9 +276,9 @@ function backbone() {
 	var Workspace = Backbone.Router.extend({
 		routes : {
 			"collections" : "collection",
-			"id:id" : "defaultRoute"
+			"id/:id/:page" : "pageRoute",
+			"id/:id" : "defaultRoute"
 		},
-
 		collection : function() {
 			loadAdminData();
 			if(!goDeeper) {
@@ -267,7 +288,7 @@ function backbone() {
 			}
 			goDeeper = false;
 		},
-		defaultRoute : function() {
+		defaultRoute : function(id, page) {
 			if(goDeeper) {
 				$("form .breadcrumb a:last").parent().removeClass("active");
 				$(".row .breadcrumb").append("<li class='active'><a href='" + Backbone.history.fragment + "'>" + parentType + ": " + currentParentName + "</a><span class='divider'>/</span></li>");
@@ -276,7 +297,11 @@ function backbone() {
 				$(".row .breadcrumb li:last").remove();
 				$("form .breadcrumb a:last").parent().addClass("active");
 			}
-			loadChildren(Backbone.history.fragment);
+			loadChildren(id, 0, 20);
+		},
+		pageRoute : function(id, page) {
+			
+			loadChildren(id, page, 20);
 		}
 	});
 
