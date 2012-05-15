@@ -16,9 +16,6 @@ $(document).ready(function() {
 			$("#properties").hide();
 			loadEditData();
 			break;
-		case "/all":
-			loadMediaData();
-			break;
 		case "/create":
 			$("#properties").hide();
 			loadCreateData();
@@ -28,7 +25,7 @@ $(document).ready(function() {
 			break;
 	}
 
-	$("tbody a").live("click", function(event) {
+	$(document).live("click","tbody a",function(event) {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
 		currentParentName = $(this).text()
@@ -222,11 +219,6 @@ function createItems(itemAmount, objId) {
 		}); 
 
 	}
-
-}
-
-
-function loadMediaData() {
 
 }
 
@@ -452,7 +444,7 @@ function backbone() {
 	var Workspace = Backbone.Router.extend({
 		routes : {
 			"edit" : "step2",
-			"step2" : "step2", // #search/kiwis
+			"step2" : "step2", 
 			"step3" : "step3",
 			"step4" : "step4",
 			"step5" : "step5",
@@ -565,8 +557,7 @@ function resetCreatePage() {
  Returns:
 
  The requested data
- */
-
+*/
 function loadData(link, callback) {
 	$.ajax({
 		url : socket + link,
@@ -574,8 +565,11 @@ function loadData(link, callback) {
 		type : "GET",
 		dataType:"jsonp",
 		success : function(data, status, r) {
-			console.log(data)
-			callback(data.objects,data.meta);
+			if(data.objects){
+				callback(data.objects,data.meta);
+			}else{
+				callback(data);
+			}
 		},
 		error : function(x, h, r) {
 			console.log(x);
@@ -607,7 +601,6 @@ function postData(form, type, data, link, callback) {
 		}
 	});
 }
-
 
 function updateData(type, data, link, callback) {
 	$.ajax({
