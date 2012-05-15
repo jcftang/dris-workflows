@@ -15,6 +15,10 @@ p{
 	padding:5px;
 	float:left;
 	width:155px;
+	position:fixed;
+}
+#step2 .span7,#step3 .span7,#step4 .span7,#step5 .span7{
+	margin-left: 200px;
 }
 #properties .selectData{
 	display:none;
@@ -36,6 +40,7 @@ p{
 }
 .upload{
 	margin-right: -10px;	
+	padding-left: 20px;
 }
 .upload td{
 	padding: 4px 0px 4px 0;
@@ -81,10 +86,13 @@ div#step1Info a.btn,div#step2Info a.btn,div#step3Info a.btn,div#step4Info a.btn{
 	float:right;
 }
 
-#step1 .pager{
+#step1 .pager,.pagination,#step2Btn2,#step2Btn{
 	float:left;
 }
-
+.pagination{
+	margin: 0 10px
+	
+}
 .dummy{
 	clear:both;
 }
@@ -208,7 +216,7 @@ form ul{
 .dataform .chzn-container{
 	width: 230px !important;
 }
-.list a, #step2Btn{
+.list a, #step2Btn,.pagination{
 	margin-bottom: 5px;
 }
 

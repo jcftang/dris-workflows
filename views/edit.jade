@@ -25,6 +25,18 @@ div.container
                   a(href='#collections') Home
                   span.divider |
               a.btn#step2Btn(href='#step2') Edit selected
+              .pagination
+                ul
+                    li
+                      a(href='#') Prev
+                    li.active
+                      a(href='#') 1
+                    li
+                      a(href='#') 2
+                    li
+                      a(href='#') 3
+                    li
+                      a(href='#') Next
               table#series-table.table.table-striped.table-bordered
                   thead
                     tr
@@ -36,7 +48,20 @@ div.container
                   tbody
                     tr#loadingDiv 
                       td Loading...
-              a.btn#step2Btn(href='#step2') Edit selected
+              a.btn#step2Btn2(href='#step2') Edit selected
+              .pagination
+                ul
+                    li
+                      a(href='#') Prev
+                    li.active
+                      a(href='#') 1
+                    li
+                      a(href='#') 2
+                    li
+                      a(href='#') 3
+                    li
+                      a(href='#') Next
+
         div
             #step2
               .span7
@@ -47,8 +72,8 @@ div.container
                  form.form-horizontal#singleData
                    legend Single edit: Metadata
                    
-                   a.btn.previousItemBtn(href='#') <
-                   a.btn.nextItemBtn(href='#') >
+                   a.btn.previousItemBtn(href='') <
+                   a.btn.nextItemBtn(href='') >
                    .pIdContainer
                      p ParentId:
                      .pId None
