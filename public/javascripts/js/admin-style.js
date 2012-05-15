@@ -204,6 +204,7 @@ function approveItem(id, callback) {
 function loadData(link, callback) {
 	$.ajax({
 		url : socket + link,
+		cache : false,
 		type : "GET",
 		dataType : 'jsonp',
 		success : function(data, status, r) {

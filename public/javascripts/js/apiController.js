@@ -353,8 +353,8 @@ function loadTopLevelData(query) {
 	if(query){
 		link += query
 	}
-	loadData(link, function(items) {
-		console.log(items)
+	loadData(link, function(items,pages) {
+		createPagination(pages.numPages)
 		$("tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
@@ -372,7 +372,9 @@ function loadTopLevelData(query) {
 	});
 
 }
-
+function createPagination(){
+	
+}
 function loadpIdData() {
 	loadData("/dev/objects", function(items) {
 		$(".modal tbody").empty();
@@ -553,7 +555,7 @@ function loadData(link, callback) {
 		type : "GET",
 		success : function(data,textStatus, XMLHttpRequest){
 			console.log(data.meta);
-			callback(data.objects);
+			callback(data.objects,data.meta);
 		},
 		error : function(x, h, r) {
 			console.log(x);
