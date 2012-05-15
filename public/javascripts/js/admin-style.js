@@ -82,14 +82,11 @@ function createPagination(meta) {
 	//console.log(Backbone.history.fragment)
 	var pos = Backbone.history.fragment.indexOf('/')+1
 	var id = Backbone.history.fragment.substring( pos, (pos +24))
-	//console.log(id)
+	console.log(meta)
 	if(meta.numPages <2){
 		return
 	}
-	if(meta.page == 0){
-		meta.page = 1
-	}
-	var currentPage = parseInt(meta.page)
+	var currentPage = parseInt(meta.page)+1
 	console.log(currentPage)
 	// Create pagination
 	var pagination = $(".pagination ul")
@@ -100,7 +97,7 @@ function createPagination(meta) {
 	a.text("<<")
 	a.attr('href', '#id/' + id + "/" + (currentPage-1))
 	var goBack = $(document.createElement('li')).append(a);
-	if(meta.page < 2) {
+	if(currentPage < 2) {
 		goBack.addClass('disabled')
 		a.click(function(e) {
 			e.preventDefault();
@@ -109,10 +106,10 @@ function createPagination(meta) {
 	pagination.append(goBack)
 
 	// Add pages
-	for(var i = 1; i < meta.numPages; i++) {
+	for(var i = 1; i <= meta.numPages; i++) {
 		var pagecntrl = $(document.createElement('li'))
 		var a = $(document.createElement('a'))
-		if(i == meta.page) {
+		if(i == currentPage) {
 			pagecntrl.addClass('active')
 			a.click(function(e) {
 				e.preventDefault();
@@ -158,7 +155,7 @@ function loadAdminData(page, amount) {
 		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
-			$("tbody").append("<tr><td colspan='5'>No items available</td></tr>")
+			$("tbody").append("<tr><td colspan='6'>No items available</td></tr>")
 			$('#loadingDiv').hide()
 		}
 	});
@@ -170,7 +167,7 @@ function loadChildren(id, page, amount) {
 	$("tbody").empty();
 	var link = ""
 	if(page && amount) {
-		link = "/dev/objects/" + id + "/list?page=" + page + "&amount=" + amount
+		link = "/dev/objects/" + id + "/list?page=" + (page-1) + "&amount=" + amount
 	} else {
 		link = "/dev/objects/" + id + "/list"
 	}
@@ -178,7 +175,7 @@ function loadChildren(id, page, amount) {
 		$("tbody").empty();
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
-			$("tbody").append("<tr><td colspan='5'>No Children here</td></tr>")
+			$("tbody").append("<tr><td colspan='6'>No Children here</td></tr>")
 		} else {
 			createPagination(meta)
 			for(i in items) {
