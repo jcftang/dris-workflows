@@ -559,21 +559,9 @@ function resetCreatePage() {
 	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 	$("#step1,#step1Info").show();
 }
-
-/*Function: loadData
-
- Gets any data from the server and gives it back
-
- Parameters:
-
- link - url where the data should come frome
- callback - the function to return it to
-
- Returns:
-
- The requested data
+/*
+ * Loads in any data
  */
-
 function loadData(link, callback) {
 	$.ajax({
 		url : socket + link,
