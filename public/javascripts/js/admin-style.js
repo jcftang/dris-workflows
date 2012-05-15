@@ -188,7 +188,8 @@ function loadData(link, callback) {
 		url : socket + link,
 		type : "GET",
 		dataType : 'jsonp',
-		success : function(data) {
+		success : function(data, status, r) {
+			console.log(r)
 			callback(data);
 		},
 		error : function(x, h, r) {
