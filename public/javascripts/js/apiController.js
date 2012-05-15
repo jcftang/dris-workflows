@@ -520,10 +520,21 @@ function backbone() {
 			loadChildren(id);
 
 		},
+		loadPidTop : function() {
+			
+			$(".modal  tbody").empty();
+			if(!goDeeper) {
+				if($("..modal .breadcrumb li").size() > 1) {
+					$(".modal  .breadcrumb li:first").nextAll().remove();
+				}
+			}
+			goDeeper = false;
+			loadpIdData()
+		},
 		loadPid : function(id) {
 			if(goDeeper) {
 				$(".modal .breadcrumb a:last").parent().removeClass("active");
-				$(".modal .breadcrumb").append("<li class='active'><a href='"+Backbone.history.fragment+"'>" + parentType + ": " + currentParentName +"</a><span class='divider'>/</span></li>");
+				$(".modal .breadcrumb").append("<li class='active'><a href='#pd/"+id+"'>" + parentType + ": " + currentParentName +"</a><span class='divider'>/</span></li>");
 				$("#goUp").removeAttr("disabled");
 				goDeeper = false;
 			} else {
