@@ -78,10 +78,34 @@ $(document).ready(function() {
 		});
 	});
 })
+function createPagination(numPages) {
+	var pagination = $(".pagination ul")
+	pagination.empty();
+	var a = $(document.createElement('a'))
+	a.text("<<")	
+	var goBack = $(document.createElement('li')).append(a);
+	pagination.append(goBack)
+
+	for(var i = 1; i < numPages+1; i++) {
+		var page = $(document.createElement('li'))
+		var a = $(document.createElement('a'))
+		a.text(i)
+		page.append(a)
+		pagination.append(page)
+	};
+
+	a = $(document.createElement('a'))
+	a.text(">>")
+	var goForward = $(document.createElement('li')).append(a);
+	pagination.append(goForward)
+
+}
+
 function loadAdminData() {
 	$('#loadingDiv').show()
-	loadData("/dev/objects", function(items) {
+	loadData("/dev/objects", function(meta, items) {
 		$("tbody").empty();
+		createPagination(meta.numPages)
 		for(i in items) {
 			var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
@@ -99,7 +123,7 @@ function loadChildren(id) {
 	id = id.substring(2, id.length)
 
 	$("tbody").empty();
-	loadData("/dev/objects/" + id + "/list", function(items) {
+	loadData("/dev/objects/" + id + "/list", function(meta, items) {
 		$("tbody").empty();
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
@@ -183,8 +207,8 @@ function loadData(link, callback) {
 		type : "GET",
 		dataType : 'jsonp',
 		success : function(data, status, r) {
-			console.log(r)
-			callback(data);
+			console.log(data)
+			callback(data.meta, data.objects);
 		},
 		error : function(x, h, r) {
 			console.log(x);
