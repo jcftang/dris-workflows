@@ -10,27 +10,9 @@ $(document).ready(function() {
 		case "/edit":
 			editAction();
 			break;
-		case "/all":
-			loadMediaData();
-			break;
 	}
 
 });
-
-function loadMediaData() {
-	$('#checkAll').click(function() {
-		$('#series-table').find(':checkbox').attr('checked', this.checked);
-	});
-	$('#bulk-execute').click(function() {
-		var action = $(this).prev().val();
-		switch(action) {
-			case "remove":
-				removeAllSelected();
-				$(this).prev().val("-1");
-				break;
-		}
-	});
-}
 
 /* Function: editActions
 
@@ -39,8 +21,6 @@ function loadMediaData() {
 function editAction() {
 
 	//loadAllItems();
-	//hides the box which allows users to upload files
-	$("#fileBox").hide();
 
 	//Highlights the selected item in the list
 	$(document).on("click",".items li a", function(event) {
@@ -122,7 +102,6 @@ function fillUpForm(data) {
 	for(var i in data.properties) {
 		var item = i;
 		for(var j in data.properties[i]) {
-			
 			var info = data.properties[item][j]
 			addEditFormFields(info,item);
 			for(i in info) {
@@ -209,9 +188,6 @@ function loadBtnActions(){
 			}
 		});
 	});
-	$("#surcheck").click(function() {
-		$("#fileBox").toggle();
-	})
 
 	$("#editItem1,#editItem2").click(function(event) {
 		if(window.location.pathname == "/edit") {
@@ -259,17 +235,6 @@ function loadBtnActions(){
 		loadAllImages($("input[name='_id']").val());
 	})
 
-	/*$(document).on("click",".items #list2 li a", function(event) {
-		$(".controls").show();
-		event.preventDefault();
-		$("#multi").hide();
-		$("#single").show();
-		var pos = $(this).parent().attr("data-pos");
-		if(editItems[pos]) {
-			fillUpForm(editItems[pos]);
-		}
-		loadAllImages($(this).attr("href").substring($(this).attr("href").indexOf("/") + 1));
-	});*/
 	$(document).on("click",".items ul li a", function(event) {
 		$(".controls").show();
 		event.preventDefault();
@@ -320,7 +285,6 @@ function loadNexItemInList() {
 		nextItem = $(".items li:first");
 		urlNextItem = $(".items li:first").find("a").attr("href");
 	}
-	//$("#list2 li").eq(nextItem.index()).addClass("accordion-heading-focus");
 	nextItem.siblings().removeClass("accordion-heading-focus");
 	nextItem.addClass("accordion-heading-focus");
 	var pos = $(nextItem).attr("data-pos");
@@ -337,7 +301,7 @@ function loadPrevItemInList() {
 		prevItem = $("#list1 li:last");
 		urlPrevItem = $("#list1 li:last").find("a").attr("href");
 	}
-	//$("#list2 li").eq(prevItem.index()).addClass("accordion-heading-focus");
+
 	prevItem.siblings().removeClass("accordion-heading-focus");
 	prevItem.addClass("accordion-heading-focus");
 
@@ -387,10 +351,7 @@ function addInputFieldToFrom(index,dataObject){
 		prefix : ""
 	}); 
 
-	
 }
-
-
 
 function addEditFormFields(dataObject, name) {
 	var root = '<div id="' + name + '"class="formInput">'

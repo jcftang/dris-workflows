@@ -16,9 +16,6 @@ $(document).ready(function() {
 			$("#properties").hide();
 			loadEditData();
 			break;
-		case "/all":
-			loadMediaData();
-			break;
 		case "/create":
 			$("#properties").hide();
 			loadCreateData();
@@ -28,7 +25,7 @@ $(document).ready(function() {
 			break;
 	}
 
-	$("tbody a").live("click", function(event) {
+	$(document).live("click","tbody a",function(event) {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
 		currentParentName = $(this).text()
@@ -225,11 +222,6 @@ function createItems(itemAmount, objId) {
 
 }
 
-
-function loadMediaData() {
-
-}
-
 function loadEditData() {
 
 	$(document).on("click",".pagination a",function(event){
@@ -353,8 +345,9 @@ function loadTopLevelData(query) {
 	if(query){
 		link += query
 	}
-	loadData(link, function(items,pages) {
-		createPagination(pages.numPages)
+	loadData(link, function(items,meta) {
+		console.log(meta)
+		createPagination(meta.numPages)
 		$("tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
@@ -372,9 +365,27 @@ function loadTopLevelData(query) {
 	});
 
 }
-function createPagination(){
-	
+function createPagination(numPages) {
+	var pagination = $(".pagination ul")
+	pagination.empty();
+
+	pagination.append("<li><a><<</a></li>")
+
+	for(var i = 1; i < numPages+1; i++) {
+		var page = $(document.createElement('li'))
+		if(i == 1){
+			pagination.append("<li class='active'><a>"+i+"</a></li>")
+		}else{
+			pagination.append("<li><a>"+i+"</a></li>")
+		}
+		
+			
+	};
+
+	pagination.append("<li><a>>></a></li>")
+
 }
+
 function loadpIdData() {
 	loadData("/dev/objects", function(items) {
 		$(".modal tbody").empty();
@@ -433,7 +444,7 @@ function backbone() {
 	var Workspace = Backbone.Router.extend({
 		routes : {
 			"edit" : "step2",
-			"step2" : "step2", // #search/kiwis
+			"step2" : "step2", 
 			"step3" : "step3",
 			"step4" : "step4",
 			"step5" : "step5",
@@ -546,17 +557,19 @@ function resetCreatePage() {
  Returns:
 
  The requested data
- */
-
+*/
 function loadData(link, callback) {
 	$.ajax({
 		url : socket + link,
 		cache : false,
 		type : "GET",
-		dataType:'jsonp',
-		success : function(data,textStatus, XMLHttpRequest){
-			console.log(data.meta);
-			callback(data.objects,data.meta);
+		dataType:"jsonp",
+		success : function(data, status, r) {
+			if(data.objects){
+				callback(data.objects,data.meta);
+			}else{
+				callback(data);
+			}
 		},
 		error : function(x, h, r) {
 			console.log(x);
@@ -588,7 +601,6 @@ function postData(form, type, data, link, callback) {
 		}
 	});
 }
-
 
 function updateData(type, data, link, callback) {
 	$.ajax({
