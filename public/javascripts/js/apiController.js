@@ -551,10 +551,9 @@ function loadData(link, callback) {
 		url : socket + link,
 		cache : false,
 		type : "GET",
-		dataType : 'jsonp',
 		success : function(data,textStatus, XMLHttpRequest){
-			console.log(XMLHttpRequest.getResponseHeader("numPages"))
-			callback(data);
+			console.log(data.meta);
+			callback(data.objects);
 		},
 		error : function(x, h, r) {
 			console.log(x);
