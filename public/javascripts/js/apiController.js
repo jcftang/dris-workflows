@@ -552,8 +552,7 @@ function loadData(link, callback) {
 		cache : false,
 		type : "GET",
 		dataType : 'jsonp',
-		success : function(data,textStatus, XMLHttpRequest){
-			console.log(XMLHttpRequest.getResponseHeader("numPages"))
+		success : function(data,textStatus, jqXHR){
 			callback(data);
 		},
 		error : function(x, h, r) {
