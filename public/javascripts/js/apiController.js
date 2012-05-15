@@ -16,6 +16,9 @@ $(document).ready(function() {
 			$("#properties").hide();
 			loadEditData();
 			break;
+		case "/all":
+			loadMediaData();
+			break;
 		case "/create":
 			$("#properties").hide();
 			loadCreateData();
@@ -25,7 +28,7 @@ $(document).ready(function() {
 			break;
 	}
 
-	$(document).live("click","tbody a",function(event) {
+	$("tbody a").live("click", function(event) {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
 		currentParentName = $(this).text()
@@ -222,6 +225,11 @@ function createItems(itemAmount, objId) {
 
 }
 
+
+function loadMediaData() {
+
+}
+
 function loadEditData() {
 
 	$(document).on("click",".pagination a",function(event){
@@ -356,7 +364,7 @@ function loadTopLevelData(query) {
 				rbt = ""
 				action = ""
 			}
-			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td>"+action+"</tr>")
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td>"+action+"</tr>")
 		}
 		if(items.length == 0) {
 			$("#step1 tbody").append("<tr><td colspan='5'>No objects available</td></tr>")
@@ -365,6 +373,7 @@ function loadTopLevelData(query) {
 	});
 
 }
+
 function createPagination(numPages) {
 	var pagination = $(".pagination ul")
 	pagination.empty();
@@ -378,12 +387,9 @@ function createPagination(numPages) {
 		}else{
 			pagination.append("<li><a>"+i+"</a></li>")
 		}
-		
 			
 	};
-
 	pagination.append("<li><a>>></a></li>")
-
 }
 
 function loadpIdData() {
@@ -391,7 +397,7 @@ function loadpIdData() {
 		$(".modal tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input name='items' type='radio' data-id='" + items[i]._id + "'></td>";
-			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 
 	});
@@ -400,14 +406,13 @@ function loadpIdData() {
 
 function loadPidChildren(id) {
 
-	id = id.substring(2, id.length)
 
 	loadData("/dev/objects/" + id + "/list", function(items) {
 		$(".modal tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input  name='items' type='radio' data-id='" + items[i]._id + "'></td>";
 			var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>";
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		if(items.length == 0) {
 			$(".modal tbody").append("<tr><td colspan='3'>No Children here</td></tr>")
@@ -418,8 +423,7 @@ function loadPidChildren(id) {
 
 function loadChildren(id) {
 	$('#loadingDiv').show()
-	id = id.substring(2, id.length)
-
+	console.log(id)
 	loadData("/dev/objects/" + id + "/list", function(items) {
 		$("#step1 tbody").empty();
 		for(i in items) {
@@ -429,7 +433,7 @@ function loadChildren(id) {
 				rbt = ""
 				action = ""
 			}
-			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td>"+action+"</tr>")
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td>"+action+"</tr>")
 		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
@@ -444,13 +448,13 @@ function backbone() {
 	var Workspace = Backbone.Router.extend({
 		routes : {
 			"edit" : "step2",
-			"step2" : "step2", 
+			"step2" : "step2", // #search/kiwis
 			"step3" : "step3",
 			"step4" : "step4",
 			"step5" : "step5",
 			"collections" : "collection",
-			"id:id" : "defaultRoute",
-			"pd:id" : "loadPid",
+			"id/:id" : "defaultRoute",
+			"pd/:id" : "loadPid",
 			"myModal" : "loadPidTop",
 
 		},
@@ -502,10 +506,10 @@ function backbone() {
 			loadTopLevelData();
 			resetCreatePage()
 		},
-		defaultRoute : function() {
+		defaultRoute : function(id) {
 			if(goDeeper) {
 				$("form .breadcrumb a:last").parent().removeClass("active");
-				$(".row .breadcrumb").append("<li class='active'><a href='"+Backbone.history.fragment+"'>" + parentType + ": " + currentParentName +"</a><span class='divider'>/</span></li>");
+				$(".row .breadcrumb").append("<li class='active'><a href='#id/"+id+"'>" + parentType + ": " + currentParentName +"</a><span class='divider'>/</span></li>");
 				goDeeper = false;
 			} else {
 				$(".row .breadcrumb li:last").remove();
@@ -513,13 +517,24 @@ function backbone() {
 			}
 			resetCreatePage();
 			$("#createCollection").hide();
-			loadChildren(Backbone.history.fragment);
+			loadChildren(id);
 
 		},
-		loadPid : function() {
+		loadPidTop : function() {
+			
+			$(".modal  tbody").empty();
+			if(!goDeeper) {
+				if($("..modal .breadcrumb li").size() > 1) {
+					$(".modal  .breadcrumb li:first").nextAll().remove();
+				}
+			}
+			goDeeper = false;
+			loadpIdData()
+		},
+		loadPid : function(id) {
 			if(goDeeper) {
 				$(".modal .breadcrumb a:last").parent().removeClass("active");
-				$(".modal .breadcrumb").append("<li class='active'><a href='"+Backbone.history.fragment+"'>" + parentType + ": " + currentParentName +"</a><span class='divider'>/</span></li>");
+				$(".modal .breadcrumb").append("<li class='active'><a href='#pd/"+id+"'>" + parentType + ": " + currentParentName +"</a><span class='divider'>/</span></li>");
 				$("#goUp").removeAttr("disabled");
 				goDeeper = false;
 			} else {
@@ -528,7 +543,7 @@ function backbone() {
 				$(".modal .breadcrumb a:last").parent().addClass("active");
 				
 			}
-			loadPidChildren(Backbone.history.fragment);
+			loadPidChildren(id);
 		}
 	});
 
@@ -544,20 +559,9 @@ function resetCreatePage() {
 	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 	$("#step1,#step1Info").show();
 }
-
-/*Function: loadData
-
- Gets any data from the server and gives it back
-
- Parameters:
-
- link - url where the data should come frome
- callback - the function to return it to
-
- Returns:
-
- The requested data
-*/
+/*
+ * Loads in any data
+ */
 function loadData(link, callback) {
 	$.ajax({
 		url : socket + link,
@@ -601,6 +605,7 @@ function postData(form, type, data, link, callback) {
 		}
 	});
 }
+
 
 function updateData(type, data, link, callback) {
 	$.ajax({

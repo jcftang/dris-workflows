@@ -27,9 +27,7 @@ function editAction() {
 		event.preventDefault();
 		$(".items li").removeClass("accordion-heading-focus");
 		$(this).parent().addClass("accordion-heading-focus");
-		//highlights the same item in the other steps (when switching between step 2 and 3)
 		$(".items li").eq($(this).parent().index()).addClass("accordion-heading-focus");
-		//$("#list2 li").eq($(this).parent().index()).addClass("accordion-heading-focus");
 	})
 	
 	$(document).on("click","#boxFiles ul a",function(event){
@@ -72,13 +70,7 @@ function removeItem(id, callback) {
 }
 
  /*
- Function: showItems
-
- loads the items that are connected to a certain parentId
-
- Parameters:
-
- items - an array which contains all the items to dispay. These items are the parent's object children.
+ loads the items that you want to edit
  */
 function showItems(items) {
 	var root = "";
@@ -149,7 +141,7 @@ function fillInSpecialDataFields(info,name) {
 
 
 
-var counter = 100
+
 function loadBtnActions(){
 	//Triggers when there is an option/input that needs to be added to the form
 	$(".accordion-heading")
@@ -320,21 +312,22 @@ function emptyForm() {
 
 
 
-function addInputFieldToFrom(index,dataObject){
+var counter = 100
+function addInputFieldToFrom(index, dataObject) {
 	var name = dataObject[index].name;
 	var root = '<div id="' + dataObject[index].name + '"class="formInput">'
 	root += '<h3>' + dataObject[index].name + '</h3>'
 	root += '<a class="close" data-dismiss="alert" href="#">&times;</a><hr>'
 	for(var i in dataObject[index].value) {
 
-		root += '<div class="control-group"><label class="control-label">' +i + '</label>';
-		if(checkSpecialField(i+name)){
-			root += '<a class="close" data-dismiss="alert" href="#">&times;</a>';	
-			root += "<div class='controls'><button class='btn addInput' data-type='"+i+name+"'>Add " + i +"</button>";
-			root += '<ul data-name="'+i+'" id="ul'+counter+'">'+addSpecialField(name,i+name)+'</ul>';
-		} else if(checkSingleField(i+name)) {
+		root += '<div class="control-group"><label class="control-label">' + i + '</label>';
+		if(checkSpecialField(i + name)) {
+			root += '<a class="close" data-dismiss="alert" href="#">&times;</a>';
+			root += "<div class='controls'><button class='btn addInput' data-type='" + i + name + "'>Add " + i + "</button>";
+			root += '<ul data-name="' + i + '" id="ul' + counter + '">' + addSpecialField(name, i + name) + '</ul>';
+		} else if(checkSingleField(i + name)) {
 			root += '<div class="controls">';
-			root += addSpecialField(name,i+name);
+			root += addSpecialField(name, i + name);
 			root += '</div><a class="close specialClose" data-dismiss="alert" href="#">&times;</a></div>';
 		} else {
 			root += '<div class="controls"><input type="text" id="' + i + counter + '" name="' + i + '" class="input-xlarge" />';
@@ -342,14 +335,14 @@ function addInputFieldToFrom(index,dataObject){
 		}
 	}
 
-	root +="</div>"
+	root += "</div>"
 	counter++;
 
 	$(".dataform").append(root);
-	
+
 	$(".dataform select").ufd({
 		prefix : ""
-	}); 
+	});
 
 }
 
@@ -362,13 +355,13 @@ function addEditFormFields(dataObject, name) {
 		for(var i in optionsArray[j].value) {
 			if(optionsArray[j].name == name) {
 				root += '<div class="control-group"><label class="control-label">' + i + '</label>';
-				if(checkSpecialField(i+name)) {
+				if(checkSpecialField(i + name)) {
 					root += '<a class="close" data-dismiss="alert" href="#">&times;</a>';
-					root += "<div class='controls'><button class='btn addInput' data-type='" + i+name + "'>Add " + i + "</button>";
-					root += '<ul data-name="' + i + '" id="ul' + counter + '">' + addSpecialField(name,i+name) + '</ul>';
-				} else if(checkSingleField(i+name)) {
+					root += "<div class='controls'><button class='btn addInput' data-type='" + i + name + "'>Add " + i + "</button>";
+					root += '<ul data-name="' + i + '" id="ul' + counter + '">' + addSpecialField(name, i + name) + '</ul>';
+				} else if(checkSingleField(i + name)) {
 					root += '<div class="controls">';
-					root += addSpecialField(name,i+name);
+					root += addSpecialField(name, i + name);
 					root += '</div><a class="close specialClose" data-dismiss="alert" href="#">&times;</a></div>';
 				} else {
 					root += '<div class="controls"><input type="text" id="' + i + counter + '" name="' + i + '" class="input-xlarge" />';
@@ -382,15 +375,12 @@ function addEditFormFields(dataObject, name) {
 	counter++;
 
 	$(".dataform").append(root);
-	
+
 	$(".dataform select").ufd({
 		prefix : ""
-	}); 
+	});
 
-	
 }
-
-
 
 function loadAllImages(id) {
 	$("#imageContainer").empty();
@@ -596,8 +586,8 @@ function addProjectField(obj) {
 	} else if($(obj).text() == "upload") {
 
 		$.get("/upload.htm", function(data) {
-			var test = "<div class='formInput' id='" + $(obj).text() + "'><a class='close' data-dismiss='alert'>×</a>" + data + "</div>";
-			$(".dataform").before(test)
+			var upField = "<div class='formInput' id='" + $(obj).text() + "'><a class='close' data-dismiss='alert'>×</a>" + data + "</div>";
+			$(".dataform").before(upField)
 		})
 	}
 
