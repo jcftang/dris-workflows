@@ -353,8 +353,9 @@ function loadTopLevelData(query) {
 	if(query){
 		link += query
 	}
-	loadData(link, function(items,pages) {
-		createPagination(pages.numPages)
+	loadData(link, function(items,meta) {
+		console.log(meta)
+		createPagination(meta.numPages)
 		$("tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
@@ -372,9 +373,27 @@ function loadTopLevelData(query) {
 	});
 
 }
-function createPagination(){
-	
+function createPagination(numPages) {
+	var pagination = $(".pagination ul")
+	pagination.empty();
+
+	pagination.append("<li><a><<</a></li>")
+
+	for(var i = 1; i < numPages+1; i++) {
+		var page = $(document.createElement('li'))
+		if(i == 1){
+			pagination.append("<li class='active'><a>"+i+"</a></li>")
+		}else{
+			pagination.append("<li><a>"+i+"</a></li>")
+		}
+		
+			
+	};
+
+	pagination.append("<li><a>>></a></li>")
+
 }
+
 function loadpIdData() {
 	loadData("/dev/objects", function(items) {
 		$(".modal tbody").empty();
@@ -553,8 +572,9 @@ function loadData(link, callback) {
 		url : socket + link,
 		cache : false,
 		type : "GET",
-		success : function(data,textStatus, XMLHttpRequest){
-			console.log(data.meta);
+		dataType:"jsonp",
+		success : function(data, status, r) {
+			console.log(data)
 			callback(data.objects,data.meta);
 		},
 		error : function(x, h, r) {

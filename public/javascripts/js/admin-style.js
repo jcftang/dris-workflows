@@ -78,27 +78,23 @@ $(document).ready(function() {
 		});
 	});
 })
+
 function createPagination(numPages) {
 	var pagination = $(".pagination ul")
 	pagination.empty();
-	var a = $(document.createElement('a'))
-	a.text("<<")	
-	var goBack = $(document.createElement('li')).append(a);
-	pagination.append(goBack)
+
+	pagination.append("<li><a><<</a></li>")
 
 	for(var i = 1; i < numPages+1; i++) {
 		var page = $(document.createElement('li'))
-		var a = $(document.createElement('a'))
-		a.text(i)
-		page.append(a)
-		pagination.append(page)
+		if(i == 1){
+			pagination.append("<li class='active'><a>"+i+"</a></li>")
+		}else{
+			pagination.append("<li><a>"+i+"</a></li>")
+		}
+			
 	};
-
-	a = $(document.createElement('a'))
-	a.text(">>")
-	var goForward = $(document.createElement('li')).append(a);
-	pagination.append(goForward)
-
+	pagination.append("<li><a>>></a></li>")
 }
 
 function loadAdminData() {

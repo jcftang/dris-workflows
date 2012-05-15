@@ -88,9 +88,10 @@ div#step1Info a.btn,div#step2Info a.btn,div#step3Info a.btn,div#step4Info a.btn{
 
 #step1 .pager,.pagination,#step2Btn2,#step2Btn{
 	float:left;
+	margin-right:5px;
 }
 .pagination{
-	margin: 0 10px
+	margin: 0
 	
 }
 .dummy{
