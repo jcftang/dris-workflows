@@ -81,7 +81,7 @@ function loadCreateData() {
 	$("#createSerie").live("click", function(event) {
 		id = Backbone.history.fragment
 		if(id != "collections") {
-			id = id.substr(2, id.length);
+			id = id.substr(3, id.length);
 			$("#seriesCollection").val(id)
 		}
 		emptyForm();

@@ -246,7 +246,7 @@ function loadBtnActions(){
 	$(document).on("click","#createItems", function(event) {
 		id = Backbone.history.fragment
 		if(id != "collections") {
-			id = id.substr(2, id.length);
+			id = id.substr(3, id.length);
 			$("#itemEditSelection").val(id)
 		}
 		emptyForm();
