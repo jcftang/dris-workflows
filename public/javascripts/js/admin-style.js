@@ -206,6 +206,7 @@ function loadData(link, callback) {
 		url : socket + link,
 		cache : false,
 		type : "GET",
+		dataType : 'jsonp',
 		success : function(data, status, r) {
 			console.log(data)
 			callback(data.meta, data.objects);
