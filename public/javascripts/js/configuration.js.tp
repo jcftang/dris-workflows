@@ -4,4 +4,4 @@
 
 //Configuration to the API server.
 var port = 4000;
-var socket = 'localhost:' + port;
+var socket = 'http://localhost:' + port;
