@@ -16,16 +16,35 @@ div.container
                   option(value="approve") Approve
                   option(value="remove") Remove
                 input#bulk-execute.btn(type="button",value="Do it!")
+                span.alert.alert-success.successbox
+                  a.close(data-dismiss='alert') ×
+                  strong Successful
+                  p Creation successful!
                 table#series-table.table.table-striped.table-bordered
                   thead
                     tr
                       th.span1
                         input#checkAll(type="checkbox")
                       th Title
+                      th.span2 Fedora ID
                       th Type
                       th.span1 Approve
                       th.span1 Remove
                   tbody
                     tr#loadingDiv 
                       td(colspan="5") Loading...
+                div.pagination.pagination-centered
+                  ul
+                    li.disabled
+                      a(href="#") «
+                    li.active  
+                      a(href="#") 1
+                    li
+                      a(href="#") 2
+                    li 
+                      a(href="#") 3
+                    li 
+                      a(href="#") 4
+                    li
+                      a(href="#") »
       include _includes/footer
