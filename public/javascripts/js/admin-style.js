@@ -78,34 +78,57 @@ $(document).ready(function() {
 		});
 	});
 })
-function createPagination(numPages) {
+function createPagination(meta) {
+	// Create pagination
 	var pagination = $(".pagination ul")
 	pagination.empty();
+
+	// Add general back button
 	var a = $(document.createElement('a'))
-	a.text("<<")	
+	a.text("<<")
+	a.attr('href', '#'+Backbone.history.fragment+"/-1")
 	var goBack = $(document.createElement('li')).append(a);
+	if(meta.page < 2) {
+		goBack.addClass('disabled')
+	}
 	pagination.append(goBack)
 
-	for(var i = 1; i < numPages+1; i++) {
-		var page = $(document.createElement('li'))
+	// Add pages
+	for(var i = 1; i < meta.numPages + 1; i++) {
+		var pagecntrl = $(document.createElement('li'))
 		var a = $(document.createElement('a'))
+		if(i == meta.page) {
+			pagecntrl.addClass('active')
+		}
+		a.attr('href', '#'+Backbone.history.fragment+"/"+i)
 		a.text(i)
-		page.append(a)
-		pagination.append(page)
+		pagecntrl.append(a)
+		pagination.append(pagecntrl)
 	};
 
+	// Add general forward button
 	a = $(document.createElement('a'))
 	a.text(">>")
+	a.attr('href', '#'+Backbone.history.fragment+"/+1")
 	var goForward = $(document.createElement('li')).append(a);
+	if(meta.page > (meta.numPages - 1)) {
+		goForward.addClass('disabled')
+	}
 	pagination.append(goForward)
 
 }
 
-function loadAdminData() {
+function loadAdminData(page, amount) {
 	$('#loadingDiv').show()
-	loadData("/dev/objects", function(meta, items) {
+	var link = ""
+	if(page && amount) {
+		link = "/dev/objects?page=" + page + "&amount=" + amount
+	} else {
+		link = "/dev/objects"
+	}
+	loadData(link, function(meta, items) {
 		$("tbody").empty();
-		createPagination(meta.numPages)
+		createPagination(meta)
 		for(i in items) {
 			var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
@@ -118,17 +141,24 @@ function loadAdminData() {
 	});
 }
 
-function loadChildren(id) {
+function loadChildren(id, page, amount) {
 	$('#loadingDiv').show()
 	id = id.substring(2, id.length)
 
 	$("tbody").empty();
-	loadData("/dev/objects/" + id + "/list", function(meta, items) {
+	var link = ""
+	if(page && amount) {
+		link = "/dev/objects/" + id + "/list?page=" + page + "&amount=" + amount
+	} else {
+		link = "/dev/objects/" + id + "/list"
+	}
+	loadData(link, function(meta, items) {
 		$("tbody").empty();
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
 			$("tbody").append("<tr><td colspan='5'>No Children here</td></tr>")
 		} else {
+			createPagination(meta)
 			for(i in items) {
 				var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
 				if(items[i].status == "approved") {

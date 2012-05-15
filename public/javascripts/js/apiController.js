@@ -553,6 +553,7 @@ function loadData(link, callback) {
 		url : socket + link,
 		cache : false,
 		type : "GET",
+		dataType:'jsonp',
 		success : function(data,textStatus, XMLHttpRequest){
 			console.log(data.meta);
 			callback(data.objects,data.meta);
