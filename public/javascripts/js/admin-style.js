@@ -88,7 +88,7 @@ function loadAdminData() {
 		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
-			$("tbody").append("<tr><td colspan='2'>No items available<td></tr>")
+			$("tbody").append("<tr><td colspan='5'>No items available</td></tr>")
 			$('#loadingDiv').hide()
 		}
 	});

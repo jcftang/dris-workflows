@@ -16,6 +16,7 @@ exports.createRoutes = function make(app) {
 	app.get('/home', routes.home);
 	app.get('/admin', routes.admin);
 	app.get('/upload',routes.upload)
+	app.get('/media',routes.media)
 	// Redirects
 	app.get('/', function(req, res) {
 		res.redirect('/home');

@@ -3,7 +3,7 @@ var goDeeper = true;
 var parentType = "";
 var currentParentName = ""
 var editItems = [];
-var fileUploadLocation = new Array;
+var fileUploadLocation = new Array();
 var navloc = new Array()
 $(document).ready(function() {
 
@@ -105,9 +105,15 @@ function loadCreateData() {
 			postData($('#collectionCreation'), 'POST', data, link, function(id) {
 				$(".successbox").fadeIn().delay(900).fadeOut();
 				fileUploadLocation = new Array()
+				goDeeper = false;
+				workspace.navigate("#collections", {
+					trigger : true
+				}); 
+
 			});
 		});
 	})
+
 
 	$("#createSerieBtn").click(function() {
 		var link = socket + "/dev/objects";
@@ -126,14 +132,19 @@ function loadCreateData() {
 		}
 		createMetaDataModels("#serieCreation", function(model) {
 			data.properties = model;
-			
+
 			postData($('#serieCreation'), 'POST', data, link, function(id) {
 				$(".successbox").fadeIn().delay(900).fadeOut();
 				fileUploadLocation = new Array();
+				goDeeper = false;
+				workspace.navigate("#collections", {
+					trigger : true
+				});
 			});
 		});
 
-	});
+	}); 
+
 
 	$("#createItemBtn").click(function(event) {
 		event.preventDefault();
@@ -205,6 +216,11 @@ function createItems(itemAmount, objId) {
 	} else {
 		$(".successbox").fadeIn().delay(900).fadeOut();
 		fileUploadLocation = new Array()
+		goDeeper = false;
+		workspace.navigate("#collections", {
+			trigger : true
+		}); 
+
 	}
 
 }
@@ -216,9 +232,19 @@ function loadMediaData() {
 
 function loadEditData() {
 
+	$(document).on("click",".pagination a",function(event){
+		if($.isNumeric($(this).text())){
+			$(this).parent().siblings().removeClass("active")
+			$(this).parent().addClass("active")
+			var page = Number($(this).text()) -1
+		loadTopLevelData("?page="+page+"&amount=20");
+		}
+	})
 	$(document).on("click", ".editRow", function() {
 		loadData("/dev/objects/" + $(this).attr("data-id"), function(data) {
+			console.log(data)
 			emptyForm();
+			fileUploadLocation = [];
 			showItems([data])
 			editItems = [data];
 			workspace.navigate("#step2", {
@@ -256,7 +282,9 @@ function loadEditData() {
 
 	$("#goUp").click(function(event) {
 		event.preventDefault();
+		if($(this).is(':disabled') == false){
 		history.back();
+		}
 	})
 	$("#pidSelect").click(function(event) {
 		event.preventDefault();
@@ -286,10 +314,11 @@ function loadEditData() {
 	$('#checkAll').live('click', function() {
 		$('#series-table').find(':checkbox').attr('checked', this.checked);
 	});
-	$("#step2Btn").click(function(event) {
+	$("#step2Btn,#step2Btn2").click(function(event) {
 		if($('tbody input:checked').size() > 0) {
 			$(".controls").show();
 			loadEditObjects();
+			fileUploadLocation = [];
 			
 		} else {
 			event.preventDefault();
@@ -318,9 +347,14 @@ function loadEditObjects() {
 	};
 }
 
-function loadTopLevelData() {
+function loadTopLevelData(query) {
 	$('#loadingDiv').show()
-	loadData("/dev/objects", function(items) {
+	var link = "/dev/objects/"
+	if(query){
+		link += query
+	}
+	loadData(link, function(items) {
+		console.log(items)
 		$("tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
@@ -330,6 +364,9 @@ function loadTopLevelData() {
 				action = ""
 			}
 			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td>"+action+"</tr>")
+		}
+		if(items.length == 0) {
+			$("#step1 tbody").append("<tr><td colspan='5'>No objects available</td></tr>")
 		}
 		$('#loadingDiv').hide()
 	});
@@ -360,7 +397,7 @@ function loadPidChildren(id) {
 			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		if(items.length == 0) {
-			$(".modal tbody").append("<tr><td>No Children here<td></tr>")
+			$(".modal tbody").append("<tr><td colspan='3'>No Children here</td></tr>")
 		}
 	});
 
@@ -445,7 +482,7 @@ function backbone() {
 			$("tbody").empty();
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
-					$(".row .breadcrumb li:last").remove();
+					$(".row .breadcrumb li:first").nextAll().remove();
 				}
 			}
 			goDeeper = false;
@@ -515,7 +552,8 @@ function loadData(link, callback) {
 		cache : false,
 		type : "GET",
 		dataType : 'jsonp',
-		success : function(data) {
+		success : function(data,textStatus, XMLHttpRequest){
+			console.log(XMLHttpRequest.getResponseHeader("numPages"))
 			callback(data);
 		},
 		error : function(x, h, r) {

@@ -301,11 +301,13 @@ function loadBtnActions(){
 		emptyForm();
 	});
 
-	$(".nextItemBtn").click(function() {
+	$(".nextItemBtn").click(function(event) {
+		event.preventDefault()
 		loadNexItemInList()
 	})
 
-	$(".previousItemBtn").click(function() {
+	$(".previousItemBtn").click(function(event){
+		event.preventDefault()
 		loadPrevItemInList();
 	})
 }
@@ -381,7 +383,9 @@ function addInputFieldToFrom(index,dataObject){
 
 	$(".dataform").append(root);
 	
-	$(".dataform select").ufd();
+	$(".dataform select").ufd({
+		prefix : ""
+	}); 
 
 	
 }
@@ -417,7 +421,11 @@ function addEditFormFields(dataObject, name) {
 	counter++;
 
 	$(".dataform").append(root);
-	$(".dataform select").ufd();
+	
+	$(".dataform select").ufd({
+		prefix : ""
+	}); 
+
 	
 }
 
