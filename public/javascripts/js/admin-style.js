@@ -35,7 +35,7 @@ $(document).ready(function() {
 				console.log("Select an action");
 		}
 	});
-	
+
 	$('.removeItem').live("click", function() {
 		$this = $(this)
 		id = $(this).attr("data-id");
@@ -67,7 +67,7 @@ $(document).ready(function() {
 		parentType = $(this).attr("data-type");
 		currentParentName = $(this).text()
 	});
-	
+
 	$(document).on("click", "form .breadcrumb li a", function(event) {
 		event.preventDefault()
 		$(this).parent().nextAll().remove();
@@ -83,7 +83,8 @@ function loadAdminData() {
 	loadData("/dev/objects", function(items) {
 		$("tbody").empty();
 		for(i in items) {
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
@@ -105,10 +106,11 @@ function loadChildren(id) {
 			$("tbody").append("<tr><td colspan='5'>No Children here</td></tr>")
 		} else {
 			for(i in items) {
+				var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
 				if(items[i].status == "approved") {
-					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 				} else {
-					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#id" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 				}
 			}
 		}
@@ -203,7 +205,7 @@ function backbone() {
 
 		collection : function() {
 			loadAdminData();
-			if(!goDeeper){
+			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
 					$(".row .breadcrumb li:last").remove();
 				}
@@ -213,7 +215,7 @@ function backbone() {
 		defaultRoute : function() {
 			if(goDeeper) {
 				$("form .breadcrumb a:last").parent().removeClass("active");
-				$(".row .breadcrumb").append("<li class='active'><a href='"+Backbone.history.fragment+"'>" + parentType + ": " + currentParentName +"</a><span class='divider'>/</span></li>");
+				$(".row .breadcrumb").append("<li class='active'><a href='" + Backbone.history.fragment + "'>" + parentType + ": " + currentParentName + "</a><span class='divider'>/</span></li>");
 				goDeeper = false;
 			} else {
 				$(".row .breadcrumb li:last").remove();
