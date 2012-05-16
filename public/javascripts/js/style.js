@@ -479,7 +479,7 @@ function addSpecialField(name,prop) {
 			return createSelect(nameRole,"role")
 			break 
 		case "typephysicalDescription":
-			return createSelect(physcialDescriptionType,'type')
+			return createSelect(physcialDescriptionType,'type')+"<label>type</label><input name='typeDescription'type='text'>"
 			break;
 		case "typenote":
 			return createSelect(noteType,'type')
