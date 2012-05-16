@@ -7,7 +7,7 @@ div.container
               legend All the items
               ul.breadcrumb
                 li
-                  a(href="#collections") Home
+                  a(href="") Home
                   span.divider |
               .dummy
               .control-group
@@ -20,6 +20,9 @@ div.container
                   a.close(data-dismiss='alert') ×
                   strong Successful
                   p Creation successful!
+                .dummy
+                .pagination
+                  ul
                 table#series-table.table.table-striped.table-bordered
                   thead
                     tr
@@ -32,7 +35,7 @@ div.container
                       th.span1 Remove
                   tbody
                     tr#loadingDiv 
-                      td(colspan="5") Loading...
+                      td(colspan="6") Loading...
                 div.pagination.pagination-centered
                   ul
       include _includes/footer

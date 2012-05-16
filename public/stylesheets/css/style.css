@@ -229,8 +229,17 @@ form ul{
 .bulk-action{
 	margin-bottom: 5px !important;
 	margin-right: 5px;
+	float:left !important;
 }
 #bulk-execute{
-	margin-top:-5px;
+	float:left;
 }
+.modal-body .pagination{
+	margin-bottom:10px;
+}
+
+.modal-body .pagination{
+	height:auto;
+}
+
 
