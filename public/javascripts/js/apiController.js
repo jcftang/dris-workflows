@@ -243,6 +243,8 @@ function loadEditData() {
 			workspace.navigate("#step2", {
 				trigger : true
 			});
+			$(".breadcrumb a").not("form .breadcrumb a").parent().removeClass("active");
+			$(".breadcrumb a").not("form .breadcrumb a").eq(1).parent().addClass("active");
 			$(".items li:first a").trigger("click")
 
 		});
@@ -316,7 +318,8 @@ function loadEditData() {
 			$(".controls").show();
 			loadEditObjects();
 			fileUploadLocation = [];
-			
+			$(".breadcrumb a").not("form .breadcrumb a").parent().removeClass("active");
+			$(".breadcrumb a").not("form .breadcrumb a").eq(1).parent().addClass("active");
 		} else {
 			event.preventDefault();
 		}

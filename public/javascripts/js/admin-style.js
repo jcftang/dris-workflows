@@ -215,6 +215,7 @@ function removeAllSelected() {
 		$('#series-table tbody input:checked').each(function() {
 			removeItem($(this).attr("data-id"), function(id) {
 				$("#" + id).remove();
+				
 			})
 		});
 	}
@@ -228,6 +229,9 @@ function removeItem(id, callback) {
 		cache : false,
 		success : function(data) {
 			callback(id);
+			workspace.navigate(Backbone.history.fragment, {
+					trigger : true
+				});
 		},
 		error : function(d, r) {
 			console.log(d);
@@ -308,7 +312,10 @@ function backbone() {
 			}
 			loadChildren(id, 1, childrenPerPage);
 		},
-
+		pageRoute : function(id, page) {
+			
+			loadChildren(id, page, childrenPerPage);
+		}
 	});
 
 	var obj = new Workspace();

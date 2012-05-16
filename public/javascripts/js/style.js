@@ -165,8 +165,8 @@ function loadBtnActions(){
 		return false;
 	});
 
-	$(document).on("click",".breadcrumb li a", function(event) {
-		$(".breadcrumb a").parent().removeClass("active");
+	$(document).on("click","form .breadcrumb li a", function(event) {
+		$("form .breadcrumb a").parent().removeClass("active");
 		$(this).parent().addClass("active");
 	});
 	$(".pager a").click(function() {
@@ -182,6 +182,7 @@ function loadBtnActions(){
 	});
 
 	$("#editItem1,#editItem2").click(function(event) {
+		event.preventDefault()
 		if(window.location.pathname == "/edit") {
 			var data = {
 				"properties" : {},
@@ -222,11 +223,6 @@ function loadBtnActions(){
 		event.preventDefault();
 		$(this).next().append(addSpecialField($(this).attr("data-type"),$(this).attr("data-type")));
 	})
-
-	$('#step3EditBtn').click(function() {
-		loadAllImages($("input[name='_id']").val());
-	})
-
 	$(document).on("click",".items ul li a", function(event) {
 		$(".controls").show();
 		event.preventDefault();
