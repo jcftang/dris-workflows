@@ -3,7 +3,7 @@ include _includes/header
 div.container
       ul.breadcrumb
         li.active
-          a(href='#collections') Step 1
+          a(href='') Step 1
           span.divider |
         li
           a.breaddisabled(href='#step2') Step 2
@@ -22,21 +22,11 @@ div.container
               legend Select the objects you want to edit
               .breadcrumb
                 li 
-                  a(href='#collections') Home
+                  a(href='') Home
                   span.divider |
               a.btn#step2Btn(href='#step2') Edit selected
               .pagination
                 ul
-                    li
-                      a(href='#') Prev
-                    li.active
-                      a(href='#') 1
-                    li
-                      a(href='#') 2
-                    li
-                      a(href='#') 3
-                    li
-                      a(href='#') Next
               table#series-table.table.table-striped.table-bordered
                   thead
                     tr
@@ -47,7 +37,7 @@ div.container
                       th Action
                   tbody
                     tr#loadingDiv 
-                      td Loading...
+                      td(colspan='5') Loading...
               a.btn#step2Btn2(href='#step2') Edit selected
               .pagination
                 ul
@@ -77,7 +67,7 @@ div.container
                    .pIdContainer
                      p ParentId:
                      .pId None
-                     a.btn#pIdBtn(data-toggle='modal', href='#myModal') Change
+                     a.btn#pIdBtn(href='#myModal') Change
                    .dummy
 
                    fieldset
@@ -170,7 +160,11 @@ div.container
         ul.breadcrumb
           li 
             a(href='#myModal') Home
-            span.divider | 
+            span.divider |
+        div
+          .pagination
+            ul 
+        .dummy
         table#pIdTalbe-table.table.table-striped.table-bordered
          thead
                     tr

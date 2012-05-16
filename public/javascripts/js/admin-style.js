@@ -2,11 +2,12 @@
  * @author Quirijn Groot Bluemink
  * @author Matthias Van Wambeke
  */
+var itemsPerPage = 20;
+var childrenPerPage = 20;
 var workspace = backbone();
 var goDeeper = true;
 var parentType = "";
 var currentParentName = ""
-var positionObj = ["#collections"];
 
 $(document).ready(function() {
 	workspace.navigate("", {
@@ -79,12 +80,13 @@ $(document).ready(function() {
 	});
 })
 function createPagination(meta) {
-	
+
 	var pagination = $(".pagination ul")
 	pagination.empty();
 	var pos = Backbone.history.fragment.indexOf('/')
-	//console.log(pos)
+
 	var id = Backbone.history.fragment.substring( 0, pos)
+
 	if(pos == -1){
 		id = Backbone.history.fragment
 	}
@@ -98,10 +100,8 @@ function createPagination(meta) {
 	// Create pagination
 
 	// Add general back button
-	var a = $(document.createElement('a'))
-	a.text("<<")
-	a.attr('href', '#' + id + "/" + (currentPage-1))
-	var goBack = $(document.createElement('li')).append(a);
+	var a = $("<a>").text("<<").attr('href', '#' + id + "/" + (currentPage-1))
+	var goBack = $("<li>").append(a);
 	if(currentPage < 2) {
 		goBack.addClass('disabled')
 		a.click(function(e) {
@@ -112,25 +112,22 @@ function createPagination(meta) {
 
 	// Add pages
 	for(var i = 1; i <= meta.numPages; i++) {
-		var pagecntrl = $(document.createElement('li'))
-		var a = $(document.createElement('a'))
+		var pagecntrl = $("<li>")
+		var a = $("<a>")
 		if(i == currentPage) {
 			pagecntrl.addClass('active')
-			a.click(function(e) {
-				e.preventDefault();
+			a.click(function(event) {
+				event.preventDefault();
 			})
 		}
-		a.attr('href', '#' + id + "/" + i)
-		a.text(i)
+		a.attr('href', '#' + id + "/" + i).text(i)
 		pagecntrl.append(a)
 		pagination.append(pagecntrl)
 	};
 
 	// Add general forward button
-	var a = $(document.createElement('a'))
-	a.text(">>")
-	a.attr('href', '#' + id + "/" + (currentPage+1))
-	var goForward = $(document.createElement('li')).append(a);
+	var a = $("<a>").text(">>").attr('href', '#' + id + "/" + (currentPage+1))
+	var goForward = $("<li>").append(a);
 	if(meta.page > (meta.numPages - 2)) {
 		goForward.addClass('disabled')
 		a.click(function(e) {
@@ -139,19 +136,16 @@ function createPagination(meta) {
 		})
 	}
 	pagination.append(goForward)
-
 }
-
 function loadAdminData(page, amount) {
 	$('#loadingDiv').show()
-	var link = ""
-	if(page && amount) {
-		link = "/dev/objects?page=" + (page-1) + "&amount=" + amount
-	} else {
-		link = "/dev/objects"
-	}
+	var link = "/dev/objects?page=" + (page-1) + "&amount=" + amount
+	
 	loadData(link, function(meta, items) {
-		
+		if(meta.numPages > 20){
+			itemsPerPage = meta.numPages;
+			loadAdminData(1,meta.numPages)
+		}
 		createPagination(meta)
 		$("tbody").empty();
 		for(i in items) {
@@ -161,8 +155,9 @@ function loadAdminData(page, amount) {
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
 			$("tbody").append("<tr><td colspan='6'>No items available</td></tr>")
-			$('#loadingDiv').hide()
+			
 		}
+		$('#loadingDiv').hide()
 	});
 }
 
@@ -170,18 +165,18 @@ function loadChildren(id, page, amount) {
 	$('#loadingDiv').show()
 
 	$("tbody").empty();
-	var link = ""
-	if(page && amount) {
-		link = "/dev/objects/" + id + "/list?page=" + (page-1) + "&amount=" + amount
-	} else {
-		link = "/dev/objects/" + id + "/list"
-	}
+	var link = "/dev/objects/" + id + "/list?page=" + (page-1) + "&amount=" + amount
 	loadData(link, function(meta, items) {
 		$("tbody").empty();
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
+			createPagination(meta)
 			$("tbody").append("<tr><td colspan='6'>No Children here</td></tr>")
 		} else {
+			if(meta.numPages > 20){
+				childrenPerPage = meta.numPages;
+				loadChildren(id,page,childrenPerPage);
+			}else{
 			createPagination(meta)
 			for(i in items) {
 				var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
@@ -190,6 +185,7 @@ function loadChildren(id, page, amount) {
 				} else {
 					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 				}
+			}
 			}
 		}
 	});
@@ -283,7 +279,7 @@ function backbone() {
 			":id" : "defaultRoute"
 		},
 		collection : function() {
-			loadAdminData();
+			loadAdminData(1,itemsPerPage);
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
 					$(".row .breadcrumb li:last").remove();
@@ -293,7 +289,7 @@ function backbone() {
 		},
 		collection2 : function( page) {
 			console.log("page" + page)
-			loadAdminData(page, 20);
+			loadAdminData(page, itemsPerPage);
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
 					$(".row .breadcrumb li:last").remove();
@@ -310,12 +306,9 @@ function backbone() {
 				$(".row .breadcrumb li:last").remove();
 				$("form .breadcrumb a:last").parent().addClass("active");
 			}
-			loadChildren(id, 0, 20);
+			loadChildren(id, 1, childrenPerPage);
 		},
-		pageRoute : function(id, page) {
-			
-			loadChildren(id, page, 20);
-		}
+
 	});
 
 	var obj = new Workspace();
