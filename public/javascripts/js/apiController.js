@@ -151,6 +151,7 @@ function loadCreateData() {
 	$("#createItemBtn").click(function(event) {
 		event.preventDefault();
 		var objId = $("#objectId").size();
+		$(".successbox").fadeIn(100).text("Creating... Please wait.")
 		if(objId > 0 && $("#step4 #objectId").val() != undefined) {
 			insertItems();
 		} else {
@@ -216,7 +217,7 @@ function createItems(itemAmount, objId) {
 		});
 
 	} else {
-		$(".successbox").fadeIn().delay(900).fadeOut();
+		$(".successbox").html("<strong>Success!</strong><br> <p>Creation successful.</p>").fadeIn().delay(1200).fadeOut();
 		fileUploadLocation = new Array()
 		goDeeper = false;
 		workspace.navigate("", {
