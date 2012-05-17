@@ -4,7 +4,7 @@
 
 var resourceTypes = ["text", "cartographic", "notated music", "sound recording ", "sound recording-musical", "sound recording-nonmusical", "still image", "moving image", "three dimensional object", "software, multimedia", "mixed material"]; 
 
-var titleType = ["alternative","abbreviated","translated"];
+var titleType = ["title","alternative","abbreviated","translated"];
 var nameType = ["personal","corporate","conference"];
 var nameAuth = ["naf","ulan","local"];
 var nameRole = ["arc","art" ,"asn","aut","col","cmp","ctg","dnr","dte","egr","ill","ppm","prt","scl","srv","trl"];

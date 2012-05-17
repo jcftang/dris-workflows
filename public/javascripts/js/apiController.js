@@ -236,7 +236,6 @@ function loadMediaData() {
 function loadEditData() {
 	$(document).on("click", ".editRow", function() {
 		loadData("/dev/objects/" + $(this).attr("data-id"), function(data) {
-			console.log(data)
 			emptyForm();
 			fileUploadLocation = [];
 			showItems([data])
@@ -353,7 +352,6 @@ $('#loadingDiv').show()
 	var link = "/dev/objects?page=" + (page-1) + "&amount=" + amount
 	
 	loadData(link, function(items,meta) {
-		console.log(meta)
 		if(meta.numPages > 20){
 			itemsPerPage = meta.numPages;
 			loadTopLevelData(1,meta.numPages)
@@ -397,7 +395,6 @@ function createPagination(meta){
 		id += Backbone.history.fragment.substr(pos)
 		}
 	}
-	console.log(id)
 	//console.log(id)
 	//console.log(meta)
 	if(meta.numPages <2){
@@ -463,10 +460,8 @@ function loadpIdData(page,amount) {
 
 
 function loadPidChildren(id,page,amount) {
-	console.log("loadPidChildren")
    var link = "/dev/objects/" + id + "/list?page=" + (page-1) + "&amount=" + amount
 	loadData(link, function(items,meta) {
-		console.log(items)
 		createPagination(meta)
 		$(".modal tbody").empty();
 		for(i in items) {
@@ -537,7 +532,7 @@ function backbone() {
 		},
 
 		step2 : function() {
-			console.log("step2")
+			////console.log("step2")
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step2,#step2Info,#single").show();
 			$("#properties").show();
@@ -552,27 +547,27 @@ function backbone() {
 			}
 		},
 		step3 : function() {
-			console.log("step3")
+			//console.log("step3")
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step3,#step3Info").show();
 			$("#properties").show();
 
 		},
 		step4 : function() {
-			console.log("step4")
+			//console.log("step4")
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step4,#step4Info").show();
 			$("#properties").show();
 
 		},
 		step5 : function() {
-			console.log("step5")
+			//console.log("step5")
 			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step5,#step5Info").show();
 
 		},
 		collection : function() {
-			console.log("collection")
+			//console.log("collection")
 			$("tbody").empty();
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
@@ -584,7 +579,7 @@ function backbone() {
 			resetCreatePage()
 		},
 		collection2 : function(page) {
-			console.log("page" + page)
+			//console.log("page" + page)
 			loadTopLevelData(page, itemsPerPage);
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
@@ -594,7 +589,7 @@ function backbone() {
 			goDeeper = false;
 		},
 		defaultRoute : function(id) {
-			console.log("defaultRoute")
+			//console.log("defaultRoute")
 			if(goDeeper) {
 				$("form .breadcrumb a:last").parent().removeClass("active");
 				$(".row .breadcrumb").append("<li class='active'><a href='#id/" + id + "'>" + parentType + ": " + currentParentName + "</a><span class='divider'>/</span></li>");
@@ -609,7 +604,7 @@ function backbone() {
 
 		},
 		loadPidTop : function() {
-			console.log("loadPidTop")
+			//console.log("loadPidTop")
 			$(".modal  tbody").empty();
 			if(!goDeeper) {
 				if($(".modal .breadcrumb li").size() > 1) {
@@ -620,7 +615,7 @@ function backbone() {
 			loadpIdData(1, itemsPerPage);
 		},
 		loadPidTop2 : function(page) {
-			console.log("loadPidTop2")
+			//console.log("loadPidTop2")
 			$(".modal  tbody").empty();
 			if(!goDeeper) {
 				if($(".modal .breadcrumb li").size() > 1) {
@@ -632,7 +627,7 @@ function backbone() {
 		},
 		loadPid : function(id) {
 			
-			console.log("loadPid")
+			//console.log("loadPid")
 			if(goDeeper) {
 				$(".modal .breadcrumb a:last").parent().removeClass("active");
 				$(".modal .breadcrumb").append("<li class='active'><a href='#pd/" + id + "'>" + parentType + ": " + currentParentName + "</a><span class='divider'>/</span></li>");
@@ -647,11 +642,11 @@ function backbone() {
 			loadPidChildren(id, 1, childrenPerPage);
 		},
 		pageRoute : function(id, page) {
-			console.log(page)
+			//console.log(page)
 			loadChildren(id, page, childrenPerPage);
 		},
 		pageRoute2 : function(id, page) {
-			console.log(page)
+			//console.log(page)
 			loadPidChildren(id, page, childrenPerPage);
 		}
 

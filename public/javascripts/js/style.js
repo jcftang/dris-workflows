@@ -89,6 +89,8 @@ function showItems(items) {
 
 var itemPos = 0;
 function fillUpForm(data) {
+	console.log(data)
+	itemPos = 0;
 	emptyForm()
 	var position = 0;
 	for(var i in data.properties) {
@@ -101,7 +103,7 @@ function fillUpForm(data) {
 				if( typeof info[i] == "object") {
 					$.fn.reverse = [].reverse; 
 					$(".dataform ul").eq(itemPos).empty()
-					fillInSpecialDataFields(info[i],i)
+					fillInSpecialDataFields(info[i],i,item)
 				}
 			}
 
@@ -124,19 +126,21 @@ function fillUpForm(data) {
 	}
 }
 
-function fillInSpecialDataFields(info,name) {
+function fillInSpecialDataFields(info,name,parent) {
+
 	for(var i in info) {
-		var spField = $(addSpecialField(name))
+		
+		var spField = $(addSpecialField(name,name+parent))
 
 		for(j in info[i]) {
 			$('[name="' + j + '"]', spField).val(info[i][j]);
 		}
 		$.fn.reverse = [].reverse; 
-		
-		$(".dataform ul").eq(itemPos).append(spField);
-		itemPos++;
+
+		$(".dataform ul").eq(itemPos).append(spField);	
 
 	}
+	itemPos++;
 }
 
 
@@ -387,18 +391,20 @@ function loadAllImages(id) {
 	});
 }
 
-var specialFields = ["topicsubject","internetMediaTypephysicalDescription","languageTermlanguage","dateOtheroriginInfo","abstractabstract"]
+var specialFields = ["topicsubject","internetMediaTypephysicalDescription","languageTermlanguage","dateOtheroriginInfo","abstractabstract","typephysicalDescription"]
 function checkSpecialField(name) {
-
+	console.log(name)
 	for(var i = 0; i < specialFields.length; i++) {
+		console.log(specialFields[i])
 		if(name == specialFields[i]) {
+			console.log(name)
 			return true;
 		}
 	}
 	return false;
 }
 
-var singleFields = ["accessConditionaccessCondition","typerelatedItem","typeidentifier","namesubject","typesubject","texttableOfContents","typetableOfContents","typenote","typephysicalDescription","digitalOriginphysicalDescription","typeOfResourcetypeOfResource", "genregenre","notenote", "typetitleInfo","typename","authorityname","rolename"]
+var singleFields = ["accessConditionaccessCondition","typerelatedItem","typeidentifier","namesubject","typesubject","texttableOfContents","typetableOfContents","typenote","digitalOriginphysicalDescription","typeOfResourcetypeOfResource", "genregenre","notenote", "typetitleInfo","typename","authorityname","rolename"]
 function checkSingleField(name) {
 
 	for(var i = 0; i < singleFields.length; i++) {
@@ -435,13 +441,14 @@ function addSpecialField(name,prop) {
 			return createSelect(physicalDescriptionObjects, "digitalOrigin")
 			break;
 		case "internetMediaTypephysicalDescription":
-		 	return "<li class='dummy'><div class='inputBox'><label>Type:</label>"+createSelect(mediaTypes,"internetMediaType") + removebtn + "</div></li> ";
+		 	return "<li class='dummy'><div class='inputBox'><hr><label>Type:</label>"+createSelect(mediaTypes,"internetMediaType") + removebtn + "</div></li> ";
 			break;
 		case "abstractabstract":
-			return "<li><div class='inputBox'><label>Type:</label>"+createSelect(abstractType,"type")+"<br /><textarea  id='input"+counter+"' rows='5' cols='50'></textarea>" + removebtn + "</div></li>" ;
-			break
+			return "<li data-type='abstract'><div class='inputBox'>"+createSelect(abstractType,"type")
+			+ "<label>abstract</label><textarea id='"+name+counter+"a' name='abstract'></textarea>" + removebtn + "</div></li> ";
+			break;
 		case "notenote":
-			return "<textarea  id='input"+counter+"'  rows='5' cols='50'></textarea>";
+			return "<textarea name='note' id='input"+counter+"'  rows='5' cols='50'></textarea>";
 			break
 		case "topic":
 			return "<li class='dummy'><div class='inputBox'><label>Topic:</label><input id='input"+counter+"' type='text' name='topic'>" + removebtn + "</div></li> ";
@@ -479,7 +486,7 @@ function addSpecialField(name,prop) {
 			return createSelect(nameRole,"role")
 			break 
 		case "typephysicalDescription":
-			return createSelect(physcialDescriptionType,'type')+"<label>type</label><input name='typeDescription'type='text'>"
+			return "<li><div class='inputBox'><hr>"+createSelect(physcialDescriptionType,'type')+"<label>type</label><input name='typeDescription'type='text'>"+ removebtn +"</div></li>"
 			break;
 		case "typenote":
 			return createSelect(noteType,'type')
@@ -488,7 +495,7 @@ function addSpecialField(name,prop) {
 			return createSelect(abstractType,'type')
 			break;
 		case "texttableOfContents":
-			return "<textarea  id='input"+counter+"' rows='5' cols='50'></textarea>"
+			return "<textarea name='texttableOfContentsDescription' id='input"+counter+"' rows='5' cols='50'></textarea>"
 			break;
 		case "namesubject":
 			return "<label>name</label><input id='"+name+counter+"' name='name' type='text' class='input-large'><br>"
@@ -555,7 +562,7 @@ function createMetaDataModels(form,callback) {
 					obj[$(selects[l]).attr("name")] = $(selects[l]).val();
 					obj[$(selects[l]).attr("name")] = $(selects[l]).val();
 				}
-				var selects = $("input", items[i])
+				var selects = $("input,textarea", items[i])
 				for(var m = 0; m < selects.length; m++) {
 					obj[$(selects[m]).attr("name")] = $(selects[m]).val();
 					obj[$(selects[m]).attr("name")] = $(selects[m]).val();
