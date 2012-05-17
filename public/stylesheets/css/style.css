@@ -1,245 +1,251 @@
-*{
+* {
 	margin:0;
 	padding:0;
 }
-p{
-	font-size: 1em;
+p {
+	font-size:1em;
 }
-
-.navbar .container{
+.navbar .container {
 	width:940px;
 }
-#properties{
-	background-color: #F9F9F9;
+@-webkit-keyframes rotater {
+0% { -webkit-transform:rotate(0) scale(1) }
+50% { -webkit-transform:rotate(360deg) scale(1) }
+100% { -webkit-transform:rotate(720deg) scale(1) }
+}
+@-moz-keyframes rotater {
+0% { -moz-transform:rotate(0) scale(1) }
+50% { -moz-transform:rotate(360deg) scale(1) }
+100% { -moz-transform:rotate(720deg) scale(1) }
+}
+i.icon-refresh {
+	-webkit-animation-name:rotater;
+	-webkit-animation-duration:2000ms;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-timing-function:linear;
+	/* mozilla */
+	-moz-animation-name:rotater;
+	-moz-animation-duration:2000ms;
+	-moz-animation-iteration-count:infinite;
+	-moz-animation-timing-function:linear;
+	/* opera */
+	-o-transform:rotate(360deg) scale(1);
+	-o-transition-duration:2000ms;
+	-o-transition-timing-function:linear;
+	/* ie */
+	-ms-transform:rotate(360deg) scale(1);
+	-ms-transform-duration:2000ms;
+	-ms-transform-timing-function:linear;
+}
+#properties {
+	background-color:#F9F9F9;
 	border-radius:4px;
 	padding:5px;
 	float:left;
 	width:155px;
 	position:fixed;
 }
-#step2 .span7,#step3 .span7,#step4 .span7{
-	margin-left: 200px;
+#step2 .span7, #step3 .span7, #step4 .span7 {
+	margin-left:200px;
 }
-#properties .selectData{
+#properties .selectData {
 	display:none;
 }
-
-#container{
+#container {
 	margin-top:20px;
 }
-#step2 input,#step3 input, #step3 form a,#step4 input, #step4 form a{
-	float:left;
-	margin-right: 5px;
-}
-
-#step2,#step2info,#step3,#step3info,#step4info,#properties,#step4,#step5{
-	display:none;
-}
-#fileBox input, .upload input{
-	float:none !important;
-}
-.upload{
-	margin-right: -10px;	
-	padding-left: 20px;
-}
-.upload td{
-	padding: 4px 0px 4px 0;
-}
-.upload button{
-	margin-right: 5px;
-}
-
-#properties button{
-	width: 90%;
-	margin-bottom: 5px;
-}
-
-#properties .btn{
-	text-align: left;
-}
-div#step1Info a.btn,div#step2Info a.btn,div#step3Info a.btn,div#step4Info a.btn{
-	width: 88%;
-	margin-bottom: 5px;
-}
-.accordion-heading-focus{
-  padding:5px;
-  background-color: #3875d7;  
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #3875d7), color-stop(90%, #2a62bc));
-  background-image: -webkit-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
-  background-image: -moz-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
-  background-image: -o-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
-  background-image: -ms-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
-  background-image: linear-gradient(top, #3875d7 20%, #2a62bc 90%);
-  color: #fff;
-}
-
-.accordion-heading-focus a{
-	color: #FFFFFF;
-}
-
-.breaddisabled,.breaddisabled:hover{
-	color: #999999;
-	text-decoration:none;
-   cursor: default;
-}
-.pager{
-	float:right;
-}
-
-#step1 .pager,.pagination,#step2Btn2,#step2Btn{
+#step2 input, #step3 input, #step3 form a, #step4 input, #step4 form a {
 	float:left;
 	margin-right:5px;
 }
-.pagination{
-	margin: 0
-	
+#step2, #step2info, #step3, #step3info, #step4info, #properties, #step4, #step5 {
+	display:none;
 }
-.dummy{
+#fileBox input, .upload input {
+	float:none !important;
+}
+.upload {
+	margin-right:-10px;
+	padding-left:20px;
+}
+.upload td {
+	padding:4px 0px 4px 0;
+}
+.upload button {
+	margin-right:5px;
+}
+#properties button {
+	width:90%;
+	margin-bottom:5px;
+}
+#properties .btn {
+	text-align:left;
+}
+div#step1Info a.btn, div#step2Info a.btn, div#step3Info a.btn, div#step4Info a.btn {
+	width:88%;
+	margin-bottom:5px;
+}
+.accordion-heading-focus {
+	padding:5px;
+	background-color:#3875d7;
+	background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #3875d7), color-stop(90%, #2a62bc));
+	background-image:-webkit-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+	background-image:-moz-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+	background-image:-o-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+	background-image:-ms-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+	background-image:linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+	color:#fff;
+}
+.accordion-heading-focus a {
+	color:#FFFFFF;
+}
+.breaddisabled, .breaddisabled:hover {
+	color:#999999;
+	text-decoration:none;
+	cursor:default;
+}
+.pager {
+	float:right;
+}
+#step1 .pager, .pagination, #step2Btn2, #step2Btn {
+	float:left;
+	margin-right:5px;
+}
+.pagination {
+	margin:0
+}
+.dummy {
 	clear:both;
 }
-
-.type{
-	display: none;
+.type {
+	display:none;
 }
-
-
-li.selected{
-	background-color: #3B773B!important;
+li.selected {
+	background-color:#3B773B !important;
 	color:#FFF;
 }
-.form-actions{
+.form-actions {
 	padding-left:5px !important;
 }
-
-.items ul li{
-	list-style: none;
-	padding-left: 5px;
-	margin-left: 0;
+.items ul li {
+	list-style:none;
+	padding-left:5px;
+	margin-left:0;
 }
-.items ul{
-	margin-left: 0;
+.items ul {
+	margin-left:0;
 }
-.successbox,.updatebox{
-	display: none;
+.successbox, .updatebox {
+	display:none;
 }
 #loginForm {
 	margin:0;
 	margin-top:10px;
 }
-#loginForm li{
+#loginForm li {
 	float:left;
 }
-#loginForm label{
+#loginForm label {
 	color:#999;
 	float:left;
-	margin-right: 5px;
+	margin-right:5px;
 }
-#loginForm input[type="text"],#loginForm input[type="password"]{
-	width: 100px;
-	margin-right: 10px;
-
-}
-#loginForm input{
-		margin-top:-3px;
-}
-#createItems, #createSerie,#createCollection{
+#loginForm input[type="text"], #loginForm input[type="password"] {
+	width:100px;
 	margin-right:10px;
 }
-.div{
+#loginForm input {
+	margin-top:-3px;
+}
+#createItems, #createSerie, #createCollection {
+	margin-right:10px;
+}
+.div {
 	margin-bottom:10px;
 }
-
-.btn h2,.pId,.pIdContainer p,#step2 .well,#step2 span7,.list{
+.btn h2, .pId, .pIdContainer p, #step2 .well, #step2 span7, .list {
 	float:left
 }
-
-#properties i{
+#properties i {
 	float:right;
 	margin-top:10px;
 }
-
-#step2 .list,#step3 .list{
-	background-color: #F9F9F9;
+#step2 .list, #step3 .list {
+	background-color:#F9F9F9;
 	border-radius:4px;
 	width:180px;
 	padding:5px;
 }
-
-#step2 fieldset{
+#step2 fieldset {
 	margin-top:10px;
 }
-.pIdContainer{
+.pIdContainer {
 	float:right;
 }
-.pId{
+.pId {
 	margin-right:5px;
 }
-.formInput{
+.formInput {
 	padding:10px;
 	margin-bottom:4px;
 	border:#DDD solid 1px;
 }
-.formInput h3{
-	display: inline;
+.formInput h3 {
+	display:inline;
 }
-.formInput hr{
+.formInput hr {
 	margin:0;
 	margin-bottom:5px;
 }
-.nextItemBtn{
-	margin-left: 5px;
+.nextItemBtn {
+	margin-left:5px;
 }
-.inputBox{
+.inputBox {
 	width:90%;
 	padding:3px;
 	clear:both;
 }
-inputBox .close,.controls input,textarea{
+inputBox .close, .controls input, textarea {
 	float:left;
-	margin-right: 3px;
+	margin-right:3px;
 }
-.inputBox br,.controls br{
-	clear: both;
+.inputBox br, .controls br {
+	clear:both;
 }
-.specialClose{
+.specialClose {
 	margin-top:-30px;
 }
-form ul{
-	list-style-type: none;
+form ul {
+	list-style-type:none;
 	margin:0;
 }
-#loadingDiv td{
+#loadingDiv td {
 	text-align:center;
 }
-#multi{
+#multi {
 	display:none;
 }
-.dataform .chzn-container{
-	width: 230px !important;
+.dataform .chzn-container {
+	width:230px !important;
 }
-.list a, #step2Btn,.pagination{
-	margin-bottom: 5px;
+.list a, #step2Btn, .pagination {
+	margin-bottom:5px;
 }
-
-#step1 table{
-	margin-bottom: 5px;
+#step1 table {
+	margin-bottom:5px;
 }
-
 /*ADMIN PAGE*/
-.bulk-action{
-	margin-bottom: 5px !important;
-	margin-right: 5px;
+.bulk-action {
+	margin-bottom:5px !important;
+	margin-right:5px;
 	float:left !important;
 }
-#bulk-execute{
+#bulk-execute {
 	float:left;
 }
-.modal-body .pagination{
+.modal-body .pagination {
 	margin-bottom:10px;
 }
-
-.modal-body .pagination{
+.modal-body .pagination {
 	height:auto;
 }
-
-

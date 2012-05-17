@@ -345,7 +345,8 @@ function loadEditObjects() {
 }
 
 function loadTopLevelData(page, amount) {
-$('#loadingDiv').show()
+	$("tbody").empty();
+	createLoadingRow();
 	var link = "/dev/objects?page=" + (page-1) + "&amount=" + amount
 	
 	loadData(link, function(items,meta) {
@@ -370,8 +371,26 @@ $('#loadingDiv').show()
 		}
 		$('#loadingDiv').hide()
 		}
+	},function(err){
+		$('#loadingDiv').empty()
+		var td = $(document.createElement('td'))
+		td.attr('colspan', '6')
+		td.addClass('alert-error')
+		td.text(err)
+		$('#loadingDiv').append(td)
 	});
 
+}
+function createLoadingRow(){
+	var tr = $(document.createElement('tr'))
+	tr.attr('id', 'loadingDiv')
+	
+	var td = $(document.createElement('td'))
+	td.attr('colspan', '4')
+	td.text("Loading...")
+	tr.append(td)
+	
+	$('tbody').append(tr)
 }
 
 function createPagination(meta){
@@ -479,7 +498,8 @@ function loadPidChildren(id,page,amount) {
 
 
 function loadChildren(id, page, amount) {
-	$('#loadingDiv').show()
+	$("tbody").empty();
+	createLoadingRow();
 	var link = "/dev/objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
 	loadData(link, function(items, meta) {
 		$("tbody").empty();
@@ -507,6 +527,13 @@ function loadChildren(id, page, amount) {
 
 		$('#loadingDiv').hide()
 
+	},function(err){
+		$('#loadingDiv').empty()
+		var td = $(document.createElement('td'))
+		td.attr('colspan', '6')
+		td.addClass('alert-error')
+		td.text(err)
+		$('#loadingDiv').append(td)
 	});
 
 }
@@ -568,7 +595,6 @@ function backbone() {
 
 		},
 		collection : function() {
-			console.log("collection")
 			$("tbody").empty();
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
@@ -669,12 +695,13 @@ function resetCreatePage() {
 /*
  * Loads in any data
  */
-function loadData(link, callback) {
+function loadData(link, callback, error) {
 	$.ajax({
 		url : socket + link,
 		cache : false,
 		type : "GET",
 		dataType:"jsonp",
+		timeout:2000,
 		success : function(data, status, r) {
 			if(data.objects){
 				callback(data.objects,data.meta);
@@ -683,9 +710,12 @@ function loadData(link, callback) {
 			}
 		},
 		error : function(x, h, r) {
+			if(r == "timeout") {
+				error("Connection to the API could not be established")
+			} else {
+				error(x)
+			}
 			console.log(x);
-			console.log(h);
-			console.log(r);
 		}
 	});
 
@@ -707,8 +737,6 @@ function postData(form, type, data, link, callback) {
 		},
 		error : function(x, h, r) {
 			console.log(x);
-			console.log(h);
-			console.log(r);
 		}
 	});
 }
@@ -725,8 +753,6 @@ function updateData(type, data, link, callback) {
 		},
 		error : function(x, h, r) {
 			console.log(x);
-			console.log(h);
-			console.log(r);
 		}
 	})
 	return false;

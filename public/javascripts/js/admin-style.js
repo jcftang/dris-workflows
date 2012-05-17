@@ -85,22 +85,22 @@ function createPagination(meta) {
 	pagination.empty();
 	var pos = Backbone.history.fragment.indexOf('/')
 
-	var id = Backbone.history.fragment.substring( 0, pos)
+	var id = Backbone.history.fragment.substring(0, pos)
 
-	if(pos == -1){
+	if(pos == -1) {
 		id = Backbone.history.fragment
 	}
 	//console.log(id)
 	//console.log(meta)
-	if(meta.numPages <2){
+	if(meta.numPages < 2) {
 		return
 	}
-	var currentPage = parseInt(meta.page)+1
+	var currentPage = parseInt(meta.page) + 1
 	//console.log(currentPage)
 	// Create pagination
 
 	// Add general back button
-	var a = $("<a>").text("<<").attr('href', '#' + id + "/" + (currentPage-1))
+	var a = $("<a>").text("<<").attr('href', '#' + id + "/" + (currentPage - 1))
 	var goBack = $("<li>").append(a);
 	if(currentPage < 2) {
 		goBack.addClass('disabled')
@@ -126,7 +126,7 @@ function createPagination(meta) {
 	};
 
 	// Add general forward button
-	var a = $("<a>").text(">>").attr('href', '#' + id + "/" + (currentPage+1))
+	var a = $("<a>").text(">>").attr('href', '#' + id + "/" + (currentPage + 1))
 	var goForward = $("<li>").append(a);
 	if(meta.page > (meta.numPages - 2)) {
 		goForward.addClass('disabled')
@@ -137,14 +137,15 @@ function createPagination(meta) {
 	}
 	pagination.append(goForward)
 }
+
 function loadAdminData(page, amount) {
 	$('#loadingDiv').show()
-	var link = "/dev/objects?page=" + (page-1) + "&amount=" + amount
-	
+	var link = "/dev/objects?page=" + (page - 1) + "&amount=" + amount + "&callback=?"
+
 	loadData(link, function(meta, items) {
-		if(meta.numPages > 20){
+		if(meta.numPages > 20) {
 			itemsPerPage = meta.numPages;
-			loadAdminData(1,meta.numPages)
+			loadAdminData(1, meta.numPages)
 		}
 		createPagination(meta)
 		$("tbody").empty();
@@ -152,20 +153,42 @@ function loadAdminData(page, amount) {
 			var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
-		$('#loadingDiv').hide()
 		if(items.length == 0) {
 			$("tbody").append("<tr><td colspan='6'>No items available</td></tr>")
-			
+
 		}
 		$('#loadingDiv').hide()
+	}, function(err) {
+		$('#loadingDiv').empty()
+		var td = $(document.createElement('td'))
+		td.attr('colspan', '6')
+		td.addClass('alert-error')
+		td.text(err)
+		$('#loadingDiv').append(td)
 	});
 }
 
+function createLoadingRow(){	
+	console.log("Create loading")
+	var tr = $(document.createElement('tr'))
+	tr.attr('id', 'loadingDiv')
+	
+	var loading = $(document.createElement('i'))
+	loading.addClass('icon-refresh')
+	
+	var td = $(document.createElement('td'))
+	td.attr('colspan', '6')
+	td.append(loading)
+	td.append(" Loading...")
+	tr.append(td)
+	
+	$('tbody').append(tr)
+}
 function loadChildren(id, page, amount) {
-	$('#loadingDiv').show()
-
 	$("tbody").empty();
-	var link = "/dev/objects/" + id + "/list?page=" + (page-1) + "&amount=" + amount
+	createLoadingRow();
+
+	var link = "/dev/objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
 	loadData(link, function(meta, items) {
 		$("tbody").empty();
 		$('#loadingDiv').hide()
@@ -173,21 +196,28 @@ function loadChildren(id, page, amount) {
 			createPagination(meta)
 			$("tbody").append("<tr><td colspan='6'>No Children here</td></tr>")
 		} else {
-			if(meta.numPages > 20){
+			if(meta.numPages > 20) {
 				childrenPerPage = meta.numPages;
-				loadChildren(id,page,childrenPerPage);
-			}else{
-			createPagination(meta)
-			for(i in items) {
-				var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
-				if(items[i].status == "approved") {
-					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
-				} else {
-					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+				loadChildren(id, page, childrenPerPage);
+			} else {
+				createPagination(meta)
+				for(i in items) {
+					var fedoraId = (items[i].fedoraId) ? items[i].fedoraId : "-";
+					if(items[i].status == "approved") {
+						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+					} else {
+						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+					}
 				}
 			}
-			}
 		}
+	}, function(err) {
+		$('#loadingDiv').empty()
+		var td = $(document.createElement('td'))
+		td.attr('colspan', '6')
+		td.addClass('alert-error')
+		td.text(err)
+		$('#loadingDiv').append(td)
 	});
 
 }
@@ -251,16 +281,22 @@ function approveItem(id, callback) {
 	});
 };
 
-function loadData(link, callback) {
+function loadData(link, callback, error) {
 	$.ajax({
 		url : socket + link,
 		cache : false,
 		type : "GET",
 		dataType : 'jsonp',
+		timeout : 2000,
 		success : function(data, status, r) {
 			callback(data.meta, data.objects);
 		},
 		error : function(x, h, r) {
+			if(r == "timeout") {
+				error("Connection to the API could not be established")
+			} else {
+				error(x)
+			}
 			console.log(x);
 			console.log(h);
 			console.log(r);
@@ -279,7 +315,7 @@ function backbone() {
 			":id" : "defaultRoute"
 		},
 		collection : function() {
-			loadAdminData(1,itemsPerPage);
+			loadAdminData(1, itemsPerPage);
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
 					$(".row .breadcrumb li:last").remove();
@@ -287,7 +323,7 @@ function backbone() {
 			}
 			goDeeper = false;
 		},
-		collection2 : function( page) {
+		collection2 : function(page) {
 			console.log("page" + page)
 			loadAdminData(page, itemsPerPage);
 			if(!goDeeper) {
@@ -308,7 +344,6 @@ function backbone() {
 			}
 			loadChildren(id, 1, childrenPerPage);
 		},
-
 	});
 
 	var obj = new Workspace();

@@ -9,7 +9,6 @@ div.container
                 li
                   a(href="") Home
                   span.divider |
-              .dummy
               .control-group
                 select.span2.bulk-action
                   option(value="-1") --Bulk action--
@@ -20,8 +19,7 @@ div.container
                   a.close(data-dismiss='alert') ×
                   strong Successful
                   p Creation successful!
-                .dummy
-                .pagination
+                div.pagination
                   ul
                 table#series-table.table.table-striped.table-bordered
                   thead
@@ -35,7 +33,9 @@ div.container
                       th.span1 Remove
                   tbody
                     tr#loadingDiv 
-                      td(colspan="6") Loading...
+                      td(colspan="6")
+                        i.icon-refresh 
+                        &nbsp;Loading...
                 div.pagination.pagination-centered
                   ul
       include _includes/footer
