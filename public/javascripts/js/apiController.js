@@ -383,13 +383,18 @@ function loadTopLevelData(page, amount) {
 	});
 
 }
-function createLoadingRow(){
+function createLoadingRow(){	
+	console.log("Create loading")
 	var tr = $(document.createElement('tr'))
 	tr.attr('id', 'loadingDiv')
 	
+	var loading = $(document.createElement('i'))
+	loading.addClass('icon-refresh')
+	
 	var td = $(document.createElement('td'))
 	td.attr('colspan', '4')
-	td.text("Loading...")
+	td.append(loading)
+	td.append(" Loading...")
 	tr.append(td)
 	
 	$('tbody').append(tr)
