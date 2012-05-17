@@ -31,10 +31,10 @@ function createPropertyButtons() {
 
 	
 	var random = Math.floor(Math.random() * Math.random() * 1000 - 1);
-	var group = '<div class="accordion-group"><div class="accordion-heading">'
+	var group = '<div class="accordion-group"><div class="accordion-heading accordion-heading-focus">'
 	+ '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion' 
 	+ parentId + '" href="#group' + random + '">Properties</a></div>' + '<div id="group' 
-	+ random + '" class="accordion-body collapse "><div class="accordion-inner">';
+	+ random + '" class="accordion-body in collapse "><div class="accordion-inner">';
 	heading += group;
 	for(var i = 0; i < optionsArray.length; i++) {
 		var btn = '<button class="btn btn-small">' + optionsArray[i].name + '</button>';
