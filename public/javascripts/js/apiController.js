@@ -28,6 +28,11 @@ $(document).ready(function() {
 				trigger : true
 			});
 			break;
+		case "/compare":
+			workspace.navigate("", {
+				trigger : true
+			});
+			break;
 	}
 
 	$("tbody a").live("click", function(event) {
@@ -228,10 +233,6 @@ function createItems(itemAmount, objId) {
 
 }
 
-
-function loadMediaData() {
-
-}
 
 function loadEditData() {
 	$(document).on("click", ".editRow", function() {
@@ -535,6 +536,18 @@ function loadChildren(id, page, amount) {
 
 }
 
+function loadCompareData(id){
+	console.log("Comparing " + id)
+	var link = "/dev/objects/" + id + "/compare"
+	loadData(link, function(data) {
+		console.log(data)
+		$('#mongoData').text(JSON.stringify(data.mongo, undefined, 4))
+		$('#fedoraData').text(data.fedora)
+	},function(err){
+		console.log(err)
+	});
+}
+
 
 function backbone() {
 
@@ -553,7 +566,8 @@ function backbone() {
 			"id/:id/:page" : "pageRoute",
 			"pd/:id/:page" : "pageRoute2",
 			"myModal" : "loadPidTop",
-			"" : "collection"
+			"" : "collection",
+			"compare/:id" : "compare"
 		},
 
 		step2 : function() {
@@ -661,7 +675,6 @@ function backbone() {
 				$("#goUp").removeAttr("disabled");
 				$(".modal .breadcrumb li:last").remove();
 				$(".modal .breadcrumb a:last").parent().addClass("active");
-
 			}
 			loadPidChildren(id, 1, childrenPerPage);
 		},
@@ -672,6 +685,9 @@ function backbone() {
 		pageRoute2 : function(id, page) {
 			//console.log(page)
 			loadPidChildren(id, page, childrenPerPage);
+		},
+		compare : function(id, page) {
+			loadCompareData(id)
 		}
 
 	}); 
