@@ -355,7 +355,7 @@ function loadTopLevelData(page, amount) {
 		createPagination(meta)
 		$("tbody").empty();
 		for(i in items) {
-			var label = "IN-" + items[i].label.substring(0, 6);
+			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var rbt = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
 			var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>"
 			if(window.location.pathname == "/create") {
@@ -503,7 +503,7 @@ function loadpIdData(page,amount) {
 		
 		for(i in items) {
 			var rbt = "<td><input name='items' type='radio' data-id='" + items[i]._id + "'></td>";
-			var label = "IN-" + items[i].label.substring(0, 6);
+			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td></tr>")
 		}
 
@@ -519,7 +519,7 @@ function loadPidChildren(id,page,amount) {
 		$(".modal tbody").empty();
 		for(i in items) {
 			var rbt = "<td><input  name='items' type='radio' data-id='" + items[i]._id + "'></td>";
-			var label = "IN-" + items[i].label.substring(0, 6);
+			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>";
 			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td></tr>")
 		}
@@ -545,7 +545,7 @@ function loadChildren(id, page, amount) {
 				for(i in items) {
 					var rbt = "<td><input  name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
 					var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>"
-					var label = "IN-" + items[i].label.substring(0, 6);
+					var label = "IN-" + items[i].label.substring(0, amountLblChars);
 					if(window.location.pathname == "/create") {
 						rbt = ""
 						action = ""

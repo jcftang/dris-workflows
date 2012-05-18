@@ -198,7 +198,7 @@ function loadAdminData(page, amount) {
 		for(i in items) {
 			var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='"+items[i].fedoraId + "' /> <button class='btn btnCompareFedora' data-id='"+items[i]._id +"' type='button' value='compare'>Compare</button></div>" : "-";
 			var disabled = (items[i].type == "item") ? "" : "disabled";
-			var label = "IN-"+items[i].label.substring(0, 6);
+			var label = "IN-"+items[i].label.substring(0, amountLblChars);
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + 
 			"<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" +
 			"<td>" + label + "</td>" +  
@@ -253,7 +253,7 @@ function loadChildren(id, page, amount) {
 				for(i in items) {
 					var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='"+items[i].fedoraId + "' /> <button class='btn btnCompareFedora' data-id='"+items[i]._id +"' type='button' value='compare'>Compare</button></div>" : "-";
 					var disabled = (items[i].type == "item") ? "" : "disabled";
-					var label = "IN-"+items[i].label.substring(0, 6);
+					var label = "IN-"+items[i].label.substring(0, amountLblChars);
 					if(items[i].status == "approved") {
 						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" +
 						"<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" +

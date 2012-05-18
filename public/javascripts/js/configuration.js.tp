@@ -10,5 +10,5 @@ var socket = 'http://localhost:' + port;
 var itemsPerPage = 20;
 //amount of pages being displayed in the pagination
 var amountPages = 10;
-//amount of object you want to see from a parent object
-var childrenPerPage = 20;
+//amount of charachters to be displayed of the label of an object
+var amountLblChars = 6
