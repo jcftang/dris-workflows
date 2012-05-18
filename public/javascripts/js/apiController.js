@@ -350,8 +350,11 @@ function loadTopLevelData(page, amount) {
 	var link = "/dev/objects?page=" + (page-1) + "&amount=" + amount
 	
 	loadData(link, function(items,meta) {
-		createPagination(meta)
+		$('#loadingDiv').hide()
 		$("tbody").empty();
+	
+		createPagination(meta)
+		
 		for(i in items) {
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var rbt = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
@@ -365,13 +368,14 @@ function loadTopLevelData(page, amount) {
 			if(items[i].properties.titleInfo != undefined) {
 				title = items[i].properties.titleInfo[0].title;
 			}
-
-			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td>"+action+"</tr>")
+			console.log(title)
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td>"+action+"</tr>")
 		}
 		if(items.length == 0) {
 			$("#step1 tbody").append("<tr><td colspan='5'>No objects available</td></tr>")
+			$('#loadingDiv').hide()
 		}
-		$('#loadingDiv').hide()
+		
 		
 	},function(err){
 		$('#loadingDiv').empty()
@@ -380,7 +384,8 @@ function loadTopLevelData(page, amount) {
 	});
 
 }
-function createLoadingRow(){	
+function createLoadingRow(){
+	console.log("row")
 	var tr = $("<tr>").attr('id', 'loadingDiv')
 	var loading = $('<i>').addClass('icon-refresh')
 	
@@ -618,6 +623,7 @@ function backbone() {
 		},
 
 		step2 : function() {
+			console.log("step2")
 			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step2,#step2Info,#single").show();
 			$("#properties").show();
@@ -632,23 +638,27 @@ function backbone() {
 			}
 		},
 		step3 : function() {
+			console.log("step3")
 			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step3,#step3Info").show();
 			$("#properties").show();
 
 		},
 		step4 : function() {
+			console.log("step4")
 			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step4,#step4Info").show();
 			$("#properties").show();
 
 		},
 		step5 : function() {
+			console.log("step5")
 			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step5,#step5Info").show();
 
 		},
 		collection : function() {
+			console.log("lodaing")
 			$("tbody").empty();
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
@@ -660,6 +670,7 @@ function backbone() {
 			resetCreatePage()
 		},
 		collection2 : function(page) {
+			console.log("coll2")
 			//console.log("page" + page)
 			loadTopLevelData(page, itemsPerPage);
 			if(!goDeeper) {
@@ -670,7 +681,7 @@ function backbone() {
 			goDeeper = false;
 		},
 		defaultRoute : function(id) {
-			//console.log("defaultRoute")
+			console.log("defaultRoute")
 			if(goDeeper) {
 				$("form .breadcrumb a:last").parent().removeClass("active");
 				$(".row .breadcrumb").append("<li class='active'><a href='#id/" + id + "'>" + parentType + ": " + currentParentName + "</a><span class='divider'>/</span></li>");
@@ -748,6 +759,7 @@ function resetCreatePage() {
  * Loads in any data
  */
 function loadData(link, callback, error) {
+	console.log(link)
 	$.ajax({
 		url : socket + link,
 		cache : false,
@@ -755,9 +767,12 @@ function loadData(link, callback, error) {
 		dataType:"jsonp",
 		timeout:2000,
 		success : function(data, status, r) {
+			console.log(data)
 			if(data.objects){
+				console.log("calling")
 				callback(data.objects,data.meta);
 			}else{
+				
 				callback(data);
 			}
 		},
