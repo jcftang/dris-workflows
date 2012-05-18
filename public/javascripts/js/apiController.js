@@ -537,12 +537,7 @@ function loadChildren(id, page, amount) {
 			createPagination(meta)
 			$("#step1 tbody").append("<tr><td colspan='4'>No Children here</td></tr>")
 		} else {
-			
-			if(meta.numPages > 20) {
-				childrenPerPage = meta.numPages;
-				loadChildren(id, page, childrenPerPage);
-			} else {
-				createPagination(meta)
+			createPagination(meta)
 				for(i in items) {
 					var rbt = "<td><input  name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
 					var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>"
@@ -552,7 +547,6 @@ function loadChildren(id, page, amount) {
 					}
 					$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
 				}
-			}
 		}
 
 		$('#loadingDiv').hide()
@@ -670,7 +664,7 @@ function backbone() {
 			}
 			resetCreatePage();
 			$("#createCollection").hide();
-			loadChildren(id, 1, childrenPerPage);
+			loadChildren(id, 1, itemsPerPage);
 
 		},
 		loadPidTop : function() {
@@ -708,15 +702,15 @@ function backbone() {
 				$(".modal .breadcrumb li:last").remove();
 				$(".modal .breadcrumb a:last").parent().addClass("active");
 			}
-			loadPidChildren(id, 1, childrenPerPage);
+			loadPidChildren(id, 1, itemsPerPage);
 		},
 		pageRoute : function(id, page) {
 			//console.log(page)
-			loadChildren(id, page, childrenPerPage);
+			loadChildren(id, page, itemsPerPage);
 		},
 		pageRoute2 : function(id, page) {
 			//console.log(page)
-			loadPidChildren(id, page, childrenPerPage);
+			loadPidChildren(id, page, itemsPerPage);
 		},
 		compare : function(id, page) {
 			loadCompareData(id)

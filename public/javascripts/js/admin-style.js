@@ -234,6 +234,7 @@ function createLoadingRow(){
 	$('tbody').append(tr)
 }
 
+
 function loadChildren(id, page, amount) {
 	$("tbody").empty();
 	createLoadingRow();
@@ -246,22 +247,18 @@ function loadChildren(id, page, amount) {
 			createPagination(meta)
 			$("tbody").append("<tr><td colspan='6'>No Children here</td></tr>")
 		} else {
-			if(meta.numPages > 20) {
-				childrenPerPage = meta.numPages;
-				loadChildren(id, page, childrenPerPage);
-			} else {
-				createPagination(meta)
-				for(i in items) {
-					var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='"+items[i].fedoraId + "' /> <button class='btn btnCompareFedora' data-id='"+items[i]._id +"' type='button' value='compare'>Compare</button></div>" : "-";
-					var disabled = (items[i].type == "item") ? "" : "disabled";
-					if(items[i].status == "approved") {
-						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
-					} else {
-						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve'  "+disabled+"  data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
-					}
+			createPagination(meta)
+			for(i in items) {
+				var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='" + items[i].fedoraId + "' /> <button class='btn btnCompareFedora' data-id='" + items[i]._id + "' type='button' value='compare'>Compare</button></div>" : "-";
+				var disabled = (items[i].type == "item") ? "" : "disabled";
+				if(items[i].status == "approved") {
+					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+				} else {
+					$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve'  " + disabled + "  data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 				}
 			}
 		}
+
 	}, function(err) {
 		$('#loadingDiv').empty()
 		var td = $(document.createElement('td'))
@@ -272,6 +269,7 @@ function loadChildren(id, page, amount) {
 	});
 
 }
+
 
 function approveAllSelected() {
 	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
@@ -397,11 +395,11 @@ function backbone() {
 				$(".row .breadcrumb li:last").remove();
 				$("form .breadcrumb a:last").parent().addClass("active");
 			}
-			loadChildren(id, 1, childrenPerPage);
+			loadChildren(id, 1, itemsPerPage);
 		},
 		pageRoute : function(id, page) {
 			
-			loadChildren(id, page, childrenPerPage);
+			loadChildren(id, page, itemsPerPage);
 		}
 	});
 
