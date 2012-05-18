@@ -263,6 +263,7 @@ function loadChildren(id, page, amount) {
 					} else {
 						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" +
 						"<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" +
+						"<td>" + label + "</td>" +
 						"<td>" + fedoraId + "</td>" +
 						"<td>" + items[i].type + "</td>" +
 						"<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' "+disabled+" data-id='" + items[i]._id + "'/></td>" +
