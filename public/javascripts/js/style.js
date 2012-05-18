@@ -40,35 +40,6 @@ function editAction() {
 	})
 }
 
-
-
-function removeAllSelected() {
-	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
-	if(confirmDialog == true) {
-		$('tbody input:checked').each(function() {
-			removeItem($(this).attr("data-id"), function(id) {
-				$("#" + id).remove();
-			})
-		});
-	}
-
-}
-
-
-
-function removeItem(id, callback) {
-	$.ajax({
-		url : "/object/media/" + id + "/remove",
-		success : function(data) {
-			callback(id);
-		},
-		error : function(d, r) {
-			console.log(d);
-			console.log(r);
-		}
-	});
-}
-
  /*
  loads the items that you want to edit
  */
@@ -381,15 +352,6 @@ function addEditFormFields(dataObject, name) {
 		prefix : ""
 	});
 
-}
-
-function loadAllImages(id) {
-	$("#imageContainer").empty();
-	loadData("object/media/" + id + "/list", function(data) {
-		for(var file in data) {
-			$("#imageContainer").append("<img src='object/media/" + data[file]._id + "/get'>")
-		}
-	});
 }
 
 var specialFields = ["topicsubject","internetMediaTypephysicalDescription","languageTermlanguage","dateOtheroriginInfo","abstractabstract","typephysicalDescription"]

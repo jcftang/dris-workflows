@@ -1,3 +1,8 @@
+/*
+ * @author Matthias Van Wambeke
+ * ONLY the edit and create page use this file. For Admin page js please refer to admin-style.js
+ */
+//initiating variables
 var workspace= backbone();
 var goDeeper = true;
 var parentType = "";
@@ -6,8 +11,9 @@ var editItems = [];
 var fileUploadLocation = new Array();
 var navloc = new Array()
 $(document).ready(function() {
-
+	//enables xmlhttprequest
 	jQuery.support.cors = true;
+	//checks what page we are on
 	switch(window.location.pathname) {
 		case "/edit":
 			workspace.navigate("", {
@@ -24,28 +30,28 @@ $(document).ready(function() {
 				trigger : true
 			});
 			break;
-		case "/compare":
-			workspace.navigate("", {
-				trigger : true
-			});
-			break;
 	}
-
+	//Lets backbone know that we want to load the children
+	//actual children are loaded from backbone
 	$("tbody a").live("click", function(event) {
 		goDeeper = true;
 		parentType = $(this).attr("data-type");
 		currentParentName = $(this).text()
 	});
+	//removes an element if you click on the "x"
 	$(document).on("click",".close", function() {
 		if(!$(this).hasClass("mdl"))
 			$(this).parent().remove();
 	});
-
+	//Handles navigation in the file structure
 	$(document).on("click", "form .breadcrumb li a", function(event) {
 		event.preventDefault()
+		//removes all the breadcrumbs after the clicked breadcrumb
 		$(this).parent().nextAll().remove();
+		//we don't want to load children'
 		goDeeper = false;
 		$(".row .breadcrumb").append("<li>")
+		//triggering backbone to load the children of the selected breadcrumb
 		workspace.navigate("#" + $(this).attr("href"), {
 			trigger : true
 		});
@@ -53,25 +59,28 @@ $(document).ready(function() {
 
 });
 
-
+//updates all the objects that were selected at step1 in the edit page
 function updateChildren(data) {
 	for(var i = 0; i < data.length; i++) {
 		var link = socket + "/dev/objects/" + data[i]._id + "/update";
 		var items = $('#globalData').serializeArray();
+		//updating the properties of all the items that you selected
 		for(var j = 0; j < items.length; j++) {
 			var item = data[i];
 			eval("item.properties." + items[j].name + "='" + items[j].value + "'");
 		}
+		//sending the new data to the server
 		updateData('POST', {
 			"properties" : data[i].properties
 		}, link, function(id) {
 		});
 	}
+	//displays the update message
 	$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
 }
 
 function loadCreateData() {
-
+		//settings for the file upload plugin
 		$('#uploadFile').fileupload({
 			forceIframeTransport : true,
 			url : this.action,
@@ -80,16 +89,16 @@ function loadCreateData() {
 		})
 		$('#uploadFile').fileupload('option', 'redirect', window.location.href.replace(/\/[^\/]*$/, '/cors/result?'));
 	
-
+	//goes to the create serie step and fills in the parent id
 	$("#createSerie").live("click", function(event) {
 		id = Backbone.history.fragment
-		if(id != "collections") {
-			id = id.substr(3, id.length);
-			$("#seriesCollection").val(id)
-		}
+		id = id.substr(3, id.length);
+		//fills in the parent id
+		$("#seriesCollection").val(id)
 		emptyForm();
 	});
-
+	
+	//creates a new collection object
 	$("#createCollectionBtn").click(function() {
 		var link = socket + "/dev/objects";
 
@@ -98,13 +107,14 @@ function loadCreateData() {
 			"type" : "collection",
 			"properties" : {}
 		};
-
+		//checking if any files were uploaded
 		if(fileUploadLocation.length > 0) {
 			data.fileLocation = fileUploadLocation;
 		}
-
+		//gets the data out of the form in the correct json format
 		createMetaDataModels("#collectionCreation", function(model) {
 			data.properties = model;
+			//sending the data to the server for creation
 			postData($('#collectionCreation'), 'POST', data, link, function(id) {
 				$(".successbox").fadeIn().delay(900).fadeOut();
 				fileUploadLocation = new Array()
@@ -117,7 +127,7 @@ function loadCreateData() {
 		});
 	})
 
-
+	//creates a serie object
 	$("#createSerieBtn").click(function() {
 		var link = socket + "/dev/objects";
 		var parent = $("#seriesCollection").val();
@@ -148,7 +158,7 @@ function loadCreateData() {
 
 	}); 
 
-
+	//creates a set of items
 	$("#createItemBtn").click(function(event) {
 		event.preventDefault();
 		var objId = $("#objectId").size();
@@ -385,7 +395,6 @@ function loadTopLevelData(page, amount) {
 
 }
 function createLoadingRow(){
-	console.log("row")
 	var tr = $("<tr>").attr('id', 'loadingDiv')
 	var loading = $('<i>').addClass('icon-refresh')
 	
@@ -588,19 +597,6 @@ function loadChildren(id, page, amount) {
 
 }
 
-function loadCompareData(id){
-	console.log("Comparing " + id)
-	var link = "/dev/objects/" + id + "/compare"
-	loadData(link, function(data) {
-		console.log(data)
-		$('#mongoData').text(JSON.stringify(data.mongo, undefined, 4))
-		$('#fedoraData').text(data.fedora)
-	},function(err){
-		console.log(err)
-	});
-}
-
-
 function backbone() {
 
 	
@@ -619,7 +615,6 @@ function backbone() {
 			"pd/:id/:page" : "pageRoute2",
 			"myModal" : "loadPidTop",
 			"" : "collection",
-			"compare/:id" : "compare"
 		},
 
 		step2 : function() {
@@ -736,10 +731,6 @@ function backbone() {
 			//console.log(page)
 			loadPidChildren(id, page, itemsPerPage);
 		},
-		compare : function(id, page) {
-			loadCompareData(id)
-		}
-
 	}); 
 
 
