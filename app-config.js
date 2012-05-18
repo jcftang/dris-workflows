@@ -21,10 +21,6 @@ exports.configure = function configure(app) {
 		app.use(express.session({
 			secret : 'keyboard cat'
 		}));
-		// Initialize Passport!  Also use passport.session() middleware, to support
-		// persistent login sessions (recommended).
-		//app.use(passport.initialize());
-		//app.use(passport.session());
 		app.use(express.static(__dirname + '/public'));
 		app.use(app.router);
 	});
@@ -42,24 +38,8 @@ exports.configure = function configure(app) {
 
 	app.error(function(err, req, res, next) {
 		console.log(err);
-		/*if( err instanceof NotFound) {
-		 res.render('404', {
-		 id : "404",
-		 title : "404 - Not found"
-		 });
-		 } else {*/
 		next(err);
-		//}
+		
 	});
-	/*
-	 function NotFound(msg){
-	 this.name = 'NotFound';
-	 Error.call(this, msg);
-	 Error.captureStackTrace(this, arguments.callee);
-	 }
 
-	 NotFound.prototype.__proto__ = Error.prototype;
-	 app.get('/*', function(req, res){
-	 throw new NotFound;
-	 });*/
 }
