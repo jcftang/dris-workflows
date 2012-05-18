@@ -1,6 +1,3 @@
-var itemsPerPage = 20;
-var amountPages = 10;
-var childrenPerPage = 20;
 var workspace= backbone();
 var goDeeper = true;
 var parentType = "";
