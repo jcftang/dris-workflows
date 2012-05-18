@@ -3,6 +3,7 @@
  * @author Matthias Van Wambeke
  */
 var itemsPerPage = 20;
+var amountPages = 10;
 var childrenPerPage = 20;
 var workspace = backbone();
 var goDeeper = true;
@@ -79,10 +80,38 @@ $(document).ready(function() {
 		});
 	});
 })
-function createPagination(meta) {
 
-	var pagination = $(".pagination ul")
-	pagination.empty();
+function createPagination(meta) {
+	var startPage;
+	var endPage;
+	var currentPage = parseInt(meta.page) + 1
+
+	//checks gives the ten value
+	var start = Math.floor(currentPage / amountPages) * amountPages
+	//if the page number is higher then 10
+	if(start > 0) {
+		//checks if the difference between the currentPage and the last page
+		//is bigger then half of the amount of pages displayed
+		if((meta.numPages - currentPage) > (amountPages / 2)) {
+			startPage = currentPage - Math.floor(amountPages / 2);
+			endPage = currentPage + Math.floor(amountPages / 2);
+		} else {
+			startPage = currentPage - Math.floor(amountPages / 2);
+			endPage = meta.numPages;
+		}
+	} else {
+		//checks if the currentpage is higher then the middle value of the pages in the bar
+		if((start + amountPages - currentPage) < (start + amountPages / 2)) {
+			var diff = Math.floor(amountPages / 2 - (amountPages - currentPage))
+			startPage = start + diff
+			endPage = start + diff + amountPages;
+		} else {
+			startPage = 1;
+			endPage = amountPages;
+		}
+	}
+
+	var pagination = $(".pagination ul").empty();
 	var pos = Backbone.history.fragment.indexOf('/')
 
 	var id = Backbone.history.fragment.substring(0, pos)
@@ -90,13 +119,19 @@ function createPagination(meta) {
 	if(pos == -1) {
 		id = Backbone.history.fragment
 	}
-	//console.log(id)
-	//console.log(meta)
+	if(id == "id" || id == "pd") {
+
+		if(Backbone.history.fragment.lastIndexOf('/') > 2) {
+			id += Backbone.history.fragment.substring(pos, Backbone.history.fragment.lastIndexOf('/'))
+		} else {
+			id += Backbone.history.fragment.substr(pos)
+		}
+	}
+
 	if(meta.numPages < 2) {
 		return
 	}
-	var currentPage = parseInt(meta.page) + 1
-	//console.log(currentPage)
+
 	// Create pagination
 
 	// Add general back button
@@ -109,9 +144,15 @@ function createPagination(meta) {
 		})
 	}
 	pagination.append(goBack)
-
+	if(startPage > 1) {
+		var li = $("<li>")
+		var a = $("<a>").attr('href', '#' + id + "/" + 1).text(1)
+		li.append(a);
+		pagination.append(li);
+		pagination.append($("<li><a>...</a></li>"))
+	}
 	// Add pages
-	for(var i = 1; i <= meta.numPages; i++) {
+	for(var i = startPage; i <= endPage; i++) {
 		var pagecntrl = $("<li>")
 		var a = $("<a>")
 		if(i == currentPage) {
@@ -124,6 +165,14 @@ function createPagination(meta) {
 		pagecntrl.append(a)
 		pagination.append(pagecntrl)
 	};
+
+	if((meta.numPages - currentPage) > (amountPages / 2)) {
+		pagination.append($("<li><a>...</a></li>"))
+		var li = $("<li>")
+		var a = $("<a>").attr('href', '#' + id + "/" + meta.numPages).text(meta.numPages)
+		li.append(a);
+		pagination.append(li);
+	}
 
 	// Add general forward button
 	var a = $("<a>").text(">>").attr('href', '#' + id + "/" + (currentPage + 1))
@@ -138,15 +187,12 @@ function createPagination(meta) {
 	pagination.append(goForward)
 }
 
+
 function loadAdminData(page, amount) {
 	$('#loadingDiv').show()
 	var link = "/dev/objects?page=" + (page - 1) + "&amount=" + amount + "&callback=?"
 
 	loadData(link, function(meta, items) {
-		if(meta.numPages > 20) {
-			itemsPerPage = meta.numPages;
-			loadAdminData(1, meta.numPages)
-		}
 		createPagination(meta)
 		$("tbody").empty();
 		for(i in items) {
