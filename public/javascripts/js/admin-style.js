@@ -169,21 +169,15 @@ function loadAdminData(page, amount) {
 }
 
 function createLoadingRow(){	
-	console.log("Create loading")
-	var tr = $(document.createElement('tr'))
-	tr.attr('id', 'loadingDiv')
+	var tr = $(document.createElement('tr')).attr('id', 'loadingDiv')
+	var loading = $(document.createElement('i')).addClass('icon-refresh')
 	
-	var loading = $(document.createElement('i'))
-	loading.addClass('icon-refresh')
-	
-	var td = $(document.createElement('td'))
-	td.attr('colspan', '6')
-	td.append(loading)
-	td.append(" Loading...")
+	var td = $(document.createElement('td')).attr('colspan', '4').append(loading).text(" Loading...");
 	tr.append(td)
 	
 	$('tbody').append(tr)
 }
+
 function loadChildren(id, page, amount) {
 	$("tbody").empty();
 	createLoadingRow();
