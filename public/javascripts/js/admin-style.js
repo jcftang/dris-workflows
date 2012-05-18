@@ -73,7 +73,6 @@ $(document).ready(function() {
 		var id = btn.attr('data-id')
 		window.location = "/compare#compare/"+id
 	});
-
 	$(document).on("click", "form .breadcrumb li a", function(event) {
 		event.preventDefault()
 		$(this).parent().nextAll().remove();
@@ -131,12 +130,9 @@ function createPagination(meta) {
 			id += Backbone.history.fragment.substr(pos)
 		}
 	}
-
 	if(meta.numPages < 2) {
 		return
 	}
-
-	// Create pagination
 
 	// Add general back button
 	var a = $("<a>").text("<<").attr('href', '#' + id + "/" + (currentPage - 1))
@@ -213,7 +209,6 @@ function loadAdminData(page, amount) {
 		}
 		if(items.length == 0) {
 			$("tbody").append("<tr><td colspan='7'>No items available</td></tr>")
-
 		}
 		$('#loadingDiv').hide()
 	}, function(err) {
@@ -226,13 +221,13 @@ function loadAdminData(page, amount) {
 	});
 }
 
-function createLoadingRow(){	
+function createLoadingRow(){
 	var tr = $(document.createElement('tr')).attr('id', 'loadingDiv')
 	var loading = $(document.createElement('i')).addClass('icon-refresh')
-	
+
 	var td = $(document.createElement('td')).attr('colspan', '4').append(loading).text(" Loading...");
 	tr.append(td)
-	
+
 	$('tbody').append(tr)
 }
 
@@ -258,9 +253,20 @@ function loadChildren(id, page, amount) {
 					var disabled = (items[i].type == "item") ? "" : "disabled";
 					var label = "IN-"+items[i].label.substring(0, 6);
 					if(items[i].status == "approved") {
-						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + label + "</td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" +
+						"<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" +
+						"<td>" + label + "</td>" +
+						"<td>" + fedoraId + "</td>" +
+						"<td>" + items[i].type + "</td>" +
+						"<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" +
+						"<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 					} else {
-						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve'  "+disabled+"  data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" +
+						"<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td>" +
+						"<td>" + fedoraId + "</td>" +
+						"<td>" + items[i].type + "</td>" +
+						"<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' "+disabled+" data-id='" + items[i]._id + "'/></td>" +
+						"<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 					}
 				}
 			}
@@ -273,7 +279,6 @@ function loadChildren(id, page, amount) {
 		td.text(err)
 		$('#loadingDiv').append(td)
 	});
-
 }
 
 function approveAllSelected() {
@@ -281,7 +286,6 @@ function approveAllSelected() {
 	if(confirmDialog == true) {
 		$('#series-table tbody input:checked').each(function() {
 			approveItem($(this).attr("data-id"), function(err, id) {
-
 				if(err) {
 					console.log(err);
 				} else {
@@ -290,7 +294,6 @@ function approveAllSelected() {
 			})
 		});
 	}
-
 };
 
 function removeAllSelected() {
