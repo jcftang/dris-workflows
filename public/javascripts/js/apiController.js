@@ -380,7 +380,7 @@ function createLoadingRow(){
 	var tr = $("<tr>").attr('id', 'loadingDiv')
 	var loading = $('<i>').addClass('icon-refresh')
 	
-	var td = $("<td>").attr('colspan', '4').append(loading).text(" Loading...");
+	var td = $("<td>").attr('colspan', '5').append(loading).text(" Loading...");
 	tr.append(td)
 	
 	$('tbody').append(tr)
@@ -524,7 +524,7 @@ function loadPidChildren(id,page,amount) {
 			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td></tr>")
 		}
 		if(items.length == 0) {
-			$(".modal tbody").append("<tr><td colspan='3'>No Children here</td></tr>")
+			$(".modal tbody").append("<tr><td colspan='5'>No Children here</td></tr>")
 		}
 	});
 
@@ -539,7 +539,7 @@ function loadChildren(id, page, amount) {
 		$("tbody").empty();
 		if(items.length == 0) {
 			createPagination(meta)
-			$("#step1 tbody").append("<tr><td colspan='4'>No Children here</td></tr>")
+			$("#step1 tbody").append("<tr><td colspan='5'>No Children here</td></tr>")
 		} else {
 			createPagination(meta)
 				for(i in items) {
