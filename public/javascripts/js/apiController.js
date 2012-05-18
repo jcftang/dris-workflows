@@ -1,4 +1,5 @@
 var itemsPerPage = 20;
+var amountPages = 10;
 var childrenPerPage = 20;
 var workspace= backbone();
 var goDeeper = true;
@@ -353,10 +354,6 @@ function loadTopLevelData(page, amount) {
 	var link = "/dev/objects?page=" + (page-1) + "&amount=" + amount
 	
 	loadData(link, function(items,meta) {
-		if(meta.numPages > 20){
-			itemsPerPage = meta.numPages;
-			loadTopLevelData(1,meta.numPages)
-		}else{
 		createPagination(meta)
 		$("tbody").empty();
 		for(i in items) {
@@ -372,57 +369,80 @@ function loadTopLevelData(page, amount) {
 			$("#step1 tbody").append("<tr><td colspan='5'>No objects available</td></tr>")
 		}
 		$('#loadingDiv').hide()
-		}
+		
 	},function(err){
 		$('#loadingDiv').empty()
-		var td = $(document.createElement('td'))
-		td.attr('colspan', '6')
-		td.addClass('alert-error')
-		td.text(err)
+		var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
 		$('#loadingDiv').append(td)
 	});
 
 }
 function createLoadingRow(){	
-	var tr = $(document.createElement('tr')).attr('id', 'loadingDiv')
-	var loading = $(document.createElement('i')).addClass('icon-refresh')
+	var tr = $("<tr>").attr('id', 'loadingDiv')
+	var loading = $('<i>').addClass('icon-refresh')
 	
-	var td = $(document.createElement('td')).attr('colspan', '4').append(loading).text(" Loading...");
+	var td = $("<td>").attr('colspan', '4').append(loading).text(" Loading...");
 	tr.append(td)
 	
 	$('tbody').append(tr)
 }
 
-function createPagination(meta){
 
-	var pagination = $(".pagination ul")
-	pagination.empty();
-	var pos = Backbone.history.fragment.indexOf('/')
+function createPagination(meta) {
+	var startPage;
+	var endPage;
+	var currentPage = parseInt(meta.page) + 1
 
-	var id = Backbone.history.fragment.substring( 0, pos)
-
-	if(pos == -1){
-		id = Backbone.history.fragment
-	}
-	if(id == "id" || id =="pd"){
-
-		if(Backbone.history.fragment.lastIndexOf('/') >2){
-			id += Backbone.history.fragment.substring(pos,Backbone.history.fragment.lastIndexOf('/'))
-		}else{
-		id += Backbone.history.fragment.substr(pos)
+	//checks gives the ten value
+	var start = Math.floor(currentPage / amountPages) * amountPages
+	//if the page number is higher then 10
+	if(start > 0) {
+		//checks if the difference between the currentPage and the last page
+		//is bigger then half of the amount of pages displayed
+		if((meta.numPages - currentPage) > (amountPages / 2)) {
+			startPage = currentPage - Math.floor(amountPages / 2);
+			endPage = currentPage + Math.floor(amountPages / 2);
+		} else {
+			startPage = currentPage - Math.floor(amountPages / 2);
+			endPage = meta.numPages;
+		}
+	} else {
+		//checks if the currentpage is higher then the middle value of the pages in the bar
+		if((start + amountPages - currentPage) < (start + amountPages / 2)) {
+			var diff = Math.floor(amountPages / 2 - (amountPages - currentPage))
+			startPage = start + diff
+			endPage = start + diff + amountPages;
+		} else {
+			startPage = 1;
+			endPage = amountPages;
 		}
 	}
-	//console.log(id)
-	//console.log(meta)
-	if(meta.numPages <2){
+
+	var pagination = $(".pagination ul").empty();
+	var pos = Backbone.history.fragment.indexOf('/')
+
+	var id = Backbone.history.fragment.substring(0, pos)
+
+	if(pos == -1) {
+		id = Backbone.history.fragment
+	}
+	if(id == "id" || id == "pd") {
+
+		if(Backbone.history.fragment.lastIndexOf('/') > 2) {
+			id += Backbone.history.fragment.substring(pos, Backbone.history.fragment.lastIndexOf('/'))
+		} else {
+			id += Backbone.history.fragment.substr(pos)
+		}
+	}
+
+	if(meta.numPages < 2) {
 		return
 	}
-	var currentPage = parseInt(meta.page)+1
-	//console.log(currentPage)
+
 	// Create pagination
 
 	// Add general back button
-	var a = $("<a>").text("<<").attr('href', '#' + id + "/" + (currentPage-1))
+	var a = $("<a>").text("<<").attr('href', '#' + id + "/" + (currentPage - 1))
 	var goBack = $("<li>").append(a);
 	if(currentPage < 2) {
 		goBack.addClass('disabled')
@@ -431,9 +451,15 @@ function createPagination(meta){
 		})
 	}
 	pagination.append(goBack)
-
+	if(startPage > 1) {
+		var li = $("<li>")
+		var a = $("<a>").attr('href', '#' + id + "/" + 1).text(1)
+		li.append(a);
+		pagination.append(li);
+		pagination.append($("<li><a>...</a></li>"))
+	}
 	// Add pages
-	for(var i = 1; i <= meta.numPages; i++) {
+	for(var i = startPage; i <= endPage; i++) {
 		var pagecntrl = $("<li>")
 		var a = $("<a>")
 		if(i == currentPage) {
@@ -447,8 +473,16 @@ function createPagination(meta){
 		pagination.append(pagecntrl)
 	};
 
+	if((meta.numPages - currentPage) > (amountPages / 2)) {
+		pagination.append($("<li><a>...</a></li>"))
+		var li = $("<li>")
+		var a = $("<a>").attr('href', '#' + id + "/" + meta.numPages).text(meta.numPages)
+		li.append(a);
+		pagination.append(li);
+	}
+
 	// Add general forward button
-	var a = $("<a>").text(">>").attr('href', '#' + id + "/" + (currentPage+1))
+	var a = $("<a>").text(">>").attr('href', '#' + id + "/" + (currentPage + 1))
 	var goForward = $("<li>").append(a);
 	if(meta.page > (meta.numPages - 2)) {
 		goForward.addClass('disabled')
@@ -459,6 +493,7 @@ function createPagination(meta){
 	}
 	pagination.append(goForward)
 }
+
 
 function loadpIdData(page,amount) {
 	var link = "/dev/objects?page=" + (page - 1) + "&amount=" + amount
