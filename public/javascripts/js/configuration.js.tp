@@ -5,3 +5,10 @@
 //Configuration to the API server.
 var port = 4000;
 var socket = 'http://localhost:' + port;
+
+//amount of objects you want in the tables
+var itemsPerPage = 20;
+//amount of pages being displayed in the pagination
+var amountPages = 10;
+//amount of object you want to see from a parent object
+var childrenPerPage = 20;
