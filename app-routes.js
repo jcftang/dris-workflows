@@ -32,5 +32,15 @@ exports.createRoutes = function make(app) {
 			id : "login"
 		});
 	});
+	
+	// Add Error pages
+	app.use(function(req, res, next) {
+		res.render('404.jade', {
+			status : 404,
+			title: "404 - Error",
+			url : req.url,
+			id:"/404"
+		});
+	});
 
 }
