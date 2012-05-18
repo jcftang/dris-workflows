@@ -217,10 +217,7 @@ function loadAdminData(page, amount) {
 		$('#loadingDiv').hide()
 	}, function(err) {
 		$('#loadingDiv').empty()
-		var td = $(document.createElement('td'))
-		td.attr('colspan', '6')
-		td.addClass('alert-error')
-		td.text(err)
+		var td = $(document.createElement('td')).attr('colspan', '6').addClass('alert-error').text(err)
 		$('#loadingDiv').append(td)
 	});
 }
@@ -230,7 +227,7 @@ function createLoadingRow() {
 	var tr = $(document.createElement('tr')).attr('id', 'loadingDiv')
 	var loading = $(document.createElement('i')).addClass('icon-refresh')
 
-	var td = $(document.createElement('td')).attr('colspan', '4').append(loading).text(" Loading...");
+	var td = $(document.createElement('td')).attr('colspan', '6').append(loading).text(" Loading...");
 	tr.append(td)
 
 	$('tbody').append(tr)

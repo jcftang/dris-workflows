@@ -13,14 +13,12 @@ $(document).ready(function() {
 			workspace.navigate("", {
 				trigger : true
 			});
-			$("#properties").hide();
 			loadEditData();
 			break;
 		case "/all":
 			loadMediaData();
 			break;
 		case "/create":
-			$("#properties").hide();
 			loadCreateData();
 			workspace.navigate("", {
 				trigger : true
@@ -620,8 +618,7 @@ function backbone() {
 		},
 
 		step2 : function() {
-			////console.log("step2")
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
+			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step2,#step2Info,#single").show();
 			$("#properties").show();
 			loadpIdData();
@@ -635,22 +632,19 @@ function backbone() {
 			}
 		},
 		step3 : function() {
-			//console.log("step3")
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
+			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step3,#step3Info").show();
 			$("#properties").show();
 
 		},
 		step4 : function() {
-			//console.log("step4")
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
+			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step4,#step4Info").show();
 			$("#properties").show();
 
 		},
 		step5 : function() {
-			//console.log("step5")
-			$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
+			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step5,#step5Info").show();
 
 		},
@@ -691,7 +685,6 @@ function backbone() {
 
 		},
 		loadPidTop : function() {
-			//console.log("loadPidTop")
 			$(".modal  tbody").empty();
 			if(!goDeeper) {
 				if($(".modal .breadcrumb li").size() > 1) {
@@ -702,7 +695,6 @@ function backbone() {
 			loadpIdData(1, itemsPerPage);
 		},
 		loadPidTop2 : function(page) {
-			//console.log("loadPidTop2")
 			$(".modal  tbody").empty();
 			if(!goDeeper) {
 				if($(".modal .breadcrumb li").size() > 1) {
@@ -713,8 +705,6 @@ function backbone() {
 			loadpIdData(page, itemsPerPage);
 		},
 		loadPid : function(id) {
-			
-			//console.log("loadPid")
 			if(goDeeper) {
 				$(".modal .breadcrumb a:last").parent().removeClass("active");
 				$(".modal .breadcrumb").append("<li class='active'><a href='#pd/" + id + "'>" + parentType + ": " + currentParentName + "</a><span class='divider'>/</span></li>");
@@ -750,9 +740,9 @@ function backbone() {
 
 function resetCreatePage() {
 	$("#createCollection").show();
-	$("#properties").hide()
-	$("#step1,#step2,#step1Info,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
-	$("#step1,#step1Info").show();
+	$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
+	$("#step1").show();
+	$("#properties").hide();
 }
 /*
  * Loads in any data
