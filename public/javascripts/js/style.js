@@ -192,6 +192,7 @@ function loadBtnActions(){
 				"properties" : {},
 			};
 			var pos = $(".items li.accordion-heading-focus").attr('data-pos');
+			data.dateModified = Date.now();
 			if(editItems[pos].parentId) {
 				data.parentId = editItems[pos].parentId
 			}

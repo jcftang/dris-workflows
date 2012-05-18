@@ -362,7 +362,13 @@ function loadTopLevelData(page, amount) {
 				rbt = ""
 				action = ""
 			}
-			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td>"+action+"</tr>")
+
+			var title = "-"
+			if(items[i].properties.titleInfo != undefined) {
+				title = items[i].properties.titleInfo[0].title;
+			}
+
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td>"+action+"</tr>")
 		}
 		if(items.length == 0) {
 			$("#step1 tbody").append("<tr><td colspan='5'>No objects available</td></tr>")
@@ -504,7 +510,11 @@ function loadpIdData(page,amount) {
 		for(i in items) {
 			var rbt = "<td><input name='items' type='radio' data-id='" + items[i]._id + "'></td>";
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
-			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td></tr>")
+			var title = "-"
+			if(items[i].properties.titleInfo != undefined) {
+				title = items[i].properties.titleInfo[0].title;
+			}
+			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td></tr>")
 		}
 
 	});
@@ -521,7 +531,11 @@ function loadPidChildren(id,page,amount) {
 			var rbt = "<td><input  name='items' type='radio' data-id='" + items[i]._id + "'></td>";
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>";
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td></tr>")
+			var title = "-"
+			if(items[i].properties.titleInfo != undefined) {
+				title = items[i].properties.titleInfo[0].title;
+			}
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title+ "</a></td><td>"+label+"</td><td>" + items[i].type + "</td></tr>")
 		}
 		if(items.length == 0) {
 			$(".modal tbody").append("<tr><td colspan='5'>No Children here</td></tr>")
@@ -550,7 +564,11 @@ function loadChildren(id, page, amount) {
 						rbt = ""
 						action = ""
 					}
-					$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td>" + action + "</tr>")
+					var title = "-"
+					if(items[i].properties.titleInfo != undefined) {
+						title = items[i].properties.titleInfo[0].title;
+					}
+					$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td>" + action + "</tr>")
 				}
 		}
 
