@@ -221,7 +221,8 @@ function loadAdminData(page, amount) {
 	});
 }
 
-function createLoadingRow(){
+
+function createLoadingRow() {
 	var tr = $(document.createElement('tr')).attr('id', 'loadingDiv')
 	var loading = $(document.createElement('i')).addClass('icon-refresh')
 
@@ -242,6 +243,7 @@ function loadChildren(id, page, amount) {
 		if(items.length == 0) {
 			createPagination(meta)
 			$("tbody").append("<tr><td colspan='7'>No Children here</td></tr>")
+
 		} else {
 			if(meta.numPages > 20) {
 				childrenPerPage = meta.numPages;
@@ -272,6 +274,7 @@ function loadChildren(id, page, amount) {
 				}
 			}
 		}
+
 	}, function(err) {
 		$('#loadingDiv').empty()
 		var td = $(document.createElement('td'))
@@ -281,6 +284,7 @@ function loadChildren(id, page, amount) {
 		$('#loadingDiv').append(td)
 	});
 }
+
 
 function approveAllSelected() {
 	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
@@ -404,11 +408,11 @@ function backbone() {
 				$(".row .breadcrumb li:last").remove();
 				$("form .breadcrumb a:last").parent().addClass("active");
 			}
-			loadChildren(id, 1, childrenPerPage);
+			loadChildren(id, 1, itemsPerPage);
 		},
 		pageRoute : function(id, page) {
 			
-			loadChildren(id, page, childrenPerPage);
+			loadChildren(id, page, itemsPerPage);
 		}
 	});
 
