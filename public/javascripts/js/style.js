@@ -393,9 +393,9 @@ function loadAllImages(id) {
 
 var specialFields = ["topicsubject","internetMediaTypephysicalDescription","languageTermlanguage","dateOtheroriginInfo","abstractabstract","typephysicalDescription"]
 function checkSpecialField(name) {
-	console.log(name)
+	//console.log(name)
 	for(var i = 0; i < specialFields.length; i++) {
-		console.log(specialFields[i])
+		//console.log(specialFields[i])
 		if(name == specialFields[i]) {
 			console.log(name)
 			return true;
