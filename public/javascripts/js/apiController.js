@@ -368,8 +368,8 @@ function loadTopLevelData(page, amount) {
 			if(items[i].properties.titleInfo != undefined) {
 				title = items[i].properties.titleInfo[0].title;
 			}
-			console.log(title)
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td>"+action+"</tr>")
+			
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td>"+action+"</tr>")
 		}
 		if(items.length == 0) {
 			$("#step1 tbody").append("<tr><td colspan='5'>No objects available</td></tr>")
