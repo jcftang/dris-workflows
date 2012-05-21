@@ -310,17 +310,19 @@ function approveAllSelected() {
 	}
 };
 
+
 function removeAllSelected() {
 	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
 	if(confirmDialog == true) {
 		$('#series-table tbody input:checked').each(function() {
 			removeItem($(this).attr("data-id"), function(id) {
 				$("#" + id).remove();
-				
 			})
 		});
+		goDeeper = false; 
 	}
 };
+
 
 function removeItem(id, callback) {
 	$.ajax({
@@ -330,9 +332,6 @@ function removeItem(id, callback) {
 		cache : false,
 		success : function(data) {
 			callback(id);
-			workspace.navigate(Backbone.history.fragment, {
-					trigger : true
-				});
 		},
 		error : function(d, r) {
 			console.log(d);
@@ -385,7 +384,7 @@ function backbone() {
 	var Workspace = Backbone.Router.extend({
 		routes : {
 			"" : "collection",
-			"/:page" : "collection2",
+			"/:page" : "collectionPage",
 			":id/:page" : "pageRoute",
 			":id" : "defaultRoute"
 		},
@@ -398,7 +397,7 @@ function backbone() {
 			}
 			goDeeper = false;
 		},
-		collection2 : function(page) {
+		collectionPage : function(page) {
 			console.log("page" + page)
 			loadAdminData(page, itemsPerPage);
 			if(!goDeeper) {

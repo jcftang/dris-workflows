@@ -79,7 +79,7 @@ function loadStatistics(numb) {
 		}
 
 		loadData(link, function(data) {
-			$("#stats tbody").append("<tr><td>" + item + "</td><td>" + data + "</td>")
+			$("#stats tbody").append("<tr><td>" + item + " objects</td><td>" + data + "</td>")
 			numb++;
 			loadStatistics(numb)
 		})
