@@ -194,7 +194,7 @@ function createPagination(meta) {
 
 function loadAdminData(page, amount) {
 	$('#loadingDiv').show()
-	var link = "/dev/objects?page=" + (page - 1) + "&amount=" + amount + "&callback=?"
+	var link = driPath +"objects?page=" + (page - 1) + "&amount=" + amount + "&callback=?"
 
 	loadData(link, function(items, meta) {
 		createPagination(meta)
@@ -238,7 +238,7 @@ function loadChildren(id, page, amount) {
 	$("tbody").empty();
 	createLoadingRow();
 
-	var link = "/dev/objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
+	var link = driPath +"objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
 	loadData(link, function(items, meta) {
 		$("tbody").empty();
 		$('#loadingDiv').hide()
@@ -330,7 +330,7 @@ function removeAllSelected() {
 function removeItem(id, callback) {
 	$.ajax({
 		type : "get",
-		url : socket + "/dev/objects/" + id + "/delete",
+		url : socket + driPath +"objects/" + id + "/delete",
 		dataType : "jsonp",
 		cache : false,
 		success : function(data) {
@@ -345,7 +345,7 @@ function removeItem(id, callback) {
 
 function approveItem(id, callback) {
 	$.ajax({
-		url : socket + "/dev/objects/" + id + "/approve",
+		url : socket + driPath +"objects/" + id + "/approve",
 		type : "GET",
 		success : function(data) {
 			callback(null, data);

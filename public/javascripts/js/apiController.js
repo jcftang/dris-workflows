@@ -57,10 +57,10 @@ function loadStatistics(numb) {
 	var stats = ["all", "approved", "open"]
 	if(numb <= stats.length - 1) {
 		var item = stats[numb]
-		var link = "/dev/stats/" + stats[numb]
+		var link = driPath +"stats/" + stats[numb]
 		//there is no all link
 		if(item == "all") {
-			link = "/dev/stats/"
+			link = driPath +"stats/"
 		}
 
 		loadData(link, function(data) {
@@ -141,7 +141,7 @@ function createActions() {
 }
 
 function createCollection() {
-	var link = socket + "/dev/objects";
+	var link = socket + driPath +"objects";
 
 	var data = {
 		"status" : "open",
@@ -169,7 +169,7 @@ function createCollection() {
 }
 
 function createSeries() {
-	var link = socket + "/dev/objects";
+	var link = socket + driPath +"objects";
 	var parent = $("#seriesCollection").val();
 	var data = {
 		"status" : "open",
@@ -199,7 +199,7 @@ function createSeries() {
 
 function createMediaItem(file) {
 	if(file.length > 0) {
-		var link = socket + "/dev/objects";
+		var link = socket + driPath +"objects";
 		var parent = $("#mediaParent").val();
 		var data = {
 			"status" : "open",
@@ -229,10 +229,10 @@ function createMediaItem(file) {
 
 function insertItems() {
 	var objId = parseInt($("#step4 #objectId").val());
-	loadData("/dev/objects/" + $("#itemEditSelection").val() + "/list", function(data) {
+	loadData(driPath +"objects/" + $("#itemEditSelection").val() + "/list", function(data) {
 		for(var i = 0; i < data.length; i++) {
 			if(parseInt(data[i].properties.objectId) >= parseInt(objId)) {
-				var link = socket + "/dev/objects/" + data[i]._id + "/update";
+				var link = socket + driPath +"objects/" + data[i]._id + "/update";
 				data[i].properties.objectId = parseInt(data[i].properties.objectId) + 1;
 				updateData('POST', {
 					"properties" : data[i].properties
@@ -252,7 +252,7 @@ function createItems(itemAmount, objId) {
 	amount = parseInt(itemAmount);
 	objId = parseInt(objId);
 	if(amount > 0 && objId > 0) {
-		var link = socket + "/dev/objects";
+		var link = socket + driPath +"objects";
 		var parent = $("#itemEditSelection").val();
 		var data = {
 			"status" : "open",
@@ -298,7 +298,7 @@ function createItems(itemAmount, objId) {
 //updates all the objects that were selected at step1 in the edit page
 function updateChildren(data) {
 	for(var i = 0; i < data.length; i++) {
-		var link = socket + "/dev/objects/" + data[i]._id + "/update";
+		var link = socket + driPath +"objects/" + data[i]._id + "/update";
 		var items = $('#globalData').serializeArray();
 		//updating the properties of all the items that you selected
 		for(var j = 0; j < items.length; j++) {
@@ -316,7 +316,7 @@ function updateChildren(data) {
 }
 function loadEditData() {
 	$(document).on("click", ".editRow", function() {
-		loadData("/dev/objects/" + $(this).attr("data-id"), function(data) {
+		loadData(driPath +"objects/" + $(this).attr("data-id"), function(data) {
 			emptyForm();
 			fileUploadLocation = [];
 			showItems([data])
@@ -345,7 +345,7 @@ function loadEditData() {
 
 	$("#saveAll").click(function() {
 		for(var i = 0; i < editItems.length; i++) {
-			var link = socket + "/dev/objects/" + editItems[i]._id + "/update";
+			var link = socket + driPath +"objects/" + editItems[i]._id + "/update";
 			var data = editItems[i];
 			delete editItems[i]._id;
 			updateData('POST', data, link, function(id) {
@@ -414,7 +414,7 @@ function loadEditObjects() {
 	var objects = $('tbody input:checked');
 
 	for(var i = 0; i < objects.length; i++) {
-		loadData("/dev/objects/" + $(objects[i]).attr("data-id"), function(data) {
+		loadData(driPath +"objects/" + $(objects[i]).attr("data-id"), function(data) {
 			arr.push(data);
 			if(arr.length == size) {
 				emptyForm();
@@ -433,7 +433,7 @@ function loadEditObjects() {
 function loadTopLevelData(page, amount) {
 	$("tbody").empty();
 	createLoadingRow();
-	var link = "/dev/objects?page=" + (page - 1) + "&amount=" + amount
+	var link = driPath +"objects?page=" + (page - 1) + "&amount=" + amount
 
 	loadData(link, function(items, meta) {
 		$('#loadingDiv').hide()
@@ -474,7 +474,7 @@ function loadTopLevelData(page, amount) {
 }
 
 function loadpIdData(page,amount) {
-	var link = "/dev/objects?page=" + (page - 1) + "&amount=" + amount
+	var link = driPath +"objects?page=" + (page - 1) + "&amount=" + amount
 
 	loadData(link, function(items, meta) {
 		createPagination(meta)
@@ -499,7 +499,7 @@ function loadpIdData(page,amount) {
 }
 
 function loadPidChildren(id, page, amount) {
-	var link = "/dev/objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
+	var link = driPath +"objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
 	loadData(link, function(items, meta) {
 		createPagination(meta)
 		$(".modal tbody").empty();
@@ -527,7 +527,7 @@ function loadPidChildren(id, page, amount) {
 function loadChildren(id, page, amount) {
 	$("tbody").empty();
 	createLoadingRow();
-	var link = "/dev/objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
+	var link = driPath +"objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
 	loadData(link, function(items, meta) {
 		$("tbody").empty();
 		if(items.length == 0) {

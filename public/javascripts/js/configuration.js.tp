@@ -12,3 +12,5 @@ var itemsPerPage = 20;
 var amountPages = 10;
 //amount of charachters to be displayed of the label of an object
 var amountLblChars = 6
+//base path to the dri
+var driPath = "/dev/"
