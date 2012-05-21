@@ -98,6 +98,16 @@ function loadCreateData() {
 		emptyForm();
 	});
 	
+
+	$("#createMedia").live("click", function(event) {
+		id = Backbone.history.fragment
+		id = id.substr(3, id.length);
+		//fills in the parent id
+		$("#mediaParent").val(id)
+		emptyForm();
+	}); 
+
+	
 	//creates a new collection object
 	$("#createCollectionBtn").click(function() {
 		var link = socket + "/dev/objects";
@@ -170,7 +180,43 @@ function loadCreateData() {
 			createItems(amount, amount);
 		}
 	});
+	$("#createMediaItem").click(function(event){
+		event.preventDefault();
+		createMediaItem(fileUploadLocation)
+	})
 
+}
+
+
+
+function createMediaItem(file) {
+	console.log(file)
+	if(file.length > 0) {
+		var link = socket + "/dev/objects";
+		var parent = $("#mediaParent").val();
+		var data = {
+			"status" : "open",
+			"type" : "item",
+			"properties" : {},
+			parentId : parent
+		};
+		if(parent == "") {
+			delete data.parentId;
+		}
+		data.fileLocation = [file[0]];
+		file.splice(0,1)
+
+		postData($('#itemCreation'), 'POST', data, link, function(id) {
+			createMediaItem(file)
+		});
+	} else {
+		$(".successbox").html("<strong>Success!</strong><br> <p>Creation successful.</p>").fadeIn().delay(1200).fadeOut();
+		fileUploadLocation = new Array()
+		goDeeper = false;
+		workspace.navigate("", {
+			trigger : true
+		});
+	}
 }
 
 
@@ -359,14 +405,14 @@ function loadEditObjects() {
 function loadTopLevelData(page, amount) {
 	$("tbody").empty();
 	createLoadingRow();
-	var link = "/dev/objects?page=" + (page-1) + "&amount=" + amount
-	
-	loadData(link, function(items,meta) {
+	var link = "/dev/objects?page=" + (page - 1) + "&amount=" + amount
+
+	loadData(link, function(items, meta) {
 		$('#loadingDiv').hide()
 		$("tbody").empty();
-	
+
 		createPagination(meta)
-		
+
 		for(i in items) {
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var rbt = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
@@ -377,25 +423,29 @@ function loadTopLevelData(page, amount) {
 			}
 
 			var title = "-"
-			if((typeof items[i].properties.titleInfo[0]) != "undefined" ) {
+			if(( typeof items[i].properties.titleInfo[0]) != "undefined") {
 				title = items[i].properties.titleInfo[0].title;
 			}
-			
-			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td>"+action+"</tr>")
+			if(( typeof items[i].fileLocation) != "undefined" && ( typeof items[i].properties.titleInfo[0]) == "undefined") {
+				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+				title = items[i].fileLocation[0].substring(nameStart);
+			}
+
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" +label+"</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
 		}
 		if(items.length == 0) {
 			$("#step1 tbody").append("<tr><td colspan='5'>No objects available</td></tr>")
 			$('#loadingDiv').hide()
 		}
-		
-		
-	},function(err){
+
+	}, function(err) {
 		$('#loadingDiv').empty()
 		var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
 		$('#loadingDiv').append(td)
 	});
 
 }
+
 function createLoadingRow(){
 	var tr = $("<tr>").attr('id', 'loadingDiv')
 	var loading = $('<i>').addClass('icon-refresh')
@@ -528,7 +578,11 @@ function loadpIdData(page,amount) {
 			if((typeof items[i].properties.titleInfo[0]) != "undefined" ) {
 				title = items[i].properties.titleInfo[0].title;
 			}
-			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td></tr>")
+			if((typeof items[i].fileLocation) != "undefined" && (typeof items[i].properties.titleInfo[0]) == "undefined"  ){
+			var nameStart = items[i].fileLocation[0].indexOf("/") +1;
+			title = items[i].fileLocation[0].substring(nameStart);
+		}
+			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" +label+"</a></td><td>" + items[i].type + "</td></tr>")
 		}
 
 	});
@@ -549,7 +603,11 @@ function loadPidChildren(id,page,amount) {
 			if((typeof items[i].properties.titleInfo[0]) != "undefined" ) {
 				title = items[i].properties.titleInfo[0].title;
 			}
-			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title+ "</a></td><td>"+label+"</td><td>" + items[i].type + "</td></tr>")
+			if((typeof items[i].fileLocation) != "undefined" && (typeof items[i].properties.titleInfo[0]) == "undefined"  ){
+			var nameStart = items[i].fileLocation[0].indexOf("/") +1;
+			title = items[i].fileLocation[0].substring(nameStart);
+		}
+			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title+ "</a></td><td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" +label+"</a></td><td>" + items[i].type + "</td></tr>")
 		}
 		if(items.length == 0) {
 			$(".modal tbody").append("<tr><td colspan='5'>No Children here</td></tr>")
@@ -570,20 +628,26 @@ function loadChildren(id, page, amount) {
 			$("#step1 tbody").append("<tr><td colspan='5'>No Children here</td></tr>")
 		} else {
 			createPagination(meta)
-				for(i in items) {
-					var rbt = "<td><input  name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
-					var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>"
-					var label = "IN-" + items[i].label.substring(0, amountLblChars);
-					if(window.location.pathname == "/create") {
-						rbt = ""
-						action = ""
-					}
-					var title = "-"
-					if((typeof items[i].properties.titleInfo[0]) != "undefined" ) {
-						title = items[i].properties.titleInfo[0].title;
-					}
-					$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td>"+label+"</td><td>" + items[i].type + "</td>" + action + "</tr>")
+			for(i in items) {
+				var rbt = "<td><input  name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
+				var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>"
+				var label = "IN-" + items[i].label.substring(0, amountLblChars);
+				if(window.location.pathname == "/create") {
+					rbt = ""
+					action = ""
 				}
+				var title = "-"
+				if(( typeof items[i].properties.titleInfo[0]) != "undefined") {
+					title = items[i].properties.titleInfo[0].title;
+				}
+				if(( typeof items[i].fileLocation) != "undefined" && ( typeof items[i].properties.titleInfo[0]) == "undefined") {
+					var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+					title = items[i].fileLocation[0].substring(nameStart);
+				}
+
+				$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" +label+"</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
+			}
+
 		}
 
 		$('#loadingDiv').hide()

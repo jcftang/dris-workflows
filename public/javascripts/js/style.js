@@ -53,6 +53,11 @@ function showItems(items) {
 		if((typeof items[i].properties) != "undefined" ) {
 			title = items[i].properties.titleInfo[0].title;
 		}
+		
+		if((typeof items[i].fileLocation) != "undefined" && (typeof items[i].properties) == "undefined"  ){
+			var nameStart = items[i].fileLocation[0].indexOf("/") +1;
+			title = items[i].fileLocation[0].substring(nameStart);
+		}
 
 		root += "<li data-pos='" + i + "'><a data-type='" + items[i].type + "'  href='" + items[i]._id + "'>" + label + " / " + title + "</a></li>";
 		if(i == items.length - 1) {
@@ -221,14 +226,14 @@ function loadBtnActions(){
 
 	});
 
-	$(document).on("click","#createItems", function(event) {
+
+	$(document).on("click", "#createItems", function(event) {
 		id = Backbone.history.fragment
-		if(id != "collections") {
-			id = id.substr(3, id.length);
-			$("#itemEditSelection").val(id)
-		}
+		id = id.substr(3, id.length);
+		$("#itemEditSelection").val(id)
 		emptyForm();
-	});
+	}); 
+
 
 	$(document).on("click","#createCollection,#createSerie,#createItems", function(event) {
 		event.preventDefault;

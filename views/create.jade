@@ -87,5 +87,16 @@ div.container
                   .dummy
           #step5
            .span7
-               include _includes/upload
+                legend Create items with media
+                .control-group
+                       label.control-label(for='series') parentId
+                       .controls
+                         input#mediaParent.input-xlarge.disabled(type='text', disabled='')
+                br
+                include _includes/upload
+                .form-actions
+                  ul.pager
+                    li
+                      a#createMediaItem(href='#') Save
+                  .dummy
       include _includes/footer
