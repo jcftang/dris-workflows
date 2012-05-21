@@ -196,7 +196,7 @@ function loadAdminData(page, amount) {
 	$('#loadingDiv').show()
 	var link = "/dev/objects?page=" + (page - 1) + "&amount=" + amount + "&callback=?"
 
-	loadData(link, function(meta, items) {
+	loadData(link, function(items, meta) {
 		createPagination(meta)
 		$("tbody").empty();
 		for(i in items) {
@@ -204,12 +204,18 @@ function loadAdminData(page, amount) {
 			var disabled = (items[i].type == "item") ? "" : "disabled";
 			var label = "IN-"+items[i].label.substring(0, amountLblChars);
 			var title = "-"
-			if((typeof items[i].properties.titleInfo[0]) != "undefined" ) {
-						title = items[i].properties.titleInfo[0].title;
-					}
+		
+			if(( typeof items[i].properties.titleInfo[0]) != "undefined") {
+				title = items[i].properties.titleInfo[0].title;
+			}
+			if(( typeof items[i].fileLocation) != "undefined" && ( typeof items[i].properties.titleInfo[0]) == "undefined") {
+				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+				title = items[i].fileLocation[0].substring(nameStart);
+			}
+
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + 
 			"<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + title + "</a></td>" +
-			"<td>" + label + "</td>" +  
+			"<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" +  
 			"<td>" + fedoraId + "</td>" + 
 			"<td>" + items[i].type + "</td>" + 
 			"<td><input type='button' class='btn btn-success btn-mini approveItem' "+disabled+" value='Approve' data-id='" + items[i]._id + "'/></td>" + 
@@ -227,22 +233,13 @@ function loadAdminData(page, amount) {
 }
 
 
-function createLoadingRow() {
-	var tr = $(document.createElement('tr')).attr('id', 'loadingDiv')
-	var loading = $(document.createElement('i')).addClass('icon-refresh')
-
-	var td = $(document.createElement('td')).attr('colspan', '6').append(loading).text(" Loading...");
-	tr.append(td)
-
-	$('tbody').append(tr)
-}
 
 function loadChildren(id, page, amount) {
 	$("tbody").empty();
 	createLoadingRow();
 
 	var link = "/dev/objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
-	loadData(link, function(meta, items) {
+	loadData(link, function(items, meta) {
 		$("tbody").empty();
 		$('#loadingDiv').hide()
 		if(items.length == 0) {
@@ -256,17 +253,23 @@ function loadChildren(id, page, amount) {
 			} else {
 				createPagination(meta)
 				for(i in items) {
-					var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='"+items[i].fedoraId + "' /> <button class='btn btnCompareFedora' data-id='"+items[i]._id +"' type='button' value='compare'>Compare</button></div>" : "-";
+
+					var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='" + items[i].fedoraId + "' /> <button class='btn btnCompareFedora' data-id='" + items[i]._id + "' type='button' value='compare'>Compare</button></div>" : "-";
 					var disabled = (items[i].type == "item") ? "" : "disabled";
-					var label = "IN-"+items[i].label.substring(0, amountLblChars);
-					var title="-"
-					if((typeof items[i].properties.titleInfo[0]) != "undefined" ) {
+					var label = "IN-" + items[i].label.substring(0, amountLblChars);
+					var title = "-"
+					if(( typeof items[i].properties.titleInfo[0]) != "undefined") {
 						title = items[i].properties.titleInfo[0].title;
 					}
+					if(( typeof items[i].fileLocation) != "undefined" && ( typeof items[i].properties.titleInfo[0]) == "undefined") {
+						var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+						title = items[i].fileLocation[0].substring(nameStart);
+					}
+
 					if(items[i].status == "approved") {
 						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" +
 						"<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title + "</a></td>" +
-						"<td>" + label + "</td>" +
+						"<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" +
 						"<td>" + fedoraId + "</td>" +
 						"<td>" + items[i].type + "</td>" +
 						"<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" +
@@ -274,7 +277,7 @@ function loadChildren(id, page, amount) {
 					} else {
 						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" +
 						"<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title+ "</a></td>" +
-						"<td>" + label + "</td>" +
+						"<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" +
 						"<td>" + fedoraId + "</td>" +
 						"<td>" + items[i].type + "</td>" +
 						"<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' "+disabled+" data-id='" + items[i]._id + "'/></td>" +
@@ -354,30 +357,6 @@ function approveItem(id, callback) {
 		}
 	});
 };
-
-function loadData(link, callback, error) {
-	$.ajax({
-		url : socket + link,
-		cache : false,
-		type : "GET",
-		dataType : 'jsonp',
-		timeout : 2000,
-		success : function(data, status, r) {
-			callback(data.meta, data.objects);
-		},
-		error : function(x, h, r) {
-			if(r == "timeout") {
-				error("Connection to the API could not be established")
-			} else {
-				error(x)
-			}
-			console.log(x);
-			console.log(h);
-			console.log(r);
-		}
-	});
-
-}
 
 function backbone() {
 

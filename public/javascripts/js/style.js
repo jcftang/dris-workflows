@@ -127,11 +127,8 @@ function fillInSpecialDataFields(info,name,parent) {
 
 
 
-
-function loadBtnActions(){
-	//Triggers when there is an option/input that needs to be added to the form
-	$(".accordion-heading")
-	$("#properties button").click(function(event) {
+function loadPropertyActions(){
+		$("#properties button").click(function(event) {
 		event.preventDefault()
 		if($(this).text() == "objectId" || $(this).text() == "upload"  ) {
 			addProjectField($(this))
@@ -146,7 +143,9 @@ function loadBtnActions(){
 		$(".accordion-heading").removeClass("accordion-heading-focus");
 		$(this).addClass("accordion-heading-focus");
 	})
+}
 
+function loadNavigationActions(){
 	$(document).on("click",".breaddisabled",function(event) {
 		return false;
 	});
@@ -166,7 +165,23 @@ function loadBtnActions(){
 			}
 		});
 	});
-
+	//Handles navigation in the file structure
+	$(document).on("click", "form .breadcrumb li a", function(event) {
+		event.preventDefault()
+		//removes all the breadcrumbs after the clicked breadcrumb
+		$(this).parent().nextAll().remove();
+		//we don't want to load children'
+		goDeeper = false;
+		$(".row .breadcrumb").append("<li>")
+		//triggering backbone to load the children of the selected breadcrumb
+		workspace.navigate("#" + $(this).attr("href"), {
+			trigger : true
+		});
+	});
+}
+function loadBtnActions(){
+	loadPropertyActions()
+	loadNavigationActions()
 	$("#editItem1,#editItem2").click(function(event) {
 		event.preventDefault()
 		if(window.location.pathname == "/edit") {
@@ -225,14 +240,6 @@ function loadBtnActions(){
 		}
 
 	});
-
-
-	$(document).on("click", "#createItems", function(event) {
-		id = Backbone.history.fragment
-		id = id.substr(3, id.length);
-		$("#itemEditSelection").val(id)
-		emptyForm();
-	}); 
 
 
 	$(document).on("click","#createCollection,#createSerie,#createItems", function(event) {
