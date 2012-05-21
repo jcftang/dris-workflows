@@ -50,7 +50,7 @@ function showItems(items) {
 	for(var i = 0; i < items.length; i++) {
 		var label = "IN-"+items[i].label.substring(0, amountLblChars);
 		var title = "-"
-		if(items[i].properties.titleInfo != undefined) {
+		if((typeof items[i].properties) != "undefined" ) {
 			title = items[i].properties.titleInfo[0].title;
 		}
 
@@ -500,51 +500,56 @@ function createSelect(items, name) {
 }
 
 
+function createMetaDataModels(form, callback) {
+	if($(".dataform > div", form).length == 0) {
+		alert("t")
+		callback({});
+	}else {
+		var dataBlocks = $(".dataform > div", form).not(".upload");
+		Model = Backbone.Model.extend();
 
-function createMetaDataModels(form,callback) {
-	var dataBlocks = $(".dataform > div",form).not(".upload");
-	Model = Backbone.Model.extend();
-
-	var dataModel = new Model();
-	var parent = new Object();
-	for(var k = 0; k < dataBlocks.length; k++) {
-		var b = new Object();
-		if(parent[$(dataBlocks[k]).attr("id")] == undefined) {
-			parent[$(dataBlocks[k]).attr("id")] = new Array();
-		}
-
-		var fields = $("input,select,textarea", dataBlocks[k]).not("ul input, ul select");
-
-		for(var i = 0; i < fields.length; i++) {
-			if($(fields[i]).val() != "") {
-				b[$(fields[i]).attr("name")] = $(fields[i]).val();
+		var dataModel = new Model();
+		var parent = new Object();
+		for(var k = 0; k < dataBlocks.length; k++) {
+			var b = new Object();
+			if(parent[$(dataBlocks[k]).attr("id")] == undefined) {
+				parent[$(dataBlocks[k]).attr("id")] = new Array();
 			}
-		}
-		var lists = $("ul", dataBlocks[k])
-		for(var j = 0; j < lists.length; j++) {
-			var items = $("li", lists[j])
-			var itemsArray = [];
-			for(var i = 0; i < items.length; i++) {
-				var obj = new Object();
-				var selects = $("select", items[i])
-				for(var l = 0; l < selects.length; l++) {
-					obj[$(selects[l]).attr("name")] = $(selects[l]).val();
-					obj[$(selects[l]).attr("name")] = $(selects[l]).val();
+
+			var fields = $("input,select,textarea", dataBlocks[k]).not("ul input, ul select");
+
+			for(var i = 0; i < fields.length; i++) {
+				if($(fields[i]).val() != "") {
+					b[$(fields[i]).attr("name")] = $(fields[i]).val();
 				}
-				var selects = $("input,textarea", items[i])
-				for(var m = 0; m < selects.length; m++) {
-					obj[$(selects[m]).attr("name")] = $(selects[m]).val();
-					obj[$(selects[m]).attr("name")] = $(selects[m]).val();
-				}
-				itemsArray.push(obj)
 			}
-			b[$(lists[j]).attr("data-name")] = itemsArray;
+			var lists = $("ul", dataBlocks[k])
+			for(var j = 0; j < lists.length; j++) {
+				var items = $("li", lists[j])
+				var itemsArray = [];
+				for(var i = 0; i < items.length; i++) {
+					var obj = new Object();
+					var selects = $("select", items[i])
+					for(var l = 0; l < selects.length; l++) {
+						obj[$(selects[l]).attr("name")] = $(selects[l]).val();
+						obj[$(selects[l]).attr("name")] = $(selects[l]).val();
+					}
+					var selects = $("input,textarea", items[i])
+					for(var m = 0; m < selects.length; m++) {
+						obj[$(selects[m]).attr("name")] = $(selects[m]).val();
+						obj[$(selects[m]).attr("name")] = $(selects[m]).val();
+					}
+					itemsArray.push(obj)
+				}
+				b[$(lists[j]).attr("data-name")] = itemsArray;
+			}
+			parent[$(dataBlocks[k]).attr("id")].push(b);
+			dataModel.set(parent);
 		}
-		parent[$(dataBlocks[k]).attr("id")].push(b);
-		dataModel.set(parent);
+		callback(dataModel.toJSON());
 	}
-	callback(dataModel.toJSON());
 }
+
 
 
 function addProjectField(obj) {
