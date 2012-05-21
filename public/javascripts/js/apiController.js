@@ -98,7 +98,7 @@ function createActions() {
 		$("#seriesCollection").val(id)
 		emptyForm();
 	});
-
+	//fills in the parentid in the right input field and gets the value from the url
 	$(document).on("click", "#createItems", function(event) {
 		id = Backbone.history.fragment
 		id = id.substr(3, id.length);
@@ -117,10 +117,12 @@ function createActions() {
 			createItems(amount, amount);
 		}
 	});
+	//will create items for every media item
 	$("#createMediaItem").click(function(event) {
 		event.preventDefault();
 		createMediaItem(fileUploadLocation)
 	})
+	
 	$("#createMedia").live("click", function(event) {
 		id = Backbone.history.fragment
 		id = id.substr(3, id.length);
@@ -157,6 +159,7 @@ function createCollection() {
 		data.properties = model;
 		//sending the data to the server for creation
 		postData($('#collectionCreation'), 'POST', data, link, function(id) {
+			//incase of success
 			$(".successbox").fadeIn().delay(900).fadeOut();
 			fileUploadLocation = new Array()
 			goDeeper = false;
@@ -226,7 +229,7 @@ function createMediaItem(file) {
 	}
 }
 
-
+// will insert items starting from a certain object id
 function insertItems() {
 	var objId = parseInt($("#step4 #objectId").val());
 	loadData(driPath +"objects/" + $("#itemEditSelection").val() + "/list", function(data) {
@@ -247,7 +250,7 @@ function insertItems() {
 		}
 	});
 }
-
+//will create items with a new object id
 function createItems(itemAmount, objId) {
 	amount = parseInt(itemAmount);
 	objId = parseInt(objId);
