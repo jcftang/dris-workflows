@@ -55,7 +55,7 @@ function showItems(items) {
 		}
 		
 		if((typeof items[i].fileLocation) != "undefined" && (typeof items[i].properties) == "undefined"  ){
-			var nameStart = items[i].fileLocation[0].indexOf("/") +1;
+			var nameStart = items[i].fileLocation[0].indexOf("/");
 			title = items[i].fileLocation[0].substring(nameStart);
 		}
 
@@ -507,7 +507,6 @@ function createSelect(items, name) {
 
 function createMetaDataModels(form, callback) {
 	if($(".dataform > div", form).length == 0) {
-		alert("t")
 		callback({});
 	}else {
 		var dataBlocks = $(".dataform > div", form).not(".upload");

@@ -73,15 +73,13 @@ function loadStatistics(numb) {
 	if(numb <= stats.length - 1) {
 		var item = stats[numb]
 		var link = "/dev/stats/" + stats[numb]
-		//there is no all link, we just need the root
+		//there is no all link
 		if(item == "all") {
 			link = "/dev/stats/"
 		}
 
 		loadData(link, function(data) {
-			console.log(data)
-			
-			$("#stats tbody").append("<tr><td>" + item + " items</td><td>" + data + "</td>")
+			$("#stats tbody").append("<tr><td>" + item + "</td><td>" + data + "</td>")
 			numb++;
 			loadStatistics(numb)
 		})
@@ -220,7 +218,6 @@ function loadCreateData() {
 
 
 function createMediaItem(file) {
-	console.log(file)
 	if(file.length > 0) {
 		var link = socket + "/dev/objects";
 		var parent = $("#mediaParent").val();
@@ -292,9 +289,7 @@ function createItems(itemAmount, objId) {
 		}
 
 		createMetaDataModels("#itemCreation", function(model) {
-			console.log(model)
 			data.properties = model;
-			console.log(data)
 			postData($('#itemCreation'), 'POST', data, link, function(id) {
 				if(amount > 0 && objId > 0) {
 					objId = objId - 1;
@@ -507,10 +502,17 @@ function createPagination(meta) {
 		}
 	} else {
 		//checks if the currentpage is higher then the middle value of the pages in the bar
+		console.log((start + amountPages - currentPage) + " "+ (start + amountPages / 2) + " " + meta.numPages +" "+ amountPages)
 		if((start + amountPages - currentPage) < (start + amountPages / 2)) {
 			var diff = Math.floor(amountPages / 2 - (amountPages - currentPage))
 			startPage = start + diff
+			
+			if(start +diff+ amountPages <= meta.numPages){
+				console.log("wtf")
 			endPage = start + diff + amountPages;
+			}else{
+				endPage = meta.numPages
+			}
 		} else {
 			startPage = 1;
 			endPage = amountPages;
@@ -572,7 +574,7 @@ function createPagination(meta) {
 		pagination.append(pagecntrl)
 	};
 
-	if((meta.numPages - currentPage) > (amountPages / 2)) {
+	if((meta.numPages - currentPage) > (amountPages / 2) && meta.numPages > amountPages) {
 		pagination.append($("<li><a>...</a></li>"))
 		var li = $("<li>")
 		var a = $("<a>").attr('href', '#' + id + "/" + meta.numPages).text(meta.numPages)
@@ -846,7 +848,6 @@ function resetCreatePage() {
  * Loads in any data
  */
 function loadData(link, callback, error) {
-	console.log(link)
 	$.ajax({
 		url : socket + link,
 		cache : false,
@@ -854,9 +855,7 @@ function loadData(link, callback, error) {
 		dataType:"jsonp",
 		timeout:2000,
 		success : function(data, status, r) {
-			console.log(data)
 			if(data.objects){
-				console.log("calling")
 				callback(data.objects,data.meta);
 			}else{
 				
