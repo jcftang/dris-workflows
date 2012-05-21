@@ -508,8 +508,7 @@ function createPagination(meta) {
 			startPage = start + diff
 			
 			if(start +diff+ amountPages <= meta.numPages){
-				console.log("wtf")
-			endPage = start + diff + amountPages;
+				endPage = start + diff + amountPages;
 			}else{
 				endPage = meta.numPages
 			}
