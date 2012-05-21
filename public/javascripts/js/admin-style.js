@@ -200,7 +200,7 @@ function loadAdminData(page, amount) {
 			var disabled = (items[i].type == "item") ? "" : "disabled";
 			var label = "IN-"+items[i].label.substring(0, amountLblChars);
 			var title = "-"
-			if(items[i].properties.titleInfo != undefined) {
+			if((typeof items[i].properties.titleInfo[0]) != "undefined" ) {
 						title = items[i].properties.titleInfo[0].title;
 					}
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + 
@@ -256,7 +256,7 @@ function loadChildren(id, page, amount) {
 					var disabled = (items[i].type == "item") ? "" : "disabled";
 					var label = "IN-"+items[i].label.substring(0, amountLblChars);
 					var title="-"
-					if(items[i].properties.titleInfo != undefined) {
+					if((typeof items[i].properties.titleInfo[0]) != "undefined" ) {
 						title = items[i].properties.titleInfo[0].title;
 					}
 					if(items[i].status == "approved") {
