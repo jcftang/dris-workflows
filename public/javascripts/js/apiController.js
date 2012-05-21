@@ -15,6 +15,9 @@ $(document).ready(function() {
 	jQuery.support.cors = true;
 	//checks what page we are on
 	switch(window.location.pathname) {
+		case "/home":
+			loadStatistics(0);
+			break;
 		case "/edit":
 			workspace.navigate("", {
 				trigger : true
@@ -58,6 +61,33 @@ $(document).ready(function() {
 	});
 
 });
+
+
+//loads statistics in one by one, can otherwise not know what data is being loaded in.
+function loadStatistics(numb) {
+	if(numb == 0){
+		$("#stats tbody").empty()
+	}
+	//stats to be loaded in, must equal name in the link
+	var stats = ["all", "approved", "open"]
+	if(numb <= stats.length - 1) {
+		var item = stats[numb]
+		var link = "/dev/stats/" + stats[numb]
+		//there is no all link, we just need the root
+		if(item == "all") {
+			link = "/dev/stats/"
+		}
+
+		loadData(link, function(data) {
+			console.log(data)
+			
+			$("#stats tbody").append("<tr><td>" + item + " items</td><td>" + data + "</td>")
+			numb++;
+			loadStatistics(numb)
+		})
+	}
+}
+
 
 //updates all the objects that were selected at step1 in the edit page
 function updateChildren(data) {
