@@ -48,7 +48,13 @@ function showItems(items) {
 	$(".items ul").empty();
 
 	for(var i = 0; i < items.length; i++) {
-		root += "<li data-pos='" + i + "'><a data-type='" + items[i].type + "'  href='" + items[i]._id + "'>" + items[i].properties.titleInfo[0].title + " " + items[i]._id + "</a></li>";
+		var label = "IN-"+items[i].label.substring(0, amountLblChars);
+		var title = "-"
+		if(items[i].properties.titleInfo != undefined) {
+			title = items[i].properties.titleInfo[0].title;
+		}
+
+		root += "<li data-pos='" + i + "'><a data-type='" + items[i].type + "'  href='" + items[i]._id + "'>" + label + " / " + title + "</a></li>";
 		if(i == items.length - 1) {
 			$(".items ul").append(root);
 		}
