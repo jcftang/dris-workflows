@@ -18,7 +18,6 @@ function createPagination(meta) {
 		}
 	} else {
 		//checks if the currentpage is higher then the middle value of the pages in the bar
-		console.log((start + amountPages - currentPage) + " " + (start + amountPages / 2) + " " + meta.numPages + " " + amountPages)
 		if((start + amountPages - currentPage) < (start + amountPages / 2)) {
 			var diff = Math.floor(amountPages / 2 - (amountPages - currentPage))
 			startPage = start + diff
@@ -114,7 +113,6 @@ function createPagination(meta) {
 
 
 function loadData(link, callback, error) {
-	console.log(link)
 	$.ajax({
 		url : socket + link,
 		cache : false,
