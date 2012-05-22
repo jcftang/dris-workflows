@@ -1,5 +1,6 @@
 /**
  * @author Matthias Van Wambeke
+ * ONLY the edit and create page use this file. For Admin page js please refer to admin-style.js
  */
 
 //starts when the main html file is loaded

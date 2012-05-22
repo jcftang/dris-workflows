@@ -120,7 +120,8 @@ function createActions() {
 	//will create items for every media item
 	$("#createMediaItem").click(function(event) {
 		event.preventDefault();
-		createMediaItem(fileUploadLocation)
+		var option = $("#step5 input[name='media']:checked").val()
+			createMediaItem(fileUploadLocation,option)
 	})
 	
 	$("#createMedia").live("click", function(event) {
@@ -200,7 +201,7 @@ function createSeries() {
 	});
 }
 
-function createMediaItem(file) {
+function createMediaItem(file,option) {
 	if(file.length > 0) {
 		var link = socket + driPath +"objects";
 		var parent = $("#mediaParent").val();
@@ -213,11 +214,17 @@ function createMediaItem(file) {
 		if(parent == "") {
 			delete data.parentId;
 		}
-		data.fileLocation = [file[0]];
-		file.splice(0, 1)
-
+		if(option == "one"){
+			data.fileLocation = file
+		}else{
+			data.fileLocation = [file[0]];
+			file.splice(0, 1)
+		}
+		
 		postData($('#itemCreation'), 'POST', data, link, function(id) {
-			createMediaItem(file)
+			if(option == "multi"){
+				createMediaItem(file,option)
+			}
 		});
 	} else {
 		$(".successbox").html("<strong>Success!</strong><br> <p>Creation successful.</p>").fadeIn().delay(1200).fadeOut();
