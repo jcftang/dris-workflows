@@ -76,6 +76,5 @@ exports.compare = function(req, res) {
 		id : "compare",
 		title : "Compare",
 		layout: '_layouts/layoutAdmin',
-		objid: req.params.id
 	});
 }
