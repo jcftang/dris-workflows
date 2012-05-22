@@ -9,6 +9,7 @@ var parentType = "";
 var currentParentName = ""
 
 $(document).ready(function() {
+	
 	workspace.navigate("", {
 		trigger : true
 	});
@@ -71,7 +72,7 @@ $(document).ready(function() {
 		console.log("btn")
 		var btn = $(e.target)
 		var id = btn.attr('data-id')
-		window.location = "/compare#compare/"+id
+		window.location = "/compare#compare/" + id
 	});
 	$(document).on("click", "form .breadcrumb li a", function(event) {
 		event.preventDefault()
@@ -83,7 +84,6 @@ $(document).ready(function() {
 		});
 	});
 })
-
 function createPagination(meta) {
 	var startPage;
 	var endPage;
@@ -107,9 +107,9 @@ function createPagination(meta) {
 		if((start + amountPages - currentPage) < (start + amountPages / 2)) {
 			var diff = Math.floor(amountPages / 2 - (amountPages - currentPage))
 			startPage = start + diff
-				if(start +diff+ amountPages <= meta.numPages){
+			if(start + diff + amountPages <= meta.numPages) {
 				endPage = start + diff + amountPages;
-			}else{
+			} else {
 				endPage = meta.numPages
 			}
 		} else {
@@ -191,20 +191,19 @@ function createPagination(meta) {
 	pagination.append(goForward)
 }
 
-
 function loadAdminData(page, amount) {
 	$('#loadingDiv').show()
-	var link = driPath +"objects?page=" + (page - 1) + "&amount=" + amount + "&callback=?"
+	var link = driPath + "objects?page=" + (page - 1) + "&amount=" + amount + "&callback=?"
 
 	loadData(link, function(items, meta) {
 		createPagination(meta)
 		$("tbody").empty();
 		for(i in items) {
-			var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='"+items[i].fedoraId + "' /> <button class='btn btnCompareFedora' data-id='"+items[i]._id +"' type='button' value='compare'>Compare</button></div>" : "-";
+			var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='" + items[i].fedoraId + "' /> <button class='btn btnCompareFedora' data-id='" + items[i]._id + "' type='button' value='compare'>Compare</button></div>" : "-";
 			var disabled = (items[i].type == "item") ? "" : "disabled";
-			var label = "IN-"+items[i].label.substring(0, amountLblChars);
+			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var title = "-"
-		
+
 			if(( typeof items[i].properties.titleInfo[0]) != "undefined") {
 				title = items[i].properties.titleInfo[0].title;
 			}
@@ -213,13 +212,7 @@ function loadAdminData(page, amount) {
 				title = items[i].fileLocation[0].substring(nameStart);
 			}
 
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + 
-			"<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + title + "</a></td>" +
-			"<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" +  
-			"<td>" + fedoraId + "</td>" + 
-			"<td>" + items[i].type + "</td>" + 
-			"<td><input type='button' class='btn btn-success btn-mini approveItem' "+disabled+" value='Approve' data-id='" + items[i]._id + "'/></td>" + 
-			"<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + title + "</a></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' " + disabled + " value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 		}
 		if(items.length == 0) {
 			$("tbody").append("<tr><td colspan='7'>No items available</td></tr>")
@@ -232,13 +225,11 @@ function loadAdminData(page, amount) {
 	});
 }
 
-
-
 function loadChildren(id, page, amount) {
 	$("tbody").empty();
 	createLoadingRow();
 
-	var link = driPath +"objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
+	var link = driPath + "objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
 	loadData(link, function(items, meta) {
 		$("tbody").empty();
 		$('#loadingDiv').hide()
@@ -267,21 +258,9 @@ function loadChildren(id, page, amount) {
 					}
 
 					if(items[i].status == "approved") {
-						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" +
-						"<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title + "</a></td>" +
-						"<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" +
-						"<td>" + fedoraId + "</td>" +
-						"<td>" + items[i].type + "</td>" +
-						"<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" +
-						"<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title + "</a></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 					} else {
-						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" +
-						"<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title+ "</a></td>" +
-						"<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" +
-						"<td>" + fedoraId + "</td>" +
-						"<td>" + items[i].type + "</td>" +
-						"<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' "+disabled+" data-id='" + items[i]._id + "'/></td>" +
-						"<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title + "</a></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' " + disabled + " data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 					}
 				}
 			}
@@ -296,8 +275,17 @@ function loadChildren(id, page, amount) {
 		$('#loadingDiv').append(td)
 	});
 }
-
-
+function loadCompareData(id){
+	console.log("Comparing " + id)
+	var link = driPath + "objects/" + id + "/compare"
+	loadData(link, function(data) {
+		console.log(data)
+		$('#mongoData').text(JSON.stringify(data.mongo, undefined, 4))
+		$('#fedoraData').text(data.fedora)
+	},function(err){
+		console.log(err)
+	});
+}
 function approveAllSelected() {
 	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
 	if(confirmDialog == true) {
@@ -313,7 +301,6 @@ function approveAllSelected() {
 	}
 };
 
-
 function removeAllSelected() {
 	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
 	if(confirmDialog == true) {
@@ -322,15 +309,14 @@ function removeAllSelected() {
 				$("#" + id).remove();
 			})
 		});
-		goDeeper = false; 
+		goDeeper = false;
 	}
 };
-
 
 function removeItem(id, callback) {
 	$.ajax({
 		type : "get",
-		url : socket + driPath +"objects/" + id + "/delete",
+		url : socket + driPath + "objects/" + id + "/delete",
 		dataType : "jsonp",
 		cache : false,
 		success : function(data) {
@@ -345,7 +331,7 @@ function removeItem(id, callback) {
 
 function approveItem(id, callback) {
 	$.ajax({
-		url : socket + driPath +"objects/" + id + "/approve",
+		url : socket + driPath + "objects/" + id + "/approve",
 		type : "GET",
 		success : function(data) {
 			callback(null, data);
@@ -365,7 +351,8 @@ function backbone() {
 			"" : "collection",
 			"/:page" : "collectionPage",
 			":id/:page" : "pageRoute",
-			":id" : "defaultRoute"
+			":id" : "defaultRoute",
+			"compare/:id" : "compare"
 		},
 		collection : function() {
 			loadAdminData(1, itemsPerPage);
@@ -398,8 +385,10 @@ function backbone() {
 			loadChildren(id, 1, itemsPerPage);
 		},
 		pageRoute : function(id, page) {
-			
 			loadChildren(id, page, itemsPerPage);
+		},
+		compare : function(id, page) {
+			loadCompareData(id)
 		}
 	});
 
