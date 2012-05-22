@@ -211,7 +211,7 @@ function loadBtnActions(){
 			}
 
 			createMetaDataModels("#singleData", function(model) {
-				var link = socket + "/dev/objects/" + $(".items li.accordion-heading-focus").find("a").attr("href") + "/update";
+				var link = socket + driPath +"objects/" + $(".items li.accordion-heading-focus").find("a").attr("href") + "/update";
 				data.properties = model
 				updateData('POST', data, link, function(id) {
 					$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
@@ -230,9 +230,9 @@ function loadBtnActions(){
 		event.preventDefault();
 		$("#multi").hide();
 		$("#single").show();
-		var link = "/dev/objects"
+		var link = driPath +"objects"
 		if($.browser.msie) {
-			link = "/dev/objects/"
+			link = driPath +"objects/"
 		}
 		var pos = $(this).parent().attr("data-pos");
 		if(editItems[pos]) {

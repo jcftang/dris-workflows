@@ -30,7 +30,11 @@ function createPagination(meta) {
 			}
 		} else {
 			startPage = 1;
+			if(meta.numPages < amountPages){
+				endPage = meta.numPages;
+			}else{
 			endPage = amountPages;
+			}
 		}
 	}
 
