@@ -72,9 +72,10 @@ exports.results = function(req, res) {
 	});
 }
 exports.compare = function(req, res) {
-
 	res.render('compare', {
 		id : "compare",
 		title : "Compare",
+		layout: '_layouts/layoutAdmin',
+		objid: req.params.id
 	});
 }

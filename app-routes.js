@@ -17,7 +17,7 @@ exports.createRoutes = function make(app) {
 	app.get('/admin', routes.admin);
 	app.get('/upload', routes.upload)
 	app.get('/media', routes.media)
-	app.get('/compare', routes.compare)
+	app.get('/compare/:id', routes.compare)
 	// Redirects
 	app.get('/', function(req, res) {
 		res.redirect('/home');
