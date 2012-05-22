@@ -1,5 +1,6 @@
 /**
  * @author Matthias Van Wambeke
+ * ONLY the edit and create page use this file. For Admin page js please refer to admin-style.js
  */
 
 //starts when the main html file is loaded
@@ -71,7 +72,6 @@ function showItems(items) {
 
 var itemPos = 0;
 function fillUpForm(data) {
-	console.log(data)
 	itemPos = 0;
 	emptyForm()
 	var position = 0;
@@ -189,6 +189,7 @@ function loadBtnActions(){
 				"properties" : {},
 			};
 			var pos = $(".items li.accordion-heading-focus").attr('data-pos');
+			$(".items li.accordion-heading-focus").removeClass("changedItem");
 			data.dateModified = Date.now();
 			if(editItems[pos].parentId) {
 				data.parentId = editItems[pos].parentId
@@ -374,11 +375,8 @@ function addEditFormFields(dataObject, name) {
 
 var specialFields = ["topicsubject","internetMediaTypephysicalDescription","languageTermlanguage","dateOtheroriginInfo","abstractabstract","typephysicalDescription"]
 function checkSpecialField(name) {
-	//console.log(name)
 	for(var i = 0; i < specialFields.length; i++) {
-		//console.log(specialFields[i])
 		if(name == specialFields[i]) {
-			console.log(name)
 			return true;
 		}
 	}

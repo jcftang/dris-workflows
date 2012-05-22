@@ -51,7 +51,7 @@ div.container
                     .dummy
           form.form-horizontal#serieCreation(enctype='multipart/form-data', method='post', action='')
             #step3
-              .span7
+              .span9
                 #title
                   legend Series 
                   fieldset
@@ -68,7 +68,7 @@ div.container
                     .dummy
           form.form-horizontal#itemCreation(enctype='multipart/form-data', method='post', action='')
             #step4
-              .span7
+              .span9
                 legend Item
                 .control-group
                        label.control-label(for='amount') Amount of items
@@ -86,13 +86,22 @@ div.container
                       a#createItemBtn(href='#') Save
                   .dummy
           #step5
-           .span7
+           .span9
                 legend Create items with media
                 .control-group
                        label.control-label(for='series') parentId
                        .controls
                          input#mediaParent.input-xlarge.disabled(type='text', disabled='')
-                br
+                .dummy
+                .control-group
+                   label.control-label Choose you option
+                   .controls
+                     label.radio
+                       input#optionsRadios1(type='radio', name='media', value='one', checked='checked')
+                       | Create one item and put all these files in it.
+                     label.radio
+                       input#optionsRadios2(type='radio', name='media', value='multi')
+                       | Create an item for each file.
                 include _includes/upload
                 .form-actions
                   ul.pager

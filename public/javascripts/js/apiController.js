@@ -120,7 +120,8 @@ function createActions() {
 	//will create items for every media item
 	$("#createMediaItem").click(function(event) {
 		event.preventDefault();
-		createMediaItem(fileUploadLocation)
+		var option = $("#step5 input[name='media']:checked").val()
+			createMediaItem(fileUploadLocation,option)
 	})
 	
 	$("#createMedia").live("click", function(event) {
@@ -200,7 +201,7 @@ function createSeries() {
 	});
 }
 
-function createMediaItem(file) {
+function createMediaItem(file,option) {
 	if(file.length > 0) {
 		var link = socket + driPath +"objects";
 		var parent = $("#mediaParent").val();
@@ -213,11 +214,17 @@ function createMediaItem(file) {
 		if(parent == "") {
 			delete data.parentId;
 		}
-		data.fileLocation = [file[0]];
-		file.splice(0, 1)
-
+		if(option == "one"){
+			data.fileLocation = file
+		}else{
+			data.fileLocation = [file[0]];
+			file.splice(0, 1)
+		}
+		
 		postData($('#itemCreation'), 'POST', data, link, function(id) {
-			createMediaItem(file)
+			if(option == "multi"){
+				createMediaItem(file,option)
+			}
 		});
 	} else {
 		$(".successbox").html("<strong>Success!</strong><br> <p>Creation successful.</p>").fadeIn().delay(1200).fadeOut();
@@ -298,25 +305,40 @@ function createItems(itemAmount, objId) {
 /*------------------------------------
  *           -- EDIT --
  *------------------------------------ */
+
 //updates all the objects that were selected at step1 in the edit page
-function updateChildren(data) {
-	for(var i = 0; i < data.length; i++) {
-		var link = socket + driPath +"objects/" + data[i]._id + "/update";
-		var items = $('#globalData').serializeArray();
-		//updating the properties of all the items that you selected
-		for(var j = 0; j < items.length; j++) {
-			var item = data[i];
-			eval("item.properties." + items[j].name + "='" + items[j].value + "'");
-		}
-		//sending the new data to the server
-		updateData('POST', {
-			"properties" : data[i].properties
-		}, link, function(id) {
-		});
+
+function updateChildren(data, itemPos) {
+	if(itemPos < data.length) {
+		var link = socket + driPath + "objects/" + data[itemPos]._id + "/update";
+		createMetaDataModels('#globalData', function(items) {
+			if(typeof data[itemPos].properties == "undefined"){
+					data[itemPos].properties = {}
+				}
+			//updating the properties of all the items that you selected
+			
+			for(var j in items) {
+				console.log(data[itemPos])
+				data[itemPos].properties[j] = items[j]
+			}
+			//sending the new data to the server
+			updateData('POST', {
+				"properties" : data[itemPos].properties
+			}, link, function(id) {
+				itemPos++;
+				updateChildren(data,itemPos)
+			});
+		})
+		
+		
+	}else{
+		//displays the update message
+		$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
+		loadEditObjects()
 	}
-	//displays the update message
-	$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
 }
+
+
 function loadEditData() {
 	$(document).on("click", ".editRow", function() {
 		loadData(driPath +"objects/" + $(this).attr("data-id"), function(data) {
@@ -334,11 +356,9 @@ function loadEditData() {
 		});
 	})
 
-	$("#step2 form input").live("blur", function() {
+	$("#step2 #single form input").live("blur", function() {
 
-		$(".items li.accordion-heading-focus").css({
-			"background-color" : "#9F111B"
-		})
+		$(".items li.accordion-heading-focus").addClass("changedItem");
 		var pos = $(".items li.accordion-heading-focus").attr('data-pos');
 		workspace.navigate("#step2")
 		createMetaDataModels("#singleData", function(data) {
@@ -381,8 +401,9 @@ function loadEditData() {
 		});
 		loadpIdData(1, itemsPerPage);
 	})
-	$("#gblUpdate").click(function() {
-		updateChildren(editItems);
+	$("#gblUpdate").click(function(event) {
+		event.preventDefault()
+		updateChildren(editItems,0);
 	})
 	$("#gblEdit").click(function(event) {
 		event.preventDefault();
@@ -411,10 +432,10 @@ function loadEditData() {
 }
 
 function loadEditObjects() {
-	var size = $('tbody input:checked').size()
+	var size = $('#step1 tbody input:checked').size()
 	var arr = new Array();
 	$(".pId").text("None");
-	var objects = $('tbody input:checked');
+	var objects = $('#step1 tbody input:checked');
 
 	for(var i = 0; i < objects.length; i++) {
 		loadData(driPath +"objects/" + $(objects[i]).attr("data-id"), function(data) {
@@ -597,7 +618,6 @@ function backbone() {
 		},
 
 		step2 : function() {
-			console.log("step2")
 			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step2,#step2Info,#single").show();
 			$("#properties").show();
@@ -612,27 +632,23 @@ function backbone() {
 			}
 		},
 		step3 : function() {
-			console.log("step3")
 			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step3,#step3Info").show();
 			$("#properties").show();
 
 		},
 		step4 : function() {
-			console.log("step4")
 			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step4,#step4Info").show();
 			$("#properties").show();
 
 		},
 		step5 : function() {
-			console.log("step5")
 			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step5,#step5Info").show();
 
 		},
 		collection : function() {
-			console.log("lodaing")
 			$("tbody").empty();
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
@@ -644,8 +660,6 @@ function backbone() {
 			resetCreatePage()
 		},
 		collectionPage : function(page) {
-			console.log("coll2")
-			//console.log("page" + page)
 			loadTopLevelData(page, itemsPerPage);
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {
@@ -655,7 +669,6 @@ function backbone() {
 			goDeeper = false;
 		},
 		defaultRoute : function(id) {
-			console.log("defaultRoute")
 			if(goDeeper) {
 				$("form .breadcrumb a:last").parent().removeClass("active");
 				$(".row .breadcrumb").append("<li class='active'><a href='#id/" + id + "'>" + parentType + ": " + currentParentName + "</a><span class='divider'>/</span></li>");
@@ -703,11 +716,9 @@ function backbone() {
 			loadPidChildren(id, 1, itemsPerPage);
 		},
 		pageRoute : function(id, page) {
-			//console.log(page)
 			loadChildren(id, page, itemsPerPage);
 		},
 		pageRoutePid : function(id, page) {
-			//console.log(page)
 			loadPidChildren(id, page, itemsPerPage);
 		},
 	});

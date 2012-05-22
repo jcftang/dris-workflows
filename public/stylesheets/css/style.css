@@ -74,6 +74,13 @@ i.icon-refresh {
 .upload td {
 	padding:4px 0px 4px 0;
 }
+#step5 .upload td{
+	padding:10px !important;
+}
+
+#step5 form{
+	width: 100%;
+}
 .upload button {
 	margin-right:5px;
 }
@@ -258,4 +265,7 @@ footer p{
 	float:right;
 }
 
+.changedItem{
+	background-color : #9F111B;
+}
 
