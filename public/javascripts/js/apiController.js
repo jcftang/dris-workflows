@@ -474,7 +474,8 @@ function loadTopLevelData(page, amount) {
 			}
 
 			var title = "-"
-			if(( typeof items[i].properties.titleInfo[0]) != "undefined") {
+			console.log(items[i].properties.titleInfo.length)
+			if(( typeof items[i].properties.length) != "undefined") {
 				title = items[i].properties.titleInfo[0].title;
 			}
 			if(( typeof items[i].fileLocation) != "undefined" && ( typeof items[i].properties.titleInfo[0]) == "undefined") {

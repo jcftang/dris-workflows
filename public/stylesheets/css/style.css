@@ -269,3 +269,12 @@ footer p{
 	background-color : #9F111B;
 }
 
+#step1 .icon{
+	float:right;
+	cursor: pointer;
+}
+
+.infoMeta td{
+	background-color: #FFF !important;
+}
+

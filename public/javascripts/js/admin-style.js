@@ -35,6 +35,23 @@ $(document).ready(function() {
 				console.log("Select an action");
 		}
 	});
+	
+	$(document).on("click",".icon-eye-open",function(){
+		var item = $(this);
+		if(!$(this).parent().parent().next().hasClass("infoMeta")){
+			$('.infoMeta').remove()
+			loadData(driPath +"objects/" + $(this).attr("data-id"), function(data) {
+				displayData(data,item)
+			});
+			
+		}
+		else{
+			$('.infoMeta').remove()
+		}
+		
+		
+		
+	})
 
 	$('.removeItem').live("click", function() {
 		$this = $(this)
@@ -84,6 +101,46 @@ $(document).ready(function() {
 	});
 })
 
+function displayData(data,item){
+	var root = "<table class='table-bordered'><thead><th>type</th><th>data</th></thead><tbody>"
+	for(var i in data){
+	
+		if(i != "properties"){
+			root += "<tr><td>"+i+"</td><td>"+data[i]+"</td><tr>"
+		}
+		
+	}
+	
+	for(var i in data.properties) {
+		var obj = i;
+		root += "<tr><th colspan='2'>" + i + "</th><tr>";
+		for(var j in data.properties[i]) {
+			var info = data.properties[obj][j]
+			for(i in info) {
+				root += "<tr><td>" + i + "</td><td>" + info[i] + "</td><tr>"
+				if( typeof info[i] == "object") {
+					for(var i in info) {
+						for(j in info[i]) {
+							root += "<tr><td>" + j+ "</td><td>" + info[j] + "</td><tr>" 
+						}
+					}
+				}
+			}
+
+		}
+
+	}
+
+	root += "</tbody></table>"
+	$(item).parent().parent().after("<tr class='infoMeta'><td colspan='7'>"+root+"</td></tr>")
+}
+
+function fillInSpecialDataFields() {
+
+	
+
+}
+
 
 function loadAdminData(page, amount) {
 	$('#loadingDiv').show()
@@ -107,7 +164,7 @@ function loadAdminData(page, amount) {
 			}
 
 			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + 
-			"<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + title + "</a></td>" +
+			"<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + title + "</a><i data-id='"+items[i]._id+"'class='icon icon-eye-open'></i></td>" +
 			"<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" +  
 			"<td>" + fedoraId + "</td>" + 
 			"<td>" + items[i].type + "</td>" + 
