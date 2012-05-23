@@ -269,15 +269,23 @@ footer p{
 	background-color : #9F111B;
 }
 
-#step1 .icon{
-	float:right;
+
+#step1 .icon {
+	float: right;
+}
+
+.collapse, #step1 .icon {
 	cursor: pointer;
+}
+
+.collapse ~ tr{
+	display:none;
 }
 
 .infoMeta td{
 	background-color: #FFF !important;
 }
 .infoFloat{
-	float:left;
+	float:left !important;
 }
 

@@ -1,21 +1,25 @@
 $(document).ready(function(){
-	$(document).on("click",".icon-eye-open",function(){
+
+	$(document).on("click", ".icon-eye-open", function() {
 		var item = $(this);
-		if(!$(this).parent().parent().next().hasClass("infoMeta")){
+		if(!$(this).parent().parent().next().hasClass("infoMeta")) {
 			$('.infoMeta').remove()
-			var link = driPath +"objects/" + $(this).attr("data-id");
+			var link = driPath + "objects/" + $(this).attr("data-id");
 			loadData(link, function(data) {
-				displayData(data,item,link)
+				displayData(data, item, link)
 			});
-			
-		}
-		else{
+
+		} else {
 			$('.infoMeta').remove()
 		}
-		
-		
-		
+
 	})
+	
+	$(document).on("click","tr .collapse",function(){
+		
+		$(this).nextAll().toggle()
+	})
+
 })
 
 function createPagination(meta) {
@@ -172,8 +176,8 @@ function createLoadingRow() {
 
 
 function displayData(data, item, link) {
-	var root = "<table class='table-bordered infoFloat'>"
-	root += "<tr><th colspan='2'><h2>General</h2></th></tr><tr><th>type</th><th>data</th>";
+	var root = "<table class='table-bordered infoFloat span6'>"
+	root += "<tr class='collapse'><th colspan='2'><h2>General</h2></th></tr><tr><th>type</th><th>data</th>";
 	for(var i in data) {
 
 		if(i != "properties" && i != "fileLocation") {
@@ -184,17 +188,17 @@ function displayData(data, item, link) {
 	root +=  "<tr><td>Json</td><td><a href='"+socket+link+"'>" + link + "</a></td><tr>";
 	root +=  "<tr><td>Dulbin core</td><td><a href='"+socket+link+".dc'>" + link + ".dc</a></td><tr>";
 	if(data.fileLocation) {
-		root += "<tr><th colspan='2'><h2>Files</h2></th></tr>";
+		root += "</table><table class='table-bordered span6'><tr class='collapse'><th colspan='2'><h2>Files</h2></th></tr>";
 		for(var i = 0; i < data.fileLocation.length; i++) {
 			root += "<tr><td colspan='2'><a href='" + publicDirectory + "/" + data.fileLocation[i] + "'>" + data.fileLocation[i] + "</a></td></tr>";
 		}
 	}
 
 	root += "</table>"
-	var properties = "<table class='table-bordered infoFloat'><tr><th colspan='2'><h2>Properties</h2></th><tr>";
+	var properties = "<table class='table-bordered infoFloat span6'><tr class='collapse'><th colspan='2'><h2>Properties</h2></th><tr>";
 	for(var i in data.properties) {
 		var obj = i;
-		properties += "<tr><th colspan='2'><h3>" + i + "</h3></th><tr>";
+		properties += "<tr class='collapse'><th colspan='2'><h3>" + i + "</h3></th><tr>";
 		for(var j in data.properties[i]) {
 			var info = data.properties[obj][j]
 			for(i in info) {
@@ -221,4 +225,6 @@ function displayData(data, item, link) {
 
 	properties += "</table>"
 	$(item).parent().parent().after("<tr class='infoMeta'><td colspan='7'>" + root+properties + "</td></tr>")
+	$("tr .collapse").eq(0).nextAll().show()
+	console.log($("tr .collapse").eq(0))
 }
