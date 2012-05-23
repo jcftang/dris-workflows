@@ -66,7 +66,6 @@ i.icon-refresh {
 }
 .upload {
 	margin-right:-10px;
-	padding-left:20px;
 }
 #step5 .upload{
 	padding-left:0px !important;
@@ -176,7 +175,7 @@ li.selected {
 .btn h2, .pId, .pIdContainer p, #step2 .well, #step2 span7, .list {
 	float:left
 }
-#properties i {
+#properties i, td .collapse i{
 	float:right;
 	margin-top:10px;
 }
@@ -288,5 +287,8 @@ footer p{
 .infoFloat{
 	float:left !important;
 	margin-right:10px;
+}
+.fileupload-buttonbar{
+	padding-left: 20px;
 }
 

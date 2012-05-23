@@ -15,10 +15,12 @@ $(document).ready(function(){
 
 	})
 	
-	$(document).on("click","tr .collapse",function(){
-		
+	$(document).on("click", "tr .collapse", function() {
 		$(this).nextAll().toggle()
+		$("i", this).toggleClass("icon-plus")
+		$("i", this).toggleClass("icon-minus")
 	})
+
 
 })
 
@@ -177,7 +179,7 @@ function createLoadingRow() {
 
 function displayData(data, item, link) {
 	var root = "<table class='table-bordered infoFloat span6'>"
-	root += "<tr class='collapse'><th colspan='2'><h2>General</h2></th></tr><tr><th>type</th><th>data</th>";
+	root += "<tr class='collapse'><th colspan='2'><i class='icon-minus'></i><h2>General</h2></th></tr><tr><th>type</th><th>data</th>";
 	for(var i in data) {
 
 		if(i != "properties" && i != "fileLocation") {
@@ -186,16 +188,18 @@ function displayData(data, item, link) {
 
 	}
 	root +=  "<tr><td>Json</td><td><a href='"+socket+link+"'>" + link + "</a></td><tr>";
+	if(data.properties != undefined){
 	root +=  "<tr><td>Dulbin core</td><td><a href='"+socket+link+".dc'>" + link + ".dc</a></td><tr>";
+	}
 	if(data.fileLocation) {
-		root += "</table><table class='table-bordered span6 infoFloat'><tr class='collapse'><th colspan='2'><h2>Files</h2></th></tr>";
+		root += "</table><table class='table-bordered span6 infoFloat'><tr class='collapse'><th colspan='2'><i class='icon-plus'></i><h2>Files</h2></th></tr>";
 		for(var i = 0; i < data.fileLocation.length; i++) {
 			root += "<tr><td colspan='2'><a href='" + publicDirectory + "/" + data.fileLocation[i] + "'>" + data.fileLocation[i] + "</a></td></tr>";
 		}
 	}
 
 	root += "</table>"
-	var properties = "<table class='table-bordered infoFloat span6'><tr class='collapse'><th colspan='2'><h2>Properties</h2></th><tr>";
+	var properties = "<table class='table-bordered infoFloat span6'><tr class='collapse'><th colspan='2'><i class='icon-plus'></i><h2>Properties</h2></th><tr>";
 	for(var i in data.properties) {
 		var obj = i;
 		properties += "<tr class='collapse'><th colspan='2'><h3>" + i + "</h3></th><tr>";
@@ -218,7 +222,7 @@ function displayData(data, item, link) {
 			}
 		}
 	}
-	console.log(data.properties)
+	
 	if(data.properties == undefined){
 		properties += "<tr><td colspan='2'>None</td></tr>"
 	}

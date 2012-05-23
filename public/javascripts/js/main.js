@@ -16,13 +16,13 @@ $(function () {
     'use strict';
 
     // Initialize the jQuery File Upload widget:
-    $('#fileupload').fileupload({
+    $('.fileupload').fileupload({
     	forceIframeTransport: true,
     	url: socket+driPath+"upload"
     });
 
     // Enable iframe cross-domain access via redirect option:
-    $('#fileupload').fileupload(
+    $('.fileupload').fileupload(
         'option',
         'redirect',
         window.location.href.replace(
