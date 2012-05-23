@@ -18,6 +18,7 @@ $(function () {
     // Initialize the jQuery File Upload widget:
     $('#fileupload').fileupload({
     	forceIframeTransport: true,
+    	url: socket+driPath+"upload"
     });
 
     // Enable iframe cross-domain access via redirect option:

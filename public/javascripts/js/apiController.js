@@ -75,16 +75,7 @@ function loadStatistics(numb) {
  *           -- CREATE --
  *------------------------------------ */
 function loadCreateData() {
-	//settings for the file upload plugin
-	$('#uploadFile').fileupload({
-		forceIframeTransport : true,
-		url : this.action,
-		done : function(e, data) {
-		}
-	})
-	$('#uploadFile').fileupload('option', 'redirect', window.location.href.replace(/\/[^\/]*$/, '/cors/result?'));
 	createActions()
-
 }
 
 
