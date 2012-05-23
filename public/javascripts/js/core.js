@@ -1,3 +1,22 @@
+$(document).ready(function(){
+	$(document).on("click",".icon-eye-open",function(){
+		var item = $(this);
+		if(!$(this).parent().parent().next().hasClass("infoMeta")){
+			$('.infoMeta').remove()
+			loadData(driPath +"objects/" + $(this).attr("data-id"), function(data) {
+				displayData(data,item)
+			});
+			
+		}
+		else{
+			$('.infoMeta').remove()
+		}
+		
+		
+		
+	})
+})
+
 function createPagination(meta) {
 	var startPage;
 	var endPage;
@@ -148,4 +167,55 @@ function createLoadingRow() {
 	tr.append(td)
 
 	$('tbody').append(tr)
+}
+
+
+function displayData(data, item) {
+	var root = "<table class='table-bordered infoFloat'>"
+	root += "<tr><th colspan='2'><h2>General</h2></th></tr><tr><th>type</th><th>data</th>";
+	for(var i in data) {
+
+		if(i != "properties" && i != "fileLocation") {
+			root += "<tr><td>" + i + "</td><td>" + data[i] + "</td><tr>"
+		}
+
+	}
+
+	if(data.fileLocation) {
+		root += "<tr><th colspan='2'><h2>Files</h2></th></tr>";
+		for(var i = 0; i < data.fileLocation.length; i++) {
+			root += "<tr><td colspan='2'><a href='" + publicDirectory + "/" + data.fileLocation[i] + "'>" + data.fileLocation[i] + "</a></td></tr>";
+		}
+	}
+	root += "</table>"
+	var properties = "<table class='table-bordered infoFloat'><tr><th colspan='2'><h2>Properties</h2></th><tr>";
+	for(var i in data.properties) {
+		var obj = i;
+		properties += "<tr><th colspan='2'><h3>" + i + "</h3></th><tr>";
+		for(var j in data.properties[i]) {
+			var info = data.properties[obj][j]
+			for(i in info) {
+
+				if( typeof info[i] == "object") {
+					var info = info[i]
+					for(var k in info) {
+						properties += "<tr><th colspan='2'>" + k + "</th><tr>";
+						for(l in info[k]) {
+
+							properties += "<tr><td>" + l + "</td><td>" + info[k][l] + "</td><tr>"
+						}
+					}
+				} else {
+					properties += "<tr><td>" + i + "</td><td>" + info[i] + "</td><tr>"
+				}
+			}
+		}
+	}
+	console.log(data.properties)
+	if(data.properties == undefined){
+		properties += "<tr><td colspan='2'>None</td></tr>"
+	}
+
+	properties += "</table>"
+	$(item).parent().parent().after("<tr class='infoMeta'><td colspan='7'>" + root+properties + "</td></tr>")
 }

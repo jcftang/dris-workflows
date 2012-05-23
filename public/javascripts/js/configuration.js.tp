@@ -2,15 +2,16 @@
  * @author Matthias Van Wambeke
  */
 
-//Configuration to the API server.
 var port = 4000;
-var socket = 'http://localhost:' + port;
+var socket = 'http://strife.tchpc.tcd.ie:' + port;
 
 //amount of objects you want in the tables
 var itemsPerPage = 20;
 //amount of pages being displayed in the pagination
 var amountPages = 10;
 //amount of charachters to be displayed of the label of an object
-var amountLblChars = 6
+var amountLblChars = 6;
 //base path to the dri
 var driPath = "/dev/"
+//path to publicDirectory of the images (MUST BE SAME AS on DRI-API)
+var publicDirectory = "http://ceres.tchpc.tcd.ie/~qgrootbl/uploads"

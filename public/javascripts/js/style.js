@@ -51,14 +51,23 @@ function showItems(items) {
 	for(var i = 0; i < items.length; i++) {
 		var label = "IN-"+items[i].label.substring(0, amountLblChars);
 		var title = "-"
-		if((typeof items[i].properties) != "undefined" ) {
-			title = items[i].properties.titleInfo[0].title;
+
+		if(( typeof items[i].properties) != "undefined") {
+				if(items[i].properties.titleInfo[0]) {
+				title = items[i].properties.titleInfo[0].title;
+				}
+			}
+
+		if(( typeof items[i].fileLocation) != "undefined") {
+			if(( typeof items[i].properties ) == "undefined") {
+				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+				title = items[i].fileLocation[0].substring(nameStart);
+			} else if(( typeof items[i].properties.titleInfo) == "undefined") {
+				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+				title = items[i].fileLocation[0].substring(nameStart);
+			}
 		}
-		
-		if((typeof items[i].fileLocation) != "undefined" && (typeof items[i].properties) == "undefined"  ){
-			var nameStart = items[i].fileLocation[0].indexOf("/");
-			title = items[i].fileLocation[0].substring(nameStart);
-		}
+
 
 		root += "<li data-pos='" + i + "'><a data-type='" + items[i].type + "'  href='" + items[i]._id + "'>" + label + " / " + title + "</a></li>";
 		if(i == items.length - 1) {

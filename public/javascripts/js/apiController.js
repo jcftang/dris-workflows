@@ -125,6 +125,7 @@ function createActions() {
 	})
 	
 	$("#createMedia").live("click", function(event) {
+		fileUploadLocation = new Array();
 		id = Backbone.history.fragment
 		id = id.substr(3, id.length);
 		//fills in the parent id
@@ -474,16 +475,26 @@ function loadTopLevelData(page, amount) {
 			}
 
 			var title = "-"
-			console.log(items[i].properties.titleInfo.length)
-			if(( typeof items[i].properties.length) != "undefined") {
+			console.log(items[i].properties)
+			if(( typeof items[i].properties) != undefined) {
+				if(items[i].properties.titleInfo[0]) {
 				title = items[i].properties.titleInfo[0].title;
+				}
 			}
-			if(( typeof items[i].fileLocation) != "undefined" && ( typeof items[i].properties.titleInfo[0]) == "undefined") {
+			if(( typeof items[i].fileLocation) != "undefined" && title == "-") {
+				console.log(items[i].properties.titleInfo.length)
+				if((typeof items[i].properties) == "undefined" ){
 				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
 				title = items[i].fileLocation[0].substring(nameStart);
+				}else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
+				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+				title = items[i].fileLocation[0].substring(nameStart);
+				}
 			}
 
-			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + checkbox + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + checkbox + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title 
+			+ "</a><i data-id='"+items[i]._id+"'class='icon icon-eye-open'></i></td><td><a data-type='" 
+			+ items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
 		}
 		if(items.length == 0) {
 			$("#step1 tbody").append("<tr><td colspan='5'>No objects available</td></tr>")
@@ -509,13 +520,21 @@ function loadpIdData(page,amount) {
 			var rbt = "<td><input name='items' type='radio' data-id='" + items[i]._id + "'></td>";
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var title = "-"
-			if((typeof items[i].properties.titleInfo[0]) != "undefined" ) {
+			if(( typeof items[i].properties) != undefined) {
+				if(items[i].properties.titleInfo[0]) {
 				title = items[i].properties.titleInfo[0].title;
+				}
 			}
-			if((typeof items[i].fileLocation) != "undefined" && (typeof items[i].properties.titleInfo[0]) == "undefined"  ){
-			var nameStart = items[i].fileLocation[0].indexOf("/") +1;
-			title = items[i].fileLocation[0].substring(nameStart);
-		}
+			if(( typeof items[i].fileLocation) != "undefined") {
+				console.log(items[i].properties.titleInfo.length)
+				if((typeof items[i].properties) == undefined ){
+				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+				title = items[i].fileLocation[0].substring(nameStart);
+				}else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
+				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+				title = items[i].fileLocation[0].substring(nameStart);
+				}
+			}
 			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" +label+"</a></td><td>" + items[i].type + "</td></tr>")
 		}
 
@@ -533,12 +552,20 @@ function loadPidChildren(id, page, amount) {
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>";
 			var title = "-"
-			if(( typeof items[i].properties.titleInfo[0]) != "undefined") {
+			if(( typeof items[i].properties) != undefined) {
+				if(items[i].properties.titleInfo[0]) {
 				title = items[i].properties.titleInfo[0].title;
+				}
 			}
-			if(( typeof items[i].fileLocation) != "undefined" && ( typeof items[i].properties.titleInfo[0]) == "undefined") {
+			if(( typeof items[i].fileLocation) != "undefined") {
+				console.log(items[i].properties.titleInfo.length)
+				if((typeof items[i].properties) == undefined ){
 				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
 				title = items[i].fileLocation[0].substring(nameStart);
+				}else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
+				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+				title = items[i].fileLocation[0].substring(nameStart);
+				}
 			}
 			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
@@ -569,15 +596,28 @@ function loadChildren(id, page, amount) {
 					action = ""
 				}
 				var title = "-"
-				if(( typeof items[i].properties.titleInfo[0]) != "undefined") {
-					title = items[i].properties.titleInfo[0].title;
+				if(( typeof items[i].properties) != undefined) {
+				if(items[i].properties.titleInfo[0]) {
+				title = items[i].properties.titleInfo[0].title;
 				}
-				if(( typeof items[i].fileLocation) != "undefined" && ( typeof items[i].properties.titleInfo[0]) == "undefined") {
-					var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-					title = items[i].fileLocation[0].substring(nameStart);
+			}
+
+				
+				if(( typeof items[i].fileLocation) != "undefined") {
+					console.log(items[i].properties.titleInfo)
+					if(( typeof items[i].properties) == undefined) {
+						var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+						title = items[i].fileLocation[0].substring(nameStart);
+					} else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
+						var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+						title = items[i].fileLocation[0].substring(nameStart);
+					}
 				}
 
-				$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
+				$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"
+				 + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title 
+				+ "</a><i data-id='"+items[i]._id+"'class='icon icon-eye-open'></i></td><td><a data-type='"
+				 + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
 			}
 
 		}
