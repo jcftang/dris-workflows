@@ -287,5 +287,6 @@ footer p{
 }
 .infoFloat{
 	float:left !important;
+	margin-right:10px;
 }
 
