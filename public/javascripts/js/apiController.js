@@ -125,6 +125,8 @@ function createActions() {
 	})
 	
 	$("#createMedia").live("click", function(event) {
+		$("#step5 h3").after( $("#step1 form .breadcrumb"));
+		$("#step5 .breadcrumb a").removeAttr("href")
 		fileUploadLocation = new Array();
 		id = Backbone.history.fragment
 		id = id.substr(3, id.length);
