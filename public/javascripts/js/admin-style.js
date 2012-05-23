@@ -94,9 +94,12 @@ function loadAdminData(page, amount) {
 			var disabled = (items[i].type == "item") ? "" : "disabled";
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var title = "-"
-			if(( typeof items[i].properties) != "undefined") {
-				if(items[i].properties.titleInfo[0]) {
-				title = items[i].properties.titleInfo[0].title;
+			if(( typeof items[i].properties) != undefined) {
+				if(items[i].properties.titleInfo) {
+					if(items[i].properties.titleInfo[0]) {
+					title = items[i].properties.titleInfo[0].title;
+					}
+				
 				}
 			}
 			if(( typeof items[i].fileLocation) != "undefined") {
@@ -157,14 +160,16 @@ function loadChildren(id, page, amount) {
 					var disabled = (items[i].type == "item") ? "" : "disabled";
 					var label = "IN-" + items[i].label.substring(0, amountLblChars);
 					var title = "-"
-					
-					if(( typeof items[i].properties) != "undefined") {
-						if(items[i].properties.titleInfo[0]) {
-							title = items[i].properties.titleInfo[0].title;
+
+					if(( typeof items[i].properties) != undefined) {
+						if(items[i].properties.titleInfo) {
+							if(items[i].properties.titleInfo[0]) {
+								title = items[i].properties.titleInfo[0].title;
+							}
+
 						}
 					}
 
-					
 					if(( typeof items[i].fileLocation) != "undefined") {
 						console.log(items[i].properties.titleInfo.length)
 						if(( typeof items[i].properties) == undefined) {

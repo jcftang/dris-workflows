@@ -52,11 +52,14 @@ function showItems(items) {
 		var label = "IN-"+items[i].label.substring(0, amountLblChars);
 		var title = "-"
 
-		if(( typeof items[i].properties) != "undefined") {
+		if(( typeof items[i].properties) != undefined) {
+			if(items[i].properties.titleInfo) {
 				if(items[i].properties.titleInfo[0]) {
-				title = items[i].properties.titleInfo[0].title;
+					title = items[i].properties.titleInfo[0].title;
 				}
+
 			}
+		}
 
 		if(( typeof items[i].fileLocation) != "undefined") {
 			if(( typeof items[i].properties ) == "undefined") {

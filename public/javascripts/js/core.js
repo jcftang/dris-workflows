@@ -3,8 +3,9 @@ $(document).ready(function(){
 		var item = $(this);
 		if(!$(this).parent().parent().next().hasClass("infoMeta")){
 			$('.infoMeta').remove()
-			loadData(driPath +"objects/" + $(this).attr("data-id"), function(data) {
-				displayData(data,item)
+			var link = driPath +"objects/" + $(this).attr("data-id");
+			loadData(link, function(data) {
+				displayData(data,item,link)
 			});
 			
 		}
@@ -170,7 +171,7 @@ function createLoadingRow() {
 }
 
 
-function displayData(data, item) {
+function displayData(data, item, link) {
 	var root = "<table class='table-bordered infoFloat'>"
 	root += "<tr><th colspan='2'><h2>General</h2></th></tr><tr><th>type</th><th>data</th>";
 	for(var i in data) {
@@ -180,13 +181,15 @@ function displayData(data, item) {
 		}
 
 	}
-
+	root +=  "<tr><td>Json</td><td><a href='"+socket+link+"'>" + link + "</a></td><tr>";
+	root +=  "<tr><td>Dulbin core</td><td><a href='"+socket+link+".dc'>" + link + ".dc</a></td><tr>";
 	if(data.fileLocation) {
 		root += "<tr><th colspan='2'><h2>Files</h2></th></tr>";
 		for(var i = 0; i < data.fileLocation.length; i++) {
 			root += "<tr><td colspan='2'><a href='" + publicDirectory + "/" + data.fileLocation[i] + "'>" + data.fileLocation[i] + "</a></td></tr>";
 		}
 	}
+
 	root += "</table>"
 	var properties = "<table class='table-bordered infoFloat'><tr><th colspan='2'><h2>Properties</h2></th><tr>";
 	for(var i in data.properties) {

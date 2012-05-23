@@ -464,7 +464,7 @@ function loadTopLevelData(page, amount) {
 		$('#loadingDiv').hide()
 		$("tbody").empty();
 		createPagination(meta)
-
+			console.log(items)
 		for(i in items) {
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var checkbox = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
@@ -477,8 +477,11 @@ function loadTopLevelData(page, amount) {
 			var title = "-"
 			console.log(items[i].properties)
 			if(( typeof items[i].properties) != undefined) {
-				if(items[i].properties.titleInfo[0]) {
-				title = items[i].properties.titleInfo[0].title;
+				if(items[i].properties.titleInfo) {
+					if(items[i].properties.titleInfo[0]) {
+					title = items[i].properties.titleInfo[0].title;
+					}
+				
 				}
 			}
 			if(( typeof items[i].fileLocation) != "undefined" && title == "-") {
@@ -521,8 +524,11 @@ function loadpIdData(page,amount) {
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var title = "-"
 			if(( typeof items[i].properties) != undefined) {
-				if(items[i].properties.titleInfo[0]) {
-				title = items[i].properties.titleInfo[0].title;
+				if(items[i].properties.titleInfo) {
+					if(items[i].properties.titleInfo[0]) {
+					title = items[i].properties.titleInfo[0].title;
+					}
+				
 				}
 			}
 			if(( typeof items[i].fileLocation) != "undefined") {
@@ -552,11 +558,16 @@ function loadPidChildren(id, page, amount) {
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>";
 			var title = "-"
+			
 			if(( typeof items[i].properties) != undefined) {
-				if(items[i].properties.titleInfo[0]) {
-				title = items[i].properties.titleInfo[0].title;
+				if(items[i].properties.titleInfo) {
+					if(items[i].properties.titleInfo[0]) {
+						title = items[i].properties.titleInfo[0].title;
+					}
+
 				}
 			}
+
 			if(( typeof items[i].fileLocation) != "undefined") {
 				console.log(items[i].properties.titleInfo.length)
 				if((typeof items[i].properties) == undefined ){
@@ -596,13 +607,16 @@ function loadChildren(id, page, amount) {
 					action = ""
 				}
 				var title = "-"
-				if(( typeof items[i].properties) != undefined) {
-				if(items[i].properties.titleInfo[0]) {
-				title = items[i].properties.titleInfo[0].title;
-				}
-			}
-
 				
+				if(( typeof items[i].properties) != undefined) {
+					if(items[i].properties.titleInfo) {
+						if(items[i].properties.titleInfo[0]) {
+							title = items[i].properties.titleInfo[0].title;
+						}
+
+					}
+				}
+
 				if(( typeof items[i].fileLocation) != "undefined") {
 					console.log(items[i].properties.titleInfo)
 					if(( typeof items[i].properties) == undefined) {
