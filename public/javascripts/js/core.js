@@ -202,7 +202,7 @@ function displayData(data, item, link) {
 	var properties = "<table class='table-bordered infoFloat span6'><tr class='collapse'><th colspan='2'><i class='icon-plus'></i><h2>Properties</h2></th><tr>";
 	for(var i in data.properties) {
 		var obj = i;
-		properties += "<tr class='collapse'><th colspan='2'><h3>" + i + "</h3></th><tr>";
+		properties += "<tr><th colspan='2'><h3>" + i + "</h3></th><tr>";
 		for(var j in data.properties[i]) {
 			var info = data.properties[obj][j]
 			for(i in info) {
