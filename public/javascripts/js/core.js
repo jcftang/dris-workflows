@@ -234,3 +234,31 @@ function displayData(data, item, link) {
 	$("tr .collapse").eq(0).nextAll().show()
 	console.log($("tr .collapse").eq(0))
 }
+
+
+function titleCheck(items, callback) {
+	var title = '-';
+	if(( typeof items[i].properties) != undefined) {
+		if(items[i].properties.titleInfo) {
+			if(items[i].properties.titleInfo[0]) {
+				title = items[i].properties.titleInfo[0].title;
+			}
+
+		}
+	}
+
+	if(( typeof items[i].fileLocation) != "undefined") {
+		console.log(items[i].properties.titleInfo.length)
+
+		if(( typeof items[i].properties) == undefined) {
+			var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+			title = items[i].fileLocation[0].fileLocation.substring(nameStart);
+		} else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
+			var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+			title = items[i].fileLocation[0].fileLocation.substring(nameStart);
+
+		}
+	}
+	callback(title)
+}
+

@@ -105,7 +105,7 @@ function fillUpForm(data) {
 	if(data.fileLocation) {
 		var root = "<div class = 'formInput' id='boxFiles'><h3>Files</h3><hr><ul>"
 		for(var i = 0; i < data.fileLocation.length; i++) {
-			var name = data.fileLocation[i].substr(data.fileLocation[i].indexOf("/") + 1);
+			var name = data.fileLocation[i].fileLocation.substr(data.fileLocation[i].fileLocation.indexOf("/") + 1);
 			root += "<li>" + name + " | <a href=''>remove</a></li>"
 		}
 		root += "</ul></div>";

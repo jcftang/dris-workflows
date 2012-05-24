@@ -15,7 +15,8 @@ exports.edit = function(req, res) {
 	res.render('edit', {
 		title : "Edit",
 		id : "edit",
-		user: req.user
+		user: req.user,
+		layout: '_layouts/editLayout'
 	});
 }
 
@@ -23,7 +24,8 @@ exports.create = function(req, res) {
 	res.render('create', {
 		title : 'Create',
 		id : 'create',
-		user: req.user
+		user: req.user,
+		layout: '_layouts/createLayout'
 	});
 }
 
@@ -32,7 +34,8 @@ exports.all = function(req, res) {
 	res.render('all', {
 		id : "all",
 		title : "All",
-		user: req.user
+		user: req.user,
+		layout: '_layouts/allLayout'
 	});
 }
 
@@ -51,7 +54,8 @@ exports.globalEdit = function(req,res){
 		id : "edit",
 		title : "edit",
 		user: req.user,
-		_id:req.params.id
+		_id:req.params.id,
+		layout: '_layouts/editLayout'
 	});
 }
 

@@ -93,34 +93,16 @@ function loadAdminData(page, amount) {
 			var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='" + items[i].fedoraId + "' /> <a class='btn btnCompareFedora' href='compare/" + items[i]._id + "' type='button' value='compare'>Compare</button></div>" : "-";
 			var disabled = (items[i].type == "item") ? "" : "disabled";
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
-			var title = "-"
-			if(( typeof items[i].properties) != undefined) {
-				if(items[i].properties.titleInfo) {
-					if(items[i].properties.titleInfo[0]) {
-					title = items[i].properties.titleInfo[0].title;
-					}
-				
-				}
-			}
-			if(( typeof items[i].fileLocation) != "undefined") {
-				console.log(items[i].properties.titleInfo.length)
-				if((typeof items[i].properties) == undefined ){
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
-				}else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
-				}
-			}
-
-
-			$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + 
+			titleCheck(items,function(title){
+				$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + 
 			"<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + title + "</a><i data-id='"+items[i]._id+"'class='icon icon-eye-open'></i></td>" +
 			"<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" +  
 			"<td>" + fedoraId + "</td>" + 
 			"<td>" + items[i].type + "</td>" + 
 			"<td><input type='button' class='btn btn-success btn-mini approveItem' "+disabled+" value='Approve' data-id='" + items[i]._id + "'/></td>" + 
 			"<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			})
+
 
 			//$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + title "</a><i data-id='"+items[i]._id+"'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' " + disabled + " value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 
@@ -159,43 +141,25 @@ function loadChildren(id, page, amount) {
 					var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='" + items[i].fedoraId + "' /> <a class='btn btnCompareFedora' href='compare/" + items[i]._id + "' type='button' value='compare'>Compare</button></div>" : "-";
 					var disabled = (items[i].type == "item") ? "" : "disabled";
 					var label = "IN-" + items[i].label.substring(0, amountLblChars);
-					var title = "-"
-
-					if(( typeof items[i].properties) != undefined) {
-						if(items[i].properties.titleInfo) {
-							if(items[i].properties.titleInfo[0]) {
-								title = items[i].properties.titleInfo[0].title;
-							}
-
+					titleCheck(items,function(title){
+						if(items[i].status == "approved") {
+							$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id 
+							+ "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title
+							+ "</a><i data-id='"+items[i]._id
+							+"'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + items[i].type 
+							+ "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+						} else {
+							$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" 
+							+ items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type 
+							+ "'  href='#" + items[i]._id + "'>" + title + "</a><i data-id='"
+							+items[i]._id+"'class='icon icon-eye-open'></i></td>" 
+							+ "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" 
+							+ label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type 
+							+ "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' " + disabled + " data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 						}
-					}
+					})
 
-					if(( typeof items[i].fileLocation) != "undefined") {
-						console.log(items[i].properties.titleInfo.length)
-						if(( typeof items[i].properties) == undefined) {
-							var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-							title = items[i].fileLocation[0].substring(nameStart);
-						} else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
-							var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-							title = items[i].fileLocation[0].substring(nameStart);
-						}
-					}
 
-					if(items[i].status == "approved") {
-						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id 
-						+ "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title
-						+ "</a><i data-id='"+items[i]._id
-						+"'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + items[i].type 
-						+ "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
-					} else {
-						$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" 
-						+ items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type 
-						+ "'  href='#" + items[i]._id + "'>" + title + "</a><i data-id='"
-						+items[i]._id+"'class='icon icon-eye-open'></i></td>" 
-						+ "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" 
-						+ label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type 
-						+ "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' " + disabled + " data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
-					}
 				}
 			}
 		}
