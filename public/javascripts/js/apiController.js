@@ -480,11 +480,11 @@ function loadTopLevelData(page, amount) {
 			if(( typeof items[i].fileLocation) != "undefined" && title == "-") {
 				console.log(items[i].properties.titleInfo.length)
 				if((typeof items[i].properties) == "undefined" ){
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+				title = items[i].fileLocation[0].fileLocation.substring(nameStart);
 				}else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+				title = items[i].fileLocation[0].fileLocation.substring(nameStart);
 				}
 			}
 
@@ -527,11 +527,11 @@ function loadpIdData(page,amount) {
 			if(( typeof items[i].fileLocation) != "undefined") {
 				console.log(items[i].properties.titleInfo.length)
 				if((typeof items[i].properties) == undefined ){
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+				title = items[i].fileLocation[0].fileLocation.substring(nameStart);
 				}else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+				title = items[i].fileLocation[0].fileLocation.substring(nameStart);
 				}
 			}
 			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" +label+"</a></td><td>" + items[i].type + "</td></tr>")
@@ -564,11 +564,11 @@ function loadPidChildren(id, page, amount) {
 			if(( typeof items[i].fileLocation) != "undefined") {
 				console.log(items[i].properties.titleInfo.length)
 				if((typeof items[i].properties) == undefined ){
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+				title = items[i].fileLocation[0].fileLocation.substring(nameStart);
 				}else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+				title = items[i].fileLocation[0].fileLocation.substring(nameStart);
 				}
 			}
 			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td></tr>")
@@ -613,11 +613,11 @@ function loadChildren(id, page, amount) {
 				if(( typeof items[i].fileLocation) != "undefined") {
 					console.log(items[i].properties.titleInfo)
 					if(( typeof items[i].properties) == undefined) {
-						var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-						title = items[i].fileLocation[0].substring(nameStart);
+						var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+						title = items[i].fileLocation[0].fileLocation.substring(nameStart);
 					} else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
-						var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-						title = items[i].fileLocation[0].substring(nameStart);
+						var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+						title = items[i].fileLocation[0].fileLocation.substring(nameStart);
 					}
 				}
 

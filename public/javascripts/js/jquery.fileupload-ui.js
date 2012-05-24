@@ -144,7 +144,7 @@
                 	console.log(data.result)
                     data.context.each(function (index) {
                     	console.log(data.result[index])
-                    	fileUploadLocation.push(data.result[index].fileLocation);
+                    	fileUploadLocation.push(data.result[index]);
                     	console.log(fileUploadLocation)
                         var file = ($.isArray(data.result) &&
                                 data.result[index]) || {error: 'emptyResult'};
