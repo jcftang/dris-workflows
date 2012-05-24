@@ -8,11 +8,7 @@ div.container
         li
           a.breaddisabled(href='#step2') Step 2
           span.divider |
-        //li
-          a(href='#step3') Step 3
-          span.divider |
-        li
-          a.breaddisabled(href='#step4') Overview
+
       .dummy
       .row
         include _includes/properties
@@ -107,42 +103,6 @@ div.container
                 .items
                         h2 Items            
                         ul#list1
-            #step3
-              .span7
-                h2 Digital media
-                .control-group
-                  label.control-label(for='surcheck') Media:
-                  .controls
-                    label.checkbox
-                      input#surcheck.checkbox(type='checkbox', name='surcheck')
-                      | I have media (images,video,...).
-                .dummy
-                #fileBox.control-group
-                  include _includes/upload
-                  #fileContainer
-                .dummy
-                h2 Media included
-                #imageContainer
-                .form-actions
-                  
-                  ul.pager
-                    li
-                      a(href='#step2') Previous Step
-                    li
-                      a#editItem2(href='#') Save
-                  .dummy 
-              .span2.list
-                      .items
-                        h2 Items
-                        ul#list2 
-        #step4
-          .span7
-            h2 Overview
-            .form-actions
-              ul.pager
-                li
-                  a(href='#step3') Previous
-              .dummy
       include _includes/footer
 #myModal.modal.hide.fade
     .modal-header
