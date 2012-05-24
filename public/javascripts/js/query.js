@@ -32,19 +32,13 @@ function loadQueryData(field, value) {
 function displayQueryData(data) {
 	$("tbody").empty()
 	for(var i = 0, j = data.length; i < j; i++) {
-		data[i]
+
 		var title = "-"
 		var label = "IN-" + data[i].label.substring(0, amountLblChars);
-		console.log(data[i].properties)
-		if(( typeof data[i].properties) != undefined) {
-			if(data[i].properties.titleInfo) {
-				if(data[i].properties.titleInfo[0]) {
-					title = data[i].properties.titleInfo[0].title;
-				}
-
-			}
-		}
-		$("#step1 tbody").append("<tr id='" + data[i]._id + "'>" + "<td>" + "<a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + title + "</a>" + "<i data-id='" + data[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + label + "</a></td>" + "<td>" + data[i].type + "</td>" + "action" + "</tr>")
+		titleCheck(data[i],function(title){
+			$("#step1 tbody").append("<tr id='" + data[i]._id + "'>" + "<td>" + "<a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + title + "</a>" + "<i data-id='" + data[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + label + "</a></td>" + "<td>" + data[i].type + "</td>" + "action" + "</tr>")	
+		});
+		
 	};
 	if(data.length ==0){
 		$("#step1 tbody").append("<tr><td colspan='3'>Nothing found.</td></tr>")

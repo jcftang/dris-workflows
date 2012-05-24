@@ -236,26 +236,26 @@ function displayData(data, item, link) {
 }
 
 
-function titleCheck(items, callback) {
+function titleCheck(item, callback) {
 	var title = '-';
-	if(( typeof items[i].properties) != undefined) {
-		if(items[i].properties.titleInfo) {
-			if(items[i].properties.titleInfo[0]) {
-				title = items[i].properties.titleInfo[0].title;
+	if(( typeof item.properties) != undefined) {
+		if(item.properties.titleInfo) {
+			if(item.properties.titleInfo[0]) {
+				title = item.properties.titleInfo[0].title;
 			}
 
 		}
 	}
 
-	if(( typeof items[i].fileLocation) != "undefined") {
-		console.log(items[i].properties.titleInfo.length)
+	if(( typeof item.fileLocation) != "undefined") {
+		console.log(item.properties.titleInfo.length)
 
-		if(( typeof items[i].properties) == undefined) {
-			var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
-			title = items[i].fileLocation[0].fileLocation.substring(nameStart);
-		} else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
-			var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
-			title = items[i].fileLocation[0].fileLocation.substring(nameStart);
+		if(( typeof item.properties) == undefined) {
+			var nameStart = item.fileLocation[0].fileLocation.indexOf("/") + 1;
+			title = item.fileLocation[0].fileLocation.substring(nameStart);
+		} else if(( typeof item.properties.titleInfo.length) == "undefined") {
+			var nameStart = item.fileLocation[0].fileLocation.indexOf("/") + 1;
+			title = item.fileLocation[0].fileLocation.substring(nameStart);
 
 		}
 	}
