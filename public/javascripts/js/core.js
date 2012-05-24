@@ -1,7 +1,9 @@
 $(document).ready(function(){
 
-	$(document).on("click", ".icon-eye-open", function() {
+	$(document).on("click", ".icon-eye-open,.icon-eye-close", function() {
 		var item = $(this);
+		$(this).toggleClass("icon-eye-open")
+		$(this).toggleClass("icon-eye-close")
 		if(!$(this).parent().parent().next().hasClass("infoMeta")) {
 			$('.infoMeta').remove()
 			var link = driPath + "objects/" + $(this).attr("data-id");
@@ -187,9 +189,9 @@ function displayData(data, item, link) {
 		}
 
 	}
-	root +=  "<tr><td>Json</td><td><a href='"+socket+link+"'>" + link + "</a></td><tr>";
+	root +=  "<tr><td>Json</td><td><a href='"+socket+link+"' target='_blank'>" + link + "</a></td><tr>";
 	if(data.properties != undefined){
-	root +=  "<tr><td>Dulbin core</td><td><a href='"+socket+link+".dc'>" + link + ".dc</a></td><tr>";
+	root +=  "<tr><td>Dulbin core</td><td><a href='"+socket+link+".dc' target='_blank'>" + link + ".dc</a></td><tr>";
 	}
 	if(data.fileLocation) {
 		root += "</table><table class='table-bordered span6 infoFloat'><tr class='collapse'><th colspan='2'><i class='icon-plus'></i><h2>Files</h2></th></tr>";

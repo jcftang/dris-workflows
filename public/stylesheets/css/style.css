@@ -166,13 +166,14 @@ li.selected {
 #loginForm input {
 	margin-top:-3px;
 }
-#createItems, #createSerie, #createCollection {
-	margin-right:10px;
-}
+
 .div {
 	margin-bottom:10px;
 }
-.btn h2, .pId, .pIdContainer p, #step2 .well, #step2 span7, .list {
+.btn-group{
+	margin-left:10px;
+}
+.btn h2, .pId, .pIdContainer p, #step2 .well, #step2 span7, .list ,.leftSpacer{
 	float:left
 }
 #properties i, td .collapse i{

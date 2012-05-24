@@ -146,6 +146,7 @@ function loadPropertyActions(){
 		}
 
 	});
+
 	$("#properties a").click(function(event) {event.preventDefault()})
 	//when clicking a dropdown section it makes it "highlighted"
 	$(".accordion-heading").click(function() {
