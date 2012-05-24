@@ -17,7 +17,7 @@ $(function () {
 
     // Initialize the jQuery File Upload widget:
     $('.fileupload').fileupload({
-    	forceIframeTransport: true,
+    	forceIframeTransport: false,
     	url: socket+driPath+"upload"
     });
 
