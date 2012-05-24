@@ -60,11 +60,11 @@ function showItems(items) {
 
 		if(( typeof items[i].fileLocation) != "undefined") {
 			if(( typeof items[i].properties ) == "undefined") {
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+				title = items[i].fileLocation[0].fileLocation.substring(nameStart);
 			} else if(( typeof items[i].properties.titleInfo) == "undefined") {
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				var nameStart = items[i].fileLocation[0].fileLocation.indexOf("/") + 1;
+				title = items[i].fileLocation[0].fileLocation.substring(nameStart);
 			}
 		}
 

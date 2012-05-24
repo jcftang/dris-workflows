@@ -196,7 +196,7 @@ function displayData(data, item, link) {
 	if(data.fileLocation) {
 		root += "</table><table class='table-bordered span6 infoFloat'><tr class='collapse'><th colspan='2'><i class='icon-plus'></i><h2>Files</h2></th></tr>";
 		for(var i = 0; i < data.fileLocation.length; i++) {
-			root += "<tr><td colspan='2'><a href='" + publicDirectory + "/" + data.fileLocation[i] + "'>" + data.fileLocation[i] + "</a></td></tr>";
+			root += "<tr><td colspan='2'><a href='" + publicDirectory + "/" + data.fileLocation[i].fileLocation + "'>" + data.fileLocation[i].fileLocation + "</a></td></tr>";
 		}
 	}
 
