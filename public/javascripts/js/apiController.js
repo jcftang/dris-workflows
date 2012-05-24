@@ -25,7 +25,7 @@ $(document).ready(function() {
 			loadEditData();
 			break;
 		case "/all":
-			loadMediaData();
+			//loadMediaData();
 			break;
 		case "/create":
 			loadCreateData();

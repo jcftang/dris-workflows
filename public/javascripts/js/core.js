@@ -1,7 +1,9 @@
 $(document).ready(function(){
 
-	$(document).on("click", ".icon-eye-open", function() {
+	$(document).on("click", ".icon-eye-open,.icon-eye-close", function() {
 		var item = $(this);
+		$(this).toggleClass("icon-eye-open")
+		$(this).toggleClass("icon-eye-close")
 		if(!$(this).parent().parent().next().hasClass("infoMeta")) {
 			$('.infoMeta').remove()
 			var link = driPath + "objects/" + $(this).attr("data-id");
