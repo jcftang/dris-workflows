@@ -1,9 +1,9 @@
 /*
- * @author Matthias Van Wambeke
- * ONLY the edit and create page use this file. For Admin page js please refer to admin-style.js
- */
+* @author Matthias Van Wambeke
+* ONLY the edit and create page use this file. For Admin page js please refer to admin-style.js
+*/
 //initiating variables
-var workspace= backbone();
+var workspace = backbone();
 var goDeeper = true;
 var parentType = "";
 var currentParentName = ""
@@ -25,7 +25,7 @@ $(document).ready(function() {
 			loadEditData();
 			break;
 		case "/all":
-			loadMediaData();
+			setUpQueryPage();
 			break;
 		case "/create":
 			loadCreateData();
@@ -42,7 +42,7 @@ $(document).ready(function() {
 		currentParentName = $(this).text()
 	});
 	//removes an element if you click on the "x"
-	$(document).on("click",".close", function() {
+	$(document).on("click", ".close", function() {
 		if(!$(this).hasClass("mdl"))
 			$(this).parent().remove();
 	});
@@ -50,17 +50,17 @@ $(document).ready(function() {
 
 //loads statistics in one by one, can otherwise not know what data is being loaded in.
 function loadStatistics(numb) {
-	if(numb == 0){
+	if(numb == 0) {
 		$("#stats tbody").empty()
 	}
 	//stats to be loaded in, must equal name in the link
 	var stats = ["all", "approved", "open"]
 	if(numb <= stats.length - 1) {
 		var item = stats[numb]
-		var link = driPath +"stats/" + stats[numb]
+		var link = driPath + "stats/" + stats[numb]
 		//there is no all link
 		if(item == "all") {
-			link = driPath +"stats/"
+			link = driPath + "stats/"
 		}
 
 		loadData(link, function(data) {
@@ -77,8 +77,6 @@ function loadStatistics(numb) {
 function loadCreateData() {
 	createActions()
 }
-
-
 
 function createActions() {
 	//goes to the create serie step and fills in the parent id
@@ -112,11 +110,11 @@ function createActions() {
 	$("#createMediaItem").click(function(event) {
 		event.preventDefault();
 		var option = $("#step5 input[name='media']:checked").val()
-			createMediaItem(fileUploadLocation,option)
+		createMediaItem(fileUploadLocation, option)
 	})
-	
+
 	$("#createMedia").live("click", function(event) {
-		$("#step5 h3").after( $("#step1 form .breadcrumb"));
+		$("#step5 h3").after($("#step1 form .breadcrumb"));
 		$("#step5 .breadcrumb a").removeAttr("href")
 		fileUploadLocation = new Array();
 		id = Backbone.history.fragment
@@ -138,7 +136,7 @@ function createActions() {
 }
 
 function createCollection() {
-	var link = socket + driPath +"objects";
+	var link = socket + driPath + "objects";
 
 	var data = {
 		"status" : "open",
@@ -167,7 +165,7 @@ function createCollection() {
 }
 
 function createSeries() {
-	var link = socket + driPath +"objects";
+	var link = socket + driPath + "objects";
 	var parent = $("#seriesCollection").val();
 	var data = {
 		"status" : "open",
@@ -195,9 +193,9 @@ function createSeries() {
 	});
 }
 
-function createMediaItem(file,option) {
+function createMediaItem(file, option) {
 	if(file.length > 0) {
-		var link = socket + driPath +"objects";
+		var link = socket + driPath + "objects";
 		var parent = $("#mediaParent").val();
 		var data = {
 			"status" : "open",
@@ -208,16 +206,16 @@ function createMediaItem(file,option) {
 		if(parent == "") {
 			delete data.parentId;
 		}
-		if(option == "one"){
+		if(option == "one") {
 			data.fileLocation = file
-		}else{
+		} else {
 			data.fileLocation = [file[0]];
 			file.splice(0, 1)
 		}
-		
+
 		postData($('#itemCreation'), 'POST', data, link, function(id) {
-			if(option == "multi"){
-				createMediaItem(file,option)
+			if(option == "multi") {
+				createMediaItem(file, option)
 			}
 		});
 	} else {
@@ -233,10 +231,10 @@ function createMediaItem(file,option) {
 // will insert items starting from a certain object id
 function insertItems() {
 	var objId = parseInt($("#step4 #objectId").val());
-	loadData(driPath +"objects/" + $("#itemEditSelection").val() + "/list", function(data) {
+	loadData(driPath + "objects/" + $("#itemEditSelection").val() + "/list", function(data) {
 		for(var i = 0; i < data.length; i++) {
 			if(parseInt(data[i].properties.objectId) >= parseInt(objId)) {
-				var link = socket + driPath +"objects/" + data[i]._id + "/update";
+				var link = socket + driPath + "objects/" + data[i]._id + "/update";
 				data[i].properties.objectId = parseInt(data[i].properties.objectId) + 1;
 				updateData('POST', {
 					"properties" : data[i].properties
@@ -251,12 +249,13 @@ function insertItems() {
 		}
 	});
 }
+
 //will create items with a new object id
 function createItems(itemAmount, objId) {
 	amount = parseInt(itemAmount);
 	objId = parseInt(objId);
 	if(amount > 0 && objId > 0) {
-		var link = socket + driPath +"objects";
+		var link = socket + driPath + "objects";
 		var parent = $("#itemEditSelection").val();
 		var data = {
 			"status" : "open",
@@ -295,10 +294,9 @@ function createItems(itemAmount, objId) {
 
 }
 
-
 /*------------------------------------
- *           -- EDIT --
- *------------------------------------ */
+*           -- EDIT --
+*------------------------------------ */
 
 //updates all the objects that were selected at step1 in the edit page
 
@@ -306,11 +304,11 @@ function updateChildren(data, itemPos) {
 	if(itemPos < data.length) {
 		var link = socket + driPath + "objects/" + data[itemPos]._id + "/update";
 		createMetaDataModels('#globalData', function(items) {
-			if(typeof data[itemPos].properties == "undefined"){
-					data[itemPos].properties = {}
-				}
+			if( typeof data[itemPos].properties == "undefined") {
+				data[itemPos].properties = {}
+			}
 			//updating the properties of all the items that you selected
-			
+
 			for(var j in items) {
 				console.log(data[itemPos])
 				data[itemPos].properties[j] = items[j]
@@ -320,22 +318,19 @@ function updateChildren(data, itemPos) {
 				"properties" : data[itemPos].properties
 			}, link, function(id) {
 				itemPos++;
-				updateChildren(data,itemPos)
+				updateChildren(data, itemPos)
 			});
 		})
-		
-		
-	}else{
+	} else {
 		//displays the update message
 		$(".updatebox").fadeIn(300).delay(1500).fadeOut(400);
 		loadEditObjects()
 	}
 }
 
-
 function loadEditData() {
 	$(document).on("click", ".editRow", function() {
-		loadData(driPath +"objects/" + $(this).attr("data-id"), function(data) {
+		loadData(driPath + "objects/" + $(this).attr("data-id"), function(data) {
 			emptyForm();
 			fileUploadLocation = [];
 			showItems([data])
@@ -362,7 +357,7 @@ function loadEditData() {
 
 	$("#saveAll").click(function() {
 		for(var i = 0; i < editItems.length; i++) {
-			var link = socket + driPath +"objects/" + editItems[i]._id + "/update";
+			var link = socket + driPath + "objects/" + editItems[i]._id + "/update";
 			var data = editItems[i];
 			delete editItems[i]._id;
 			updateData('POST', data, link, function(id) {
@@ -397,7 +392,7 @@ function loadEditData() {
 	})
 	$("#gblUpdate").click(function(event) {
 		event.preventDefault()
-		updateChildren(editItems,0);
+		updateChildren(editItems, 0);
 	})
 	$("#gblEdit").click(function(event) {
 		event.preventDefault();
@@ -432,7 +427,7 @@ function loadEditObjects() {
 	var objects = $('#step1 tbody input:checked');
 
 	for(var i = 0; i < objects.length; i++) {
-		loadData(driPath +"objects/" + $(objects[i]).attr("data-id"), function(data) {
+		loadData(driPath + "objects/" + $(objects[i]).attr("data-id"), function(data) {
 			arr.push(data);
 			if(arr.length == size) {
 				emptyForm();
@@ -444,6 +439,7 @@ function loadEditObjects() {
 
 	};
 }
+
 /*------------------------------------
  *           -- Data Load --
  *------------------------------------ */
@@ -451,13 +447,13 @@ function loadEditObjects() {
 function loadTopLevelData(page, amount) {
 	$("tbody").empty();
 	createLoadingRow();
-	var link = driPath +"objects?page=" + (page - 1) + "&amount=" + amount
+	var link = driPath + "objects?page=" + (page - 1) + "&amount=" + amount
 
 	loadData(link, function(items, meta) {
 		$('#loadingDiv').hide()
 		$("tbody").empty();
 		createPagination(meta)
-			console.log(items)
+		console.log(items)
 		for(i in items) {
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var checkbox = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
@@ -472,25 +468,23 @@ function loadTopLevelData(page, amount) {
 			if(( typeof items[i].properties) != undefined) {
 				if(items[i].properties.titleInfo) {
 					if(items[i].properties.titleInfo[0]) {
-					title = items[i].properties.titleInfo[0].title;
+						title = items[i].properties.titleInfo[0].title;
 					}
-				
+
 				}
 			}
 			if(( typeof items[i].fileLocation) != "undefined" && title == "-") {
 				console.log(items[i].properties.titleInfo.length)
-				if((typeof items[i].properties) == "undefined" ){
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
-				}else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				if(( typeof items[i].properties) == "undefined") {
+					var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+					title = items[i].fileLocation[0].substring(nameStart);
+				} else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
+					var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+					title = items[i].fileLocation[0].substring(nameStart);
 				}
 			}
 
-			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + checkbox + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title 
-			+ "</a><i data-id='"+items[i]._id+"'class='icon icon-eye-open'></i></td><td><a data-type='" 
-			+ items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
+			$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + checkbox + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a><i data-id='" + items[i]._id + "'class='icon icon-eye-open'></i></td><td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
 		}
 		if(items.length == 0) {
 			$("#step1 tbody").append("<tr><td colspan='5'>No objects available</td></tr>")
@@ -505,13 +499,13 @@ function loadTopLevelData(page, amount) {
 
 }
 
-function loadpIdData(page,amount) {
-	var link = driPath +"objects?page=" + (page - 1) + "&amount=" + amount
+function loadpIdData(page, amount) {
+	var link = driPath + "objects?page=" + (page - 1) + "&amount=" + amount
 
 	loadData(link, function(items, meta) {
 		createPagination(meta)
 		$(".modal tbody").empty();
-		
+
 		for(i in items) {
 			var rbt = "<td><input name='items' type='radio' data-id='" + items[i]._id + "'></td>";
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
@@ -519,22 +513,22 @@ function loadpIdData(page,amount) {
 			if(( typeof items[i].properties) != undefined) {
 				if(items[i].properties.titleInfo) {
 					if(items[i].properties.titleInfo[0]) {
-					title = items[i].properties.titleInfo[0].title;
+						title = items[i].properties.titleInfo[0].title;
 					}
-				
+
 				}
 			}
 			if(( typeof items[i].fileLocation) != "undefined") {
 				console.log(items[i].properties.titleInfo.length)
-				if((typeof items[i].properties) == undefined ){
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
-				}else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				if(( typeof items[i].properties) == undefined) {
+					var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+					title = items[i].fileLocation[0].substring(nameStart);
+				} else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
+					var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+					title = items[i].fileLocation[0].substring(nameStart);
 				}
 			}
-			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" +label+"</a></td><td>" + items[i].type + "</td></tr>")
+			$(".modal tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td></tr>")
 		}
 
 	});
@@ -542,7 +536,7 @@ function loadpIdData(page,amount) {
 }
 
 function loadPidChildren(id, page, amount) {
-	var link = driPath +"objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
+	var link = driPath + "objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
 	loadData(link, function(items, meta) {
 		createPagination(meta)
 		$(".modal tbody").empty();
@@ -551,7 +545,7 @@ function loadPidChildren(id, page, amount) {
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>";
 			var title = "-"
-			
+
 			if(( typeof items[i].properties) != undefined) {
 				if(items[i].properties.titleInfo) {
 					if(items[i].properties.titleInfo[0]) {
@@ -563,12 +557,12 @@ function loadPidChildren(id, page, amount) {
 
 			if(( typeof items[i].fileLocation) != "undefined") {
 				console.log(items[i].properties.titleInfo.length)
-				if((typeof items[i].properties) == undefined ){
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
-				}else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
-				var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
-				title = items[i].fileLocation[0].substring(nameStart);
+				if(( typeof items[i].properties) == undefined) {
+					var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+					title = items[i].fileLocation[0].substring(nameStart);
+				} else if(( typeof items[i].properties.titleInfo.length) == "undefined") {
+					var nameStart = items[i].fileLocation[0].indexOf("/") + 1;
+					title = items[i].fileLocation[0].substring(nameStart);
 				}
 			}
 			$("tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + title + "</a></td><td><a data-type='" + items[i].type + "'  href='#pd/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td></tr>")
@@ -583,7 +577,7 @@ function loadPidChildren(id, page, amount) {
 function loadChildren(id, page, amount) {
 	$("tbody").empty();
 	createLoadingRow();
-	var link = driPath +"objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
+	var link = driPath + "objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
 	loadData(link, function(items, meta) {
 		$("tbody").empty();
 		if(items.length == 0) {
@@ -600,7 +594,7 @@ function loadChildren(id, page, amount) {
 					action = ""
 				}
 				var title = "-"
-				
+
 				if(( typeof items[i].properties) != undefined) {
 					if(items[i].properties.titleInfo) {
 						if(items[i].properties.titleInfo[0]) {
@@ -621,10 +615,7 @@ function loadChildren(id, page, amount) {
 					}
 				}
 
-				$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='"
-				 + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title 
-				+ "</a><i data-id='"+items[i]._id+"'class='icon icon-eye-open'></i></td><td><a data-type='"
-				 + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
+				$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a><i data-id='" + items[i]._id + "'class='icon icon-eye-open'></i></td><td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
 			}
 
 		}
@@ -640,6 +631,54 @@ function loadChildren(id, page, amount) {
 		$('#loadingDiv').append(td)
 	});
 
+}
+
+/*------------------------------------
+ *           -- Query --
+ *------------------------------------ */
+function setUpQueryPage() {
+	$("#query").click(function(e) {
+		var field = $("#searchField").val()
+		var value = $("#searchValue").val()
+		if(field && value) {
+			loadQueryData(field, value)
+			$("#searchValue").removeClass("alert-error")
+		}else{
+			$("#searchValue").addClass("alert-error")
+			console.log("Enter a value")
+		}
+	})
+}
+
+function loadQueryData(field, value) {
+	console.log(field + " " + value)
+	// Check if label code contains prefix
+	if(field =="label" && value.indexOf("IN-") > -1) {
+		// Remove the prefix
+		value = value.substring(3)
+	}
+	
+	loadData(driPath + "query?field=" + field + "&value=" + value, function(data) {
+		displayQueryData(data)
+	});
+}
+
+function displayQueryData(data) {
+	$("tbody").empty()
+	for(var i = 0, j = data.length; i < j; i++) {
+		data[i]
+		var title = "-"
+		console.log(data[i].properties)
+		if(( typeof data[i].properties) != undefined) {
+			if(data[i].properties.titleInfo) {
+				if(data[i].properties.titleInfo[0]) {
+					title = data[i].properties.titleInfo[0].title;
+				}
+
+			}
+		}
+		$("#step1 tbody").append("<tr id='" + data[i]._id + "'>" + "<td>" + "<a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + title + "</a>" + "<i data-id='" + data[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + "label" + "</a></td>" + "<td>" + data[i].type + "</td>" + "action" + "</tr>")
+	};
 }
 
 /*------------------------------------
@@ -783,7 +822,6 @@ function resetCreatePage() {
 	$("#step1").show();
 	$("#properties").hide();
 }
-
 
 /*------------------------------------
  *           -- Ajax Calls --

@@ -2,25 +2,24 @@ include _includes/header
 div.container
       ul.breadcrumb
         li.active Media
-      .dummy
       .row
         #step1
           .span12
-            form.form-horizontal
-              legend All the items
-              .control-group
-                select.span2.bulk-action
-                  option(value="-1") --Bulk action--
-                  option(value="remove") Remove
-                input#bulk-execute.btn(type="button",value="Do it!")
-                table#series-table.table.table-striped.table-bordered
-                  thead
-                    tr
-                      th.span1
-                        input#checkAll(type="checkbox")
-                      th Title
-                      th Author
-                      th.span1 Remove
-                  tbody
-      include _includes/footer
+            legend All the items
+            div
+              fieldset.form-inline
+                select.span2#searchField
+                  option(value="label") Label
+                input#searchValue.span2(type="text",placeholder="Query")
+                a#query.btn
+                  i.icon-search
+                  &nbsp;Search
+              table#series-table.table.table-striped.table-bordered
+                thead
+                  tr
+                    th Title
+                    th Author
+                    th.span1 Remove
+                tbody
+    include _includes/footer
 
