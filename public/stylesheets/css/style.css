@@ -260,6 +260,10 @@ form ul {
 	height:auto;
 }
 
+.btn-group{
+	position: static !important;
+	float:left;
+}
 
 footer p{
 	float:right;
@@ -292,4 +296,5 @@ footer p{
 .fileupload-buttonbar{
 	padding-left: 20px;
 }
+
 
