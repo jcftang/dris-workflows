@@ -22,7 +22,8 @@ exports.createRoutes = function make(app) {
 	app.get('/', function(req, res) {
 		res.redirect('/home');
 	});
-
+	app.get('/browse',routes.browse)
+	app.get('/overview/:id',routes.overview)
 	app.get('/cors/result*', routes.results)
 
 	app.get('/login', function(req, res) {

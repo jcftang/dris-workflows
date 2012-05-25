@@ -172,7 +172,6 @@ function loadData(link, callback, error) {
 function createLoadingRow(table) {
 	var tr = $("<tr>").attr('class', 'loadingDiv')
 	var loading = $("<i>").addClass('icon-refresh')
-	console.log(loading)
 	var td = $("<td>").attr('colspan', '7').text(" Loading...");
 	tr.append(td.prepend(loading));
 	$(table).append(tr)
@@ -232,7 +231,6 @@ function displayData(data, item, link) {
 	properties += "</table>"
 	$(item).parent().parent().after("<tr class='infoMeta'><td colspan='7'>" + root+properties + "</td></tr>")
 	$("tr .collapse").eq(0).nextAll().show()
-	console.log($("tr .collapse").eq(0))
 }
 
 

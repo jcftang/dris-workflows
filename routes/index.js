@@ -6,7 +6,6 @@ exports.home = function(req, res) {
 	res.render('index', {
 		title : 'DRIS Workflows',
 		id : 'home',
-		user: req.user
 	});
 }
 
@@ -15,8 +14,25 @@ exports.edit = function(req, res) {
 	res.render('edit', {
 		title : "Edit",
 		id : "edit",
-		user: req.user,
 		layout: '_layouts/editLayout'
+	});
+}
+
+exports.browse = function(req, res) {
+
+	res.render('browse', {
+		title : "Browse",
+		id : "browse",
+		layout: '_layouts/browseLayout'
+	});
+}
+
+exports.overview = function(req, res) {
+
+	res.render('overview', {
+		title : "Overview",
+		id : "overview",
+		layout: '_layouts/overviewLayout'
 	});
 }
 
@@ -24,7 +40,6 @@ exports.create = function(req, res) {
 	res.render('create', {
 		title : 'Create',
 		id : 'create',
-		user: req.user,
 		layout: '_layouts/createLayout'
 	});
 }
@@ -34,7 +49,6 @@ exports.all = function(req, res) {
 	res.render('all', {
 		id : "all",
 		title : "All",
-		user: req.user,
 		layout: '_layouts/allLayout'
 	});
 }

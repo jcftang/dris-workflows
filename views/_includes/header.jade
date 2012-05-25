@@ -8,7 +8,7 @@
             a.brand(href='/home') DRIS
             .nav-collapse
                 ul.nav
-                    - var obj = { '/home': 'Home', '/all': 'All', '/create': 'Create', '/edit': 'Edit', '/admin': 'Admin'}
+                    - var obj = { '/home': 'Home', '/all': 'All', '/create': 'Create', '/edit': 'Edit', '/admin': 'Admin', '/browse': 'Browse'}
                         - each val, key in obj
                           - if (id == key) 
                             li.active

@@ -305,4 +305,14 @@ footer p{
 	margin-bottom: 5px;
 }
 
+.details{
+	float:right;
+}
+
+.details .divider{
+	margin-left:5px;
+	margin-right:5px;
+	
+}
+
 

@@ -1,0 +1,31 @@
+include _includes/header
+
+div.container
+      .row
+        include _includes/properties
+        #step1
+          .span12
+            form.form-horizontal
+              legend Browse 
+              .breadcrumb
+                li.active
+                  a(href='') Home
+                  span.divider |
+              .dummy
+              .pagination
+                ul
+              table#series-table.table.table-striped.table-bordered
+                  thead
+                    tr
+                      th Title
+                      th.span2 Label
+                      th.span2 Type
+
+                  tbody
+                    tr.loadingDiv 
+                      td(colspan='5') 
+                        i.icon-refresh 
+                        &nbsp;Loading...
+              .pagination
+                ul
+      include _includes/footer
