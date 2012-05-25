@@ -54,22 +54,37 @@ $(document).ready(function() {
 //loads statistics in one by one, can otherwise not know what data is being loaded in.
 function loadStatistics() {
 	LoadSimpleStats(0);
-	LoadLastAdded()
-	LoadLastEdited()
+	loadItemData("lastCreated")
+	loadItemData("lastEdited")
+	loadItemDataByType("lastEdited","item","editItem")
+	loadItemDataByType("lastEdited","series","editSeries")
+	loadItemDataByType("lastEdited","collection","editCollection")
 }
 
-function LoadLastAdded(){
-	createLoadingRow("#lastCreated tbody");
-	var link = driPath + "stats/lastcreated"
+function loadItemData(name){
+	createLoadingRow("#"+ name + " tbody");
+	var link = driPath + "stats/" + name.toLowerCase()
 	loadData(link, function(data) {
 		$('.loadingDiv').remove()
 		console.log(data)
 		for(var i in data){
 			
 			titleCheck(data[i],function(title){
-				$("#lastCreated tbody").append("<tr><td>" + title + "</td><td>" + jQuery.timeago(data[i].dateCreated) + "</td>")
+				var date = ""
+				console.log(name)
+				if(name == "lastCreated"){
+					date = jQuery.timeago(data[i].dateCreated)
+				}else{
+					console.log(data[i])
+					date = jQuery.timeago(data[i].dateModified)
+				}
+				var label = "IN-" + data[i].label.substring(0, amountLblChars);
+				$("#"+name+" tbody").append("<tr><td>" + label + "</td><td>" +date+ "</td><td>"+data[i].type+"</td></tr>")
 			})
 			
+		}
+		if(data.length == 0){
+			$("#"+name+" tbody").append("<tr><td colspan='3'>No objects yet.</td></tr>")
 		}
 		
 
@@ -80,19 +95,30 @@ function LoadLastAdded(){
 	}); 
 
 }
-
-function LoadLastEdited(){
-	createLoadingRow("#lastEdited tbody");
-	var link = driPath + "stats/lastedited"
+function loadItemDataByType(name,option,field){
+	createLoadingRow("#"+ field + " tbody");
+	var link = driPath + "stats/" + name.toLowerCase()+"/"+option
 	loadData(link, function(data) {
 		$('.loadingDiv').remove()
 		console.log(data)
 		for(var i in data){
 			
 			titleCheck(data[i],function(title){
-				$("#lastEdited tbody").append("<tr><td>" + title + "</td><td>" + jQuery.timeago(data[i].dateModified) + "</td>")
+				var date = ""
+				console.log(name)
+				if(name == "lastCreated"){
+					date = jQuery.timeago(data[i].dateCreated)
+				}else{
+					console.log(data[i])
+					date = jQuery.timeago(data[i].dateModified)
+				}
+				var label = "IN-" + data[i].label.substring(0, amountLblChars);
+				$("#"+field+" tbody").append("<tr><td>" + label + "</td><td>" +date+ "</td><td>"+data[i].type+"</td></tr>")
 			})
 			
+		}
+		if(data.length == 0){
+			$("#"+field+" tbody").append("<tr><td colspan='3'>No objects yet.</td></tr>")
 		}
 		
 

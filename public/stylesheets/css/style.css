@@ -121,7 +121,8 @@ div#step1Info a.btn, div#step2Info a.btn, div#step3Info a.btn, div#step4Info a.b
 	margin-right:5px;
 }
 .pagination {
-	margin:0
+	margin:0;
+	margin-top:5px;
 }
 .dummy {
 	clear:both;
@@ -168,11 +169,13 @@ li.selected {
 }
 
 .div {
+	margin-top:5px;
 	margin-bottom:10px;
 }
-.btn-group{
+#step1 .btn-group{
 	margin-left:10px;
 }
+
 .btn h2, .pId, .pIdContainer p, #step2 .well, #step2 span7, .list ,.leftSpacer{
 	float:left
 }
@@ -238,15 +241,15 @@ form ul {
 .dataform .chzn-container {
 	width:230px !important;
 }
-.list a, #step2Btn, .pagination {
+.list a, .pagination{
 	margin-bottom:5px;
 }
 #step1 table {
 	margin-bottom:5px;
+	margin-top:5px;
 }
 /*ADMIN PAGE*/
 .bulk-action {
-	margin-bottom:5px !important;
 	margin-right:5px;
 	float:left !important;
 }
