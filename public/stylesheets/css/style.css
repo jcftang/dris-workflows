@@ -229,7 +229,7 @@ form ul {
 	list-style-type:none;
 	margin:0;
 }
-#loadingDiv td {
+.loadingDiv td {
 	text-align:center;
 }
 #multi {
@@ -260,6 +260,10 @@ form ul {
 	height:auto;
 }
 
+.btn-group{
+	position: static !important;
+	float:left;
+}
 
 footer p{
 	float:right;
@@ -292,4 +296,10 @@ footer p{
 .fileupload-buttonbar{
 	padding-left: 20px;
 }
+
+#searchField,#searchValue,#query{
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
 

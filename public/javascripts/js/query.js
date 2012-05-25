@@ -17,6 +17,8 @@ function setUpQueryPage() {
 }
 
 function loadQueryData(field, value) {
+	$("tbody").empty()
+	createLoadingRow("tbody");
 	console.log(field + " " + value)
 	// Check if label code contains prefix
 	if(field =="label" && value.indexOf("IN-") > -1) {
@@ -26,6 +28,10 @@ function loadQueryData(field, value) {
 	
 	loadData(driPath + "query?field=" + field + "&value=" + value, function(data) {
 		displayQueryData(data)
+	},function(err){
+		$('#loadingDiv').empty()
+		var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
+		$('#loadingDiv').append(td)
 	});
 }
 

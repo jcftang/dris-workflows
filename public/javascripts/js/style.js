@@ -190,8 +190,8 @@ function loadNavigationActions(){
 	});
 }
 function loadBtnActions(){
-	loadPropertyActions()
-	loadNavigationActions()
+	loadPropertyActions();
+	loadNavigationActions();
 	$("#editItem1,#editItem2").click(function(event) {
 		event.preventDefault()
 		if(window.location.pathname == "/edit") {
