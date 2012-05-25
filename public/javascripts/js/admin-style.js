@@ -32,8 +32,7 @@ $(document).ready(function() {
 				console.log("Select an action");
 		}
 	});
-	
-	
+
 	$('.removeItem').live("click", function() {
 		$this = $(this)
 		id = $(this).attr("data-id");
@@ -49,14 +48,46 @@ $(document).ready(function() {
 		$this.attr("disabled", "disabled");
 		$this.addClass('disabled')
 		$this.attr("value", "Approving");
-		id = $(this).attr("data-id");
+		id = $this.attr("data-id");
 		approveItem(id, function(err, data) {
 			if(err) {
+			console.log(err)
 				$this.removeAttr("disabled");
 				$this.removeClass('disabled')
 				$this.attr("value", "Approve");
 			} else {
-				$this.attr("value", "Approved");
+				$this.attr("value", "Unapprove");
+				$this.removeAttr("disabled");
+				$this.removeClass('disabled')
+				$this.removeClass('approveItem')
+				$this.addClass('unapproveItem')
+				$this.removeClass('btn-success')
+				$this.addClass('btn-warning')
+				var fedoraContainer = $this.parent().prev().prev()
+				fedoraContainer.text("")
+				fedoraContainer.append($(createCompareButton(id, data.fedoraId)))
+			}
+		});
+	});
+	$('.unapproveItem').live("click", function() {
+		$this = $(this)
+		$this.attr("disabled", "disabled");
+		$this.addClass('disabled')
+		$this.attr("value", "Unapproving");
+		id = $(this).attr("data-id");
+		unapproveItem(id, function(err, data) {
+			if(err) {
+				$this.removeAttr("disabled");
+				$this.removeClass('disabled')
+				$this.attr("value", "Unapprove");
+			} else {
+				$this.removeAttr("disabled");
+				$this.removeClass('disabled')
+				$this.removeClass('btn-warning')
+				$this.addClass('btn-success')
+				$this.attr("value", "Approve");
+				var fedoraContainer = $this.parent().prev().prev()
+				fedoraContainer.text("-")
 			}
 		});
 	});
@@ -69,7 +100,7 @@ $(document).ready(function() {
 		console.log("btn")
 		var btn = $(e.target)
 		var id = btn.attr('data-id')
-			
+
 	});
 	$(document).on("click", "form .breadcrumb li a", function(event) {
 		event.preventDefault()
@@ -81,7 +112,14 @@ $(document).ready(function() {
 		});
 	});
 })
-
+function createCompareButton(id, pid){
+	if(pid){
+		return "<div class='input-append'><input type='text' class='span2' disabled value='" + pid + "' /> <a class='btn btnCompareFedora' href='compare/" + id + "' type='button' value='compare'>Compare</button></div>"
+	}else{
+		return "-"
+	}
+	
+}
 function loadAdminData(page, amount) {
 	$('#loadingDiv').show()
 	var link = driPath + "objects?page=" + (page - 1) + "&amount=" + amount + "&callback=?"
@@ -90,21 +128,15 @@ function loadAdminData(page, amount) {
 		createPagination(meta)
 		$("tbody").empty();
 		for(i in items) {
-			var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='" + items[i].fedoraId + "' /> <a class='btn btnCompareFedora' href='compare/" + items[i]._id + "' type='button' value='compare'>Compare</button></div>" : "-";
+			var fedoraId = createCompareButton(items[i]._id,items[i].fedoraId)
 			var disabled = (items[i].type == "item") ? "" : "disabled";
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
-			titleCheck(items[i],function(title){
-				$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + 
-			"<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + title + "</a><i data-id='"+items[i]._id+"'class='icon icon-eye-open'></i></td>" +
-			"<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" +  
-			"<td>" + fedoraId + "</td>" + 
-			"<td>" + items[i].type + "</td>" + 
-			"<td><input type='button' class='btn btn-success btn-mini approveItem' "+disabled+" value='Approve' data-id='" + items[i]._id + "'/></td>" + 
-			"<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+			titleCheck(items[i], function(title) {						if(items[i].status == "approved") {
+							$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title + "</a><i data-id='" + items[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-warning btn-mini unapproveItem' value='Unapprove' data-fedora='" + items[i].fedoraId + "' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+						} else {
+							$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title + "</a><i data-id='" + items[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-fedora='" + items[i].fedoraId + "' " + disabled + " data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+						}
 			})
-
-
-			//$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "' href='#" + items[i]._id + "'>" + title "</a><i data-id='"+items[i]._id+"'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' " + disabled + " value='Approve' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 
 		}
 		if(items.length == 0) {
@@ -138,28 +170,16 @@ function loadChildren(id, page, amount) {
 				createPagination(meta)
 				for(i in items) {
 
-					var fedoraId = (items[i].fedoraId) ? "<div class='input-append'><input type='text' class='span2' disabled value='" + items[i].fedoraId + "' /> <a class='btn btnCompareFedora' href='compare/" + items[i]._id + "' type='button' value='compare'>Compare</button></div>" : "-";
+					var fedoraId = createCompareButton(items[i]._id,items[i].fedoraId)
 					var disabled = (items[i].type == "item") ? "" : "disabled";
 					var label = "IN-" + items[i].label.substring(0, amountLblChars);
-					titleCheck(items[i],function(title){
+					titleCheck(items[i], function(title) {
 						if(items[i].status == "approved") {
-							$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id 
-							+ "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title
-							+ "</a><i data-id='"+items[i]._id
-							+"'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + items[i].type 
-							+ "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem disabled' value='Approved' disabled data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+							$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title + "</a><i data-id='" + items[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-warning btn-mini unapproveItem' value='Unapprove' data-fedora='" + items[i].fedoraId + "' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 						} else {
-							$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" 
-							+ items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type 
-							+ "'  href='#" + items[i]._id + "'>" + title + "</a><i data-id='"
-							+items[i]._id+"'class='icon icon-eye-open'></i></td>" 
-							+ "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" 
-							+ label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type 
-							+ "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' " + disabled + " data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
+							$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title + "</a><i data-id='" + items[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-fedora='" + items[i].fedoraId + "' " + disabled + " data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 						}
 					})
-
-
 				}
 			}
 		}
@@ -173,17 +193,19 @@ function loadChildren(id, page, amount) {
 		$('#loadingDiv').append(td)
 	});
 }
-function loadCompareData(id){
+
+function loadCompareData(id) {
 	console.log("Comparing " + id)
 	var link = driPath + "objects/" + id + "/compare"
 	loadData(link, function(data) {
 		console.log(data)
 		$('#mongoData').text(JSON.stringify(data.mongo, undefined, 4))
 		$('#fedoraData').text(data.fedora)
-	},function(err){
+	}, function(err) {
 		console.log(err)
 	});
 }
+
 function approveAllSelected() {
 	var confirmDialog = confirm("Are you sure you want to continue?\nThis cannot be undone!");
 	if(confirmDialog == true) {
@@ -228,17 +250,20 @@ function removeItem(id, callback) {
 };
 
 function approveItem(id, callback) {
-	$.ajax({
-		url : socket + driPath + "objects/" + id + "/approve",
-		type : "GET",
-		success : function(data) {
-			callback(null, data);
-		},
-		error : function(d, r) {
-			callback(r, null);
-			console.log(d);
-			console.log(r);
-		}
+	var link = driPath + "objects/" + id + "/approve"
+	loadData(link, function(data) {
+		callback(null,data)
+	}, function(err) {
+		console.log(err,null)
+	});
+};
+function unapproveItem(pid, callback) {
+	console.log(pid)
+	var link = driPath + "objects/" + pid + "/unapprove"
+	loadData(link, function(data) {
+		callback(null, data)
+	}, function(err) {
+		console.log(err, null)
 	});
 };
 
@@ -250,7 +275,7 @@ function backbone() {
 			"/:page" : "collectionPage",
 			":id/:page" : "pageRoute",
 			":id" : "defaultRoute"
-			
+
 		},
 		collection : function() {
 			if(window.location.pathname.substr(0, 8) == "/compare") {

@@ -141,12 +141,13 @@ function createPagination(meta) {
 
 
 function loadData(link, callback, error) {
+	console.log(socket + link)
 	$.ajax({
 		url : socket + link,
 		cache : false,
 		type : "GET",
 		dataType : 'jsonp',
-		timeout : 2000,
+		timeout : 5000,
 		success : function(data, status, r) {
 			if(data.objects) {
 				callback(data.objects, data.meta);
