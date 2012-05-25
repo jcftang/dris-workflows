@@ -3,8 +3,19 @@
  *           -- Query --
  *------------------------------------ */
 function setUpQueryPage() {
+
+	$("#searchValue").keypress(function(e) {
+		if(e.which == 13) {
+			initeSearch()
+		}
+	}); 
+
 	$("#query").click(function(e) {
-		var field = $("#searchField").val()
+		initeSearch()
+	})
+}
+function initeSearch(){
+	var field = $("#searchField").val()
 		var value = $("#searchValue").val()
 		if(field && value) {
 			loadQueryData(field, value)
@@ -13,9 +24,7 @@ function setUpQueryPage() {
 			$("#searchValue").addClass("alert-error")
 			console.log("Enter a value")
 		}
-	})
 }
-
 function loadQueryData(field, value) {
 	$("tbody").empty()
 	createLoadingRow("tbody");
