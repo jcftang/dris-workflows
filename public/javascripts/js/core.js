@@ -168,14 +168,13 @@ function loadData(link, callback, error) {
 }
 
 
-function createLoadingRow() {
-	var tr = $(document.createElement('tr')).attr('id', 'loadingDiv')
-	var loading = $(document.createElement('i')).addClass('icon-refresh')
-
-	var td = $(document.createElement('td')).attr('colspan', '7').append(loading).text(" Loading...");
-	tr.append(td)
-
-	$('tbody').append(tr)
+function createLoadingRow(table) {
+	var tr = $("<tr>").attr('class', 'loadingDiv')
+	var loading = $("<i>").addClass('icon-refresh')
+	console.log(loading)
+	var td = $("<td>").attr('colspan', '7').text(" Loading...");
+	tr.append(td.prepend(loading));
+	$(table).append(tr)
 }
 
 

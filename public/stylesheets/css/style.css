@@ -229,7 +229,7 @@ form ul {
 	list-style-type:none;
 	margin:0;
 }
-#loadingDiv td {
+.loadingDiv td {
 	text-align:center;
 }
 #multi {
@@ -295,6 +295,11 @@ footer p{
 }
 .fileupload-buttonbar{
 	padding-left: 20px;
+}
+
+#searchField,#searchValue,#query{
+	margin-right: 5px;
+	margin-bottom: 5px;
 }
 
 

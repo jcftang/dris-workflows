@@ -7,19 +7,37 @@ div.container
 
 	div.row
 		div.span8
-			h2 Requirements (built with)
-			p
-				ul
-					li mongodb
-					li nodejs
-					li twitter-bootstrap
-					li fedora-commons
-					li mocha (for testing/unit tests)
-			h2 Target users
-			p The workflows here in this application and the backend target the DRIS workflows.
-	
-			h2 Purpose of this screen
-			p Should show workflows, help, documentation here on this screen.
+			.row
+				#lastCreated.span4
+					h2 Last Added
+					table.table.table-striped.table-bordered
+						thead
+							tr
+								th Object
+								th Time
+						tbody
+				#lastEdited.span4
+					h2 Last Edited
+					table.table.table-striped.table-bordered
+						thead
+							tr
+								th Object
+								th Time
+						tbody
+			.span8
+				h2 Requirements (built with)
+				p
+					ul
+						li mongodb
+						li nodejs
+						li twitter-bootstrap
+						li fedora-commons
+						li mocha (for testing/unit tests)
+				h2 Target users
+				p The workflows here in this application and the backend target the DRIS workflows.
+		
+				h2 Purpose of this screen
+				p Should show workflows, help, documentation here on this screen.
 		#stats.span4
 			h2 Reporting
 			table.table.table-striped.table-bordered

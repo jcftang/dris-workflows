@@ -83,7 +83,7 @@ $(document).ready(function() {
 })
 
 function loadAdminData(page, amount) {
-	$('#loadingDiv').show()
+	createLoadingRow("tbody")
 	var link = driPath + "objects?page=" + (page - 1) + "&amount=" + amount + "&callback=?"
 
 	loadData(link, function(items, meta) {
@@ -110,22 +110,22 @@ function loadAdminData(page, amount) {
 		if(items.length == 0) {
 			$("tbody").append("<tr><td colspan='7'>No items available</td></tr>")
 		}
-		$('#loadingDiv').hide()
+		$('.loadingDiv').remove()
 	}, function(err) {
-		$('#loadingDiv').empty()
+		$('.loadingDiv').empty()
 		var td = $(document.createElement('td')).attr('colspan', '6').addClass('alert-error').text(err)
-		$('#loadingDiv').append(td)
+		$('.loadingDiv').append(td)
 	});
 }
 
 function loadChildren(id, page, amount) {
 	$("tbody").empty();
-	createLoadingRow();
+	createLoadingRow("tbody");
 
 	var link = driPath + "objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
 	loadData(link, function(items, meta) {
 		$("tbody").empty();
-		$('#loadingDiv').hide()
+		$('.loadingDiv').remove()
 		if(items.length == 0) {
 			createPagination(meta)
 			$("tbody").append("<tr><td colspan='7'>No Children here</td></tr>")
@@ -165,12 +165,9 @@ function loadChildren(id, page, amount) {
 		}
 
 	}, function(err) {
-		$('#loadingDiv').empty()
-		var td = $(document.createElement('td'))
-		td.attr('colspan', '6')
-		td.addClass('alert-error')
-		td.text(err)
-		$('#loadingDiv').append(td)
+		$('.loadingDiv').empty()
+			var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
+			$('.loadingDiv').append(td)
 	});
 }
 function loadCompareData(id){

@@ -16,7 +16,7 @@ $(document).ready(function() {
 	//checks what page we are on
 	switch(window.location.pathname) {
 		case "/home":
-			loadStatistics(0);
+			loadStatistics();
 			break;
 		case "/edit":
 			workspace.navigate("", {
@@ -47,15 +47,73 @@ $(document).ready(function() {
 			$(this).parent().remove();
 	});
 });
+/*------------------------------------
+ *            -- Stats --
+ *------------------------------------ */
 
 //loads statistics in one by one, can otherwise not know what data is being loaded in.
-function loadStatistics(numb) {
-	if(numb == 0) {
+function loadStatistics() {
+	LoadSimpleStats(0);
+	LoadLastAdded()
+	LoadLastEdited()
+}
+
+function LoadLastAdded(){
+	createLoadingRow("#lastCreated tbody");
+	var link = driPath + "stats/lastcreated"
+	loadData(link, function(data) {
+		$('.loadingDiv').remove()
+		console.log(data)
+		for(var i in data){
+			
+			titleCheck(data[i],function(title){
+				$("#lastCreated tbody").append("<tr><td>" + title + "</td><td>" + jQuery.timeago(data[i].dateCreated) + "</td>")
+			})
+			
+		}
+		
+
+	}, function(err) {
+		$('.loadingDiv').empty()
+		var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
+		$('.loadingDiv').append(td)
+	}); 
+
+}
+
+function LoadLastEdited(){
+	createLoadingRow("#lastEdited tbody");
+	var link = driPath + "stats/lastedited"
+	loadData(link, function(data) {
+		$('.loadingDiv').remove()
+		console.log(data)
+		for(var i in data){
+			
+			titleCheck(data[i],function(title){
+				$("#lastEdited tbody").append("<tr><td>" + title + "</td><td>" + jQuery.timeago(data[i].dateModified) + "</td>")
+			})
+			
+		}
+		
+
+	}, function(err) {
+		$('.loadingDiv').empty()
+		var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
+		$('.loadingDiv').append(td)
+	}); 
+
+}
+
+function LoadSimpleStats(numb){
+		if(numb == 0) {
 		$("#stats tbody").empty()
+
 	}
+	
 	//stats to be loaded in, must equal name in the link
 	var stats = ["all", "approved", "open"]
 	if(numb <= stats.length - 1) {
+		createLoadingRow("#stats tbody");
 		var item = stats[numb]
 		var link = driPath + "stats/" + stats[numb]
 		//there is no all link
@@ -63,11 +121,18 @@ function loadStatistics(numb) {
 			link = driPath + "stats/"
 		}
 
+
 		loadData(link, function(data) {
+			$('.loadingDiv').remove()
 			$("#stats tbody").append("<tr><td>" + item + " objects</td><td>" + data + "</td>")
 			numb++;
-			loadStatistics(numb)
-		})
+			
+			LoadSimpleStats(numb)
+		}, function(err) {
+			$('.loadingDiv').empty()
+			var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
+			$('.loadingDiv').append(td)
+		});
 	}
 }
 
@@ -80,11 +145,10 @@ function loadStatistics(numb) {
 
 function loadTopLevelData(page, amount) {
 	$("tbody").empty();
-	createLoadingRow();
+	createLoadingRow("#step1 tbody");
 	var link = driPath + "objects?page=" + (page - 1) + "&amount=" + amount
 
 	loadData(link, function(items, meta) {
-		$('#loadingDiv').hide()
 		$("tbody").empty();
 		createPagination(meta)
 		console.log(items)
@@ -106,13 +170,13 @@ function loadTopLevelData(page, amount) {
 		}
 		if(items.length == 0) {
 			$("#step1 tbody").append("<tr><td colspan='5'>No objects available</td></tr>")
-			$('#loadingDiv').hide()
+			$('.loadingDiv').hide()
 		}
 
 	}, function(err) {
-		$('#loadingDiv').empty()
+		$('.loadingDiv').empty()
 		var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
-		$('#loadingDiv').append(td)
+		$('.loadingDiv').append(td)
 	});
 
 }
@@ -159,11 +223,11 @@ function loadPidChildren(id, page, amount) {
 
 function loadChildren(id, page, amount) {
 	$("tbody").empty();
-	createLoadingRow();
 	var link = driPath + "objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
+	createLoadingRow("#step1 tbody");
 	loadData(link, function(items, meta) {
 		$("tbody").empty();
-		
+
 		if(items.length == 0) {
 			createPagination(meta)
 			$("#step1 tbody").append("<tr><td colspan='5'>No Children here</td></tr>")
@@ -184,17 +248,14 @@ function loadChildren(id, page, amount) {
 
 		}
 
-
-		$('#loadingDiv').hide()
+		$('.loadingDiv').hide()
 
 	}, function(err) {
-		$('#loadingDiv').empty()
-		var td = $(document.createElement('td'))
-		td.attr('colspan', '6')
-		td.addClass('alert-error')
-		td.text(err)
-		$('#loadingDiv').append(td)
-	});
+		$('.loadingDiv').empty()
+		var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
+		$('.loadingDiv').append(td)
+	}); 
+
 
 }
 
