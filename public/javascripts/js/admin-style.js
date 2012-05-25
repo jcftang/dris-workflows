@@ -51,7 +51,7 @@ $(document).ready(function() {
 		id = $this.attr("data-id");
 		approveItem(id, function(err, data) {
 			if(err) {
-			console.log(err)
+				console.log(err)
 				$this.removeAttr("disabled");
 				$this.removeClass('disabled')
 				$this.attr("value", "Approve");
@@ -112,13 +112,13 @@ $(document).ready(function() {
 		});
 	});
 })
-function createCompareButton(id, pid){
-	if(pid){
+function createCompareButton(id, pid) {
+	if(pid) {
 		return "<div class='input-append'><input type='text' class='span2' disabled value='" + pid + "' /> <a class='btn btnCompareFedora' href='compare/" + id + "' type='button' value='compare'>Compare</button></div>"
-	}else{
+	} else {
 		return "-"
 	}
-	
+
 }
 function loadAdminData(page, amount) {
 	createLoadingRow("tbody")
@@ -128,16 +128,17 @@ function loadAdminData(page, amount) {
 		createPagination(meta)
 		$("tbody").empty();
 		for(i in items) {
-			var fedoraId = createCompareButton(items[i]._id,items[i].fedoraId)
+			var fedoraId = createCompareButton(items[i]._id, items[i].fedoraId)
 			var disabled = (items[i].type == "item") ? "" : "disabled";
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
+
 			titleCheck(items[i], function(title) {						if(items[i].status == "approved") {
 							$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title + "</a><i data-id='" + items[i]._id + "'class='icon icon-eye-open' rel='tooltip' title='Quick view'></i></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-warning btn-mini unapproveItem' value='Unapprove' data-fedora='" + items[i].fedoraId + "' data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 						} else {
 							$("tbody").append("<tr id='" + items[i]._id + "'><td><input type='checkbox' data-id='" + items[i]._id + "'></td>" + "<td><a data-type='" + items[i].type + "'  href='#" + items[i]._id + "'>" + title + "</a><i data-id='" + items[i]._id + "'class='icon icon-eye-open' rel='tooltip' title='Quick view'></i></td>" + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td>" + "<td>" + fedoraId + "</td>" + "<td>" + items[i].type + "</td>" + "<td><input type='button' class='btn btn-success btn-mini approveItem' value='Approve' data-fedora='" + items[i].fedoraId + "' " + disabled + " data-id='" + items[i]._id + "'/></td>" + "<td><input type='button' class='btn btn-danger btn-mini removeItem' value='Remove' data-id='" + items[i]._id + "'/></td></tr>")
 						}
-			})
 
+			})
 		}
 		if(items.length == 0) {
 			$("tbody").append("<tr><td colspan='7'>No items available</td></tr>")
@@ -170,7 +171,7 @@ function loadChildren(id, page, amount) {
 				createPagination(meta)
 				for(i in items) {
 
-					var fedoraId = createCompareButton(items[i]._id,items[i].fedoraId)
+					var fedoraId = createCompareButton(items[i]._id, items[i].fedoraId)
 					var disabled = (items[i].type == "item") ? "" : "disabled";
 					var label = "IN-" + items[i].label.substring(0, amountLblChars);
 					titleCheck(items[i], function(title) {
@@ -186,8 +187,8 @@ function loadChildren(id, page, amount) {
 
 	}, function(err) {
 		$('.loadingDiv').empty()
-			var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
-			$('.loadingDiv').append(td)
+		var td = $("<td>").attr('colspan', '6').addClass('alert-error').text(err)
+		$('.loadingDiv').append(td)
 	});
 }
 
@@ -248,9 +249,9 @@ function removeItem(id, callback) {
 function approveItem(id, callback) {
 	var link = driPath + "objects/" + id + "/approve"
 	loadData(link, function(data) {
-		callback(null,data)
+		callback(null, data)
 	}, function(err) {
-		console.log(err,null)
+		console.log(err, null)
 	});
 };
 function unapproveItem(pid, callback) {

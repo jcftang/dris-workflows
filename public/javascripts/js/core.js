@@ -147,7 +147,7 @@ function loadData(link, callback, error) {
 		cache : false,
 		type : "GET",
 		dataType : 'jsonp',
-		timeout : 5000,
+		timeout : 10000,
 		success : function(data, status, r) {
 			if(data.objects) {
 				callback(data.objects, data.meta);
