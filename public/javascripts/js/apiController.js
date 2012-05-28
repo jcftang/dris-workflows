@@ -264,8 +264,9 @@ function loadChildren(id, page, amount) {
 					rbt = ""
 					action = ""
 				}
+				var details = "<span class='details'><span class='divider'> |</span><a href='/overview/"+items[i]._id +"'>details</a></span>"
 				titleCheck(items[i], function(title) {
-					$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a><i data-id='" + items[i]._id + "'class='icon icon-eye-open' rel='tooltip' title='Quick view'></i></td><td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
+					$("#step1 tbody").append("<tr id='" + items[i]._id + "'>" + rbt + "<td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + title + "</a>"+details+"<i data-id='" + items[i]._id + "'class='icon icon-eye-open' rel='tooltip' title='Quick view'></i></td><td><a data-type='" + items[i].type + "'  href='#id/" + items[i]._id + "'>" + label + "</a></td><td>" + items[i].type + "</td>" + action + "</tr>")
 				})
 			}
 

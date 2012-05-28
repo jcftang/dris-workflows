@@ -47,7 +47,8 @@ function viewDetails(data, link) {
 	if(data.fileLocation) {
 		root += "</table><table class='table table-bordered span12 infoFloat'><tr ><thead><th colspan='2'><h2>Files</h2></th></tr></thead>";
 		for(var i = 0; i < data.fileLocation.length; i++) {
-			root += "<tr><td colspan='2'><a href='" + publicDirectory + "/" + data.fileLocation[i].fileLocation + "'>" + data.fileLocation[i].fileLocation + "</a></td></tr>";
+			console.log(data.fileLocation)
+			root += "<tr><td colspan='2'><a href='" + publicDirectory + "/" + data.fileLocation[i].fileLocation + "'>" + data.fileLocation[i].fileLocation + "</a><span class='divider'> | </span><a class='displayMedia'href='#' data-type='"+data.fileLocation[i].type+"'>display</a></td></tr>";
 		}
 	}
 
@@ -82,4 +83,25 @@ function viewDetails(data, link) {
 
 	properties += "</table>"
 	$("#overview").append(root+properties)
+	$(".displayMedia").click(function(){
+		
+		displayMedia(this,$(this).prev().attr("href"))
+	})
+}
+function displayMedia(obj,link){
+	
+	var type = $(obj).attr("data-type");
+	type = type.substr(0,type.indexOf("/"));
+	var close = '<a class="close" data-dismiss="alert" href="#">&times;</a>'
+	switch(type){
+		case "image":
+		$(obj).after("<div class='mediaContainer'><img src='"+link+"'>"+close+"</div>")
+		break;
+		case "video":
+		$(obj).after('<div><video width="320" height="240" controls="controls"><source src="'+link+'" type="'+$(obj).attr("data-type")+'" /> Your browser does not support html5 video.</video>'+close+'</div>');
+		break;
+		default:
+		alert("This media type is not supported.")
+		break;
+	}
 }
