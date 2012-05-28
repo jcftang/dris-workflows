@@ -4,8 +4,12 @@
 
 
 var express = require('express');
+var winston = require('winston');
 exports.configure = function configure(app) {
-
+	
+	// Configure winston logging
+	winston.add(winston.transports.File, { filename: 'general.log' , timestamp:true});
+	
 	app.configure(function() {
 		app.set('views', __dirname + '/views');
 		app.set('view options', {
@@ -37,7 +41,7 @@ exports.configure = function configure(app) {
 	});
 
 	app.error(function(err, req, res, next) {
-		console.log(err);
+		winston.log("error", err);
 		next(err);
 		
 	});
