@@ -84,8 +84,7 @@ function viewDetails(data, link) {
 	properties += "</table>"
 	$("#overview").append(root+properties)
 	$(".displayMedia").click(function(){
-		
-		displayMedia(this,$(this).prev().attr("href"))
+		displayMedia(this,$(this).prev().prev().attr("href"))
 	})
 }
 function displayMedia(obj,link){
@@ -100,8 +99,11 @@ function displayMedia(obj,link){
 		case "video":
 		$(obj).after('<div><video width="320" height="240" controls="controls"><source src="'+link+'" type="'+$(obj).attr("data-type")+'" /> Your browser does not support html5 video.</video>'+close+'</div>');
 		break;
+		case "audio":
+		$(obj).after('<div><audio controls="controls"><source src="'+link+'" type="'+$(obj).attr("data-type")+'" /> Your browser does not support html5 audio.</audio>'+close+'</div>')
 		default:
 		alert("This media type is not supported.")
 		break;
+		
 	}
 }
