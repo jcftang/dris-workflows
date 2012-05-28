@@ -37,6 +37,7 @@ exports.createRoutes = function make(app) {
 
 	// Add Error pages
 	app.use(function(req, res, next) {
+		winston.log("error", "404 page not found: " + req.url)
 		res.render('404.jade', {
 			status : 404,
 			title : "404 - Error",
@@ -45,6 +46,7 @@ exports.createRoutes = function make(app) {
 		});
 	});
 	app.use(function(err, req, res, next) {
+		winston.log("error", err)
 		res.render('500.jade', {
 			status : err.status || 500,
 			error : err,
