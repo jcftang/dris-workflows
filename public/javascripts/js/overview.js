@@ -91,24 +91,60 @@ function viewDetails(data, link) {
 		}
 	})
 }
-function displayMedia(obj,link){
-	
-	var type = $(obj).attr("data-type");
-	type = type.substr(0,type.indexOf("/"));
 
-	switch(type){
+
+function displayMedia(obj, link) {
+
+	var type = $(obj).attr("data-type");
+	var typeSub = type.substr(type.indexOf("/") + 1);
+	var typeParent = type.substr(0, type.indexOf("/"));
+	switch(typeParent) {
 		case "image":
-		$(obj).after("<div class='mediaContainer'><img src='"+link+"'></div>")
-		break;
+			if(typeSub == "jpeg" || typeSub == "png" || typeSub == "gif") {
+				$(obj).after("<div class='mediaContainer'><img src='" + link + "'></div>")
+			} else {
+				$(obj).after("<div>Image type not supported. You can download it by clicking the link.</div>");
+			}
+			break;
 		case "video":
-		$(obj).after('<div><video width="320" height="240" controls="controls"><source src="'+link+'" type="'+$(obj).attr("data-type")+'" /> Your browser does not support html5 video.</video></div>');
-		break;
+			if(browserMediaTest(typeSub)) {
+				$(obj).after('<div><video width="320" height="240" controls="controls"><source src="' + link + '" type="' + type + '" /> Your browser does not support html5 video.</video></div>');
+			} else {
+				$(obj).after("<div>Video type not supported. You can download it by clicking the link.</div>");
+			}
+			break;
 		case "audio":
-		$(obj).after('<div><audio controls="controls"><source src="'+link+'" type="'+$(obj).attr("data-type")+'" /> Your browser does not support html5 audio.</audio></div>')
-		break;
+			$(obj).after('<div><audio controls="controls"><source src="' + link + '" type="' + type + '" /> Your browser does not support html5 audio.</audio></div>')
+			break;
 		default:
-		alert("This media type is not supported.")
-		break;
-		
+			alert("This media type is not supported.")
+			break;
+
 	}
+}
+
+
+function browserMediaTest(type){
+	type = type.toLowerCase();
+	
+	 if ($.browser.webkit) {
+	 	if(type == "mp4"||type == "ogg"||type == "webm"){
+	 		return true
+	 	}
+	 }else if($.browser.msie){
+	 	if(type == "mp4"){
+	 		return true
+	 	}
+	 }else if($.browser.mozilla){
+	 	if(type == "ogg" || type == "webm"){
+	 		return true;
+	 	}
+	 }else if($.browser.safari ){
+	 	if(type == "mp4"){
+	 		return true
+	 	}
+	 }else{
+	 	return false;
+	 }
+	
 }
