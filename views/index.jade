@@ -5,9 +5,9 @@ div.container
 		h1=title
 		p Welcome to #{title}
 
-	div.row
+	div.row-fluid
 		div.span12
-			.row
+			.row-fluid
 				#lastCreated.span4
 					h2 Last Added
 					table.table.table-striped.table-bordered
@@ -34,7 +34,7 @@ div.container
 								th Type
 								th Count
 						tbody
-			.row
+			.row-fluid
 				#editItem.span4
 					h2 Last edited item
 					table.table.table-striped.table-bordered
@@ -62,7 +62,35 @@ div.container
 								th Time
 								th type
 						tbody
-			.span8
+			.row-fluid
+				#createItem.span4
+					h2 Last added item
+					table.table.table-striped.table-bordered
+						thead
+							tr
+								th Label
+								th Time
+								th type
+						tbody
+				#createSeries.span4
+					h2 Last added series
+					table.table.table-striped.table-bordered
+						thead
+							tr
+								th Label
+								th Time
+								th type
+						tbody
+				#createCollection.span4
+					h2 Last added Collection
+					table.table.table-striped.table-bordered
+						thead
+							tr
+								th Label
+								th Time
+								th type
+						tbody
+			.row-fluid
 				h2 Requirements (built with)
 				p
 					ul

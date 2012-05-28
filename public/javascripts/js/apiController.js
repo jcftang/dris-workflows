@@ -59,6 +59,9 @@ function loadStatistics() {
 	loadItemDataByType("lastEdited","item","editItem")
 	loadItemDataByType("lastEdited","series","editSeries")
 	loadItemDataByType("lastEdited","collection","editCollection")
+	loadItemDataByType("lastCreated","item","createItem")
+	loadItemDataByType("lastCreated","series","createSeries")
+	loadItemDataByType("lastCreated","collection","createCollection")
 }
 
 function loadItemData(name){
@@ -77,7 +80,7 @@ function loadItemData(name){
 					date = jQuery.timeago(data[i].dateModified)
 				}
 				var label = "IN-" + data[i].label.substring(0, amountLblChars);
-				$("#"+name+" tbody").append("<tr><td>" + label + "</td><td>" +date+ "</td><td>"+data[i].type+"</td></tr>")
+				$("#"+name+" tbody").append("<tr><td><a href='/overview/"+data[i]._id+"'>" + label + "</a></td><td>" +date+ "</td><td>"+data[i].type+"</td></tr>")
 			})
 			
 		}
@@ -109,7 +112,7 @@ function loadItemDataByType(name,option,field){
 					date = jQuery.timeago(data[i].dateModified)
 				}
 				var label = "IN-" + data[i].label.substring(0, amountLblChars);
-				$("#"+field+" tbody").append("<tr><td>" + label + "</td><td>" +date+ "</td><td>"+data[i].type+"</td></tr>")
+				$("#"+field+" tbody").append("<tr><td><a href='/overview/"+data[i]._id+"'>" + label + "</a></td><td>" +date+ "</td><td>"+data[i].type+"</td></tr>")
 			})
 			
 		}

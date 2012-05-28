@@ -319,4 +319,9 @@ footer p{
 	margin-top: 5px;
 }
 
+@media screen and (max-width: 960px) {
+	.container{
+		width: auto;
+	}
+}
 

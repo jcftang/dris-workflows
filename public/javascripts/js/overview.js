@@ -114,7 +114,7 @@ function displayMedia(obj, link) {
 			}
 			break;
 		case "audio":
-			$(obj).after('<div><audio controls="controls"><source src="' + link + '" type="' + type + '" /> Your browser does not support html5 audio.</audio></div>')
+			$(obj).after('<div><audio controls="controls"><source src="' + link + '" type="audio/mpeg" /> Your browser does not support html5 audio.</audio></div>')
 			break;
 		default:
 			alert("This media type is not supported.")
