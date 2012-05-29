@@ -4,8 +4,8 @@
 
 /*
  * HOW IT WORKS:
- * This file loads in the schema from properties.js
- * Here the properties drop down get generated
+ * This file loads in the schema from properties.js (same schema as in mongoose)
+ * Here the properties drop down gets generated
  * In style.js the properties that are clicked are being generated and added to the form.
  * 
  */
