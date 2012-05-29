@@ -3,13 +3,13 @@
  *           -- Query --
  *------------------------------------ */
 function setUpQueryPage() {
-
+	//if you press enter in the search box you start searching
 	$("#searchValue").keypress(function(e) {
 		if(e.which == 13) {
 			initeSearch()
 		}
 	}); 
-
+	
 	$("#query").click(function(e) {
 		initeSearch()
 	})
@@ -17,6 +17,7 @@ function setUpQueryPage() {
 function initeSearch(){
 	var field = $("#searchField").val()
 		var value = $("#searchValue").val()
+		//if the user entered a value in the serachbox
 		if(field && value) {
 			loadQueryData(field, value)
 			$("#searchValue").removeClass("alert-error")

@@ -4,7 +4,6 @@
 *------------------------------------ */
 
 //updates all the objects that were selected at step1 in the edit page
-
 function updateChildren(data, itemPos) {
 	if(itemPos < data.length) {
 		var link = socket + driPath + "objects/" + data[itemPos]._id + "/update";
@@ -49,7 +48,7 @@ function loadEditData() {
 
 		});
 	})
-
+	//if a field gets changed in the edit part highlight the item in the list that it's changed
 	$("#step2 #single form input").live("blur", function() {
 
 		$(".items li.accordion-heading-focus").addClass("changedItem");
@@ -59,7 +58,7 @@ function loadEditData() {
 			editItems[pos].properties = data;
 		})
 	});
-
+	//will save all the changes
 	$("#saveAll").click(function() {
 		for(var i = 0; i < editItems.length; i++) {
 			var link = socket + driPath + "objects/" + editItems[i]._id + "/update";
@@ -71,7 +70,7 @@ function loadEditData() {
 			})
 		}
 	})
-
+	//going up in the hierarchy in the modal for changing the parent
 	$("#goUp").click(function(event) {
 		event.preventDefault();
 		if($(this).is(':disabled') == false) {
@@ -88,6 +87,7 @@ function loadEditData() {
 
 		editItems[pos].parentId = id;
 	})
+	//opens the modal for changing the parent id
 	$("#pIdBtn").click(function() {
 		$('#myModal').modal()
 		workspace.navigate("#myModal", {
@@ -95,6 +95,7 @@ function loadEditData() {
 		});
 		loadpIdData(1, itemsPerPage);
 	})
+	//perform a global update
 	$("#gblUpdate").click(function(event) {
 		event.preventDefault()
 		updateChildren(editItems, 0);
@@ -125,6 +126,7 @@ function loadEditData() {
 	})
 }
 
+//loads in the data of the objects that you select in step1 of the edit page
 function loadEditObjects() {
 	var size = $('#step1 tbody input:checked').size()
 	var arr = new Array();
@@ -137,6 +139,7 @@ function loadEditObjects() {
 			if(arr.length == size) {
 				emptyForm();
 				showItems(arr)
+				//localy store the data
 				editItems = arr;
 				$(".items li:first a").trigger("click")
 			}

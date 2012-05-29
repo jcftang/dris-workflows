@@ -74,7 +74,7 @@ function loadItemData(name){
 	loadData(link, function(data) {
 		$('.loadingDiv').remove()
 		for(var i in data){
-			
+			// checks if the title is provided or not and gives the corresponding title back (function in core.js)
 			titleCheck(data[i],function(title){
 				var date = ""
 				//Converting the date to - time ago.
@@ -270,6 +270,7 @@ function loadChildren(id, page, amount) {
 		} else {
 			createPagination(meta)
 			for(i in items) {
+				//creating the html row
 				var rbt = "<td><input  name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";
 				var action = "<td class='span1'><a class='btn btn-mini editRow'  data-id='" + items[i]._id + "'>Edit</a></td>"
 				var label = "IN-" + items[i].label.substring(0, amountLblChars);

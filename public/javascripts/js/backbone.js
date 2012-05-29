@@ -6,10 +6,11 @@
 function backbone() {
 
 	var Workspace = Backbone.Router.extend({
+		//hashes in the url that are to be matched with
 		routes : {
 			"edit" : "step2",
 			"myModal/:page" : "loadPidTop2",
-			"step2" : "step2", // #search/kiwis
+			"step2" : "step2",
 			"step3" : "step3",
 			"step4" : "step4",
 			"step5" : "step5",
@@ -30,6 +31,8 @@ function backbone() {
 			if(goDeeper) {
 				goDeeper = false;
 			} else {
+				//removing the breadcrumbs at lower level
+				//this is for the breadcrumbs at the change parent option
 				if($(".modal .breadcrumb li").size() >= 1) {
 					$(".modal .breadcrumb li:last").remove();
 					$("#goUp").attr("disabled", "disabled");
@@ -56,6 +59,7 @@ function backbone() {
 		collection : function() {
 			$("tbody").empty();
 			if(!goDeeper) {
+				//removing the breadcrumbs at lower level
 				if($(".row .breadcrumb li").size() > 1) {
 					$(".row .breadcrumb li:first").nextAll().remove();
 				}
@@ -89,6 +93,7 @@ function backbone() {
 			loadChildren(id, 1, itemsPerPage);
 
 		},
+		//Loads objects with no parent for the option to change parent
 		loadPidTop : function() {
 			$(".modal  tbody").empty();
 			if(!goDeeper) {
@@ -99,6 +104,7 @@ function backbone() {
 			goDeeper = false;
 			loadpIdData(1, itemsPerPage);
 		},
+		//Loads objects with no parent for the option to change parent if there are pages
 		loadPidTop2 : function(page) {
 			$(".modal  tbody").empty();
 			if(!goDeeper) {
@@ -109,6 +115,7 @@ function backbone() {
 			goDeeper = false;
 			loadpIdData(page, itemsPerPage);
 		},
+		//loads in children for the option to change parent id
 		loadPid : function(id) {
 			if(goDeeper) {
 				$(".modal .breadcrumb a:last").parent().removeClass("active");
@@ -122,9 +129,11 @@ function backbone() {
 			}
 			loadPidChildren(id, 1, itemsPerPage);
 		},
+		//loads children if you change page
 		pageRoute : function(id, page) {
 			loadChildren(id, page, itemsPerPage);
 		},
+		//loads children for the change parent option if you change page
 		pageRoutePid : function(id, page) {
 			loadPidChildren(id, page, itemsPerPage);
 		},

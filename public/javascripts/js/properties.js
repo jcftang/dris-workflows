@@ -1,7 +1,7 @@
 /*
  * author Matthias Van Wambeke
  */
-
+//values for specific properties.
 var resourceTypes = ["text", "cartographic", "notated music", "sound recording ", "sound recording-musical", "sound recording-nonmusical", "still image", "moving image", "three dimensional object", "software, multimedia", "mixed material"]; 
 
 var titleType = ["title","alternative","abbreviated","translated"];
@@ -32,6 +32,8 @@ var relatedType = ["series","host","project"];
 var accessConditions = ["restriction on access", "use and reproduction","use and reproduction (link)"]
 
 var projectItems = ["objectId","upload"];
+
+//data schema same as in mongoose
 var driObjectSchema = {
 	titleInfo : {
 		type:String,

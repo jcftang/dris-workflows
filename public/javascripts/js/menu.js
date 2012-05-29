@@ -1,12 +1,20 @@
 /**
  * @author mvanwamb
  */
-var headAttributes = [{}]
+
+/*
+ * HOW IT WORKS:
+ * This file loads in the schema from properties.js
+ * Here the properties drop down get generated
+ * In style.js the properties that are clicked are being generated and added to the form.
+ * 
+ */
 var optionsArray = new Array();
 function createPropertyButtons() {
 	optionsArray = new Array();
+	//loads in the schema from properties.js, same schema is being used by mongoose.
 	var scheme = driObjectSchema;
-	
+	//pushes the schema into an array
 	$.each(scheme, function(index, obj) {
 		optionsArray.push({
 			name : index,
@@ -14,6 +22,8 @@ function createPropertyButtons() {
 		});
 
 	});
+	//creating random numbers to make sure the item has a unique id
+	//creating all the buttons and dropdown properties list
 	parentId = Math.floor(Math.random() * Math.random() * 1000 - 1);
 	var heading = '<div class="accordion" id="accordion' + parentId + '">';
 	

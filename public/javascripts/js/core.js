@@ -1,10 +1,12 @@
 $(document).ready(function(){
-
+	//displaying the sneakpeak feature
 	$(document).on("click", ".icon-eye-open,.icon-eye-close", function() {
 		var item = $(this);
 		$(this).toggleClass("icon-eye-open")
 		$(this).toggleClass("icon-eye-close")
+		//checking if there already is data information
 		if(!$(this).parent().parent().next().hasClass("infoMeta")) {
+			//if not, load in the metadata
 			$('.infoMeta').remove()
 			var link = driPath + "objects/" + $(this).attr("data-id");
 			loadData(link, function(data) {
@@ -12,6 +14,7 @@ $(document).ready(function(){
 			});
 
 		} else {
+			//if it has don't remove the info
 			$('.infoMeta').remove()
 		}
 
@@ -49,7 +52,7 @@ function createPagination(meta) {
 		if((start + amountPages - currentPage) < (start + amountPages / 2)) {
 			var diff = Math.floor(amountPages / 2 - (amountPages - currentPage))
 			startPage = start + diff
-
+			
 			if(start + diff + amountPages <= meta.numPages) {
 				endPage = start + diff + amountPages;
 			} else {
@@ -68,7 +71,7 @@ function createPagination(meta) {
 	var pagination = $(".pagination ul").empty();
 	var pos = Backbone.history.fragment.indexOf('/')
 	var id = Backbone.history.fragment.substring(0, pos)
-
+	//if there is no page request
 	if(pos == -1) {
 		id = Backbone.history.fragment
 	}
@@ -139,7 +142,7 @@ function createPagination(meta) {
 	pagination.append(goForward)
 }
 
-
+//general load of data
 function loadData(link, callback, error) {
 	console.log(socket + link)
 	$.ajax({
@@ -168,7 +171,7 @@ function loadData(link, callback, error) {
 
 }
 
-
+//create a loading row in the tables
 function createLoadingRow(table) {
 	var tr = $("<tr>").attr('class', 'loadingDiv')
 	var loading = $("<i>").addClass('icon-refresh')
@@ -177,7 +180,7 @@ function createLoadingRow(table) {
 	$(table).append(tr)
 }
 
-
+//displays the data in the sneakpeak option
 function displayData(data, item, link) {
 	var root = "<table class='table-bordered infoFloat span6'>"
 	root += "<tr class='collapse'><th colspan='2'><i class='icon-minus'></i><h2>General</h2></th></tr><tr><th>type</th><th>data</th>";

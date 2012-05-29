@@ -92,9 +92,8 @@ function viewDetails(data, link) {
 	})
 }
 
-
+//Display the image/video or sound file 
 function displayMedia(obj, link) {
-
 	var type = $(obj).attr("data-type");
 	var typeSub = type.substr(type.indexOf("/") + 1);
 	var typeParent = type.substr(0, type.indexOf("/"));
@@ -123,7 +122,7 @@ function displayMedia(obj, link) {
 	}
 }
 
-
+//check what browser you are using and if the browser is able to play your video file
 function browserMediaTest(type){
 	type = type.toLowerCase();
 	

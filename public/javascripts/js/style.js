@@ -51,7 +51,7 @@ function showItems(items) {
 	for(var i = 0; i < items.length; i++) {
 		var label = "IN-"+items[i].label.substring(0, amountLblChars);
 		var title = "-"
-
+		//checking if the tile is defined or not
 		if(( typeof items[i].properties) != "undefined") {
 				if(items[i].properties.titleInfo) {
 				title = items[i].properties.titleInfo[0].title;
@@ -80,6 +80,7 @@ function showItems(items) {
 }
 
 var itemPos = 0;
+//filling up the edit form with the correct data.
 function fillUpForm(data) {
 	itemPos = 0;
 	emptyForm()
@@ -101,7 +102,7 @@ function fillUpForm(data) {
 		}
 		position++;
 	}
-
+	//added files to the form if they are there
 	if(data.fileLocation) {
 		var root = "<div class = 'formInput' id='boxFiles'><h3>Files</h3><hr><ul>"
 		for(var i = 0; i < data.fileLocation.length; i++) {
@@ -116,7 +117,7 @@ function fillUpForm(data) {
 		$("div.pId").text(data.parentId)
 	}
 }
-
+//fill up the fields of special input fields
 function fillInSpecialDataFields(info,name,parent) {
 
 	for(var i in info) {
@@ -135,7 +136,7 @@ function fillInSpecialDataFields(info,name,parent) {
 }
 
 
-
+//if you click a button in the property list
 function loadPropertyActions(){
 		$("#properties button").click(function(event) {
 		event.preventDefault()
@@ -155,6 +156,7 @@ function loadPropertyActions(){
 	})
 }
 
+//any navigation actions
 function loadNavigationActions(){
 	$(document).on("click",".breaddisabled",function(event) {
 		return false;
@@ -189,9 +191,11 @@ function loadNavigationActions(){
 		});
 	});
 }
+
 function loadBtnActions(){
 	loadPropertyActions();
 	loadNavigationActions();
+	//saving the metadata in the edit screen
 	$("#editItem1,#editItem2").click(function(event) {
 		event.preventDefault()
 		if(window.location.pathname == "/edit") {
@@ -231,11 +235,12 @@ function loadBtnActions(){
 			})
 		}
 	})
-
+	//adds another special field if there can be multiple example: topic
 	$(document).on("click",".addInput",function(event){
 		event.preventDefault();
 		$(this).next().append(addSpecialField($(this).attr("data-type"),$(this).attr("data-type")));
 	})
+	//loads the data if you select an item in the list of the edit page (step2)
 	$(document).on("click",".items ul li a", function(event) {
 		$(".controls").show();
 		event.preventDefault();
@@ -269,7 +274,7 @@ function loadBtnActions(){
 		loadPrevItemInList();
 	})
 }
-
+//gets the next item in the list of items that needs to be edited
 function loadNexItemInList() {
 	$(".controls").show();
 	urlNextItem = $(".items li.accordion-heading-focus").next().find("a").attr("href");
@@ -285,7 +290,7 @@ function loadNexItemInList() {
 		fillUpForm(editItems[pos]);
 	}
 }
-
+//gets the previous item in the list of items that needs to be edited
 function loadPrevItemInList() {
 	$(".controls").show();
 	urlPrevItem = $(".items li.accordion-heading-focus").prev().find("a").attr("href");
@@ -314,6 +319,7 @@ function emptyForm() {
 
 
 var counter = 100
+//creates the metadata properties in the form for the create page
 function addInputFieldToFrom(index, dataObject) {
 	var name = dataObject[index].name;
 	var root = '<div id="' + dataObject[index].name + '"class="formInput">'
@@ -346,7 +352,7 @@ function addInputFieldToFrom(index, dataObject) {
 	});
 
 }
-
+//creates the metadata properties in the form for the edit page
 function addEditFormFields(dataObject, name) {
 	var root = '<div id="' + name + '"class="formInput">'
 	root += '<h3>' + name + '</h3>'
@@ -376,7 +382,7 @@ function addEditFormFields(dataObject, name) {
 	counter++;
 
 	$(".dataform").append(root);
-
+	//create special select boxes that allow searching in it
 	$(".dataform select").ufd({
 		prefix : ""
 	});
@@ -403,7 +409,7 @@ function checkSingleField(name) {
 	}
 	return false;
 }
-
+//creates the html for the special fields
 function addSpecialField(name,prop) {
 	counter++
 	removebtn = '</div><a class="close" data-dismiss="alert" href="#">&times;</a></div>'
@@ -519,7 +525,7 @@ function createSelect(items, name) {
 	return root;
 }
 
-
+//creates the json data file
 function createMetaDataModels(form, callback) {
 	if($(".dataform > div", form).length == 0) {
 		callback({});
@@ -570,7 +576,7 @@ function createMetaDataModels(form, callback) {
 }
 
 
-
+//adds the correct fields in the form for the project properties
 function addProjectField(obj) {
 
 	if($(obj).text() == "objectId") {
@@ -580,7 +586,7 @@ function addProjectField(obj) {
 		$(".dataform").prepend(root)
 
 	} else if($(obj).text() == "upload") {
-
+		//loads in the upload plugin page
 		$.get("/upload.htm", function(data) {
 			var upField = "<div class='formInput' id='" + $(obj).text() + "'><a class='close' data-dismiss='alert'>×</a>" + data + "</div>";
 			$(".dataform").before(upField)
