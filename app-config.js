@@ -8,7 +8,7 @@ var winston = require('winston');
 exports.configure = function configure(app) {
 	
 	// Configure winston logging
-	winston.add(winston.transports.File, { filename: 'general.log' , timestamp:true});
+	winston.add(winston.transports.File, { filename: 'general.log' , timestamp:true, json:false});
 	
 	app.configure(function() {
 		app.set('views', __dirname + '/views');
