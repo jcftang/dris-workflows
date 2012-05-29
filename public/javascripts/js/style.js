@@ -339,7 +339,7 @@ function addInputFieldToFrom(index, dataObject) {
 	root += "</div>"
 	counter++;
 
-	$(".dataform").append(root);
+	$(".dataform").prepend(root);
 
 	$(".dataform select").ufd({
 		prefix : ""

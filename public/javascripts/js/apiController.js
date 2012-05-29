@@ -56,14 +56,18 @@ function loadStatistics() {
 	LoadSimpleStats(0);
 	loadItemData("lastCreated")
 	loadItemData("lastEdited")
+	
+	//type for url / item type / table id
 	loadItemDataByType("lastEdited","item","editItem")
 	loadItemDataByType("lastEdited","series","editSeries")
 	loadItemDataByType("lastEdited","collection","editCollection")
+
 	loadItemDataByType("lastCreated","item","createItem")
 	loadItemDataByType("lastCreated","series","createSeries")
 	loadItemDataByType("lastCreated","collection","createCollection")
 }
 
+//gets all reporting of all the type of objects
 function loadItemData(name){
 	createLoadingRow("#"+ name + " tbody");
 	var link = driPath + "stats/" + name.toLowerCase()
@@ -73,7 +77,7 @@ function loadItemData(name){
 			
 			titleCheck(data[i],function(title){
 				var date = ""
-
+				//Converting the date to - time ago.
 				if(name == "lastCreated"){
 					date = jQuery.timeago(data[i].dateCreated)
 				}else{
@@ -96,6 +100,8 @@ function loadItemData(name){
 	}); 
 
 }
+
+//gets reporting of a certain type of object
 function loadItemDataByType(name,option,field){
 	console.log(name)
 	createLoadingRow("#"+ field + " tbody");
@@ -129,6 +135,7 @@ function loadItemDataByType(name,option,field){
 
 }
 
+// loads in the database number reportin (open/approved/total)
 function LoadSimpleStats(numb){
 		if(numb == 0) {
 		$("#stats tbody").empty()
@@ -145,8 +152,7 @@ function LoadSimpleStats(numb){
 		if(item == "all") {
 			link = driPath + "stats/"
 		}
-
-
+		
 		loadData(link, function(data) {
 			$('.loadingDiv').remove()
 			$("#stats tbody").append("<tr><td>" + item + " objects</td><td>" + data + "</td>")
@@ -168,6 +174,7 @@ function LoadSimpleStats(numb){
  *           -- Data Load --
  *------------------------------------ */
 
+// loads data for the tables at top level.
 function loadTopLevelData(page, amount) {
 	$("tbody").empty();
 	createLoadingRow("#step1 tbody");
@@ -207,6 +214,7 @@ function loadTopLevelData(page, amount) {
 
 }
 
+//loads in the top level object for the modal used to change the parent id in edit page.
 function loadpIdData(page, amount) {
 	var link = driPath + "objects?page=" + (page - 1) + "&amount=" + amount
 
@@ -227,6 +235,7 @@ function loadpIdData(page, amount) {
 
 }
 
+//loads in the children objects for the modal used to change the parent id in edit page.
 function loadPidChildren(id, page, amount) {
 	var link = driPath + "objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
 	loadData(link, function(items, meta) {
@@ -247,6 +256,7 @@ function loadPidChildren(id, page, amount) {
 
 }
 
+//loads in the children of a certain object
 function loadChildren(id, page, amount) {
 	$("tbody").empty();
 	var link = driPath + "objects/" + id + "/list?page=" + (page - 1) + "&amount=" + amount
