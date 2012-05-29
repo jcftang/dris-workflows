@@ -85,12 +85,15 @@ function fillUpForm(data) {
 	itemPos = 0;
 	emptyForm()
 	var position = 0;
+	console.log(data.properties)
 	for(var i in data.properties) {
 		var item = i;
 		for(var j in data.properties[i]) {
 			var info = data.properties[item][j]
 			addEditFormFields(info,item);
 			for(i in info) {
+				console.log(i)
+				console.log(info)
 				$("#" + $('[name="' + i + '"]:last').attr("id")).val(info[i])
 				if( typeof info[i] == "object") {
 					$.fn.reverse = [].reverse; 

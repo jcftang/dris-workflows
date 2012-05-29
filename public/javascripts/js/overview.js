@@ -59,20 +59,21 @@ function viewDetails(data, link) {
 		properties += "<tr><th colspan='2'><h3>" + i + "</h3></th><tr>";
 		for(var j in data.properties[i]) {
 			var info = data.properties[obj][j]
-			for(i in info) {
+			for(z in info) {
 
-				if( typeof info[i] == "object") {
-					var info = info[i]
-					for(var k in info) {
-						properties += "<tr><th colspan='2'>" + k + "</th><tr>";
-						for(l in info[k]) {
-
-							properties += "<tr><td>" + l + "</td><td>" + info[k][l] + "</td><tr>"
+				if( typeof info[z] == "object") {
+					for(k in info[z]) {
+						var dataObj = info[z][k];
+						properties += "<tr><th colspan='2'>" + k + "</th><tr>"
+						for(var l in dataObj) {
+							properties += "<tr><td>" + l + "</td><td>" + dataObj[l] + "</td><tr>"
 						}
 					}
+
 				} else {
-					properties += "<tr><td>" + i + "</td><td>" + info[i] + "</td><tr>"
+					properties += "<tr><td>" + z + "</td><td>" + info[z] + "</td><tr>"
 				}
+
 			}
 		}
 	}

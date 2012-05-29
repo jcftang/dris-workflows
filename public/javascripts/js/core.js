@@ -181,7 +181,7 @@ function createLoadingRow(table) {
 }
 
 //displays the data in the sneakpeak option
-function displayData(data, item, link) {
+function displayData(data, obj, link) {
 	var root = "<table class='table-bordered infoFloat span6'>"
 	root += "<tr class='collapse'><th colspan='2'><i class='icon-minus'></i><h2>General</h2></th></tr><tr><th>type</th><th>data</th>";
 	for(var i in data) {
@@ -204,24 +204,28 @@ function displayData(data, item, link) {
 
 	root += "</table>"
 	var properties = "<table class='table-bordered infoFloat span6'><tr class='collapse'><th colspan='2'><i class='icon-plus'></i><h2>Properties</h2></th><tr>";
+	
+	console.log(data.properties)
 	for(var i in data.properties) {
-		var obj = i;
+		var item = i;
 		properties += "<tr><th colspan='2'><h3>" + i + "</h3></th><tr>";
 		for(var j in data.properties[i]) {
-			var info = data.properties[obj][j]
-			for(i in info) {
+			var info = data.properties[item][j]
+			for(z in info) {
 
-				if( typeof info[i] == "object") {
-					var info = info[i]
-					for(var k in info) {
-						properties += "<tr><th colspan='2'>" + k + "</th><tr>";
-						for(l in info[k]) {
-
-							properties += "<tr><td>" + l + "</td><td>" + info[k][l] + "</td><tr>"
+				if( typeof info[z] == "object") {
+					console.log(info[z])
+					for(k in info[z]){
+						var dataObj = info[z][k];
+						properties += "<tr><th colspan='2'>" + k+ "</th><tr>"
+						console.log(dataObj)
+						for(var l in dataObj){
+							properties += "<tr><td>" + l + "</td><td>" + dataObj[l] + "</td><tr>"
 						}
 					}
+					
 				} else {
-					properties += "<tr><td>" + i + "</td><td>" + info[i] + "</td><tr>"
+					properties += "<tr><td>" + z + "</td><td>" + info[z] + "</td><tr>"
 				}
 			}
 		}
@@ -232,7 +236,7 @@ function displayData(data, item, link) {
 	}
 
 	properties += "</table>"
-	$(item).parent().parent().after("<tr class='infoMeta'><td colspan='7'>" + root+properties + "</td></tr>")
+	$(obj).parent().parent().after("<tr class='infoMeta'><td colspan='7'>" + root+properties + "</td></tr>")
 	$("tr .collapse").eq(0).nextAll().show()
 }
 
