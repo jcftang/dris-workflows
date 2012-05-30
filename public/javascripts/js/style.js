@@ -23,6 +23,7 @@ function editAction() {
 
 	//loadAllItems();
 
+
 	//Highlights the selected item in the list
 	$(document).on("click",".items li a", function(event) {
 		event.preventDefault();

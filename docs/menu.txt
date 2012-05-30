@@ -1,18 +1,21 @@
 1. Generating the dropdown of properties.
 
 1.1 The Properties
+
 The data of properties can be found in the properties.js file.
 The arrays are specific data for certain fields.
-for exmple:
-//contains the data for the "type" field for titleInfo tag
-var titleType = ["title","alternative","abbreviated","translated"];
+for example:
 
- The schema at the bottom is the schema how the properties are storred.
+	//contains the data for the "type" field for titleInfo tag
+	var titleType = ["title","alternative","abbreviated","translated"];
+
+The schema at the bottom is the schema how the properties are storred.
  
 1.2 Creating the properties list
-In menu.js the properties list html is being generated.
 
+In menu.js the properties list html is being generated.
 We start by processing the data schema with Jquery
+
 	var scheme = driObjectSchema;
 	//pushes the schema into an array
 	$.each(scheme, function(index, obj) {
@@ -24,10 +27,12 @@ We start by processing the data schema with Jquery
 	});
 
 So what this does is conver the driObjectSchema into an Array which might look like this:
-optionsArray = [
-	{name:"titleInfo",value:{title:String,subtitle:String},
-	{name:"abstract",value:{abstract:String},
-]
+
+	optionsArray = [
+		{name:"titleInfo",value:{title:String,subtitle:String},
+		{name:"abstract",value:{abstract:String},
+	]
+	
 So the array has now every property from the schema on a seperate index
 After that we generate the html for the dropdown by looping through the array we just created.
 We can easily use the "name" part in the array to use it as the text for the buttons.
@@ -35,30 +40,35 @@ We can easily use the "name" part in the array to use it as the text for the but
 The use of the random number is because the propertieslist might appear several times on the page and in order to be unique we generate random numbers.
 
 1.3 Displaying the dropdown
+
 in properties.jade we call the function createPropertyButtons from menu.js
 which return the html for the dropdown list.
 
 2. Adding the properties to the form
+
 You detect which button in the properties list is clicked (with JQuery) and the index of that button corresponds with the index of in optionsArray (which contains the data) that was create in step 1.2
-$("#properties button").click(function(event) {
-				addInputFieldToFrom($(this).index(),optionsArray);
-}
+
+	$("#properties button").click(function(event) {
+					addInputFieldToFrom($(this).index(),optionsArray);
+	}
 
 addInputFieldToFrom loops over the data at that specific index in the optionsArray for example at index 0:
-{name:"titleInfo",value:{title:String,subtitle:String}
+
+	{name:"titleInfo",value:{title:String,subtitle:String}
 
 We can now create the box with the input fields. 
 The basic setup for a box is:
-<div>
-<h3>Title</h3>
-<input type='text' name="title"/>
-<input type='text' name="subtitle" />
-</div>
 
+	<div>
+	<h3>Title</h3>
+	<input type='text' name="title"/>
+	<input type='text' name="subtitle" />
+	</div>
+	
 So we can use the "name" property to fill in the h3 and use the title and subtitle fields to generate the two input fields.
 
 The special fields that require specific data are generated in the addSpecialField function (in style.js)
 The switch checks on the combination of the name property and the value property so for example: titletitleInfo
-We use the combination because some fields apear in several times with other options but with the same name
+We use the combination because some fields apear in several times with other options but with the same name.
 
  

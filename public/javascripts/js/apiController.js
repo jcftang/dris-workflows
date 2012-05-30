@@ -28,6 +28,7 @@ $(document).ready(function() {
 			setUpQueryPage();
 			break;
 		case "/create":
+			//in create.js
 			loadCreateData();
 			workspace.navigate("", {
 				trigger : true
