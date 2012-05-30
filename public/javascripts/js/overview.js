@@ -38,24 +38,31 @@ function viewDetails(data, link) {
 	$("#overview").empty()
 	var root = "<table class='table table-bordered infoFloat span12'>"
 	root += "<thead><tr ><th colspan='2'><h2>General</h2></th></tr><tr><th>type</th><th>data</th></thead>";
+
 	for(var i in data) {
 
 		if(i != "properties" && i != "fileLocation") {
 			root += "<tr><td>" + i + "</td><td>" + data[i] + "</td><tr>"
-			if(i == "_id"){
-			$(".approveItem").attr("data-id",data[i])
-			$("#editBtn").attr("href","/edit#edit/"+data[i])
+			if(i == "_id") {
+				$(".approveItem").attr("data-id", data[i])
+				$("#editBtn").attr("href", "/edit#edit/" + data[i])
 			}
-			if(i == "fedoraId"){
-				if(data[i] != null){
-				$(".approveItem").attr("data-fedora",data[i])
-				$(".approveItem").addClass("btn-warning").attr("value","Unapprove").removeClass("btn-success").addClass("unapproveItem").removeClass("approveItem")
+			if(i == "fedoraId") {
+				if(data[i] != null) {
+					$(".approveItem").attr("data-fedora", data[i])
+					$(".approveItem").addClass("btn-warning").attr("value", "Unapprove").removeClass("btn-success").addClass("unapproveItem").removeClass("approveItem")
+				}
 			}
+			if(i == "type"){
+				if(data[i] != "item"){
+					$(".approveItem").attr("disabled","disabled")
+				}
 			}
-			
+
 		}
 
 	}
+
 	root +=  "<tr><td>Json</td><td><a href='"+socket+link+"' target='_blank'>" + link + "</a></td><tr>";
 	if(data.properties != undefined){
 	root +=  "<tr><td>Dulbin core</td><td><a href='"+socket+link+".dc' target='_blank'>" + link + ".dc</a></td><tr>";

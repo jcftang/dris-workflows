@@ -7,7 +7,7 @@
  * This file loads in the schema from properties.js (same schema as in mongoose)
  * Here the properties drop down gets generated
  * In style.js the properties that are clicked are being generated and added to the form.
- * 
+ * MORE INFO: in docs - menu.txt
  */
 var optionsArray = new Array();
 function createPropertyButtons() {

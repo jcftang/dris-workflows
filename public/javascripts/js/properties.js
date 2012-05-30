@@ -1,7 +1,7 @@
 /*
  * author Matthias Van Wambeke
  */
-//values for specific properties.
+//These arrays containt the data for specific fields, the variables name are the same as the names used in the schema
 var resourceTypes = ["text", "cartographic", "notated music", "sound recording ", "sound recording-musical", "sound recording-nonmusical", "still image", "moving image", "three dimensional object", "software, multimedia", "mixed material"]; 
 
 var titleType = ["title","alternative","abbreviated","translated"];
@@ -107,6 +107,7 @@ var driObjectSchema = {
 		accessCondition:String
 	}
 };
+
 
 
 

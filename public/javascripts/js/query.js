@@ -50,7 +50,8 @@ function displayQueryData(data) {
 		var title = "-"
 		var label = "IN-" + data[i].label.substring(0, amountLblChars);
 		titleCheck(data[i],function(title){
-			$("#step1 tbody").append("<tr id='" + data[i]._id + "'>" + "<td>" + "<a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + title + "</a>" + "<i data-id='" + data[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + label + "</a></td>" + "<td>" + data[i].type + "</td></tr>")	
+			var details = "<span class='details'><span class='divider'> |</span><a href='/overview/"+data[i]._id +"'>details</a></span>"
+			$("#step1 tbody").append("<tr id='" + data[i]._id + "'>" + "<td>" + "<a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + title + "</a>" +details+ "<i data-id='" + data[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + label + "</a></td>" + "<td>" + data[i].type + "</td></tr>")	
 		});
 		
 	};
