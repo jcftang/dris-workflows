@@ -23,13 +23,11 @@ function initeSearch(){
 			$("#searchValue").removeClass("alert-error")
 		}else{
 			$("#searchValue").addClass("alert-error")
-			console.log("Enter a value")
 		}
 }
 function loadQueryData(field, value) {
 	$("tbody").empty()
 	createLoadingRow("tbody");
-	console.log(field + " " + value)
 	// Check if label code contains prefix
 	if(field =="label" && value.indexOf("IN-") > -1) {
 		// Remove the prefix
@@ -52,7 +50,7 @@ function displayQueryData(data) {
 		var title = "-"
 		var label = "IN-" + data[i].label.substring(0, amountLblChars);
 		titleCheck(data[i],function(title){
-			$("#step1 tbody").append("<tr id='" + data[i]._id + "'>" + "<td>" + "<a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + title + "</a>" + "<i data-id='" + data[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + label + "</a></td>" + "<td>" + data[i].type + "</td>" + "action" + "</tr>")	
+			$("#step1 tbody").append("<tr id='" + data[i]._id + "'>" + "<td>" + "<a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + title + "</a>" + "<i data-id='" + data[i]._id + "'class='icon icon-eye-open'></i></td>" + "<td><a data-type='" + data[i].type + "'  href='#id/" + data[i]._id + "'>" + label + "</a></td>" + "<td>" + data[i].type + "</td></tr>")	
 		});
 		
 	};

@@ -100,13 +100,11 @@ function loadItemData(name){
 
 //gets reporting of a certain type of object
 function loadItemDataByType(name,option,field){
-	console.log(name)
 	createLoadingRow("#"+ field + " tbody");
 	var link = driPath + "stats/" + name.toLowerCase()+"/"+option
 	loadData(link, function(data) {
 		$('.loadingDiv').remove()
 		for(var i in data){
-			console.log(data)
 			titleCheck(data[i],function(title){
 				var date = ""
 				if(name == "lastCreated"){
@@ -180,7 +178,6 @@ function loadTopLevelData(page, amount) {
 	loadData(link, function(items, meta) {
 		$("tbody").empty();
 		createPagination(meta)
-		console.log(items)
 		for(i in items) {
 			var label = "IN-" + items[i].label.substring(0, amountLblChars);
 			var checkbox = "<td><input name='items' type='checkbox' data-id='" + items[i]._id + "'></td>";

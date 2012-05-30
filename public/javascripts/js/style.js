@@ -460,7 +460,7 @@ function addSpecialField(name,prop) {
 			+"<label>dateOther</label><input id='input"+ counter +"a' name='dateOther' type='text' class='input-small'><br />"+ removebtn + "</div></li>";
 			break;
 		case "languageTermlanguage":
-		return "<li><div class='inputBox'><hr><select id='input"+counter+"' class='input-small'><option value='text'>text</option>" 
+		return "<li><div class='inputBox'><hr><select id='input"+counter+"' class='input-small' name='type'><option value='text'>text</option>" 
 			+ "<option value='code'>code</option></select>"
 			+"<label>Authority</label><input id='input"+counter+"a' name='authority' type='text' value='iso639-2b' class='input-small'><br>"
 			+"<label>language</label>"+createSelect(languages,"language")+ removebtn + "</div></li> ";

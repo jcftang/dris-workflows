@@ -63,7 +63,6 @@ function viewDetails(data, link) {
 	if(data.fileLocation) {
 		root += "</table><table class='table table-bordered span12 infoFloat'><tr ><thead><th colspan='2'><h2>Files</h2></th></tr></thead>";
 		for(var i = 0; i < data.fileLocation.length; i++) {
-			console.log(data.fileLocation)
 			root += "<tr><td colspan='2'><a href='" + publicDirectory + "/" + data.fileLocation[i].fileLocation + "'>" + data.fileLocation[i].fileLocation + "</a><span class='divider'> | </span><a class=' btn displayMedia' data-toggle='button' href='#' data-type='"+data.fileLocation[i].type+"'>display</a></td></tr>";
 		}
 	}
@@ -221,7 +220,6 @@ function approveItem(id, callback) {
 	});
 };
 function unapproveItem(pid, callback) {
-	console.log(pid)
 	var link = driPath + "objects/" + pid + "/unapprove"
 	loadData(link, function(data) {
 		callback(null, data)

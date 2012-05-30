@@ -29,7 +29,7 @@ $(document).ready(function() {
 				}
 				break;
 			default:
-				console.log("Select an action");
+				alert("Select an action");
 		}
 	});
 
@@ -101,7 +101,6 @@ $(document).ready(function() {
 		currentParentName = $(this).text()
 	});
 	$('.btnCompareFedora').live("click", function(e) {
-		console.log("btn")
 		var btn = $(e.target)
 		var id = btn.attr('data-id')
 
@@ -203,7 +202,6 @@ function loadChildren(id, page, amount) {
 function loadCompareData(id) {
 	var link = driPath + "objects/" + id + "/compare"
 	loadData(link, function(data) {
-		console.log(data)
 		$('#mongoData').text(JSON.stringify(data.mongo, undefined, 4))
 		$('#fedoraData').text(data.fedora)
 	}, function(err) {
@@ -263,7 +261,6 @@ function approveItem(id, callback) {
 	});
 };
 function unapproveItem(pid, callback) {
-	console.log(pid)
 	var link = driPath + "objects/" + pid + "/unapprove"
 	loadData(link, function(data) {
 		callback(null, data)
@@ -298,7 +295,6 @@ function backbone() {
 
 		},
 		collectionPage : function(page) {
-			console.log("page" + page)
 			loadAdminData(page, itemsPerPage);
 			if(!goDeeper) {
 				if($(".row .breadcrumb li").size() > 1) {

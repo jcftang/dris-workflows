@@ -144,7 +144,6 @@ function createPagination(meta) {
 
 //general load of data
 function loadData(link, callback, error) {
-	console.log(socket + link)
 	$.ajax({
 		url : socket + link,
 		cache : false,
@@ -205,7 +204,6 @@ function displayData(data, obj, link) {
 	root += "</table>"
 	var properties = "<table class='table-bordered infoFloat span6'><tr class='collapse'><th colspan='2'><i class='icon-plus'></i><h2>Properties</h2></th><tr>";
 	
-	console.log(data.properties)
 	for(var i in data.properties) {
 		var item = i;
 		properties += "<tr><th colspan='2'><h3>" + i + "</h3></th><tr>";
@@ -250,7 +248,6 @@ function titleCheck(item, callback) {
 	}
 
 	if(( typeof item.fileLocation) != "undefined") {
-		console.log(item.properties.titleInfo.length)
 
 		if(( typeof item.properties) == undefined) {
 			var nameStart = item.fileLocation[0].fileLocation.indexOf("/") + 1;
