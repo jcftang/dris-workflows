@@ -114,7 +114,8 @@ function fillUpForm(data) {
 	}
 
 	if(data.parentId) {
-		$("div.pId").text(data.parentId)
+		var id = data.parentId
+		$("div.pId").empty().append("<a href='/overview/"+id+"' target='_blank'>"+id+"</a>");
 	}
 }
 //fill up the fields of special input fields

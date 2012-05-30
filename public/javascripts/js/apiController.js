@@ -20,6 +20,9 @@ $(document).ready(function() {
 			break;
 		case "/edit":
 			loadEditData();
+			if(window.location.hash.substr(0,6) != "#edit/"){
+				workspace.navigate("",{trigger:true})
+			}
 			break;
 		case "/all":
 			setUpQueryPage();

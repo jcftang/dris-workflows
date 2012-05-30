@@ -14,7 +14,6 @@ function updateChildren(data, itemPos) {
 			//updating the properties of all the items that you selected
 
 			for(var j in items) {
-				console.log(data[itemPos])
 				data[itemPos].properties[j] = items[j]
 			}
 			//sending the new data to the server
@@ -80,7 +79,7 @@ function loadEditData() {
 	$("#pidSelect").click(function(event) {
 		event.preventDefault();
 		var id = $('input[type=radio]:checked').attr("data-id");
-		$("div.pId").text(id);
+		$("div.pId").empty().append("<a href='/overview/"+id+"' target='_blank'>"+id+"</a>");
 		$("#myModal").modal("hide");
 		var pos = $(".items li.accordion-heading-focus").attr('data-pos');
 		workspace.navigate("#step2")
