@@ -85,6 +85,8 @@ $(document).ready(function() {
 				$this.removeClass('disabled')
 				$this.removeClass('btn-warning')
 				$this.addClass('btn-success')
+				$this.removeClass('unapproveItem')
+				$this.addClass('approveItem')
 				$this.attr("value", "Approve");
 				var fedoraContainer = $this.parent().prev().prev()
 				fedoraContainer.text("-")
