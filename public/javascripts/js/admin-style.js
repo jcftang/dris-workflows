@@ -43,7 +43,7 @@ $(document).ready(function() {
 			})
 		}
 	});
-	$('.approveItem').live("click", function() {
+	$(document).on("click",".approveItem", function() {
 		$this = $(this)
 		$this.attr("disabled", "disabled");
 		$this.addClass('disabled')
@@ -69,7 +69,7 @@ $(document).ready(function() {
 			}
 		});
 	});
-	$('.unapproveItem').live("click", function() {
+	$(document).on("click",'.unapproveItem', function() {
 		$this = $(this)
 		$this.attr("disabled", "disabled");
 		$this.addClass('disabled')
@@ -82,6 +82,8 @@ $(document).ready(function() {
 				$this.attr("value", "Unapprove");
 			} else {
 				$this.removeAttr("disabled");
+				$this.removeClass('unapproveItem')
+				$this.addClass('approveItem')
 				$this.removeClass('disabled')
 				$this.removeClass('btn-warning')
 				$this.addClass('btn-success')
