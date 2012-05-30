@@ -62,6 +62,15 @@ describe('Try accessing top level Routes', function() {
 			});
 		});
 	});
+	describe('GET /browse', function() {
+		it("should respond with the browse page", function(done) {
+			request('http://localhost:' + portNumber + '/browse', function(err, resp, body) {
+				assert.isNull(err);
+				assert.include(body, '<title>Browse</title>');
+				done();
+			});
+		});
+	});
 	describe('GET /404', function() {
 		it("should respond with the admin page", function(done) {
 			request('http://localhost:' + portNumber + '/sdfagfgarg', function(err, resp, body) {
