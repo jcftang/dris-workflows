@@ -44,6 +44,7 @@ function viewDetails(data, link) {
 			root += "<tr><td>" + i + "</td><td>" + data[i] + "</td><tr>"
 			if(i == "_id"){
 			$(".approveItem").attr("data-id",data[i])
+			$("#editBtn").attr("href","/edit#edit/"+data[i])
 			}
 			if(i == "fedoraId"){
 				if(data[i] != null){

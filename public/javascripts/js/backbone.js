@@ -10,6 +10,7 @@ function backbone() {
 		routes : {
 			"edit" : "step2",
 			"myModal/:page" : "loadPidTop2",
+			"edit/:id" : "editObject",
 			"step2" : "step2",
 			"step3" : "step3",
 			"step4" : "step4",
@@ -22,7 +23,21 @@ function backbone() {
 			"myModal" : "loadPidTop",
 			"" : "collection",
 		},
-
+		editObject:function(id){
+			
+			loadData(driPath + "objects/" + id, function(data) {
+				emptyForm();
+				fileUploadLocation = [];
+				showItems([data])
+				editItems = [data];
+				$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
+			$("#step2,#step2Info,#single").show();
+			$("#properties").show();
+				$(".breadcrumb a").not("form .breadcrumb a").parent().removeClass("active");
+				$(".breadcrumb a").not("form .breadcrumb a").eq(1).parent().addClass("active");
+				$(".items li:first a").trigger("click");
+			});
+		},
 		step2 : function() {
 			$("#step1,#step2,#step2Info,#step3,#step3Info,#step4,#step4Info,#step5,#step5Info").hide();
 			$("#step2,#step2Info,#single").show();
