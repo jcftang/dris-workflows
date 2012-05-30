@@ -1,7 +1,11 @@
-var workspace = backbone();
+var workspace;
 var goDeeper = true;
 var parentType = "";
 var currentParentName = ""
+$(document).ready(function(){
+	workspace = backbone();
+})
+	
 
 function backbone() {
 	var Workspace = Backbone.Router.extend({
@@ -31,12 +35,24 @@ function diplayDetails(id){
 }
 
 function viewDetails(data, link) {
+	$("#overview").empty()
 	var root = "<table class='table table-bordered infoFloat span12'>"
 	root += "<thead><tr ><th colspan='2'><h2>General</h2></th></tr><tr><th>type</th><th>data</th></thead>";
 	for(var i in data) {
 
 		if(i != "properties" && i != "fileLocation") {
 			root += "<tr><td>" + i + "</td><td>" + data[i] + "</td><tr>"
+			if(i == "_id"){
+			$(".approveItem").attr("data-id",data[i])
+			$("#editBtn").attr("href","/edit#edit/"+data[i])
+			}
+			if(i == "fedoraId"){
+				if(data[i] != null){
+				$(".approveItem").attr("data-fedora",data[i])
+				$(".approveItem").addClass("btn-warning").attr("value","Unapprove").removeClass("btn-success").addClass("unapproveItem").removeClass("approveItem")
+			}
+			}
+			
 		}
 
 	}
@@ -91,6 +107,53 @@ function viewDetails(data, link) {
 		displayMedia(this,$(this).prev().prev().attr("href"))
 		}
 	})
+	
+	loadButtonActions()
+}
+
+function loadButtonActions(){
+	$(document).on("click",".approveItem", function() {
+		$this = $(this)
+		$this.attr("disabled", "disabled").addClass('disabled').attr("value", "Approving");
+		id = $this.attr("data-id");
+		approveItem(id, function(err, data) {
+			workspace.browse()
+			if(err) {
+				console.log(err)
+				$this.removeAttr("disabled");
+				$this.removeClass('disabled')
+				$this.attr("value", "Approve");
+			} else {
+				$this.attr("value", "Unapprove").removeAttr("disabled").removeClass('disabled')
+				$this.removeClass('approveItem').removeClass('btn-success')
+				$this.addClass('unapproveItem').addClass('btn-warning')
+
+			}
+		});
+	});
+	$(document).on("click",'.unapproveItem', function() {
+		$this = $(this)
+		$this.attr("disabled", "disabled");
+		$this.addClass('disabled')
+		$this.attr("value", "Unapproving");
+		id = $(this).attr("data-id");
+		unapproveItem(id, function(err, data) {
+			workspace.browse()
+			if(err) {
+				$this.removeAttr("disabled");
+				$this.removeClass('disabled')
+				$this.attr("value", "Unapprove");
+			} else {
+				$this.removeAttr("disabled");
+				$this.removeClass('unapproveItem')
+				$this.addClass('approveItem')
+				$this.removeClass('disabled')
+				$this.removeClass('btn-warning')
+				$this.addClass('btn-success')
+				$this.attr("value", "Approve");
+			}
+		});
+	});
 }
 
 //Display the image/video or sound file 
@@ -148,3 +211,22 @@ function browserMediaTest(type){
 	 }
 	
 }
+
+function approveItem(id, callback) {
+	var link = driPath + "objects/" + id + "/approve"
+	loadData(link, function(data) {
+		callback(null, data)
+	}, function(err) {
+		console.log(err, null)
+	});
+};
+function unapproveItem(pid, callback) {
+	console.log(pid)
+	var link = driPath + "objects/" + pid + "/unapprove"
+	loadData(link, function(data) {
+		callback(null, data)
+	}, function(err) {
+		console.log(err, null)
+	});
+};
+

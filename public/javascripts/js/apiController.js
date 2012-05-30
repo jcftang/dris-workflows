@@ -19,9 +19,6 @@ $(document).ready(function() {
 			loadStatistics();
 			break;
 		case "/edit":
-			workspace.navigate("", {
-				trigger : true
-			});
 			loadEditData();
 			break;
 		case "/all":

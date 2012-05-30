@@ -212,13 +212,10 @@ function displayData(data, obj, link) {
 		for(var j in data.properties[i]) {
 			var info = data.properties[item][j]
 			for(z in info) {
-
 				if( typeof info[z] == "object") {
-					console.log(info[z])
 					for(k in info[z]){
 						var dataObj = info[z][k];
 						properties += "<tr><th colspan='2'>" + k+ "</th><tr>"
-						console.log(dataObj)
 						for(var l in dataObj){
 							properties += "<tr><td>" + l + "</td><td>" + dataObj[l] + "</td><tr>"
 						}
