@@ -182,7 +182,7 @@ function createLoadingRow(table) {
 //displays the data in the sneakpeak option
 function displayData(data, obj, link) {
 	var root = "<table class='table-bordered infoFloat span6'>"
-	root += "<tr class='collapse'><th colspan='2'><i class='icon-minus'></i><h2>General</h2></th></tr><tr><th>type</th><th>data</th>";
+	root += "<tr class='collapse'><th colspan='2'><i class='icon-minus'></i><h2>Object data</h2></th></tr><tr><th>type</th><th>data</th>";
 	for(var i in data) {
 
 		if(i != "properties" && i != "fileLocation") {
@@ -192,7 +192,7 @@ function displayData(data, obj, link) {
 	}
 	root +=  "<tr><td>Json</td><td><a href='"+socket+link+"' target='_blank'>" + link + "</a></td><tr>";
 	if(data.properties != undefined){
-	root +=  "<tr><td>Dulbin core</td><td><a href='"+socket+link+".dc' target='_blank'>" + link + ".dc</a></td><tr>";
+	root +=  "<tr><td>Dublin core</td><td><a href='"+socket+link+".dc' target='_blank'>" + link + ".dc</a></td><tr>";
 	}
 	if(data.fileLocation) {
 		root += "</table><table class='table-bordered span6 infoFloat'><tr class='collapse'><th colspan='2'><i class='icon-plus'></i><h2>Files</h2></th></tr>";
@@ -231,7 +231,7 @@ function displayData(data, obj, link) {
 	}
 
 	properties += "</table>"
-	$(obj).parent().parent().after("<tr class='infoMeta'><td colspan='7'>" + root+properties + "</td></tr>")
+	$(obj).parent().parent().after("<tr class='infoMeta'><td colspan='7'>" + properties + root + "</td></tr>")
 	$("tr .collapse").eq(0).nextAll().show()
 }
 
