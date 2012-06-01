@@ -37,7 +37,7 @@ function diplayDetails(id){
 function viewDetails(data, link) {
 	$("#overview").empty()
 	var root = "<table class='table table-bordered infoFloat span12'>"
-	root += "<thead><tr ><th colspan='2'><h2>General</h2></th></tr><tr><th>type</th><th>data</th></thead>";
+	root += "<thead><tr ><th colspan='2'><h2>Object data</h2></th></tr><tr><th>type</th><th>data</th></thead>";
 
 	for(var i in data) {
 
@@ -65,7 +65,7 @@ function viewDetails(data, link) {
 
 	root +=  "<tr><td>Json</td><td><a href='"+socket+link+"' target='_blank'>" + link + "</a></td><tr>";
 	if(data.properties != undefined){
-	root +=  "<tr><td>Dulbin core</td><td><a href='"+socket+link+".dc' target='_blank'>" + link + ".dc</a></td><tr>";
+	root +=  "<tr><td>Dublin core</td><td><a href='"+socket+link+".dc' target='_blank'>" + link + ".dc</a></td><tr>";
 	}
 	if(data.fileLocation) {
 		root += "</table><table class='table table-bordered span12 infoFloat'><tr ><thead><th colspan='2'><h2>Files</h2></th></tr></thead>";
